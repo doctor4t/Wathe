@@ -71,6 +71,15 @@ public interface TrainMurderMysteryBlocks {
     Block DARK_STEEL_BRANCH = createBranch("dark_steel_branch", TrainMurderMysteryBlocks.DARK_STEEL, registrar);
     Block DARK_STEEL_PILLAR = registrar.createWithItem("dark_steel_pillar", new PillarBlock(AbstractBlock.Settings.copy(DARK_STEEL)), TrainMurderMysteryItems.BUILDING_GROUP);
     Block STAINLESS_STEEL_BAR = registrar.createWithItem("stainless_steel_bar", new BarBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).nonOpaque().strength(0.5f)), TrainMurderMysteryItems.DECORATION_GROUP);
+    Block NAVY_STEEL = registrar.createWithItem("navy_steel", new Block(AbstractBlock.Settings.copy(DARK_STEEL)), TrainMurderMysteryItems.BUILDING_GROUP);
+    Block NAVY_STEEL_PANEL = registrar.createWithItem("navy_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(NAVY_STEEL)), TrainMurderMysteryItems.BUILDING_GROUP);
+    Block NAVY_STEEL_TILES = registrar.createWithItem("navy_steel_tiles", new Block(AbstractBlock.Settings.copy(NAVY_STEEL)), TrainMurderMysteryItems.BUILDING_GROUP);
+    Block NAVY_STEEL_TILES_PANEL = registrar.createWithItem("navy_steel_tiles_panel", new PanelBlock(AbstractBlock.Settings.copy(NAVY_STEEL)), TrainMurderMysteryItems.BUILDING_GROUP);
+    Block SMOOTH_NAVY_STEEL = registrar.createWithItem("smooth_navy_steel", new Block(AbstractBlock.Settings.copy(NAVY_STEEL)), TrainMurderMysteryItems.BUILDING_GROUP);
+    Block SMOOTH_NAVY_STEEL_STAIRS = registrar.createWithItem("smooth_navy_steel_stairs", new StairsBlock(NAVY_STEEL.getDefaultState(), AbstractBlock.Settings.copy(NAVY_STEEL)), TrainMurderMysteryItems.BUILDING_GROUP);
+    Block SMOOTH_NAVY_STEEL_SLAB = registrar.createWithItem("smooth_navy_steel_slab", new SlabBlock(AbstractBlock.Settings.copy(NAVY_STEEL)), TrainMurderMysteryItems.BUILDING_GROUP);
+    Block SMOOTH_NAVY_STEEL_PANEL = registrar.createWithItem("smooth_navy_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(NAVY_STEEL)), TrainMurderMysteryItems.BUILDING_GROUP);
+
     // Glass
     Block HULL_GLASS = registrar.createWithItem("hull_glass", new PrivacyGlassBlock(AbstractBlock.Settings.copy(Blocks.BLACK_STAINED_GLASS).strength(-1.0f, 3600000.0f)), TrainMurderMysteryItems.BUILDING_GROUP);
     Block RHOMBUS_HULL_GLASS = registrar.createWithItem("rhombus_hull_glass", new StainedGlassBlock(DyeColor.BLACK, AbstractBlock.Settings.copy(Blocks.BLACK_STAINED_GLASS).strength(-1.0f, 3600000.0f)), TrainMurderMysteryItems.BUILDING_GROUP);
@@ -130,6 +139,7 @@ public interface TrainMurderMysteryBlocks {
     Block EBONY_CABINET = registrar.createWithItem("ebony_cabinet", new CabinetBlock(AbstractBlock.Settings.copy(EBONY_PLANKS).nonOpaque()), TrainMurderMysteryItems.BUILDING_GROUP);
     Block TRIMMED_EBONY_STAIRS = registrar.createWithItem("trimmed_ebony_stairs", new TrimmedStairsBlock(AbstractBlock.Settings.copy(EBONY_PLANKS)), TrainMurderMysteryItems.BUILDING_GROUP);
     Block EBONY_BOOKSHELF = registrar.createWithItem("ebony_bookshelf", new Block(AbstractBlock.Settings.copy(EBONY_PLANKS)), TrainMurderMysteryItems.BUILDING_GROUP);
+
     // Vents
     Block STAINLESS_STEEL_VENT_SHAFT = registrar.createWithItem("stainless_steel_vent_shaft", new VentShaftBlock(AbstractBlock.Settings.create().strength(-1.0f, 3600000.0f).sounds(TrainMurderMysterySounds.VENT_SHAFT).mapColor(MapColor.GRAY).notSolid()), TrainMurderMysteryItems.DECORATION_GROUP);
     Block STAINLESS_STEEL_VENT_HATCH = registrar.createWithItem("stainless_steel_vent_hatch", new VentHatchBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL_VENT_SHAFT).strength(0.3f).sounds(BlockSoundGroup.COPPER).nonOpaque()), TrainMurderMysteryItems.DECORATION_GROUP);

@@ -310,7 +310,15 @@ public class TrainMurderMysteryBlockTagGen extends FabricTagProvider.BlockTagPro
                 .add(TrainMurderMysteryBlocks.NEON_PILLAR)
                 .add(TrainMurderMysteryBlocks.NEON_TUBE)
                 .addTag(TrainMurderMysteryBlockTags.SPRINKLERS)
-                .add(TrainMurderMysteryBlocks.GOLD_ORNAMENT);
+                .add(TrainMurderMysteryBlocks.NAVY_STEEL_PANEL)
+                .add(TrainMurderMysteryBlocks.NAVY_STEEL_TILES)
+                .add(TrainMurderMysteryBlocks.NAVY_STEEL_TILES_PANEL)
+                .add(TrainMurderMysteryBlocks.SMOOTH_NAVY_STEEL)
+                .add(TrainMurderMysteryBlocks.SMOOTH_NAVY_STEEL_STAIRS)
+                .add(TrainMurderMysteryBlocks.SMOOTH_NAVY_STEEL_SLAB)
+                .add(TrainMurderMysteryBlocks.SMOOTH_NAVY_STEEL_PANEL);
+
+
 
         this.getOrCreateTagBuilder(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
                 .addTag(TrainMurderMysteryBlockTags.VENT_SHAFTS);
