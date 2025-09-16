@@ -200,7 +200,28 @@ public class TrainMurderMysteryLangGen extends FabricLanguageProvider {
         builder.add(TrainMurderMysteryItems.REVOLVER, "Revolver");
         builder.add(TrainMurderMysteryItems.BODY_BAG, "Body Bag");
         builder.add(TrainMurderMysteryItems.LETTER, "Letter");
+
         builder.add(TrainMurderMysteryItems.LETTER.getTranslationKey() + ".instructions", "Instructions");
+        builder.add("tip.letter.hitman.tooltip1", "Thank you for taking this job. Please eliminate the following targets:");
+        builder.add("tip.letter.hitman.tooltip.target", "- %s");
+        builder.add("tip.letter.hitman.tooltip2", "Please do so with the utmost discretion and do not get caught. Good luck.");
+        builder.add("tip.letter.hitman.tooltip3", "");
+        builder.add("tip.letter.hitman.tooltip4", "P.S.: Don't forget to use your instinct [Left Alt] and use the train's exterior to relocate.");
+
+        builder.add(TrainMurderMysteryItems.LETTER.getTranslationKey() + ".notes", "Notes");
+        builder.add("tip.letter.detective.tooltip1", "Multiple homicides, several wealthy victims.");
+        builder.add("tip.letter.detective.tooltip2", "Have to be linked... Serial killer? Assassin? Hitman?");
+        builder.add("tip.letter.detective.tooltip3", "Potential next victims frequent travelers of the Harpy Express.");
+        builder.add("tip.letter.detective.tooltip4", "Perfect situation to corner but need to keep targets safe.");
+
+        builder.add(TrainMurderMysteryItems.LETTER.getTranslationKey() + ".pamphlet", "Pamphlet");
+        builder.add("tip.letter.pamphlet.name", "Dear %s, welcome aboard the Harpy Express!");
+        builder.add("tip.letter.pamphlet.room", "Please find attached your ticket as well as the key for accessing");
+        builder.add("tip.letter.pamphlet.room.grand_suite", "the Grand Suite");
+        builder.add("tip.letter.pamphlet.room.cabin_suite", "your Cabin Suite");
+        builder.add("tip.letter.pamphlet.room.twin_cabin", "your Twin Cabin");
+        builder.add("tip.letter.pamphlet.tooltip1", "%s for your trip on the 1st of January 1923.");
+        builder.add("tip.letter.pamphlet.tooltip2", "La Sirène wishes you a pleasant and safe voyage.");
 
         builder.add("itemGroup.trainmurdermystery.building", "TrainMurderMystery: Building Blocks");
         builder.add("itemGroup.trainmurdermystery.decoration", "TrainMurderMystery: Decoration & Functional");
@@ -225,12 +246,7 @@ public class TrainMurderMysteryLangGen extends FabricLanguageProvider {
         builder.add("tip.revolver.rounds", "%s/6 rounds left");
         builder.add("tip.revolver.tooltip1", "Right-click to use, point and shoot");
         builder.add("tip.revolver.tooltip2", "Can be used to shoot a door and open it permanently");
-
-        builder.add("tip.letter.hitman.tooltip1", "Thank you for taking this job. Please eliminate the following targets:");
-        builder.add("tip.letter.hitman.tooltip.target", "- %s");
-        builder.add("tip.letter.hitman.tooltip2", "Please do so with the utmost discretion and do not get caught. Good luck.");
-        builder.add("tip.letter.hitman.tooltip3", "");
-        builder.add("tip.letter.hitman.tooltip4", "P.S.: Don't forget to use your instinct [Left Alt] and use the train's exterior to relocate.");
+        builder.add("tip.body_bag.tooltip1", "Use on a dead body to bag it up and remove it");
 
         builder.add("game.win.hitmen", "All targets were eliminated: The Hitmen win!");
         builder.add("game.win.passengers", "All hitmen were eliminated: The Passengers win!");

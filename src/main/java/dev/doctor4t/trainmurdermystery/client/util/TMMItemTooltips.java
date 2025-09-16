@@ -20,11 +20,8 @@ import java.util.function.UnaryOperator;
 
 public class TMMItemTooltips {
     private static final int COOLDOWN_COLOR = 0xC90000;
-    ;
     private static final int LETTER_COLOR = 0xC5AE8B;
-    ;
     private static final int REGULAR_TOOLTIP_COLOR = 0x808080;
-    ;
 
     public static void addTooltips() {
         ItemTooltipCallback.EVENT.register((itemStack, tooltipContext, tooltipType, tooltipList) -> {
@@ -35,6 +32,8 @@ public class TMMItemTooltips {
             addCooldownText(TrainMurderMysteryItems.LOCKPICK, tooltipList, itemStack);
 
             addRevolverTooltips(itemStack, tooltipList);
+
+            addTooltipsForItem(TrainMurderMysteryItems.BODY_BAG, 1, itemStack, tooltipList);
 
             addLetterTooltips(itemStack, tooltipList);
         });
@@ -53,7 +52,7 @@ public class TMMItemTooltips {
     private static void addLetterTooltips(ItemStack itemStack, List<Text> tooltipList) {
         Item item = TrainMurderMysteryItems.LETTER;
         if (itemStack.isOf(item)) {
-            if (TrainMurderMysteryClient.isHitman()) {
+            if (itemStack.getName().getString().equals(Text.translatable(TrainMurderMysteryItems.LETTER.getTranslationKey()+".instructions").getString())) {
                 String tooltipString = "tip." + item.getTranslationKey().substring(24) + ".hitman.tooltip";
 
                 tooltipList.add(Text.translatable(tooltipString + "1").withColor(LETTER_COLOR));
@@ -70,12 +69,11 @@ public class TMMItemTooltips {
                 for (int i = 2; i <= 4; i++) {
                     tooltipList.add(Text.translatable(tooltipString + i).withColor(LETTER_COLOR));
                 }
-            } else if (TrainMurderMysteryClient.isDetective()) {
-
-            } else if (TrainMurderMysteryClient.isPassenger()) {
-
+            } else if (itemStack.getName().getString().equals(Text.translatable(TrainMurderMysteryItems.LETTER.getTranslationKey()+".notes").getString())) {
+                for (int i = 1; i <= 4; i++) {
+                    tooltipList.add(Text.translatable("tip." + item.getTranslationKey().substring(24) + ".detective.tooltip" + i).withColor(LETTER_COLOR));
+                }
             }
-
         }
     }
 
