@@ -2,6 +2,7 @@ package dev.doctor4t.trainmurdermystery.game;
 
 import dev.doctor4t.trainmurdermystery.cca.TMMComponents;
 import dev.doctor4t.trainmurdermystery.cca.WorldGameComponent;
+import dev.doctor4t.trainmurdermystery.cca.WorldTrainComponent;
 import dev.doctor4t.trainmurdermystery.entity.PlayerBodyEntity;
 import dev.doctor4t.trainmurdermystery.index.TMMEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
@@ -13,6 +14,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.GameMode;
@@ -24,6 +26,16 @@ import java.util.function.UnaryOperator;
 public class TMMGameLoop {
     public static void tick(ServerWorld serverWorld) {
         WorldGameComponent game = TMMComponents.GAME.get(serverWorld);
+        WorldTrainComponent train = TMMComponents.TRAIN.get(serverWorld);
+
+        if (train.getTrainSpeed() > 0) {
+            for (ServerPlayerEntity player : serverWorld.getPlayers()) {
+                // spectator limits
+                if (!isPlayerAliveAndSurvival(player)) {
+                    limitPlayerToBox(player, new Box(-140, 63, -535.5f - 15, 230, 110, -535.5f + 15));
+                }
+            }
+        }
 
         if (game.isRunning()) {
             // kill players who fell off the train
@@ -58,6 +70,39 @@ public class TMMGameLoop {
                 }
                 game.stop();
             }
+        }
+    }
+
+    private static void limitPlayerToBox(ServerPlayerEntity player, Box box) {
+        Vec3d playerPos = player.getPos();
+
+        if (!box.contains(playerPos)) {
+            double x = playerPos.getX();
+            double y = playerPos.getY();
+            double z = playerPos.getZ();
+
+            if (z < box.minZ) {
+                z = box.minZ;
+            }
+            if (z > box.maxZ) {
+                z = box.maxZ;
+            }
+
+            if (y < box.minY) {
+                y = box.minY;
+            }
+            if (y > box.maxY) {
+                y = box.maxY;
+            }
+
+            if (x < box.minX) {
+                x = box.minX;
+            }
+            if (x > box.maxX) {
+                x = box.maxX;
+            }
+
+            player.requestTeleport(x, y, z);
         }
     }
 

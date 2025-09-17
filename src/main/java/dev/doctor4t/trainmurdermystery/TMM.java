@@ -44,7 +44,6 @@ public class TMM implements ModInitializer {
 
 }
 
-// TODO: Add train doors that can't be blasted
 // TODO: Add tasks
 // TODO: Add wheels and tracks
 // TODO: Map reset system
