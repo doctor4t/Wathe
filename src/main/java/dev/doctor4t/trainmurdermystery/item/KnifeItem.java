@@ -1,10 +1,8 @@
 package dev.doctor4t.trainmurdermystery.item;
 
 import dev.doctor4t.trainmurdermystery.TrainMurderMystery;
-import dev.doctor4t.trainmurdermystery.entity.PlayerBodyEntity;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.game.GameLoop;
-import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryEntities;
 import dev.doctor4t.trainmurdermystery.index.TrainMurderMysterySounds;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +30,7 @@ public class KnifeItem extends Item {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (remainingUseTicks < getMaxUseTime(stack, user) - 10 && user instanceof PlayerEntity attacker) {
             HitResult collision = ProjectileUtil.getCollision(attacker, entity -> entity.isAlive() && entity.isAttackable(), 2f);
-            if (collision instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof PlayerEntity killedPlayer && TrainMurderMystery.shouldRestrictPlayerOptions(killedPlayer)) {
+            if (collision instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof PlayerEntity killedPlayer && TrainMurderMystery.isPlayerAliveAndSurvival(killedPlayer)) {
                 GameLoop.killPlayer(killedPlayer, true);
 
                 user.swingHand(Hand.MAIN_HAND);

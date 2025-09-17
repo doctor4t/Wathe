@@ -16,7 +16,7 @@ public abstract class KeyBindingMixin {
 
     @Unique
     private boolean shouldSuppressKey() {
-        if (TrainMurderMysteryClient.shouldRestrictPlayerOptions()) {
+        if (TrainMurderMysteryClient.isPlayerAliveAndInSurvival()) {
             return this.equals(MinecraftClient.getInstance().options.swapHandsKey) ||
                     this.equals(MinecraftClient.getInstance().options.chatKey) ||
                     this.equals(MinecraftClient.getInstance().options.commandKey) ||

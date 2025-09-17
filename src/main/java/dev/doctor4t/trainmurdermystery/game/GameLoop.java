@@ -6,7 +6,6 @@ import dev.doctor4t.trainmurdermystery.cca.WorldGameComponent;
 import dev.doctor4t.trainmurdermystery.entity.PlayerBodyEntity;
 import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryEntities;
 import dev.doctor4t.trainmurdermystery.index.TrainMurderMysteryItems;
-import net.minecraft.block.Blocks;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,7 +29,7 @@ public class GameLoop {
         if (game.isRunning()) {
             // kill players who fell off the train
             for (ServerPlayerEntity player : serverWorld.getPlayers()) {
-                if (TrainMurderMystery.shouldRestrictPlayerOptions(player) && player.getY() < 63) {
+                if (TrainMurderMystery.isPlayerAliveAndSurvival(player) && player.getY() < 63) {
                     killPlayer(player, false);
                 }
             }

@@ -24,6 +24,7 @@
     "client.restrictions.KeyBindingMixin",
     "client.restrictions.MinecraftClientMixin",
     "client.restrictions.PlayerEntityRendererMixin",
+    "client.restrictions.SleepingChatScreenMixin",
     "client.restrictions.WorldRendererMixin",
     "client.scenery.CameraMixin",
     "client.scenery.ClientWorldMixin",

@@ -5,7 +5,6 @@ import dev.doctor4t.trainmurdermystery.command.SetTrainSpeedCommand;
 import dev.doctor4t.trainmurdermystery.command.StartGameCommand;
 import dev.doctor4t.trainmurdermystery.game.GameLoop;
 import dev.doctor4t.trainmurdermystery.index.*;
-import dev.doctor4t.trainmurdermystery.util.HandParticleManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -44,7 +43,7 @@ public class TrainMurderMystery implements ModInitializer {
         ServerTickEvents.START_WORLD_TICK.register(GameLoop::tick);
     }
 
-    public static boolean shouldRestrictPlayerOptions(PlayerEntity player) {
+    public static boolean isPlayerAliveAndSurvival(PlayerEntity player) {
         return player != null && !player.isSpectator() && !player.isCreative();
     }
 

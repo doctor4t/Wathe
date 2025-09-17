@@ -20,6 +20,6 @@ public abstract class MinecraftClientMixin {
 
     @WrapOperation(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V", ordinal = 1))
     private void tmm$replaceInventoryScreenWithLimitedInventoryScreen(MinecraftClient instance, Screen screen, Operation<Void> original) {
-        original.call(instance, TrainMurderMysteryClient.shouldRestrictPlayerOptions() ? new LimitedInventoryScreen(this.player) : screen);
+        original.call(instance, TrainMurderMysteryClient.isPlayerAliveAndInSurvival() ? new LimitedInventoryScreen(this.player) : screen);
     }
 }

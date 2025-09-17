@@ -34,7 +34,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @ModifyReturnValue(method = "getMovementSpeed", at = @At("RETURN"))
     public float tmm$overrideMovementSpeed(float original) {
-        if (TrainMurderMystery.shouldRestrictPlayerOptions((PlayerEntity) (Object) this)) {
+        if (TrainMurderMystery.isPlayerAliveAndSurvival((PlayerEntity) (Object) this)) {
             return this.isSprinting() ? 0.1f : 0.07f;
         } else {
             return original;
@@ -43,7 +43,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "tickMovement", at = @At("HEAD"))
     public void tmm$limitSprint(CallbackInfo ci) {
-        if (TrainMurderMystery.shouldRestrictPlayerOptions((PlayerEntity) (Object) this)) {
+        if (TrainMurderMystery.isPlayerAliveAndSurvival((PlayerEntity) (Object) this)) {
             if (this.isSprinting()) {
                 sprintingTicks = Math.max(sprintingTicks - 1, 0);
             } else {
@@ -60,7 +60,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @WrapMethod(method = "attack")
     public void attack(Entity target, Operation<Void> original) {
-        if (!TrainMurderMystery.shouldRestrictPlayerOptions((PlayerEntity) (Object)this) || this.getMainHandStack().isOf(TrainMurderMysteryItems.KNIFE)) {
+        if (!TrainMurderMystery.isPlayerAliveAndSurvival((PlayerEntity) (Object)this) || this.getMainHandStack().isOf(TrainMurderMysteryItems.KNIFE)) {
             original.call(target);
         }
     }
