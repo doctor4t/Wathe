@@ -6,7 +6,6 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.client.util.AlwaysVisibleFrustum;
-import dev.doctor4t.trainmurdermystery.game.TMMGameConstants;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.GlUniform;
@@ -35,7 +34,8 @@ public abstract class WorldRendererMixin {
     @Final
     private MinecraftClient client;
 
-    @Shadow private int ticks;
+    @Shadow
+    public int ticks;
 
     @Shadow
     @Nullable
@@ -56,16 +56,18 @@ public abstract class WorldRendererMixin {
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/BackgroundRenderer;applyFog(Lnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/BackgroundRenderer$FogType;FZF)V"))
     public void tmm$applyBlizzardFog(Camera camera, BackgroundRenderer.FogType fogType, float viewDistance, boolean thickFog, float tickDelta, Operation<Void> original) {
         if (TMMClient.isTrainMoving()) {
-            applyBlizzardFog();
+            doFog(0, 130);
+        } else {
+            doFog(30, 200);
         }
     }
 
     @Unique
-    private static void applyBlizzardFog() {
+    private static void doFog(int fogStart, int fogEnd) {
         BackgroundRenderer.FogData fogData = new BackgroundRenderer.FogData(BackgroundRenderer.FogType.FOG_SKY);
 
-        fogData.fogStart = 0;
-        fogData.fogEnd = 130;
+        fogData.fogStart = fogStart;
+        fogData.fogEnd = fogEnd;
 
         fogData.fogShape = FogShape.SPHERE;
 
