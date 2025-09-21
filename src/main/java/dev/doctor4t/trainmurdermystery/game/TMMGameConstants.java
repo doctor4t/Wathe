@@ -26,7 +26,7 @@ public interface TMMGameConstants {
     int MAX_SPRINTING_TICKS = getInTicks(0, 10);
 
     // Game areas
-    Box READY_AREA = new Box(-981, 1, -364, -813, 3, -358);
+    Box READY_AREA = new Box(-981, -1, -364, -813, 3, -358);
     BlockPos PLAY_POS = new BlockPos(-19, 122, -539);
     Consumer<ServerPlayerEntity> SPECTATOR_TP = serverPlayerEntity -> serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), -68 ,133, -535.5, -90, 15);
 

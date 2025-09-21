@@ -219,6 +219,8 @@ public interface TMMBlocks {
     // Wheels
     Block WHEEL = registrar.createWithItem("wheel", new WheelBlock(AbstractBlock.Settings.copy(DARK_STEEL).nonOpaque().sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
 
+    // Op
+    Block BARRIER_PANEL = registrar.createWithItem("barrier_panel", new BarrierPanelBlock(AbstractBlock.Settings.copy(NAVY_STEEL_PANEL).strength(-1.0F, 3600000.8F).nonOpaque().sounds(BlockSoundGroup.STONE)));
 
     private static Block createBranch(String name, Block wood, BlockRegistrar registrar) {
         return registrar.createWithItem(name, new BranchBlock(AbstractBlock.Settings.copy(wood).mapColor(wood.getDefaultMapColor())), TMMItems.DECORATION_GROUP);

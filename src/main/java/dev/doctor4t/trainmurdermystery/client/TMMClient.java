@@ -112,14 +112,17 @@ public class TMMClient implements ClientModInitializer {
                 TMMBlocks.STAINLESS_STEEL_SPRINKLER,
                 TMMBlocks.GOLD_SPRINKLER,
                 TMMBlocks.GOLD_ORNAMENT,
-                TMMBlocks.WHEEL);
+                TMMBlocks.WHEEL,
+                TMMBlocks.BARRIER_PANEL
+        );
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
                 TMMBlocks.RHOMBUS_GLASS,
                 TMMBlocks.PRIVACY_GLASS_PANEL,
                 TMMBlocks.CULLING_BLACK_HULL,
                 TMMBlocks.CULLING_WHITE_HULL,
                 TMMBlocks.HULL_GLASS,
-                TMMBlocks.RHOMBUS_HULL_GLASS);
+                TMMBlocks.RHOMBUS_HULL_GLASS
+        );
 
         // Custom block models
         CustomModelProvider customModelProvider = new CustomModelProvider();

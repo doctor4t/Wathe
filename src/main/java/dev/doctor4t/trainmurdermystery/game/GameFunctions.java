@@ -95,12 +95,12 @@ public class GameFunctions {
         world.setTimeOfDay(18000);
 
         // dismount all players as it can cause issues
-        for (ServerPlayerEntity player : world.getPlayers(serverPlayerEntity -> true)) {
+        for (ServerPlayerEntity player : world.getPlayers()) {
             player.dismountVehicle();
         }
 
         // teleport players to play area
-        List<ServerPlayerEntity> playerPool = world.getPlayers(serverPlayerEntity -> !serverPlayerEntity.isInCreativeMode() && !serverPlayerEntity.isSpectator() && TMMGameConstants.READY_AREA.contains(serverPlayerEntity.getPos()));
+        List<ServerPlayerEntity> playerPool = world.getPlayers(serverPlayerEntity -> !serverPlayerEntity.isInCreativeMode() && !serverPlayerEntity.isSpectator() && (TMMGameConstants.READY_AREA.contains(serverPlayerEntity.getPos())));
         for (ServerPlayerEntity player : playerPool) {
             Vec3d pos = player.getPos().add(Vec3d.of(TMMGameConstants.PLAY_POS.subtract(BlockPos.ofFloored(TMMGameConstants.READY_AREA.getMinPos()))));
             player.requestTeleport(pos.getX(), pos.getY(), pos.getZ());

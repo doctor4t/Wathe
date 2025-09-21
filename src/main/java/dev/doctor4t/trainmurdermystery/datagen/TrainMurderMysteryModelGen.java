@@ -331,6 +331,7 @@ public class TrainMurderMysteryModelGen extends FabricModelProvider {
         generator.registerSimpleCubeAll(TMMBlocks.RED_MOQUETTE);
         generator.registerSimpleCubeAll(TMMBlocks.BROWN_MOQUETTE);
         generator.registerSimpleCubeAll(TMMBlocks.BLUE_MOQUETTE);
+        this.registerPanel(generator, TMMBlocks.BARRIER_PANEL, TMM.id("block/barrier_panel"));
     }
 
     @Override
@@ -643,8 +644,12 @@ public class TrainMurderMysteryModelGen extends FabricModelProvider {
     }
 
     private void registerPanel(BlockStateModelGenerator generator, Block block, Block textureBlock) {
-        Models.GENERATED.upload(ModelIds.getItemModelId(block.asItem()), TextureMap.layer0(TextureMap.getId(textureBlock)), generator.modelCollector);
-        Identifier model = PANEL.upload(block, TextureMap.all(textureBlock), generator.modelCollector);
+        registerPanel(generator, block, TextureMap.getId(textureBlock));
+    }
+
+    private void registerPanel(BlockStateModelGenerator generator, Block block, Identifier texture) {
+        Models.GENERATED.upload(ModelIds.getItemModelId(block.asItem()), TextureMap.layer0(texture), generator.modelCollector);
+        Identifier model = PANEL.upload(block, TextureMap.all(texture), generator.modelCollector);
         MultipartBlockStateSupplier blockStateSupplier = MultipartBlockStateSupplier.create(block);
         When.PropertyCondition propertyCondition = When.create();
         BlockStateModelGenerator.CONNECTION_VARIANT_FUNCTIONS.stream().map(Pair::getFirst)
