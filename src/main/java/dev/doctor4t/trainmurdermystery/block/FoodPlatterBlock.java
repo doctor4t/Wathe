@@ -79,20 +79,15 @@ public class FoodPlatterBlock extends BlockWithEntity {
             if (platter.isEmpty()) return ActionResult.SUCCESS;
 
             boolean hasPlatterItem = false;
+            for (ItemStack platterItem : platter) {
+                for (int i = 0; i < player.getInventory().size(); i++) {
+                    ItemStack invItem = player.getInventory().getStack(i);
 
-            for (int i = 0; i < player.getInventory().size(); i++) {
-                ItemStack invItem = player.getInventory().getStack(i).copy();
-
-                if (invItem.getComponents().contains(TMMDataComponentTypes.POISONED))
-                    invItem.remove(TMMDataComponentTypes.POISONED);
-
-                for (ItemStack platterItem : platter) {
-                    if (ItemStack.areItemsEqual(invItem, platterItem)) {
+                    if (invItem.getItem() == platterItem.getItem()) {
                         hasPlatterItem = true;
                         break;
                     }
                 }
-
                 if (hasPlatterItem) break;
             }
 
