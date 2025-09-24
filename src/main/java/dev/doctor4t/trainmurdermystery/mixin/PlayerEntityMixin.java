@@ -8,10 +8,11 @@ import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerMoodComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerPoisonComponent;
 import dev.doctor4t.trainmurdermystery.cca.TMMComponents;
-import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
+import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.TMMDataComponentTypes;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
+import dev.doctor4t.trainmurdermystery.item.CocktailItem;
 import dev.doctor4t.trainmurdermystery.util.PoisonUtils;
 import dev.doctor4t.trainmurdermystery.util.Scheduler;
 import net.minecraft.component.type.FoodComponent;
@@ -121,7 +122,9 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "eatFood", at = @At("HEAD"))
     private void tmm$eat(World world, ItemStack stack, FoodComponent foodComponent, @NotNull CallbackInfoReturnable<ItemStack> cir) {
-        PlayerMoodComponent.KEY.get(this).eatFood();
+        if (!(stack.getItem() instanceof CocktailItem)) {
+            PlayerMoodComponent.KEY.get(this).eatFood();
+        }
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
