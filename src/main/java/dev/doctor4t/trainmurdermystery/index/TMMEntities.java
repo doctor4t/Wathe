@@ -4,6 +4,7 @@ import dev.doctor4t.ratatouille.util.registrar.EntityTypeRegistrar;
 import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.block.entity.SeatEntity;
 import dev.doctor4t.trainmurdermystery.entity.FirecrackerEntity;
+import dev.doctor4t.trainmurdermystery.entity.GrenadeEntity;
 import dev.doctor4t.trainmurdermystery.entity.PlayerBodyEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.EntityType;
@@ -23,6 +24,10 @@ public interface TMMEntities {
             .disableSummon()
     );
     EntityType<FirecrackerEntity> FIRECRACKER = registrar.create("firecracker", EntityType.Builder.create(FirecrackerEntity::new, SpawnGroup.MISC)
+            .dimensions(.2f, .2f)
+            .maxTrackingRange(128)
+    );
+    EntityType<GrenadeEntity> GRENADE = registrar.create("grenade", EntityType.Builder.create(GrenadeEntity::new, SpawnGroup.MISC)
             .dimensions(.2f, .2f)
             .maxTrackingRange(128)
     );

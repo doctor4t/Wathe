@@ -41,6 +41,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.entity.EmptyEntityRenderer;
+import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.render.model.UnbakedModel;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.ModelIdentifier;
@@ -84,6 +85,7 @@ public class TMMClient implements ClientModInitializer {
         // Entity renderer registration
         EntityRendererRegistry.register(TMMEntities.SEAT, EmptyEntityRenderer::new);
         EntityRendererRegistry.register(TMMEntities.FIRECRACKER, FirecrackerEntityRenderer::new);
+        EntityRendererRegistry.register(TMMEntities.GRENADE, FlyingItemEntityRenderer::new);
 
         // Register entity model layers
         TMMModelLayers.initialize();
