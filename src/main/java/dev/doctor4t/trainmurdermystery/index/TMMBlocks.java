@@ -9,9 +9,12 @@ import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.data.family.BlockFamily;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Rarity;
 
 import java.util.function.ToIntFunction;
 
@@ -236,8 +239,8 @@ public interface TMMBlocks {
     ), TMMItems.DECORATION_GROUP);
 
     // Op
-    Block BARRIER_PANEL = registrar.createWithItem("barrier_panel", new BarrierPanelBlock(AbstractBlock.Settings.copy(NAVY_STEEL_PANEL).strength(-1.0F, 3600000.8F).nonOpaque().sounds(BlockSoundGroup.STONE)));
-    Block LIGHT_BARRIER = registrar.createWithItem("light_barrier", new LightBarrierBlock(((BlockSettingsAdditions)AbstractBlock.Settings.copy(Blocks.BARRIER)).tmm$setCollidable(false)));
+    Block BARRIER_PANEL = registrar.createWithItem("barrier_panel", new BarrierPanelBlock(AbstractBlock.Settings.copy(NAVY_STEEL_PANEL).strength(-1.0F, 3600000.8F).nonOpaque().sounds(BlockSoundGroup.STONE)), new Item.Settings().rarity(Rarity.EPIC), ItemGroups.OPERATOR);
+    Block LIGHT_BARRIER = registrar.createWithItem("light_barrier", new LightBarrierBlock(((BlockSettingsAdditions)AbstractBlock.Settings.copy(Blocks.BARRIER)).tmm$setCollidable(false)), new Item.Settings().rarity(Rarity.EPIC), ItemGroups.OPERATOR);
 
     private static Block createBranch(String name, Block wood, BlockRegistrar registrar) {
         return registrar.createWithItem(name, new BranchBlock(AbstractBlock.Settings.copy(wood).mapColor(wood.getDefaultMapColor())), TMMItems.DECORATION_GROUP);

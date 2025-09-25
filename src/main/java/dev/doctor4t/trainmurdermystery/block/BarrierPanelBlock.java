@@ -53,4 +53,8 @@ public class BarrierPanelBlock extends PanelBlock{
         return voxelShape.isEmpty() ? VoxelShapes.fullCube() : voxelShape;
     }
 
+    @Override
+    protected BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.INVISIBLE;
+    }
 }

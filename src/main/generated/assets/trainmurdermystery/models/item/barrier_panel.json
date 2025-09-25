@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "trainmurdermystery:block/barrier_panel"
+    "layer0": "trainmurdermystery:item/barrier_panel"
   }
 }
