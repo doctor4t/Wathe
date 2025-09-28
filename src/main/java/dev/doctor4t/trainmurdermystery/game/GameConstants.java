@@ -77,8 +77,8 @@ public interface GameConstants {
     List<ShopEntry> SHOP_ENTRIES = List.of(
             new ShopEntry(TMMItems.KNIFE.getDefaultStack(), 10, ShopEntry.Type.WEAPON),
             new ShopEntry(TMMItems.REVOLVER.getDefaultStack(), 300, ShopEntry.Type.WEAPON),
-            new ShopEntry(TMMItems.GRENADE.getDefaultStack(), 500, ShopEntry.Type.WEAPON),
-            new ShopEntry(TMMItems.PSYCHO_MODE.getDefaultStack(), 500, ShopEntry.Type.WEAPON) {
+            new ShopEntry(TMMItems.GRENADE.getDefaultStack(), 400, ShopEntry.Type.WEAPON),
+            new ShopEntry(TMMItems.PSYCHO_MODE.getDefaultStack(), 400, ShopEntry.Type.WEAPON) {
                 @Override
                 public boolean onBuy(@NotNull PlayerEntity player) {
                     return PlayerShopComponent.usePsychoMode(player);
@@ -86,11 +86,11 @@ public interface GameConstants {
             },
             new ShopEntry(TMMItems.POISON_VIAL.getDefaultStack(), 100, ShopEntry.Type.POISON),
             new ShopEntry(TMMItems.SCORPION.getDefaultStack(), 50, ShopEntry.Type.POISON),
-            new ShopEntry(TMMItems.FIRECRACKER.getDefaultStack(), 25, ShopEntry.Type.TOOL),
-            new ShopEntry(TMMItems.LOCKPICK.getDefaultStack(), 100, ShopEntry.Type.TOOL),
-            new ShopEntry(TMMItems.CROWBAR.getDefaultStack(), 75, ShopEntry.Type.TOOL),
+            new ShopEntry(TMMItems.FIRECRACKER.getDefaultStack(), 20, ShopEntry.Type.TOOL),
+            new ShopEntry(TMMItems.LOCKPICK.getDefaultStack(), 75, ShopEntry.Type.TOOL),
+            new ShopEntry(TMMItems.CROWBAR.getDefaultStack(), 50, ShopEntry.Type.TOOL),
             new ShopEntry(TMMItems.BODY_BAG.getDefaultStack(), 500, ShopEntry.Type.TOOL),
-            new ShopEntry(TMMItems.BLACKOUT.getDefaultStack(), 300, ShopEntry.Type.TOOL) {
+            new ShopEntry(TMMItems.BLACKOUT.getDefaultStack(), 200, ShopEntry.Type.TOOL) {
                 @Override
                 public boolean onBuy(@NotNull PlayerEntity player) {
                     return PlayerShopComponent.useBlackout(player);
@@ -98,7 +98,7 @@ public interface GameConstants {
             },
             new ShopEntry(new ItemStack(TMMItems.NOTE, 4), 5, ShopEntry.Type.TOOL)
     );
-    int MONEY_START = 25;
+    int MONEY_START = 100;
     Function<Long, Integer> PASSIVE_MONEY_TICKER = time -> {
         if (time % getInTicks(0, 10) == 0) {
             return 5;
