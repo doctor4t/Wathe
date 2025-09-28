@@ -97,7 +97,7 @@ public class FoodPlatterBlock extends BlockWithEntity {
                 ItemStack randomItem = platter.get(world.random.nextInt(platter.size())).copy();
                 randomItem.setCount(1);
                 randomItem.set(DataComponentTypes.MAX_STACK_SIZE, 1);
-                
+
                 if (blockEntity.getPoisonedItemsCount() > 0) {
                     randomItem.set(TMMDataComponentTypes.POISONED, true);
                     randomItem.set(TMMDataComponentTypes.POISONER, player.getUuidAsString());
