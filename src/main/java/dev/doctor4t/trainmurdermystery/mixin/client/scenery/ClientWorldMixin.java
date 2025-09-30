@@ -10,6 +10,7 @@ import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -64,10 +65,10 @@ public abstract class ClientWorldMixin extends World {
             ClientPlayerEntity player = client.player;
             Random random = player.getRandom();
             for (int i = 0; i < 200; i++) {
-                Vec3d pos = new Vec3d(player.getX() - 20f + random.nextFloat(), player.getY() + (random.nextFloat() * 2 - 1) * 10f, player.getZ() + (random.nextFloat() * 2 - 1) * 10f);
+                Vec3d playerVel = player.getMovement();
+                Vec3d pos = new Vec3d(player.getX() - 20f + random.nextFloat() + playerVel.getX(), player.getY() + (random.nextFloat() * 2 - 1) * 10f + playerVel.getY(), player.getZ() + (random.nextFloat() * 2 - 1) * 10f + playerVel.getZ());
                 if (this.client.world.isSkyVisible(BlockPos.ofFloored(pos))) {
-                    Vec3d playerVel = player.getMovement();
-                    this.addParticle(TMMParticles.SNOWFLAKE, pos.getX() + playerVel.getX(), pos.getY() + playerVel.getY(), pos.getZ() + playerVel.getZ(), 2 + playerVel.getX(), 0 + playerVel.getY(), 0 + playerVel.getZ());
+                    this.addParticle(TMMParticles.SNOWFLAKE, pos.getX(), pos.getY(), pos.getZ(), 2 + playerVel.getX(), playerVel.getY(), playerVel.getZ());
                 }
             }
         }

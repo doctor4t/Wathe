@@ -243,11 +243,15 @@ public class GameFunctions {
 
     public static void killPlayer(PlayerEntity victim, boolean spawnBody, @Nullable PlayerEntity killer) {
         var component = PlayerPsychoComponent.KEY.get(victim);
-        if (component.getPsychoTicks() > 0 && component.getArmour() > 0) {
-            component.setArmour(component.getArmour() - 1);
-            component.sync();
-            victim.getWorld().playSound(null, victim.getX(), victim.getY(), victim.getZ(), TMMSounds.ITEM_PSYCHO_ARMOUR, SoundCategory.NEUTRAL, 1.0F, 1F + (victim.getRandom().nextFloat() - .5f) / 10f);
-            return;
+        if (component.getPsychoTicks() > 0) {
+            if (component.getArmour() > 0) {
+                component.setArmour(component.getArmour() - 1);
+                component.sync();
+                victim.playSoundToPlayer(TMMSounds.ITEM_PSYCHO_ARMOUR, SoundCategory.MASTER, 5F, 1F);
+                return;
+            } else {
+                component.stopPsycho();
+            }
         }
 
         if (victim instanceof ServerPlayerEntity serverPlayerEntity && isPlayerAliveAndSurvival(serverPlayerEntity)) {

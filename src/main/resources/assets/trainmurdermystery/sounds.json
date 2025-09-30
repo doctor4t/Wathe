@@ -17,12 +17,6 @@
 		],
 		"subtitle": "subtitles.block.light.toggle"
 	},
-	"block.button.toggle_no_power": {
-		"sounds": [
-			"trainmurdermystery:block/toggle_no_power"
-		],
-		"subtitle": "subtitles.block.button.toggle_no_power"
-	},
 	"block.privacy_panel.toggle": {
 		"sounds": [
 			"trainmurdermystery:block/privacy_panel_toggle"
@@ -41,155 +35,11 @@
 		],
 		"subtitle": "subtitles.block.door.toggle"
 	},
-	"entity.flashlight.toggle": {
-		"sounds": [
-			"trainmurdermystery:entity/flashlight_toggle"
-		],
-		"subtitle": "subtitles.entity.flashlight.toggle"
-	},
 	"block.sprinkler.run": {
 		"sounds": [
 			"trainmurdermystery:block/sprinkler_run"
 		],
 		"subtitle": "subtitles.block.sprinkler.run"
-	},
-	"entity.jetpack.fly": {
-		"sounds": [
-			"trainmurdermystery:entity/jetpack_fly"
-		],
-		"subtitle": "subtitles.entity.jetpack.fly"
-	},
-	"entity.jetpack.fly_self": {
-		"sounds": [
-			"trainmurdermystery:entity/jetpack_fly_self"
-		],
-		"subtitle": "subtitles.entity.jetpack.fly"
-	},
-	"entity.jetpack.start": {
-		"sounds": [
-			"trainmurdermystery:entity/jetpack_start"
-		],
-		"subtitle": "subtitles.entity.jetpack.start"
-	},
-	"entity.jetpack.start_self": {
-		"sounds": [
-			"trainmurdermystery:entity/jetpack_start_self"
-		],
-		"subtitle": "subtitles.entity.jetpack.start"
-	},
-	"block.pipe.extend": {
-		"sounds": [
-			"trainmurdermystery:block/pipe_extend"
-		],
-		"subtitle": "subtitles.block.pipe.extend"
-	},
-	"block.pump.run": {
-		"sounds": [
-			"trainmurdermystery:block/pump_run"
-		],
-		"subtitle": "subtitles.block.pump.run"
-	},
-	"block.ichor.gulp": {
-		"sounds": [
-			"trainmurdermystery:block/ichor_gulp"
-		],
-		"subtitle": "subtitles.block.ichor.gulp"
-	},
-	"block.airlock.cycle": {
-		"sounds": [
-			"trainmurdermystery:block/airlock_cycle"
-		],
-		"subtitle": "subtitles.block.airlock.cycle"
-	},
-	"ambient.space": {
-		"sounds": [
-			"trainmurdermystery:ambient/space"
-		],
-		"subtitle": "subtitles.ambient.space"
-	},
-	"ambient.ship": {
-		"sounds": [
-			"trainmurdermystery:ambient/ship"
-		],
-		"subtitle": "subtitles.ambient.ship"
-	},
-	"ambient.ship_power_out": {
-		"sounds": [
-			"trainmurdermystery:ambient/ship_power_out"
-		],
-		"subtitle": "subtitles.ambient.ship_power_out"
-	},
-	"ambient.ship_emergency": {
-		"sounds": [
-			"trainmurdermystery:ambient/ship_emergency"
-		],
-		"subtitle": "subtitles.ambient.ship_emergency"
-	},
-	"entity.player.breathe": {
-		"sounds": [
-			"trainmurdermystery:entity/player_breathe"
-		],
-		"subtitle": "subtitles.entity.player.breathe"
-	},
-	"entity.player.choke": {
-		"sounds": [
-			"trainmurdermystery:entity/player_choke"
-		],
-		"subtitle": "subtitles.entity.player.choke"
-	},
-	"entity.player.revive": {
-		"sounds": [
-			"trainmurdermystery:entity/player_revive"
-		],
-		"subtitle": "subtitles.entity.player.revive"
-	},
-	"block.marshmallow_can.store": {
-		"sounds": [
-			"trainmurdermystery:block/marshmallow_can_store"
-		],
-		"subtitle": "subtitles.block.marshmallow_can.store"
-	},
-	"block.marshmallow_can.take": {
-		"sounds": [
-			"trainmurdermystery:block/marshmallow_can_take"
-		],
-		"subtitle": "subtitles.block.marshmallow_can.take"
-	},
-	"block.mauve_plush.honk": {
-		"sounds": [
-			"trainmurdermystery:block/mauve_plush_honk"
-		],
-		"subtitle": "subtitles.block.mauve_plush.honk"
-	},
-	"item.stim.use": {
-		"sounds": [
-			"trainmurdermystery:item/stim_use"
-		],
-		"subtitle": "subtitles.item.stim.use"
-	},
-	"ui.warning.low": {
-		"sounds": [
-			"trainmurdermystery:ui/warning_low"
-		],
-		"subtitle": "subtitles.ui.warning.low"
-	},
-	"ui.warning.critical": {
-		"sounds": [
-			"trainmurdermystery:ui/warning_critical"
-		],
-		"subtitle": "subtitles.ui.warning.critical"
-	},
-	"item.telescope.zoom_in": {
-		"sounds": [
-			"trainmurdermystery:item/telescope_zoom_in"
-		],
-		"subtitle": "subtitles.item.telescope.zoom_in"
-	},
-	"item.telescope.zoom_out": {
-		"sounds": [
-			"trainmurdermystery:item/telescope_zoom_out"
-		],
-		"subtitle": "subtitles.item.telescope.zoom_out"
 	},
 	"block.vent_shaft.break": {
 		"sounds": [
@@ -314,6 +164,12 @@
 			"trainmurdermystery:item/grenade_explode"
 		],
 		"subtitle": "subtitles.item.grenade.explode"
+	},
+	"item.psycho.armour": {
+		"sounds": [
+			"trainmurdermystery:item/psycho_armour"
+		],
+		"subtitle": "subtitles.item.psycho.armour"
 	},
 
 	"ambient.train.inside": {
