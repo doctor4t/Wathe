@@ -80,7 +80,7 @@ public class GameFunctions {
 
     public static void startGame(ServerWorld world, boolean discoveryMode) {
         GameWorldComponent component = TMMComponents.GAME.get(world);
-        int playerCount = Math.toIntExact(world.getPlayers().stream().filter(serverPlayerEntity -> isPlayerAliveAndSurvival(serverPlayerEntity) && (GameConstants.READY_AREA.contains(serverPlayerEntity.getPos()))).count());
+        int playerCount = Math.toIntExact(world.getPlayers().stream().filter(serverPlayerEntity -> (GameConstants.READY_AREA.contains(serverPlayerEntity.getPos()))).count());
         component.setDiscoveryMode(discoveryMode);
         if (playerCount >= 6 || discoveryMode) {
             component.setGameStatus(GameWorldComponent.GameStatus.STARTING);
@@ -210,7 +210,14 @@ public class GameFunctions {
             letter.apply(DataComponentTypes.LORE, LoreComponent.DEFAULT, component -> {
                         List<Text> text = new ArrayList<>();
                         UnaryOperator<Style> stylizer = style -> style.withItalic(false).withColor(letterColor);
-                        text.add(Text.translatable(tipString + "name", serverPlayerEntity.getName().getString()).styled(style -> style.withItalic(false).withColor(0xFFFFFF)));
+
+                Text displayName = serverPlayerEntity.getDisplayName();
+                String string = displayName != null ? displayName.getString() : serverPlayerEntity.getName().getString();
+                if (string.charAt(string.length()-1) == '\uE780') { // remove ratty supporter icon
+                    string = string.substring(0, string.length()-1);
+                }
+
+                text.add(Text.translatable(tipString + "name", string).styled(style -> style.withItalic(false).withColor(0xFFFFFF)));
                         text.add(Text.translatable(tipString + "room").styled(stylizer));
                         text.add(Text.translatable(tipString + "tooltip1",
                                 Text.translatable(tipString + "room." + switch (finalRoomNumber) {
