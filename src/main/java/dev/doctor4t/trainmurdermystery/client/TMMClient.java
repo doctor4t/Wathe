@@ -160,8 +160,24 @@ public class TMMClient implements ClientModInitializer {
                 ctx -> new SmallDoorBlockEntityRenderer(TMM.id("textures/entity/small_wood_door.png"), ctx)
         );
         BlockEntityRendererFactories.register(
-                TMMBlockEntities.SMALL_TRAIN_DOOR,
-                ctx -> new SmallDoorBlockEntityRenderer(TMM.id("textures/entity/small_train_door.png"), ctx)
+                TMMBlockEntities.ANTHRACITE_STEEL_DOOR,
+                ctx -> new SmallDoorBlockEntityRenderer(TMM.id("textures/entity/anthracite_steel_door.png"), ctx)
+        );
+        BlockEntityRendererFactories.register(
+                TMMBlockEntities.KHAKI_STEEL_DOOR,
+                ctx -> new SmallDoorBlockEntityRenderer(TMM.id("textures/entity/khaki_steel_door.png"), ctx)
+        );
+        BlockEntityRendererFactories.register(
+                TMMBlockEntities.MAROON_STEEL_DOOR,
+                ctx -> new SmallDoorBlockEntityRenderer(TMM.id("textures/entity/maroon_steel_door.png"), ctx)
+        );
+        BlockEntityRendererFactories.register(
+                TMMBlockEntities.MUNTZ_STEEL_DOOR,
+                ctx -> new SmallDoorBlockEntityRenderer(TMM.id("textures/entity/muntz_steel_door.png"), ctx)
+        );
+        BlockEntityRendererFactories.register(
+                TMMBlockEntities.NAVY_STEEL_DOOR,
+                ctx -> new SmallDoorBlockEntityRenderer(TMM.id("textures/entity/navy_steel_door.png"), ctx)
         );
         BlockEntityRendererFactories.register(
                 TMMBlockEntities.WHEEL,

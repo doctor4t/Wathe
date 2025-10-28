@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "trainmurdermystery:block/smooth_muntz_steel"
+  }
+}

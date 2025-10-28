@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "trainmurdermystery:item/small_train_door"
+    "layer0": "trainmurdermystery:item/muntz_steel_door"
   }
 }

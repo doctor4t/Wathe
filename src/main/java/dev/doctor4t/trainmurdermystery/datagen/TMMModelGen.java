@@ -318,16 +318,17 @@ public class TMMModelGen extends FabricModelProvider {
         this.registerOrnament(generator, TMMBlocks.GOLD_ORNAMENT);
         this.registerParticleBlockWithItemSprite(generator, TMMBlocks.SMALL_WOOD_DOOR, TMMBlocks.SMOOTH_EBONY);
         this.registerParticleBlockWithItemSprite(generator, TMMBlocks.SMALL_GLASS_DOOR, TMMBlocks.TARNISHED_GOLD_PILLAR);
-        this.registerParticleBlockWithItemSprite(generator, TMMBlocks.SMALL_TRAIN_DOOR, TMMBlocks.NAVY_STEEL);
+        
         this.registerHullGlass(generator, TMMBlocks.HULL_GLASS);
         generator.registerSimpleCubeAll(TMMBlocks.RHOMBUS_HULL_GLASS);
         this.registerPrivacyGlassPanel(generator, TMMBlocks.PRIVACY_GLASS_PANEL);
-        generator.registerSimpleCubeAll(TMMBlocks.NAVY_STEEL);
-        this.registerPanel(generator, TMMBlocks.NAVY_STEEL_PANEL, TMMBlocks.NAVY_STEEL);
-        generator.registerSimpleCubeAll(TMMBlocks.NAVY_STEEL_TILES);
-        this.registerPanel(generator, TMMBlocks.NAVY_STEEL_TILES_PANEL, TMMBlocks.NAVY_STEEL_TILES);
-        this.registerFamily(generator, TMMBlocks.Family.SMOOTH_NAVY_STEEL);
-        this.registerPanel(generator, TMMBlocks.SMOOTH_NAVY_STEEL_PANEL, TMMBlocks.SMOOTH_NAVY_STEEL);
+
+        registerFancySteel(generator, TMMBlocks.ANTHRACITE_STEEL, TMMBlocks.SMOOTH_ANTHRACITE_STEEL, TMMBlocks.ANTHRACITE_STEEL_TILES, TMMBlocks.ANTHRACITE_STEEL_PANEL, TMMBlocks.ANTHRACITE_STEEL_TILES_PANEL, TMMBlocks.SMOOTH_ANTHRACITE_STEEL_PANEL, TMMBlocks.ANTHRACITE_STEEL_DOOR, TMMBlocks.Family.SMOOTH_ANTHRACITE_STEEL);
+        registerFancySteel(generator, TMMBlocks.KHAKI_STEEL, TMMBlocks.SMOOTH_KHAKI_STEEL, TMMBlocks.KHAKI_STEEL_TILES, TMMBlocks.KHAKI_STEEL_PANEL, TMMBlocks.KHAKI_STEEL_TILES_PANEL, TMMBlocks.SMOOTH_KHAKI_STEEL_PANEL, TMMBlocks.KHAKI_STEEL_DOOR, TMMBlocks.Family.SMOOTH_KHAKI_STEEL);
+        registerFancySteel(generator, TMMBlocks.MAROON_STEEL, TMMBlocks.SMOOTH_MAROON_STEEL, TMMBlocks.MAROON_STEEL_TILES, TMMBlocks.MAROON_STEEL_PANEL, TMMBlocks.MAROON_STEEL_TILES_PANEL, TMMBlocks.SMOOTH_MAROON_STEEL_PANEL, TMMBlocks.MAROON_STEEL_DOOR, TMMBlocks.Family.SMOOTH_MAROON_STEEL);
+        registerFancySteel(generator, TMMBlocks.MUNTZ_STEEL, TMMBlocks.SMOOTH_MUNTZ_STEEL, TMMBlocks.MUNTZ_STEEL_TILES, TMMBlocks.MUNTZ_STEEL_PANEL, TMMBlocks.MUNTZ_STEEL_TILES_PANEL, TMMBlocks.SMOOTH_MUNTZ_STEEL_PANEL, TMMBlocks.MUNTZ_STEEL_DOOR, TMMBlocks.Family.SMOOTH_MUNTZ_STEEL);
+        registerFancySteel(generator, TMMBlocks.NAVY_STEEL, TMMBlocks.SMOOTH_NAVY_STEEL, TMMBlocks.NAVY_STEEL_TILES, TMMBlocks.NAVY_STEEL_PANEL, TMMBlocks.NAVY_STEEL_TILES_PANEL, TMMBlocks.SMOOTH_NAVY_STEEL_PANEL, TMMBlocks.NAVY_STEEL_DOOR, TMMBlocks.Family.SMOOTH_NAVY_STEEL);
+
         this.registerParticleBlockWithItemSprite(generator, TMMBlocks.WHEEL, TMMBlocks.DARK_STEEL);
         generator.registerSimpleCubeAll(TMMBlocks.RED_MOQUETTE);
         generator.registerSimpleCubeAll(TMMBlocks.BROWN_MOQUETTE);
@@ -340,6 +341,16 @@ public class TMMModelGen extends FabricModelProvider {
         generator.registerItemModel(TMMBlocks.LIGHT_BARRIER.asItem());
         generator.registerNorthDefaultHorizontalRotation(TMMBlocks.HORN);
         generator.registerItemModel(TMMBlocks.CHIMNEY.asItem());
+    }
+
+    private void registerFancySteel(BlockStateModelGenerator generator, Block block, Block smooth, Block tiles, Block panel, Block tilesPanel, Block smoothPanel, Block door, BlockFamily family) {
+        generator.registerSimpleCubeAll(block);
+        this.registerPanel(generator, panel, block);
+        generator.registerSimpleCubeAll(tiles);
+        this.registerPanel(generator, tilesPanel, tiles);
+        this.registerFamily(generator, family);
+        this.registerPanel(generator, smoothPanel, smooth);
+        this.registerParticleBlockWithItemSprite(generator, door, block);
     }
 
     public static final Model SMALL_ITEM = item("small_item", TextureKey.LAYER0);

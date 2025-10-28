@@ -11,9 +11,11 @@ import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 
 import java.util.function.ToIntFunction;
@@ -76,16 +78,63 @@ public interface TMMBlocks {
     Block DARK_STEEL_BRANCH = createBranch("dark_steel_branch", TMMBlocks.DARK_STEEL, registrar);
     Block DARK_STEEL_PILLAR = registrar.createWithItem("dark_steel_pillar", new PillarBlock(AbstractBlock.Settings.copy(DARK_STEEL)), TMMItems.BUILDING_GROUP);
     Block STAINLESS_STEEL_BAR = registrar.createWithItem("stainless_steel_bar", new BarBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).nonOpaque().strength(0.5f)), TMMItems.DECORATION_GROUP);
-    Block NAVY_STEEL = registrar.createWithItem("navy_steel", new Block(AbstractBlock.Settings.copy(DARK_STEEL)), TMMItems.BUILDING_GROUP);
-    Block NAVY_STEEL_PANEL = registrar.createWithItem("navy_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(NAVY_STEEL)), TMMItems.BUILDING_GROUP);
-    Block NAVY_STEEL_TILES = registrar.createWithItem("navy_steel_tiles", new Block(AbstractBlock.Settings.copy(NAVY_STEEL)), TMMItems.BUILDING_GROUP);
-    Block NAVY_STEEL_TILES_PANEL = registrar.createWithItem("navy_steel_tiles_panel", new PanelBlock(AbstractBlock.Settings.copy(NAVY_STEEL)), TMMItems.BUILDING_GROUP);
-    Block SMOOTH_NAVY_STEEL = registrar.createWithItem("smooth_navy_steel", new Block(AbstractBlock.Settings.copy(NAVY_STEEL)), TMMItems.BUILDING_GROUP);
-    Block SMOOTH_NAVY_STEEL_STAIRS = registrar.createWithItem("smooth_navy_steel_stairs", new StairsBlock(NAVY_STEEL.getDefaultState(), AbstractBlock.Settings.copy(NAVY_STEEL)), TMMItems.BUILDING_GROUP);
-    Block SMOOTH_NAVY_STEEL_SLAB = registrar.createWithItem("smooth_navy_steel_slab", new SlabBlock(AbstractBlock.Settings.copy(NAVY_STEEL)), TMMItems.BUILDING_GROUP);
-    Block SMOOTH_NAVY_STEEL_PANEL = registrar.createWithItem("smooth_navy_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(NAVY_STEEL)), TMMItems.BUILDING_GROUP);
-    Block SMOOTH_NAVY_STEEL_WALL = registrar.createWithItem("smooth_navy_steel_wall", new WallBlock(AbstractBlock.Settings.copy(NAVY_STEEL).solid()), TMMItems.BUILDING_GROUP);
     Block RAIL_BEAM = registrar.createWithItem("rail_beam", new RailBeamBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).solid()), TMMItems.DECORATION_GROUP);
+
+    // Doors
+    Block SMALL_GLASS_DOOR = registrar.createWithItem("small_glass_door", new SmallDoorBlock(() -> TMMBlockEntities.SMALL_GLASS_DOOR, AbstractBlock.Settings.create().dynamicBounds().strength(-1, 3600000).mapColor(MapColor.CLEAR).dropsNothing().nonOpaque().allowsSpawning(Blocks::never).pistonBehavior(PistonBehavior.BLOCK).sounds(BlockSoundGroup.COPPER_BULB)), TMMItems.DECORATION_GROUP);
+    Block SMALL_WOOD_DOOR = registrar.createWithItem("small_wood_door", new SmallDoorBlock(() -> TMMBlockEntities.SMALL_WOOD_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
+
+    // Fancy steel
+    Block ANTHRACITE_STEEL = registrar.createWithItem("anthracite_steel", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block ANTHRACITE_STEEL_PANEL = registrar.createWithItem("anthracite_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block ANTHRACITE_STEEL_TILES = registrar.createWithItem("anthracite_steel_tiles", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block ANTHRACITE_STEEL_TILES_PANEL = registrar.createWithItem("anthracite_steel_tiles_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_ANTHRACITE_STEEL = registrar.createWithItem("smooth_anthracite_steel", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_ANTHRACITE_STEEL_STAIRS = registrar.createWithItem("smooth_anthracite_steel_stairs", new StairsBlock(ANTHRACITE_STEEL.getDefaultState(), AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_ANTHRACITE_STEEL_SLAB = registrar.createWithItem("smooth_anthracite_steel_slab", new SlabBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_ANTHRACITE_STEEL_PANEL = registrar.createWithItem("smooth_anthracite_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_ANTHRACITE_STEEL_WALL = registrar.createWithItem("smooth_anthracite_steel_wall", new WallBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).solid()), TMMItems.BUILDING_GROUP);
+    Block ANTHRACITE_STEEL_DOOR = registrar.createWithItem("anthracite_steel_door", new TrainDoorBlock(() -> TMMBlockEntities.ANTHRACITE_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
+    Block KHAKI_STEEL = registrar.createWithItem("khaki_steel", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block KHAKI_STEEL_PANEL = registrar.createWithItem("khaki_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block KHAKI_STEEL_TILES = registrar.createWithItem("khaki_steel_tiles", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block KHAKI_STEEL_TILES_PANEL = registrar.createWithItem("khaki_steel_tiles_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_KHAKI_STEEL = registrar.createWithItem("smooth_khaki_steel", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_KHAKI_STEEL_STAIRS = registrar.createWithItem("smooth_khaki_steel_stairs", new StairsBlock(KHAKI_STEEL.getDefaultState(), AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_KHAKI_STEEL_SLAB = registrar.createWithItem("smooth_khaki_steel_slab", new SlabBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_KHAKI_STEEL_PANEL = registrar.createWithItem("smooth_khaki_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_KHAKI_STEEL_WALL = registrar.createWithItem("smooth_khaki_steel_wall", new WallBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).solid()), TMMItems.BUILDING_GROUP);
+    Block KHAKI_STEEL_DOOR = registrar.createWithItem("khaki_steel_door", new TrainDoorBlock(() -> TMMBlockEntities.KHAKI_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
+    Block MAROON_STEEL = registrar.createWithItem("maroon_steel", new Block(AbstractBlock.Settings.copy(DARK_STEEL)), TMMItems.BUILDING_GROUP);
+    Block MAROON_STEEL_PANEL = registrar.createWithItem("maroon_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block MAROON_STEEL_TILES = registrar.createWithItem("maroon_steel_tiles", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block MAROON_STEEL_TILES_PANEL = registrar.createWithItem("maroon_steel_tiles_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_MAROON_STEEL = registrar.createWithItem("smooth_maroon_steel", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_MAROON_STEEL_STAIRS = registrar.createWithItem("smooth_maroon_steel_stairs", new StairsBlock(MAROON_STEEL.getDefaultState(), AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_MAROON_STEEL_SLAB = registrar.createWithItem("smooth_maroon_steel_slab", new SlabBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_MAROON_STEEL_PANEL = registrar.createWithItem("smooth_maroon_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_MAROON_STEEL_WALL = registrar.createWithItem("smooth_maroon_steel_wall", new WallBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).solid()), TMMItems.BUILDING_GROUP);
+    Block MAROON_STEEL_DOOR = registrar.createWithItem("maroon_steel_door", new TrainDoorBlock(() -> TMMBlockEntities.MAROON_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
+    Block MUNTZ_STEEL = registrar.createWithItem("muntz_steel", new Block(AbstractBlock.Settings.copy(DARK_STEEL)), TMMItems.BUILDING_GROUP);
+    Block MUNTZ_STEEL_PANEL = registrar.createWithItem("muntz_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block MUNTZ_STEEL_TILES = registrar.createWithItem("muntz_steel_tiles", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block MUNTZ_STEEL_TILES_PANEL = registrar.createWithItem("muntz_steel_tiles_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_MUNTZ_STEEL = registrar.createWithItem("smooth_muntz_steel", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_MUNTZ_STEEL_STAIRS = registrar.createWithItem("smooth_muntz_steel_stairs", new StairsBlock(MUNTZ_STEEL.getDefaultState(), AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_MUNTZ_STEEL_SLAB = registrar.createWithItem("smooth_muntz_steel_slab", new SlabBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_MUNTZ_STEEL_PANEL = registrar.createWithItem("smooth_muntz_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_MUNTZ_STEEL_WALL = registrar.createWithItem("smooth_muntz_steel_wall", new WallBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).solid()), TMMItems.BUILDING_GROUP);
+    Block MUNTZ_STEEL_DOOR = registrar.createWithItem("muntz_steel_door", new TrainDoorBlock(() -> TMMBlockEntities.MUNTZ_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
+    Block NAVY_STEEL = registrar.createWithItem("navy_steel", new Block(AbstractBlock.Settings.copy(DARK_STEEL)), TMMItems.BUILDING_GROUP);
+    Block NAVY_STEEL_PANEL = registrar.createWithItem("navy_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block NAVY_STEEL_TILES = registrar.createWithItem("navy_steel_tiles", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block NAVY_STEEL_TILES_PANEL = registrar.createWithItem("navy_steel_tiles_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_NAVY_STEEL = registrar.createWithItem("smooth_navy_steel", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_NAVY_STEEL_STAIRS = registrar.createWithItem("smooth_navy_steel_stairs", new StairsBlock(NAVY_STEEL.getDefaultState(), AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_NAVY_STEEL_SLAB = registrar.createWithItem("smooth_navy_steel_slab", new SlabBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_NAVY_STEEL_PANEL = registrar.createWithItem("smooth_navy_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);
+    Block SMOOTH_NAVY_STEEL_WALL = registrar.createWithItem("smooth_navy_steel_wall", new WallBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).solid()), TMMItems.BUILDING_GROUP);
+    Block NAVY_STEEL_DOOR = registrar.createWithItem("navy_steel_door", new TrainDoorBlock(() -> TMMBlockEntities.NAVY_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
 
     // Glass
     Block HULL_GLASS = registrar.createWithItem("hull_glass", new PrivacyGlassBlock(AbstractBlock.Settings.copy(Blocks.BLACK_STAINED_GLASS).strength(-1.0f, 3600000.0f)), TMMItems.BUILDING_GROUP);
@@ -217,11 +266,6 @@ public interface TMMBlocks {
     Block GOLD_SPRINKLER = registrar.createWithItem("gold_sprinkler", new SprinklerBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL_SPRINKLER)), TMMItems.DECORATION_GROUP);
     Block GOLD_ORNAMENT = registrar.createWithItem("gold_ornament", new OrnamentBlock(AbstractBlock.Settings.create().nonOpaque().noCollision().strength(0.25f).sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
 
-    // Doors
-    Block SMALL_GLASS_DOOR = registrar.createWithItem("small_glass_door", new SmallDoorBlock(() -> TMMBlockEntities.SMALL_GLASS_DOOR, AbstractBlock.Settings.create().dynamicBounds().strength(-1, 3600000).mapColor(MapColor.CLEAR).dropsNothing().nonOpaque().allowsSpawning(Blocks::never).pistonBehavior(PistonBehavior.BLOCK).sounds(BlockSoundGroup.COPPER_BULB)), TMMItems.DECORATION_GROUP);
-    Block SMALL_WOOD_DOOR = registrar.createWithItem("small_wood_door", new SmallDoorBlock(() -> TMMBlockEntities.SMALL_WOOD_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
-    Block SMALL_TRAIN_DOOR = registrar.createWithItem("small_train_door", new TrainDoorBlock(() -> TMMBlockEntities.SMALL_TRAIN_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
-
     // Wheels
     Block WHEEL = registrar.createWithItem("wheel", new WheelBlock(AbstractBlock.Settings.copy(DARK_STEEL).nonOpaque().sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
 
@@ -242,7 +286,7 @@ public interface TMMBlocks {
     Block CHIMNEY = registrar.createWithItem("chimney", new ChimneyBlock(AbstractBlock.Settings.copy(Blocks.BEDROCK).noCollision()), TMMItems.DECORATION_GROUP);
 
     // Op
-    Block BARRIER_PANEL = registrar.createWithItem("barrier_panel", new BarrierPanelBlock(AbstractBlock.Settings.copy(NAVY_STEEL_PANEL).strength(-1.0F, 3600000.8F).nonOpaque().sounds(BlockSoundGroup.STONE)), new Item.Settings().rarity(Rarity.EPIC), ItemGroups.OPERATOR);
+    Block BARRIER_PANEL = registrar.createWithItem("barrier_panel", new BarrierPanelBlock(AbstractBlock.Settings.copy(ANTHRACITE_STEEL_PANEL).strength(-1.0F, 3600000.8F).nonOpaque().sounds(BlockSoundGroup.STONE)), new Item.Settings().rarity(Rarity.EPIC), ItemGroups.OPERATOR);
     Block LIGHT_BARRIER = registrar.createWithItem("light_barrier", new LightBarrierBlock(((BlockSettingsAdditions) AbstractBlock.Settings.copy(Blocks.BARRIER)).tmm$setCollidable(false)), new Item.Settings().rarity(Rarity.EPIC), ItemGroups.OPERATOR);
 
     private static Block createBranch(String name, Block wood, BlockRegistrar registrar) {
@@ -287,6 +331,30 @@ public interface TMMBlocks {
                 .stairs(DARK_STEEL_STAIRS)
                 .slab(DARK_STEEL_SLAB)
                 .wall(DARK_STEEL_WALL)
+                .build();
+
+        BlockFamily SMOOTH_ANTHRACITE_STEEL = new BlockFamily.Builder(TMMBlocks.SMOOTH_ANTHRACITE_STEEL)
+                .stairs(SMOOTH_ANTHRACITE_STEEL_STAIRS)
+                .slab(SMOOTH_ANTHRACITE_STEEL_SLAB)
+                .wall(SMOOTH_ANTHRACITE_STEEL_WALL)
+                .build();
+
+        BlockFamily SMOOTH_KHAKI_STEEL = new BlockFamily.Builder(TMMBlocks.SMOOTH_KHAKI_STEEL)
+                .stairs(SMOOTH_KHAKI_STEEL_STAIRS)
+                .slab(SMOOTH_KHAKI_STEEL_SLAB)
+                .wall(SMOOTH_KHAKI_STEEL_WALL)
+                .build();
+
+        BlockFamily SMOOTH_MAROON_STEEL = new BlockFamily.Builder(TMMBlocks.SMOOTH_MAROON_STEEL)
+                .stairs(SMOOTH_MAROON_STEEL_STAIRS)
+                .slab(SMOOTH_MAROON_STEEL_SLAB)
+                .wall(SMOOTH_MAROON_STEEL_WALL)
+                .build();
+
+        BlockFamily SMOOTH_MUNTZ_STEEL = new BlockFamily.Builder(TMMBlocks.SMOOTH_MUNTZ_STEEL)
+                .stairs(SMOOTH_MUNTZ_STEEL_STAIRS)
+                .slab(SMOOTH_MUNTZ_STEEL_SLAB)
+                .wall(SMOOTH_MUNTZ_STEEL_WALL)
                 .build();
 
         BlockFamily SMOOTH_NAVY_STEEL = new BlockFamily.Builder(TMMBlocks.SMOOTH_NAVY_STEEL)
@@ -421,6 +489,8 @@ public interface TMMBlocks {
         flammableBlockRegistry.add(STRIPPED_BAMBOO_POLE, 5, 20);
 
         registrar.registerEntries();
-    }
 
+        Registries.BLOCK.addAlias(TMM.id("small_train_door"), TMM.id("navy_steel_door"));
+        Registries.ITEM.addAlias(TMM.id("small_train_door"), TMM.id("navy_steel_door"));
+    }
 }

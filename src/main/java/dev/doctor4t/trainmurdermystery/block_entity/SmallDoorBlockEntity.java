@@ -12,7 +12,7 @@ import net.minecraft.util.math.Direction;
 
 public class SmallDoorBlockEntity extends DoorBlockEntity {
 
-    protected SmallDoorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public SmallDoorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
@@ -22,10 +22,6 @@ public class SmallDoorBlockEntity extends DoorBlockEntity {
 
     public static SmallDoorBlockEntity createWood(BlockPos pos, BlockState state) {
         return new SmallDoorBlockEntity(TMMBlockEntities.SMALL_WOOD_DOOR, pos, state);
-    }
-
-    public static SmallDoorBlockEntity createTrain(BlockPos pos, BlockState state) {
-        return new SmallDoorBlockEntity(TMMBlockEntities.SMALL_TRAIN_DOOR, pos, state);
     }
 
     @Override

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "trainmurdermystery:item/navy_steel_door"
+  }
+}

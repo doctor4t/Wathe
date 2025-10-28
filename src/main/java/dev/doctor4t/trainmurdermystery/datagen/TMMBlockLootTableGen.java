@@ -148,7 +148,11 @@ public class TMMBlockLootTableGen extends FabricBlockLootTableProvider {
         this.addSelfDrop(TMMBlocks.GOLD_ORNAMENT, this::ornamentDrops);
         this.addNothingDrop(TMMBlocks.SMALL_GLASS_DOOR);
         this.addNothingDrop(TMMBlocks.SMALL_WOOD_DOOR);
-        this.addNothingDrop(TMMBlocks.SMALL_TRAIN_DOOR);
+        this.addNothingDrop(TMMBlocks.ANTHRACITE_STEEL_DOOR);
+        this.addNothingDrop(TMMBlocks.KHAKI_STEEL_DOOR);
+        this.addNothingDrop(TMMBlocks.MAROON_STEEL_DOOR);
+        this.addNothingDrop(TMMBlocks.MUNTZ_STEEL_DOOR);
+        this.addNothingDrop(TMMBlocks.NAVY_STEEL_DOOR);
         this.addNothingDrop(TMMBlocks.WHEEL);
     }
 
