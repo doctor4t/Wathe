@@ -130,6 +130,8 @@ public class TMMLangGen extends FabricLanguageProvider {
         builder.add("game.start_error.not_enough_players", "Game cannot start: 6 players minimum are required.");
         builder.add("game.start_error.game_running", "Game cannot start: a game is already running. Please try again from the lobby.");
 
+        builder.add("tmm.gui.reset", "Reset");
+
         builder.add("commands.supporter_only", "Super silly supporter commands are reserved for Ko-Fi and YouTube members; if you wanna try them out, please consider supporting! <3");
     }
 }

@@ -19,6 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.Arrays;
+
 public class NoteScreen extends Screen {
     private final String[] text = new String[]{"", "", "", ""};
     private int currentRow;
@@ -31,7 +33,8 @@ public class NoteScreen extends Screen {
 
     @Override
     protected void init() {
-        this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> this.finishEditing()).dimensions(this.width / 2 - 100, this.height / 4 + 144, 200, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("tmm.gui.reset"), button -> this.resetEditing()).dimensions(this.width / 2 - 100, this.height / 4 + 144, 98, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> this.finishEditing()).dimensions(this.width / 2 + 2, this.height / 4 + 144, 98, 20).build());
         if (this.client == null) return;
         this.selectionManager = new SelectionManager(
                 () -> this.text[this.currentRow],
@@ -156,8 +159,13 @@ public class NoteScreen extends Screen {
     private void setCurrentRowMessage(String message) {
         this.text[this.currentRow] = message;
         if (this.client == null || this.client.player == null) return;
-        var component = PlayerNoteComponent.KEY.get(this.client.player);
-        component.setNote(this.text[0], this.text[1], this.text[2], this.text[3]);
+        PlayerNoteComponent.KEY.get(this.client.player).setNote(this.text[0], this.text[1], this.text[2], this.text[3]);
+    }
+
+    private void resetEditing() {
+        if (this.client == null || this.client.player == null) return;
+        Arrays.fill(this.text, "");
+        PlayerNoteComponent.KEY.get(this.client.player).setNote(this.text[0], this.text[1], this.text[2], this.text[3]);
     }
 
     private void finishEditing() {
