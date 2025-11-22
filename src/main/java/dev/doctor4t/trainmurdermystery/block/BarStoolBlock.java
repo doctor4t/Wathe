@@ -11,7 +11,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class BarStoolBlock extends MountableBlock {
-    private static final Vec3d SIT_POS = new Vec3d(0.5f, -0.2f, 0.5f);
+    private static final Vec3d SIT_OFFSET = new Vec3d(0.5f, -0.2f, 0.5f);
 
     private static final VoxelShape SHAPE = VoxelShapes.union(
             Block.createCuboidShape(6, 0, 6, 10, 1, 10),
@@ -30,7 +30,7 @@ public class BarStoolBlock extends MountableBlock {
     }
 
     @Override
-    public Vec3d getSitPos(World world, BlockState state, BlockPos pos) {
-        return SIT_POS;
+    public Vec3d getSitOffset(World world, BlockState state, BlockPos pos) {
+        return SIT_OFFSET;
     }
 }

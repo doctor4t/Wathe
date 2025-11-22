@@ -42,13 +42,15 @@ public interface PrivacyBlock {
         if (state.get(INTERACTION_COOLDOWN)) {
             world.setBlockState(pos, state.with(INTERACTION_COOLDOWN, false));
             return;
-        } else {
-            world.playSound(null, pos, TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE, SoundCategory.BLOCKS, 0.1f, opaque ? 1.0f : 1.2f);
         }
+
+        world.playSound(null, pos, TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE, SoundCategory.BLOCKS, 0.1f, opaque ? 1.0f : 1.2f);
 
         world.setBlockState(pos, state.with(OPAQUE, opaque).with(INTERACTION_COOLDOWN, true));
         world.scheduleBlockTick(pos, state.getBlock(), COOLDOWN);
+
         Set<Direction> changedDirections = EnumSet.noneOf(Direction.class);
+
         for (Direction direction : Direction.values()) {
             BlockPos sidePos = pos.offset(direction);
             BlockState sideState = world.getBlockState(sidePos);
@@ -57,6 +59,7 @@ public interface PrivacyBlock {
                 world.scheduleBlockTick(sidePos, sideState.getBlock(), DELAY);
             }
         }
+
         for (Direction[] diagonal : DIAGONALS) {
             if (diagonalHasAdjacentBlock(diagonal, changedDirections)) continue;
             BlockPos diagonalPos = this.offsetDiagonal(pos, diagonal);
@@ -76,8 +79,13 @@ public interface PrivacyBlock {
     }
 
     default boolean canInteract(BlockState state, BlockPos pos, World world, PlayerEntity player, Hand hand) {
-        if (state.get(INTERACTION_COOLDOWN)) return false;
-        if (player.getStackInHand(hand).getItem() instanceof SpyglassItem) return false;
+        if (state.get(INTERACTION_COOLDOWN)) {
+            return false;
+        }
+        if (player.getStackInHand(hand).getItem() instanceof SpyglassItem) {
+            return false;
+        }
+
         for (Direction direction : Direction.values()) {
             BlockState sideState = world.getBlockState(pos.offset(direction));
             if (sideState.contains(INTERACTION_COOLDOWN) && sideState.get(INTERACTION_COOLDOWN)) return false;
@@ -93,6 +101,4 @@ public interface PrivacyBlock {
     default boolean canToggle(BlockState state) {
         return state.getBlock() instanceof PrivacyBlock;
     }
-
-
 }

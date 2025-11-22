@@ -25,7 +25,7 @@ public class SeatEntity extends Entity {
 
     @Override
     protected void readCustomDataFromNbt(NbtCompound nbt) {
-        NbtHelper.toBlockPos(nbt, "seatPos").ifPresent(this::setSeatPos);
+        NbtHelper.toBlockPos(nbt, "seatPos").ifPresent(blockPos -> this.seatPos = blockPos);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SeatEntity extends Entity {
 
     @Nullable
     public BlockPos getSeatPos() {
-        return seatPos;
+        return this.seatPos;
     }
 
     public void setSeatPos(@Nullable BlockPos seatPos) {

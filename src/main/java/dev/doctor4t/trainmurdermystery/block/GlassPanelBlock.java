@@ -102,9 +102,15 @@ public class GlassPanelBlock extends FacingBlock {
         Direction facing = state.get(FACING);
         if (stateFrom.isOf(this)) {
             Direction fromFacing = stateFrom.get(FACING);
-            if (fromFacing.equals(direction)) return facing.equals(direction.getOpposite());
-            else if (fromFacing.equals(direction.getOpposite())) return facing.equals(direction);
-            else if (fromFacing.equals(facing)) return true;
+            if (fromFacing.equals(direction)) {
+                return facing.equals(direction.getOpposite());
+            }
+            if (fromFacing.equals(direction.getOpposite())) {
+                return facing.equals(direction);
+            }
+            if (fromFacing.equals(facing)) {
+                return true;
+            }
         }
         return super.isSideInvisible(state, stateFrom, direction);
     }

@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 
 public class OttomanBlock extends HorizontalFacingMountableBlock {
     public static final VoxelShape SHAPE = Block.createCuboidShape(0, 0, 0, 16, 8, 16);
+    private static final Vec3d SIT_OFFSET = new Vec3d(0.5f, -0.5f, 0.5f);
 
     public OttomanBlock(Settings settings) {
         super(settings);
@@ -32,7 +33,7 @@ public class OttomanBlock extends HorizontalFacingMountableBlock {
     }
 
     @Override
-    public Vec3d getNorthFacingSitPos(World world, BlockState state, BlockPos pos) {
-        return new Vec3d(0.5f, -0.5f, 0.5f);
+    public Vec3d getNorthFacingSitOffset(World world, BlockState state, BlockPos pos) {
+        return SIT_OFFSET;
     }
 }

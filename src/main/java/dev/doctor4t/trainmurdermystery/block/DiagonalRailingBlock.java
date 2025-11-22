@@ -157,7 +157,9 @@ public class DiagonalRailingBlock extends AbstractRailingBlock {
                 case SOUTH -> RailingBlock.SOUTH_SHAPE;
                 default -> RailingBlock.WEST_SHAPE;
             };
-        } else if (state.get(LEFT)) {
+        }
+
+        if (state.get(LEFT)) {
             return switch (state.get(FACING)) {
                 case NORTH -> NORTH_LEFT_SHAPE;
                 case EAST -> EAST_LEFT_SHAPE;
@@ -165,6 +167,7 @@ public class DiagonalRailingBlock extends AbstractRailingBlock {
                 default -> WEST_LEFT_SHAPE;
             };
         }
+
         return switch (state.get(FACING)) {
             case NORTH -> NORTH_RIGHT_SHAPE;
             case EAST -> EAST_RIGHT_SHAPE;

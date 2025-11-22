@@ -73,6 +73,6 @@ public class TrimmedLanternBlock extends ToggleableFacingLightBlock {
     @Override
     protected NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        return blockEntity instanceof NamedScreenHandlerFactory ? (NamedScreenHandlerFactory) blockEntity : null;
+        return blockEntity instanceof NamedScreenHandlerFactory screenHandlerFactory ? screenHandlerFactory : null;
     }
 }

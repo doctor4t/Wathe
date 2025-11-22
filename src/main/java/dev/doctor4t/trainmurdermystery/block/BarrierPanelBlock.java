@@ -1,6 +1,5 @@
 package dev.doctor4t.trainmurdermystery.block;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import dev.doctor4t.trainmurdermystery.util.BarrierViewer;
 import net.minecraft.block.BlockRenderType;
@@ -30,16 +29,17 @@ public class BarrierPanelBlock extends PanelBlock {
         shapes.put(Direction.UP, UP_SHAPE);
         shapes.put(Direction.DOWN, DOWN_SHAPE);
     });
-    private final ImmutableMap<BlockState, VoxelShape> SHAPES;
+
+    private final Map<BlockState, VoxelShape> shapes;
 
     public BarrierPanelBlock(Settings settings) {
         super(settings);
-        this.SHAPES = this.getShapesForStates(BarrierPanelBlock::getShapeForState);
+        this.shapes = this.getShapesForStates(BarrierPanelBlock::getShapeForState);
     }
 
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return this.SHAPES.get(state);
+        return this.shapes.get(state);
     }
 
     private static VoxelShape getShapeForState(BlockState state) {

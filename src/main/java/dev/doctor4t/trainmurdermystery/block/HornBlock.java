@@ -61,8 +61,9 @@ public class HornBlock extends BlockWithEntity implements Waterloggable {
                 boolean isSoundReady = hornBlockEntity.cooldown <= 0;
                 var mid = Vec3d.ofCenter(pos);
                 world.playSound(null, mid.getX(), mid.getY(), mid.getZ(), SoundEvents.BLOCK_CHAIN_BREAK, SoundCategory.BLOCKS, 0.5f, .8f + (world.random.nextFloat() - .5f) * .2f);
-                if (isSoundReady || isOp)
+                if (isSoundReady || isOp) {
                     world.playSound(null, mid.getX(), mid.getY() + 3, mid.getZ(), TMMSounds.AMBIENT_TRAIN_HORN, SoundCategory.AMBIENT, 100.0f, 1.0f);
+                }
 
                 // start game
                 if (isOp && !GameWorldComponent.KEY.get(serverWorld).isRunning()) {

@@ -63,7 +63,7 @@ public class OrnamentBlock extends FacingBlock {
 
     @Override
     public boolean canReplace(BlockState state, ItemPlacementContext context) {
-        return (context.getStack().isOf(this.asItem())) || super.canReplace(state, context);
+        return context.getStack().isOf(this.asItem()) || super.canReplace(state, context);
     }
 
     @Override

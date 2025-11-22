@@ -66,7 +66,7 @@ public class WheelBlock extends BlockWithEntity {
 
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new WheelBlockEntity(state.getBlock() == TMMBlocks.RUSTED_WHEEL ? TMMBlockEntities.RUSTED_WHEEL : TMMBlockEntities.WHEEL, pos, state);
+        return new WheelBlockEntity(state.isOf(TMMBlocks.RUSTED_WHEEL) ? TMMBlockEntities.RUSTED_WHEEL : TMMBlockEntities.WHEEL, pos, state);
     }
 
     @Override

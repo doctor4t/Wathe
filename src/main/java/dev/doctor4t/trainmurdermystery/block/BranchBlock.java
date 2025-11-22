@@ -29,7 +29,6 @@ import java.util.Map;
 /**
  * @author EightSidedSquare
  */
-
 public class BranchBlock extends ConnectingBlock {
 
     public static final Map<Block, Block> STRIPPED_BRANCHES = new Object2ObjectOpenHashMap<>();
@@ -52,16 +51,19 @@ public class BranchBlock extends ConnectingBlock {
         World world = ctx.getWorld();
         BlockPos pos = ctx.getBlockPos();
         Direction side = ctx.getSide();
-        if (state != null) return this.connectState(state
+        if (state == null) {
+            return null;
+        }
+        return this.connectState(state
                 .with(FACING_PROPERTIES.get(side), ctx.shouldCancelInteraction())
                 .with(FACING_PROPERTIES.get(side.getOpposite()), true), pos, world);
-        return null;
     }
 
     public BlockState connectState(BlockState state, BlockPos pos, WorldAccess world) {
         BlockState blockState = state;
-        for (Direction direction : Direction.values())
+        for (Direction direction : Direction.values()) {
             blockState = this.connectState(blockState, pos, world, direction);
+        }
         return blockState;
     }
 

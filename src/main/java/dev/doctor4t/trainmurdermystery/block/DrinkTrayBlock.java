@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 public class DrinkTrayBlock extends FoodPlatterBlock {
     public static final MapCodec<DrinkTrayBlock> CODEC = createCodec(DrinkTrayBlock::new);
     public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+    private static final VoxelShape SHAPE = createCuboidShape(2, 0, 2, 14, 3, 14);
 
     public DrinkTrayBlock(Settings settings) {
         super(settings);
@@ -37,18 +38,8 @@ public class DrinkTrayBlock extends FoodPlatterBlock {
     }
 
     @Override
-    protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
-        return this.getShape(state);
-    }
-
-    @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return this.getShape(state);
-    }
-
-    @Override
     protected VoxelShape getShape(BlockState state) {
-        return createCuboidShape(2, 0, 2, 14, 3, 14);
+        return SHAPE;
     }
 
     @Override

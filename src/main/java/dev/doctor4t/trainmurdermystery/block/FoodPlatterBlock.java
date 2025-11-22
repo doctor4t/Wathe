@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FoodPlatterBlock extends BlockWithEntity {
     public static final MapCodec<FoodPlatterBlock> CODEC = createCodec(FoodPlatterBlock::new);
+    private static final VoxelShape SHAPE = createCuboidShape(0, 0, 0, 16, 2, 16);
 
     public FoodPlatterBlock(Settings settings) {
         super(settings);
@@ -61,7 +62,7 @@ public class FoodPlatterBlock extends BlockWithEntity {
     }
 
     protected VoxelShape getShape(BlockState state) {
-        return createCuboidShape(0, 0, 0, 16, 2, 16);
+        return SHAPE;
     }
 
     @Override

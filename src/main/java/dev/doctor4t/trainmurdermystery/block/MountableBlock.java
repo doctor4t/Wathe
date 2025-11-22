@@ -30,35 +30,41 @@ public abstract class MountableBlock extends Block {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        float radius = 1;
-        if (!player.isSneaking()
-                && player.getPos().subtract(pos.toCenterPos()).length() <= 1.5f
-                && !(player.getMainHandStack().getItem() instanceof BlockItem blockItem
-                && blockItem.getBlock() instanceof MountableBlock)
-                && world.getEntitiesByClass(SeatEntity.class, Box.of(pos.toCenterPos(), radius, radius, radius), Entity::isAlive).isEmpty()) {
-
-            if (world.isClient) {
-                return ActionResult.success(true);
-            }
-
-            SeatEntity seatEntity = TMMEntities.SEAT.create(world);
-
-            if (seatEntity == null) {
-                return ActionResult.PASS;
-            }
-
-            Vec3d sitPos = this.getSitPos(world, state, pos);
-            Vec3d vec3d = Vec3d.of(pos).add(sitPos);
-            seatEntity.refreshPositionAndAngles(vec3d.x, vec3d.y, vec3d.z, 0, 0);
-            seatEntity.setSeatPos(pos);
-            world.spawnEntity(seatEntity);
-            player.startRiding(seatEntity);
-
-            return ActionResult.success(false);
-        } else {
+        if (player.isSneaking()) {
             return ActionResult.PASS;
         }
+        if (player.getPos().subtract(pos.toCenterPos()).length() > 1.5f) {
+            return ActionResult.PASS;
+        }
+        if (!(player.getMainHandStack().getItem() instanceof BlockItem blockItem)) {
+            return ActionResult.PASS;
+        }
+        if (!(blockItem.getBlock() instanceof MountableBlock)) {
+            return ActionResult.PASS;
+        }
+        final float radius = 1;
+        if (!world.getEntitiesByClass(SeatEntity.class, Box.of(pos.toCenterPos(), radius, radius, radius), Entity::isAlive).isEmpty()) {
+            return ActionResult.PASS;
+        }
+        if (world.isClient) {
+            return ActionResult.success(true);
+        }
+
+        SeatEntity seatEntity = TMMEntities.SEAT.create(world);
+
+        if (seatEntity == null) {
+            return ActionResult.PASS;
+        }
+
+        Vec3d offset = this.getSitOffset(world, state, pos);
+        Vec3d vec3d = Vec3d.of(pos).add(offset);
+        seatEntity.refreshPositionAndAngles(vec3d.x, vec3d.y, vec3d.z, 0, 0);
+        seatEntity.setSeatPos(pos);
+        world.spawnEntity(seatEntity);
+        player.startRiding(seatEntity);
+
+        return ActionResult.success(false);
     }
 
-    public abstract Vec3d getSitPos(World world, BlockState state, BlockPos pos);
+    public abstract Vec3d getSitOffset(World world, BlockState state, BlockPos pos);
 }

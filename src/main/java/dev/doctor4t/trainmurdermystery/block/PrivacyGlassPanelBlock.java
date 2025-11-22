@@ -23,13 +23,18 @@ public class PrivacyGlassPanelBlock extends GlassPanelBlock implements PrivacyBl
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (!player.shouldCancelInteraction() && !player.getMainHandStack().isOf(this.asItem()) && this.canInteract(state, pos, world, player, Hand.MAIN_HAND)) {
-            this.toggle(state, world, pos);
-
-            return ActionResult.success(world.isClient);
+        if (player.shouldCancelInteraction()) {
+            return super.onUse(state, world, pos, player, hit);
+        }
+        if (player.getMainHandStack().isOf(this.asItem())) {
+            return super.onUse(state, world, pos, player, hit);
+        }
+        if (!this.canInteract(state, pos, world, player, Hand.MAIN_HAND)) {
+            return super.onUse(state, world, pos, player, hit);
         }
 
-        return super.onUse(state, world, pos, player, hit);
+        this.toggle(state, world, pos);
+        return ActionResult.success(world.isClient);
     }
 
     @Override

@@ -15,11 +15,14 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CouchBlock extends HorizontalFacingMountableBlock {
     public static final VoxelShape SHAPE = Block.createCuboidShape(0, 0, 0, 16, 8, 16);
     public static final EnumProperty<CouchArms> ARMS = TMMProperties.COUCH_ARMS;
+
+    private static final Vec3d SIT_OFFSET = new Vec3d(0.5f, 0.5f, 0.375f);
 
     public CouchBlock(Settings settings) {
         super(settings);
@@ -39,11 +42,11 @@ public class CouchBlock extends HorizontalFacingMountableBlock {
     }
 
     @Override
-    public Vec3d getNorthFacingSitPos(World world, BlockState state, BlockPos pos) {
-        return new Vec3d(0.5f, 0.5f, 0.375f);
+    public Vec3d getNorthFacingSitOffset(World world, BlockState state, BlockPos pos) {
+        return SIT_OFFSET;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         BlockState state = super.getPlacementState(ctx).with(ARMS, CouchArms.NO_ARMS);

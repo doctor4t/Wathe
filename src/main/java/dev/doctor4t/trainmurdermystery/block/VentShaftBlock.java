@@ -58,8 +58,10 @@ public class VentShaftBlock extends Block {
         BlockPos pos = ctx.getBlockPos();
         BlockState state = this.getDefaultState();
         for (Direction direction : Direction.values()) {
-            if (world.getBlockState(pos.offset(direction)).isOf(this))
-                state = state.with(ConnectingBlock.FACING_PROPERTIES.get(direction), false);
+            if (!world.getBlockState(pos.offset(direction)).isOf(this)) {
+                continue;
+            }
+            state = state.with(ConnectingBlock.FACING_PROPERTIES.get(direction), false);
         }
         return state;
     }

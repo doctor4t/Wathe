@@ -45,8 +45,14 @@ public class RailingBlock extends AbstractRailingBlock {
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         BlockState state = super.getPlacementState(ctx);
-        if (state == null) return null;
-        if (ctx.shouldCancelInteraction()) return this.postBlock.getPlacementState(ctx);
+
+        if (state == null) {
+            return null;
+        }
+        if (ctx.shouldCancelInteraction()) {
+            return this.postBlock.getPlacementState(ctx);
+        }
+
         BlockState diagonalState = this.diagonalRailingBlock.getPlacementState(ctx);
         return diagonalState == null ? state : diagonalState;
     }
