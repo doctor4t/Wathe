@@ -162,6 +162,7 @@ public interface TMMBlocks {
     Block RED_MOQUETTE = registrar.createWithItem("red_moquette", new Block(AbstractBlock.Settings.copy(Blocks.RED_WOOL).strength(-1.0f, 3600000.0f)), TMMItems.BUILDING_GROUP);
     Block BROWN_MOQUETTE = registrar.createWithItem("brown_moquette", new Block(AbstractBlock.Settings.copy(Blocks.BROWN_WOOL).strength(-1.0f, 3600000.0f)), TMMItems.BUILDING_GROUP);
     Block BLUE_MOQUETTE = registrar.createWithItem("blue_moquette", new Block(AbstractBlock.Settings.copy(Blocks.BLUE_WOOL).strength(-1.0f, 3600000.0f)), TMMItems.BUILDING_GROUP);
+    Block GREEN_MOQUETTE = registrar.createWithItem("green_moquette", new Block(AbstractBlock.Settings.copy(Blocks.GREEN_WOOL).strength(-1.0f, 3600000.0f)), TMMItems.BUILDING_GROUP);
 
     // Woods
     Block MAHOGANY_PLANKS = registrar.createWithItem("mahogany_planks", new Block(AbstractBlock.Settings.copy(Blocks.MANGROVE_PLANKS).strength(-1.0f, 3600000.0f).sounds(BlockSoundGroup.CHERRY_WOOD)), TMMItems.BUILDING_GROUP);

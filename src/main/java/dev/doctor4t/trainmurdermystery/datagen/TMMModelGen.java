@@ -334,6 +334,7 @@ public class TMMModelGen extends FabricModelProvider {
         generator.registerSimpleCubeAll(TMMBlocks.RED_MOQUETTE);
         generator.registerSimpleCubeAll(TMMBlocks.BROWN_MOQUETTE);
         generator.registerSimpleCubeAll(TMMBlocks.BLUE_MOQUETTE);
+        generator.registerSimpleCubeAll(TMMBlocks.GREEN_MOQUETTE);
         generator.registerSimpleState(TMMBlocks.FOOD_PLATTER);
         generator.registerNorthDefaultHorizontalRotation(TMMBlocks.DRINK_TRAY);
         this.registerPanel(generator, TMMBlocks.BARRIER_PANEL, TextureMap.getId(TMMBlocks.BARRIER_PANEL));
