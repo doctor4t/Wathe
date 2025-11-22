@@ -139,10 +139,10 @@ public class TMMLangGen extends FabricLanguageProvider {
         builder.add("trainmurdermystery.midnightconfig.ultraPerfMode.tooltip", "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2.");
         builder.add("trainmurdermystery.midnightconfig.disableScreenShake", "Disable Screen Shake");
         builder.add("trainmurdermystery.midnightconfig.particleAmount", "Particle Amount");
-        builder.add("trainmurdermystery.midnightconfig.enum.particleAmount.a_lot", "A lot");
-        builder.add("trainmurdermystery.midnightconfig.enum.particleAmount.not_a_lot", "Not a lot");
-        builder.add("trainmurdermystery.midnightconfig.enum.particleAmount.a_tiny_bit", "A tiny bit");
-        builder.add("trainmurdermystery.midnightconfig.enum.particleAmount.none", "None");
+        builder.add("trainmurdermystery.midnightconfig.enum.ParticleAmount.A_LOT", "A lot");
+        builder.add("trainmurdermystery.midnightconfig.enum.ParticleAmount.NOT_A_LOT", "Not a lot");
+        builder.add("trainmurdermystery.midnightconfig.enum.ParticleAmount.A_TINY_BIT", "A tiny bit");
+        builder.add("trainmurdermystery.midnightconfig.enum.ParticleAmount.NONE", "None");
 
         builder.add("credits.trainmurdermystery.thank_you", "Thank you for playing The Last Voyage of the Harpy Express!\nMe and my team spent a lot of time working\non this mod and we hope you enjoy it.\nIf you do and wish to make a video or stream\nplease make sure to credit my channel,\nvideo and the mod page!\n - RAT / doctor4t");
     }
