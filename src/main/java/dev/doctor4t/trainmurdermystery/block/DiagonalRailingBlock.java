@@ -31,6 +31,7 @@ public class DiagonalRailingBlock extends AbstractRailingBlock {
     protected static final VoxelShape SOUTH_RIGHT_SHAPE = createShape(16, 8, 2, 0, 14, 8, 14);
     protected static final VoxelShape WEST_LEFT_SHAPE = createShape(16, 2, 8, 0, 8, 0, 0);
     protected static final VoxelShape WEST_RIGHT_SHAPE = createShape(16, 2, 8, 0, 0, 0, 8);
+    private static final MapCodec<DiagonalRailingBlock> CODEC = createCodec(DiagonalRailingBlock::new);
 
     public DiagonalRailingBlock(Settings settings) {
         super(settings);
@@ -46,7 +47,7 @@ public class DiagonalRailingBlock extends AbstractRailingBlock {
 
     @Override
     protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
-        return null;
+        return CODEC;
     }
 
     @Nullable

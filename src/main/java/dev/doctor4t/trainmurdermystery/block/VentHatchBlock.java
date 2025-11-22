@@ -48,6 +48,7 @@ public class VentHatchBlock extends WallMountedBlock {
             Block.createCuboidShape(1, 0, 0, 15, 14, 1),
             Block.createCuboidShape(15, 0, 1, 16, 14, 15)
     };
+    private static final MapCodec<VentHatchBlock> CODEC = createCodec(VentHatchBlock::new);
 
     public VentHatchBlock(Settings settings) {
         super(settings);
@@ -56,7 +57,7 @@ public class VentHatchBlock extends WallMountedBlock {
 
     @Override
     protected MapCodec<? extends WallMountedBlock> getCodec() {
-        return null;
+        return CODEC;
     }
 
     @Override

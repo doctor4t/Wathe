@@ -39,6 +39,7 @@ public class TrimmedLanternBlock extends ToggleableFacingLightBlock {
             Block.createCuboidShape(10, 3, 3, 14, 13, 13),
             Block.createCuboidShape(14, 2, 2, 16, 14, 14)
     );
+    private static final MapCodec<TrimmedLanternBlock> CODEC = createCodec(TrimmedLanternBlock::new);
 
     public TrimmedLanternBlock(Settings settings) {
         super(settings);
@@ -46,7 +47,7 @@ public class TrimmedLanternBlock extends ToggleableFacingLightBlock {
 
     @Override
     protected MapCodec<? extends FacingBlock> getCodec() {
-        return null;
+        return CODEC;
     }
 
 

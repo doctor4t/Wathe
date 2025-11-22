@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 public class CargoBoxBlock extends FacingBlock implements CrosshairEnabling {
 
     public static final BooleanProperty OPEN = Properties.OPEN;
+    private static final MapCodec<CargoBoxBlock> CODEC = createCodec(CargoBoxBlock::new);
 
     public CargoBoxBlock(Settings settings) {
         super(settings);
@@ -34,7 +35,7 @@ public class CargoBoxBlock extends FacingBlock implements CrosshairEnabling {
 
     @Override
     protected MapCodec<? extends FacingBlock> getCodec() {
-        return null;
+        return CODEC;
     }
 
     @Nullable

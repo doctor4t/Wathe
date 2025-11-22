@@ -22,6 +22,7 @@ public class RailingPostBlock extends AbstractRailingBlock {
     protected static final VoxelShape EAST_COLLISION_SHAPE = Block.createCuboidShape(14, 0, 0, 16, 24, 2);
     protected static final VoxelShape SOUTH_COLLISION_SHAPE = Block.createCuboidShape(14, 0, 14, 16, 24, 16);
     protected static final VoxelShape WEST_COLLISION_SHAPE = Block.createCuboidShape(0, 0, 14, 2, 24, 16);
+    private static final MapCodec<RailingPostBlock> CODEC = createCodec(RailingPostBlock::new);
 
     public RailingPostBlock(Settings settings) {
         super(settings);
@@ -29,7 +30,7 @@ public class RailingPostBlock extends AbstractRailingBlock {
 
     @Override
     protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
-        return null;
+        return CODEC;
     }
 
     @Override

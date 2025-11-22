@@ -30,6 +30,7 @@ public class GlassPanelBlock extends FacingBlock {
     public static final VoxelShape UP_COLLISION_SHAPE = Block.createCuboidShape(0, 0, 0, 16, 1, 16);
     public static final VoxelShape DOWN_SHAPE = Block.createCuboidShape(0, 12, 0, 16, 16, 16);
     public static final VoxelShape DOWN_COLLISION_SHAPE = Block.createCuboidShape(0, 15, 0, 16, 16, 16);
+    private static final MapCodec<GlassPanelBlock> CODEC = createCodec(GlassPanelBlock::new);
 
     public GlassPanelBlock(Settings settings) {
         super(settings);
@@ -38,7 +39,7 @@ public class GlassPanelBlock extends FacingBlock {
 
     @Override
     protected MapCodec<? extends FacingBlock> getCodec() {
-        return null;
+        return CODEC;
     }
 
     @Override

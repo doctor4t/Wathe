@@ -21,6 +21,7 @@ public class WheelBlock extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     protected static final VoxelShape X_SHAPE = Block.createCuboidShape(6, 0, 0, 10, 16, 16);
     protected static final VoxelShape Z_SHAPE = Block.createCuboidShape(0, 0, 6, 16, 16, 10);
+    private static final MapCodec<WheelBlock> CODEC = createCodec(WheelBlock::new);
 
     public WheelBlock(Settings settings) {
         super(settings);
@@ -51,7 +52,7 @@ public class WheelBlock extends BlockWithEntity {
 
     @Override
     protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return null;
+        return CODEC;
     }
 
     @Override

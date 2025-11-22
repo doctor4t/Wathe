@@ -26,13 +26,13 @@ import org.jetbrains.annotations.Nullable;
 public class SprinklerBlock extends WallMountedBlock implements BlockEntityProvider {
     public static final BooleanProperty POWERED = Properties.POWERED;
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
-    public static final MapCodec<SprinklerBlock> CODEC = createCodec(SprinklerBlock::new);
     protected static final VoxelShape UP_SHAPE = Block.createCuboidShape(3.0, 0.0, 3.0, 13.0, 3.0, 13.0);
     protected static final VoxelShape DOWN_SHAPE = Block.createCuboidShape(3.0, 13.0, 3.0, 13.0, 16.0, 13.0);
     protected static final VoxelShape EAST_SHAPE = Block.createCuboidShape(0.0, 3.0, 3.0, 3.0, 13.0, 13.0);
     protected static final VoxelShape WEST_SHAPE = Block.createCuboidShape(13.0, 3.0, 3.0, 16.0, 13.0, 13.0);
     protected static final VoxelShape SOUTH_SHAPE = Block.createCuboidShape(3.0, 3.0, 0.0, 13.0, 13.0, 3.0);
     protected static final VoxelShape NORTH_SHAPE = Block.createCuboidShape(3.0, 3.0, 13.0, 13.0, 13.0, 16.0);
+    private static final MapCodec<SprinklerBlock> CODEC = createCodec(SprinklerBlock::new);
 
     public SprinklerBlock(Settings settings) {
         super(settings);

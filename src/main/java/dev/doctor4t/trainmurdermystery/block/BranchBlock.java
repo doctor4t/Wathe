@@ -32,6 +32,7 @@ import java.util.Map;
 public class BranchBlock extends ConnectingBlock {
 
     public static final Map<Block, Block> STRIPPED_BRANCHES = new Object2ObjectOpenHashMap<>();
+    private static final MapCodec<BranchBlock> CODEC = createCodec(BranchBlock::new);
 
     public BranchBlock(Settings settings) {
         super(0.25f, settings);
@@ -129,6 +130,6 @@ public class BranchBlock extends ConnectingBlock {
 
     @Override
     protected MapCodec<? extends ConnectingBlock> getCodec() {
-        return null;
+        return CODEC;
     }
 }

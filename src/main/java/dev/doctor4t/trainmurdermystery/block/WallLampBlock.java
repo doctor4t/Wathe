@@ -36,6 +36,7 @@ public class WallLampBlock extends ToggleableFacingLightBlock {
             Block.createCuboidShape(11, 3, 6, 15, 13, 10),
             Block.createCuboidShape(10, 4, 5, 16, 12, 11)
     );
+    private static final MapCodec<WallLampBlock> CODEC = createCodec(WallLampBlock::new);
 
     public WallLampBlock(Settings settings) {
         super(settings);
@@ -43,7 +44,7 @@ public class WallLampBlock extends ToggleableFacingLightBlock {
 
     @Override
     protected MapCodec<? extends FacingBlock> getCodec() {
-        return null;
+        return CODEC;
     }
 
     @Override

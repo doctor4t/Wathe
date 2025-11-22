@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 public class OrnamentBlock extends FacingBlock {
 
     public static final EnumProperty<OrnamentShape> SHAPE = TMMProperties.ORNAMENT_SHAPE;
+    private static final MapCodec<OrnamentBlock> CODEC = createCodec(OrnamentBlock::new);
 
     public OrnamentBlock(Settings settings) {
         super(settings);
@@ -32,7 +33,7 @@ public class OrnamentBlock extends FacingBlock {
 
     @Override
     protected MapCodec<? extends FacingBlock> getCodec() {
-        return null;
+        return CODEC;
     }
 
     @Nullable

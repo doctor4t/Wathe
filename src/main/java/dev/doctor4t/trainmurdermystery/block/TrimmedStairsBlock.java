@@ -61,6 +61,7 @@ public class TrimmedStairsBlock extends HorizontalFacingBlock {
             BOTTOM,
             Block.createCuboidShape(8, 6, 0, 16, 14, 16)
     );
+    private static final MapCodec<TrimmedStairsBlock> CODEC = createCodec(TrimmedStairsBlock::new);
 
     public TrimmedStairsBlock(Settings settings) {
         super(settings);
@@ -73,7 +74,7 @@ public class TrimmedStairsBlock extends HorizontalFacingBlock {
 
     @Override
     protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
-        return null;
+        return CODEC;
     }
 
     @Override

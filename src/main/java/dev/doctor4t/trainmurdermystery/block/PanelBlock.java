@@ -14,6 +14,7 @@ import net.minecraft.world.WorldView;
 import java.util.Arrays;
 
 public class PanelBlock extends MultifaceGrowthBlock {
+    private static final MapCodec<PanelBlock> CODEC = createCodec(PanelBlock::new);
 
     public PanelBlock(Settings settings) {
         super(settings);
@@ -21,7 +22,7 @@ public class PanelBlock extends MultifaceGrowthBlock {
 
     @Override
     protected MapCodec<? extends MultifaceGrowthBlock> getCodec() {
-        return null;
+        return CODEC;
     }
 
     @Override

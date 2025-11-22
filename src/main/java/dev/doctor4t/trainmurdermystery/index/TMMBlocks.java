@@ -81,8 +81,8 @@ public interface TMMBlocks {
     Block RAIL_BEAM = registrar.createWithItem("rail_beam", new RailBeamBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).solid()), TMMItems.DECORATION_GROUP);
 
     // Doors
-    Block SMALL_GLASS_DOOR = registrar.createWithItem("small_glass_door", new SmallDoorBlock(() -> TMMBlockEntities.SMALL_GLASS_DOOR, AbstractBlock.Settings.create().dynamicBounds().strength(-1, 3600000).mapColor(MapColor.CLEAR).dropsNothing().nonOpaque().allowsSpawning(Blocks::never).pistonBehavior(PistonBehavior.BLOCK).sounds(BlockSoundGroup.COPPER_BULB)), TMMItems.DECORATION_GROUP);
-    Block SMALL_WOOD_DOOR = registrar.createWithItem("small_wood_door", new SmallDoorBlock(() -> TMMBlockEntities.SMALL_WOOD_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
+    Block SMALL_GLASS_DOOR = registrar.createWithItem("small_glass_door", new SmallDoorBlock(TMMBlockEntities.SMALL_GLASS_DOOR, AbstractBlock.Settings.create().dynamicBounds().strength(-1, 3600000).mapColor(MapColor.CLEAR).dropsNothing().nonOpaque().allowsSpawning(Blocks::never).pistonBehavior(PistonBehavior.BLOCK).sounds(BlockSoundGroup.COPPER_BULB)), TMMItems.DECORATION_GROUP);
+    Block SMALL_WOOD_DOOR = registrar.createWithItem("small_wood_door", new SmallDoorBlock(TMMBlockEntities.SMALL_WOOD_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), TMMItems.DECORATION_GROUP);
 
     // Fancy steel
     Block ANTHRACITE_STEEL = registrar.createWithItem("anthracite_steel", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), TMMItems.BUILDING_GROUP);

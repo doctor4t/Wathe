@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 public class CabinetBlock extends HorizontalFacingBlock implements CrosshairEnabling {
 
     public static final BooleanProperty OPEN = Properties.OPEN;
+    private static final MapCodec<CabinetBlock> CODEC = createCodec(CabinetBlock::new);
 
     public CabinetBlock(Settings settings) {
         super(settings);
@@ -34,7 +35,7 @@ public class CabinetBlock extends HorizontalFacingBlock implements CrosshairEnab
 
     @Override
     protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
-        return null;
+        return CODEC;
     }
 
     @Nullable
