@@ -339,6 +339,7 @@
   "tip.letter.tooltip1": "%s for your trip on the 1st of January 1923.",
   "tip.letter.tooltip2": "La Sirène wishes you a pleasant and safe voyage.",
   "tmm.gui.reset": "Clear",
+  "trainmurdermystery.midnightconfig.disableScreenShake": "Disable Screen Shake",
   "trainmurdermystery.midnightconfig.title": "The Last Voyage of the Harpy Express - Config",
   "trainmurdermystery.midnightconfig.ultraPerfMode": "Ultra Performance Mode",
   "trainmurdermystery.midnightconfig.ultraPerfMode.tooltip": "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2."

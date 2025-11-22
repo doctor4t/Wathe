@@ -8,6 +8,8 @@ import net.minecraft.client.MinecraftClient;
 public class TMMConfig extends MidnightConfig {
     @Entry
     public static boolean ultraPerfMode = false;
+    @Entry
+    public static boolean disableScreenShake = false;
 
     @Override
     public void writeChanges(String modid) {
@@ -15,6 +17,7 @@ public class TMMConfig extends MidnightConfig {
 
         int lockedRenderDistance = TMMClient.getLockedRenderDistance(ultraPerfMode);
         OptionLocker.overrideOption("renderDistance", lockedRenderDistance);
+
         MinecraftClient.getInstance().options.viewDistance.setValue(lockedRenderDistance);
     }
 }

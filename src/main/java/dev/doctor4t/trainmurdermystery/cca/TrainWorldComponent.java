@@ -20,7 +20,6 @@ public class TrainWorldComponent implements AutoSyncedComponent, ServerTickingCo
     private int time = 0;
     private boolean snow = true;
     private boolean fog = true;
-    private boolean screenshake = true;
     private boolean hud = true;
     private TimeOfDay timeOfDay = TimeOfDay.NIGHT;
 
@@ -68,15 +67,6 @@ public class TrainWorldComponent implements AutoSyncedComponent, ServerTickingCo
         this.sync();
     }
 
-    public boolean isScreenshake() {
-        return screenshake;
-    }
-
-    public void setScreenshake(boolean isScreenshake) {
-        this.screenshake = isScreenshake;
-        this.sync();
-    }
-
     public boolean hasHud() {
         return hud;
     }
@@ -101,7 +91,6 @@ public class TrainWorldComponent implements AutoSyncedComponent, ServerTickingCo
         this.setTime(nbtCompound.getInt("Time"));
         this.setSnow(nbtCompound.getBoolean("Snow"));
         this.setFog(nbtCompound.getBoolean("Fog"));
-        this.setScreenshake(nbtCompound.getBoolean("Screenshake"));
         this.setHud(nbtCompound.getBoolean("Hud"));
         this.setTimeOfDay(TimeOfDay.valueOf(nbtCompound.getString("TimeOfDay")));
     }
@@ -112,7 +101,6 @@ public class TrainWorldComponent implements AutoSyncedComponent, ServerTickingCo
         nbtCompound.putInt("Time", time);
         nbtCompound.putBoolean("Snow", snow);
         nbtCompound.putBoolean("Fog", fog);
-        nbtCompound.putBoolean("Screenshake", screenshake);
         nbtCompound.putBoolean("Hud", hud);
         nbtCompound.putString("TimeOfDay", timeOfDay.name());
     }
@@ -141,7 +129,6 @@ public class TrainWorldComponent implements AutoSyncedComponent, ServerTickingCo
     public void reset() {
         this.snow = true;
         this.fog = true;
-        this.screenshake = true;
         this.hud = true;
         this.sync();
     }

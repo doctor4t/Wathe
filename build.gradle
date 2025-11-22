@@ -53,8 +53,8 @@ loom {
 
 fabricApi {
 	configureDataGeneration() {
-		setModId("trainmurdermystery")
-		setClient(true)
+		modId = "trainmurdermystery"
+		client = true
 	}
 }
 

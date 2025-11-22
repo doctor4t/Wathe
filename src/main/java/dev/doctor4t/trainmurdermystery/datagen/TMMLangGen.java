@@ -137,5 +137,6 @@ public class TMMLangGen extends FabricLanguageProvider {
         builder.add("trainmurdermystery.midnightconfig.title", "The Last Voyage of the Harpy Express - Config");
         builder.add("trainmurdermystery.midnightconfig.ultraPerfMode", "Ultra Performance Mode");
         builder.add("trainmurdermystery.midnightconfig.ultraPerfMode.tooltip", "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2.");
+        builder.add("trainmurdermystery.midnightconfig.disableScreenShake", "Disable Screen Shake");
     }
 }
