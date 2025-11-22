@@ -3,7 +3,6 @@ package dev.doctor4t.trainmurdermystery;
 import com.google.common.reflect.Reflection;
 import dev.doctor4t.trainmurdermystery.block.DoorPartBlock;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
-import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.command.*;
 import dev.doctor4t.trainmurdermystery.command.argument.TMMGameModeArgumentType;
 import dev.doctor4t.trainmurdermystery.command.argument.TimeOfDayArgumentType;
@@ -23,7 +22,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -132,6 +130,7 @@ public class TMM implements ModInitializer {
     }
 
     public static final Identifier COMMAND_ACCESS = id("commandaccess");
+
     public static int executeSupporterCommand(ServerCommandSource source, Runnable runnable) {
         ServerPlayerEntity player = source.getPlayer();
         if (player == null) return 0;

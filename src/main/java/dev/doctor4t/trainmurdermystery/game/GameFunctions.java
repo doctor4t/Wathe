@@ -180,7 +180,7 @@ public class GameFunctions {
         for (ServerPlayerEntity player : players) {
             player.changeGameMode(GameMode.ADVENTURE);
             Vec3d pos = player.getPos().add(GameConstants.PLAY_OFFSET);
-            player.requestTeleport(pos.getX(), pos.getY()+1, pos.getZ());
+            player.requestTeleport(pos.getX(), pos.getY() + 1, pos.getZ());
         }
 
         // teleport non playing players
@@ -230,13 +230,13 @@ public class GameFunctions {
                         List<Text> text = new ArrayList<>();
                         UnaryOperator<Style> stylizer = style -> style.withItalic(false).withColor(letterColor);
 
-                Text displayName = serverPlayerEntity.getDisplayName();
-                String string = displayName != null ? displayName.getString() : serverPlayerEntity.getName().getString();
-                if (string.charAt(string.length()-1) == '\uE780') { // remove ratty supporter icon
-                    string = string.substring(0, string.length()-1);
-                }
+                        Text displayName = serverPlayerEntity.getDisplayName();
+                        String string = displayName != null ? displayName.getString() : serverPlayerEntity.getName().getString();
+                        if (string.charAt(string.length() - 1) == '\uE780') { // remove ratty supporter icon
+                            string = string.substring(0, string.length() - 1);
+                        }
 
-                text.add(Text.translatable(tipString + "name", string).styled(style -> style.withItalic(false).withColor(0xFFFFFF)));
+                        text.add(Text.translatable(tipString + "name", string).styled(style -> style.withItalic(false).withColor(0xFFFFFF)));
                         text.add(Text.translatable(tipString + "room").styled(stylizer));
                         text.add(Text.translatable(tipString + "tooltip1",
                                 Text.translatable(tipString + "room." + switch (finalRoomNumber) {

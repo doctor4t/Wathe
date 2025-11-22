@@ -2,7 +2,6 @@ package dev.doctor4t.trainmurdermystery.mixin.compat.sodium;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import dev.doctor4t.trainmurdermystery.cca.TrainWorldComponent;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.compat.SodiumShaderInterface;
 import net.caffeinemc.mods.sodium.client.gl.buffer.GlBufferUsage;
@@ -57,13 +56,13 @@ public abstract class DefaultChunkRendererMixin {
             target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/DefaultChunkRenderer;executeDrawBatch(Lnet/caffeinemc/mods/sodium/client/gl/device/CommandList;Lnet/caffeinemc/mods/sodium/client/gl/tessellation/GlTessellation;Lnet/caffeinemc/mods/sodium/client/gl/device/MultiDrawBatch;)V"),
             remap = false)
     private void modifyChunkRenderBefore(ChunkRenderMatrices matrices,
-                                   CommandList commandList,
-                                   ChunkRenderListIterable renderLists,
-                                   TerrainRenderPass renderPass,
-                                   CameraTransform camera,
-                                   CallbackInfo ci,
-                                   @Local(ordinal = 0) ChunkShaderInterface shader,
-                                   @Local(ordinal = 0) RenderRegion region) {
+                                         CommandList commandList,
+                                         ChunkRenderListIterable renderLists,
+                                         TerrainRenderPass renderPass,
+                                         CameraTransform camera,
+                                         CallbackInfo ci,
+                                         @Local(ordinal = 0) ChunkShaderInterface shader,
+                                         @Local(ordinal = 0) RenderRegion region) {
         glBuffer = commandList.createMutableBuffer();
         commandList.uploadData(glBuffer, tmm_buffer, GlBufferUsage.STREAM_DRAW);
 
@@ -75,11 +74,11 @@ public abstract class DefaultChunkRendererMixin {
             shift = At.Shift.AFTER),
             remap = false)
     private void modifyChunkRenderAfter(ChunkRenderMatrices matrices,
-                                   CommandList commandList,
-                                   ChunkRenderListIterable renderLists,
-                                   TerrainRenderPass renderPass,
-                                   CameraTransform camera,
-                                   CallbackInfo ci) {
+                                        CommandList commandList,
+                                        ChunkRenderListIterable renderLists,
+                                        TerrainRenderPass renderPass,
+                                        CameraTransform camera,
+                                        CallbackInfo ci) {
         MemoryUtil.memFree(tmm_buffer);
         commandList.deleteBuffer(glBuffer);
         tmm_buffer = null;
@@ -140,8 +139,7 @@ public abstract class DefaultChunkRendererMixin {
                 finalX = ((v1 + tileLength + ((time) / 73.8f * trainSpeed)) % tileSize - tileSize / 2f);
                 finalY = (v2 + height);
                 finalZ = v3 - tileWidth;
-            } else
-                if (!trainSection) {
+            } else if (!trainSection) {
                 finalX = ((v1 + ((time) / 73.8f * trainSpeed)) % tileSize - tileSize / 2f);
                 finalY = (v2 + height); // + zSection * 16;
                 finalZ = v3;

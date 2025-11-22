@@ -2,7 +2,6 @@ package dev.doctor4t.trainmurdermystery.item;
 
 import dev.doctor4t.trainmurdermystery.entity.PlayerBodyEntity;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
-import dev.doctor4t.trainmurdermystery.util.AdventureUsable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

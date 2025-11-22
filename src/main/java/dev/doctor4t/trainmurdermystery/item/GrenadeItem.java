@@ -1,7 +1,6 @@
 package dev.doctor4t.trainmurdermystery.item;
 
 import dev.doctor4t.trainmurdermystery.entity.GrenadeEntity;
-import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.index.TMMEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import net.minecraft.entity.player.PlayerEntity;

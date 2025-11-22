@@ -1,6 +1,5 @@
 package dev.doctor4t.trainmurdermystery.client.render.entity;
 
-import dev.doctor4t.ratatouille.block.PlushBlockEntity;
 import dev.doctor4t.ratatouille.client.lib.render.helpers.Easing;
 import dev.doctor4t.ratatouille.mixin.client.BlockRenderManagerAccessor;
 import dev.doctor4t.trainmurdermystery.block.entity.HornBlockEntity;

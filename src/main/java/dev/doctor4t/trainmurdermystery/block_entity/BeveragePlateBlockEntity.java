@@ -14,7 +14,6 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +39,9 @@ public class BeveragePlateBlockEntity extends BlockEntity {
 
     public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T t) {
         if (!(t instanceof BeveragePlateBlockEntity tray)) return;
-        if ((!TMMClient.isKiller() && !CanSeePoison.EVENT.invoker().visible(MinecraftClient.getInstance().player)) || tray.poisoner == null) return;
+//        if ((!TMMClient.isKiller() && !CanSeePoison.EVENT.invoker().visible(MinecraftClient.getInstance().player)) || tray.poisoner == null)
+        if ((!TMMClient.isKiller()) || tray.poisoner == null)
+            return;
         if (world.getRandom().nextBetween(0, 20) < 17) return;
         world.addParticle(
                 TMMParticles.POISON,
@@ -84,7 +85,8 @@ public class BeveragePlateBlockEntity extends BlockEntity {
         super.writeNbt(nbt, registryLookup);
         var itemsNbt = new NbtCompound();
         for (var i = 0; i < this.storedItems.size(); i++) {
-            if (!this.storedItems.get(i).isEmpty()) itemsNbt.put("Item" + i, this.storedItems.get(i).encode(registryLookup));
+            if (!this.storedItems.get(i).isEmpty())
+                itemsNbt.put("Item" + i, this.storedItems.get(i).encode(registryLookup));
         }
         nbt.put("Items", itemsNbt);
         if (this.poisoner != null) nbt.putString("poisoner", this.poisoner);

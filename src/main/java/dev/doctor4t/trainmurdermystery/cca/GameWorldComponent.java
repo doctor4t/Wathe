@@ -2,10 +2,8 @@ package dev.doctor4t.trainmurdermystery.cca;
 
 import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.api.TMMRoles;
-import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -14,7 +12,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -49,6 +46,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     public enum GameStatus {
         INACTIVE, STARTING, ACTIVE, STOPPING
     }
+
     private GameMode gameMode = GameMode.MURDER;
 
     public enum GameMode implements StringIdentifiable {
@@ -373,10 +371,12 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
                 }
 
                 // check if out of time
-                if (winStatus == GameFunctions.WinStatus.NONE && !GameTimeComponent.KEY.get(serverWorld).hasTime()) winStatus = GameFunctions.WinStatus.TIME;
+                if (winStatus == GameFunctions.WinStatus.NONE && !GameTimeComponent.KEY.get(serverWorld).hasTime())
+                    winStatus = GameFunctions.WinStatus.TIME;
 
                 // stop game if ran out of time on discovery mode
-                if (gameMode == GameMode.DISCOVERY && winStatus == GameFunctions.WinStatus.TIME) GameFunctions.stopGame(serverWorld);
+                if (gameMode == GameMode.DISCOVERY && winStatus == GameFunctions.WinStatus.TIME)
+                    GameFunctions.stopGame(serverWorld);
 
                 // game end on win and display
                 if (winStatus != GameFunctions.WinStatus.NONE && this.gameStatus == GameStatus.ACTIVE) {

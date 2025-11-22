@@ -44,7 +44,8 @@ public class MoodRenderer {
     @Environment(EnvType.CLIENT)
     public static void renderHud(@NotNull PlayerEntity player, TextRenderer textRenderer, DrawContext context, RenderTickCounter tickCounter) {
         GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(player.getWorld());
-        if (!gameWorldComponent.isRunning() || !TMMClient.isPlayerAliveAndInSurvival() || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER) return;
+        if (!gameWorldComponent.isRunning() || !TMMClient.isPlayerAliveAndInSurvival() || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER)
+            return;
         var component = PlayerMoodComponent.KEY.get(player);
         var oldMood = moodRender;
         moodRender = MathHelper.lerp(tickCounter.getTickDelta(true) / 8, moodRender, component.getMood());
@@ -152,7 +153,7 @@ public class MoodRenderer {
         context.getMatrices().push();
         context.getMatrices().translate(random.nextGaussian() / 3, random.nextGaussian() / 3, 0);
         context.enableScissor(22, 6, 180, 23);
-        for (var i = -1; i <= 3; i++){
+        for (var i = -1; i <= 3; i++) {
             var value = 1 - ((player.age + tickCounter.getTickDelta(true)) / 64) % 1;
             context.getMatrices().push();
             context.getMatrices().translate(value * (width + 4), 6, 0);
@@ -203,7 +204,8 @@ public class MoodRenderer {
         public Text text = Text.empty();
 
         public boolean tick(PlayerMoodComponent.TrainTask present, float delta) {
-            if (present != null) this.text = Text.translatable("task." + (TMMClient.isKiller() ? "fake" : "feel")).append(Text.translatable("task." + present.getName()));
+            if (present != null)
+                this.text = Text.translatable("task." + (TMMClient.isKiller() ? "fake" : "feel")).append(Text.translatable("task." + present.getName()));
             this.present = present != null;
             this.alpha = MathHelper.lerp(delta / 16, this.alpha, present != null ? 1f : 0f);
             this.offset = MathHelper.lerp(delta / 32, this.offset, this.index);

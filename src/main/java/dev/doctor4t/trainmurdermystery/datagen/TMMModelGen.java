@@ -318,7 +318,7 @@ public class TMMModelGen extends FabricModelProvider {
         this.registerOrnament(generator, TMMBlocks.GOLD_ORNAMENT);
         this.registerParticleBlockWithItemSprite(generator, TMMBlocks.SMALL_WOOD_DOOR, TMMBlocks.SMOOTH_EBONY);
         this.registerParticleBlockWithItemSprite(generator, TMMBlocks.SMALL_GLASS_DOOR, TMMBlocks.TARNISHED_GOLD_PILLAR);
-        
+
         this.registerHullGlass(generator, TMMBlocks.HULL_GLASS);
         generator.registerSimpleCubeAll(TMMBlocks.RHOMBUS_HULL_GLASS);
         this.registerPrivacyGlassPanel(generator, TMMBlocks.PRIVACY_GLASS_PANEL);

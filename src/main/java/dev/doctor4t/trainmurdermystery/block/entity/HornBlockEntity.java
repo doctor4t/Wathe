@@ -1,8 +1,6 @@
 package dev.doctor4t.trainmurdermystery.block.entity;
 
-import dev.doctor4t.ratatouille.index.RatatouilleBlockEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMBlockEntities;
-import dev.doctor4t.trainmurdermystery.index.TMMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

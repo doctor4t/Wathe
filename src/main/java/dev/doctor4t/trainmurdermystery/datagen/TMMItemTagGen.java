@@ -1,7 +1,6 @@
 package dev.doctor4t.trainmurdermystery.datagen;
 
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
-import dev.doctor4t.trainmurdermystery.index.tag.TMMBlockTags;
 import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;

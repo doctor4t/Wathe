@@ -2,14 +2,11 @@ package dev.doctor4t.trainmurdermystery.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
-import dev.doctor4t.trainmurdermystery.cca.TrainWorldComponent;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.util.UUID;
-import java.util.function.BiConsumer;
 
 public class LockToSupportersCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {

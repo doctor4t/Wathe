@@ -1,7 +1,6 @@
 package dev.doctor4t.trainmurdermystery.client.render.block_entity;
 
 import dev.doctor4t.trainmurdermystery.block_entity.BeveragePlateBlockEntity;
-import dev.doctor4t.trainmurdermystery.index.TMMBlocks;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;

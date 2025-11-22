@@ -42,7 +42,7 @@ public record GunShootPayload(int target) implements CustomPayload {
             // cancel if derringer has been shot
             Boolean isUsed = mainHandStack.get(TMMDataComponentTypes.USED);
             if (mainHandStack.isOf(TMMItems.DERRINGER)) {
-                if(isUsed == null) {
+                if (isUsed == null) {
                     isUsed = false;
                 }
 
