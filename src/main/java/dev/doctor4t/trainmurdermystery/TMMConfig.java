@@ -10,6 +10,21 @@ public class TMMConfig extends MidnightConfig {
     public static boolean ultraPerfMode = false;
     @Entry
     public static boolean disableScreenShake = false;
+    @Entry
+    public static ParticleAmount particleAmount = ParticleAmount.A_LOT;
+
+    public enum ParticleAmount {
+        A_LOT(100),
+        NOT_A_LOT(50),
+        A_TINY_BIT(25),
+        NONE(0);
+
+        public final int multiplier;
+
+        ParticleAmount(int multiplier) {
+            this.multiplier = multiplier;
+        }
+    }
 
     @Override
     public void writeChanges(String modid) {
@@ -18,6 +33,9 @@ public class TMMConfig extends MidnightConfig {
         int lockedRenderDistance = TMMClient.getLockedRenderDistance(ultraPerfMode);
         OptionLocker.overrideOption("renderDistance", lockedRenderDistance);
 
-        MinecraftClient.getInstance().options.viewDistance.setValue(lockedRenderDistance);
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client != null && client.options != null) {
+            client.options.viewDistance.setValue(lockedRenderDistance);
+        }
     }
 }

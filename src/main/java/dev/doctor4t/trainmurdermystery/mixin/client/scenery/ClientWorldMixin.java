@@ -1,5 +1,6 @@
 package dev.doctor4t.trainmurdermystery.mixin.client.scenery;
 
+import dev.doctor4t.trainmurdermystery.TMMConfig;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.index.TMMBlocks;
 import dev.doctor4t.trainmurdermystery.index.TMMParticles;
@@ -60,10 +61,13 @@ public abstract class ClientWorldMixin extends World {
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void tmm$addSnowflakes(BooleanSupplier shouldKeepTicking, CallbackInfo ci) {
-        if (TMMClient.isTrainMoving() && TMMClient.getTrainComponent().isSnowing()) {
+        if (TMMClient.isTrainMoving() && TMMClient.getTrainComponent().isSnowing() && TMMConfig.particleAmount.multiplier > 0) {
             ClientPlayerEntity player = client.player;
             Random random = player.getRandom();
-            for (int i = 0; i < 200; i++) {
+
+            int particleCount = (200 * TMMConfig.particleAmount.multiplier) / 100;
+
+            for (int i = 0; i < particleCount; i++) {
                 Vec3d playerVel = player.getMovement();
                 Vec3d pos = new Vec3d(player.getX() - 20f + random.nextFloat() + playerVel.getX(), player.getY() + (random.nextFloat() * 2 - 1) * 10f + playerVel.getY(), player.getZ() + (random.nextFloat() * 2 - 1) * 10f + playerVel.getZ());
                 if (this.client.world.isSkyVisible(BlockPos.ofFloored(pos))) {

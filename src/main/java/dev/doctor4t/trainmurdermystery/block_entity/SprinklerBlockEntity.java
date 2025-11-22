@@ -1,5 +1,6 @@
 package dev.doctor4t.trainmurdermystery.block_entity;
 
+import dev.doctor4t.trainmurdermystery.TMMConfig;
 import dev.doctor4t.trainmurdermystery.block.SprinklerBlock;
 import dev.doctor4t.trainmurdermystery.index.TMMBlockEntities;
 import net.minecraft.block.BlockState;
@@ -23,7 +24,7 @@ public class SprinklerBlockEntity extends SyncingBlockEntity {
 
     public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T t) {
         SprinklerBlockEntity entity = (SprinklerBlockEntity) t;
-        if (!entity.isPowered()) {
+        if (!entity.isPowered() || TMMConfig.particleAmount.multiplier == 0) {
             return;
         }
         Direction direction = SprinklerBlock.getDirection(state);
@@ -36,7 +37,9 @@ public class SprinklerBlockEntity extends SyncingBlockEntity {
         double y = pos.getY();
         double z = pos.getZ() + 0.5;
 
-        for (int i = 0; i < 5; i++) {
+        int particleCount = Math.max(1, (5 * TMMConfig.particleAmount.multiplier) / 100);
+
+        for (int i = 0; i < particleCount; i++) {
             world.addParticle(direction == Direction.DOWN ? ParticleTypes.FALLING_WATER : ParticleTypes.SPLASH,
                     x - direction.getOffsetX() * offsetScale + ((random.nextFloat() * 2f - 1f) * (direction.getAxis() != Direction.Axis.X ? randomOffsetScale : 0)),
                     (direction == Direction.DOWN ? .5 : .6) + y - direction.getOffsetY() * offsetScale + ((random.nextFloat() * 2f - 1f) * (direction.getAxis() != Direction.Axis.Y ? randomOffsetScale : 0)),

@@ -1,5 +1,6 @@
 package dev.doctor4t.trainmurdermystery.block_entity;
 
+import dev.doctor4t.trainmurdermystery.TMMConfig;
 import dev.doctor4t.trainmurdermystery.index.TMMBlockEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMParticles;
 import net.minecraft.block.BlockState;
@@ -14,6 +15,9 @@ public class ChimneyBlockEntity extends SyncingBlockEntity {
     }
 
     public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T t) {
+        if (TMMConfig.particleAmount.multiplier == 0 || (TMMConfig.particleAmount.multiplier < 100 && world.getTime() % (100 / Math.max(1, TMMConfig.particleAmount.multiplier)) != 0)) {
+            return;
+        }
         world.addParticle(TMMParticles.BLACK_SMOKE, pos.getX() + .5f, pos.getY(), pos.getZ() + .5f, 0, 0, 0);
     }
 }

@@ -25,6 +25,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameRules;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,10 @@ import java.util.Optional;
 public class TMM implements ModInitializer {
     public static final String MOD_ID = "trainmurdermystery";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+    public static final GameRules.Key<GameRules.BooleanRule> PUNISH_INNOCENT_KILL =
+        GameRules.register("tmmPunishInnocentKill", GameRules.Category.PLAYER,
+            GameRules.BooleanRule.create(false));
 
     public static @NotNull Identifier id(String name) {
         return Identifier.of(MOD_ID, name);

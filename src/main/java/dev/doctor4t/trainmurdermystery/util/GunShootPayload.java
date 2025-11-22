@@ -70,6 +70,16 @@ public record GunShootPayload(int target) implements CustomPayload {
                     }, 4);
                 }
                 GameFunctions.killPlayer(target, true, player, TMM.id("gun_shot"));
+
+                if (game.isInnocent(target) &&
+                    player.getWorld().getGameRules().getBoolean(TMM.PUNISH_INNOCENT_KILL) &&
+                    !player.isCreative()) {
+                    Scheduler.schedule(() -> {
+                        if (GameFunctions.isPlayerAliveAndSurvival(player)) {
+                            GameFunctions.killPlayer(player, true, null, TMM.id("gun_shot"));
+                        }
+                    }, 10);
+                }
             }
 
             player.getWorld().playSound(null, player.getX(), player.getEyeY(), player.getZ(), TMMSounds.ITEM_REVOLVER_SHOOT, SoundCategory.PLAYERS, 5f, 1f + player.getRandom().nextFloat() * .1f - .05f);
