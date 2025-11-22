@@ -36,13 +36,13 @@ public class ForceRoleCommand {
 
     private static int forceVigilante(@NotNull ServerCommandSource source, @NotNull Collection<ServerPlayerEntity> players) {
         return TMM.executeSupporterCommand(source,
-            () -> {
-                ScoreboardRoleSelectorComponent component = ScoreboardRoleSelectorComponent.KEY.get(source.getServer().getScoreboard());
-                component.forcedVigilantes.clear();
-                for (ServerPlayerEntity player : players) {
-                    component.forcedVigilantes.add(player.getUuid());
+                () -> {
+                    ScoreboardRoleSelectorComponent component = ScoreboardRoleSelectorComponent.KEY.get(source.getServer().getScoreboard());
+                    component.forcedVigilantes.clear();
+                    for (ServerPlayerEntity player : players) {
+                        component.forcedVigilantes.add(player.getUuid());
+                    }
                 }
-            }
         );
     }
 }

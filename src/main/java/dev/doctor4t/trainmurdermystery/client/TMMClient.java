@@ -237,9 +237,9 @@ public class TMMClient implements ClientModInitializer {
             prevInstinctLightLevel = instinctLightLevel;
             // instinct night vision
             if (TMMClient.isInstinctEnabled()) {
-                instinctLightLevel+=.1f;
+                instinctLightLevel += .1f;
             } else {
-                instinctLightLevel-=.1f;
+                instinctLightLevel -= .1f;
             }
             instinctLightLevel = MathHelper.clamp(instinctLightLevel, -.04f, .5f);
 

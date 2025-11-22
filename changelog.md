@@ -1,4 +1,9 @@
 ------------------------------------------------------
+The Last Voyage of the Harpy Express 1.1.2.1 - 1.21.1
+------------------------------------------------------
+- Hotfix to prevent a server crash by removing one of the new events for addons
+
+------------------------------------------------------
 The Last Voyage of the Harpy Express 1.1.2 - 1.21.1
 ------------------------------------------------------
 - Added a client config option to disable screen shake

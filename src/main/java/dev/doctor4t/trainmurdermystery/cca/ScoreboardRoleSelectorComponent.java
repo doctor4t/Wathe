@@ -137,7 +137,8 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
     private void reduceKillers() {
         var minimum = Integer.MAX_VALUE;
         for (var times : this.killerRounds.values()) minimum = Math.min(minimum, times);
-        for (var times : this.killerRounds.keySet()) this.killerRounds.put(times, this.killerRounds.get(times) - minimum);
+        for (var times : this.killerRounds.keySet())
+            this.killerRounds.put(times, this.killerRounds.get(times) - minimum);
     }
 
     public void assignVigilantes(ServerWorld world, GameWorldComponent gameComponent, @NotNull List<ServerPlayerEntity> players, int vigilanteCount) {
@@ -184,7 +185,8 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
     private void reduceVigilantes() {
         var minimum = Integer.MAX_VALUE;
         for (var times : this.vigilanteRounds.values()) minimum = Math.min(minimum, times);
-        for (var times : this.vigilanteRounds.keySet()) this.vigilanteRounds.put(times, this.vigilanteRounds.get(times) - minimum);
+        for (var times : this.vigilanteRounds.keySet())
+            this.vigilanteRounds.put(times, this.vigilanteRounds.get(times) - minimum);
     }
 
     @Override

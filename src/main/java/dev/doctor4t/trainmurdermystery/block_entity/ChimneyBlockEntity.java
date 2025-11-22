@@ -4,9 +4,7 @@ import dev.doctor4t.trainmurdermystery.index.TMMBlockEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMParticles;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class ChimneyBlockEntity extends SyncingBlockEntity {
@@ -16,6 +14,6 @@ public class ChimneyBlockEntity extends SyncingBlockEntity {
     }
 
     public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T t) {
-        world.addParticle(TMMParticles.BLACK_SMOKE, pos.getX()+.5f, pos.getY(), pos.getZ() + .5f, 0, 0, 0);
+        world.addParticle(TMMParticles.BLACK_SMOKE, pos.getX() + .5f, pos.getY(), pos.getZ() + .5f, 0, 0, 0);
     }
 }

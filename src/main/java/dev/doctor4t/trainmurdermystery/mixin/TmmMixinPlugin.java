@@ -2,8 +2,6 @@ package dev.doctor4t.trainmurdermystery.mixin;
 
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InnerClassNode;
-import org.objectweb.asm.tree.MethodNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
@@ -24,14 +22,8 @@ public class TmmMixinPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if (!FabricLoader.getInstance().isModLoaded("sodium")) {
-            if (mixinClassName.contains("dev.doctor4t.trainmurdermystery.mixin.compat.sodium")) {
-                return false;
-            }
-        } else if (mixinClassName.equals("dev.doctor4t.trainmurdermystery.mixin.client.scenery.SceneryWorldRendererMixin")) {
-            return false;
-        }
-
-        return true;
+            return !mixinClassName.contains("dev.doctor4t.trainmurdermystery.mixin.compat.sodium");
+        } else return !mixinClassName.equals("dev.doctor4t.trainmurdermystery.mixin.client.scenery.SceneryWorldRendererMixin");
     }
 
     @Override
