@@ -19,7 +19,7 @@ public class TimeRenderer {
     public static void renderHud(TextRenderer renderer, @NotNull ClientPlayerEntity player, @NotNull DrawContext context, float delta) {
         GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(player.getWorld());
         if (gameWorldComponent.isRunning() && (gameWorldComponent.getGameMode() == GameWorldComponent.GameMode.DISCOVERY || gameWorldComponent.isRole(player, TMMRoles.KILLER) || GameFunctions.isPlayerSpectatingOrCreative(player))) {
-            var time = GameTimeComponent.KEY.get(player.getWorld()).getTime();
+            int time = GameTimeComponent.KEY.get(player.getWorld()).getTime();
             if (Math.abs(view.getTarget() - time) > 10) offsetDelta = time > view.getTarget() ? .6f : -.6f;
             if (time < GameConstants.getInTicks(1, 0)) {
                 offsetDelta = -0.9f;
@@ -27,10 +27,10 @@ public class TimeRenderer {
                 offsetDelta = MathHelper.lerp(delta / 16, offsetDelta, 0f);
             }
             view.setTarget(time);
-            var r = offsetDelta > 0 ? 1f - offsetDelta : 1f;
-            var g = offsetDelta < 0 ? 1f + offsetDelta : 1f;
-            var b = 1f - Math.abs(offsetDelta);
-            var colour = MathHelper.packRgb(r, g, b) | 0xFF000000;
+            float red = offsetDelta > 0 ? 1f - offsetDelta : 1f;
+            float green = offsetDelta < 0 ? 1f + offsetDelta : 1f;
+            float blue = 1f - Math.abs(offsetDelta);
+            int colour = MathHelper.packRgb(red, green, blue) | 0xFF000000;
             context.getMatrices().push();
             context.getMatrices().translate(context.getScaledWindowWidth() / 2f, 6, 0);
             view.render(renderer, context, 0, 0, colour, delta);
@@ -49,8 +49,8 @@ public class TimeRenderer {
 
         public void setTarget(float target) {
             this.target = target;
-            var seconds = target / 20;
-            var mins = seconds / 60;
+            float seconds = target / 20;
+            float mins = seconds / 60;
             this.seconds.getLeft().setTarget(seconds / 10);
             this.seconds.getRight().setTarget(seconds);
             this.minutes.getLeft().setTarget(mins / 10);
@@ -104,18 +104,22 @@ public class TimeRenderer {
         }
 
         public void render(@NotNull TextRenderer renderer, @NotNull DrawContext context, int colour, float delta) {
-            var value = MathHelper.lerp(delta, this.lastValue, this.value);
-            var digit = MathHelper.floor(value) % (this.cap6 ? 6 : 10);
-            var digitNext = MathHelper.floor(value + 1) % (this.cap6 ? 6 : 10);
-            var offset = Math.pow(value % 1, this.power);
+            float value = MathHelper.lerp(delta, this.lastValue, this.value);
+            int digit = MathHelper.floor(value) % (this.cap6 ? 6 : 10);
+            int digitNext = MathHelper.floor(value + 1) % (this.cap6 ? 6 : 10);
+            double offset = Math.pow(value % 1, this.power);
             colour &= 0xFFFFFF;
             context.getMatrices().push();
             context.getMatrices().translate(0, -offset * (renderer.fontHeight + 2), 0);
-            var alpha = (1.0f - Math.abs(offset)) * 255.0f;
-            var baseColour = colour | (int) alpha << 24;
-            var nextColour = colour | (int) (Math.abs(offset) * 255.0f) << 24;
-            if ((baseColour & -67108864) != 0) context.drawTextWithShadow(renderer, String.valueOf(digit), 0, 0, baseColour);
-            if ((nextColour & -67108864) != 0) context.drawTextWithShadow(renderer, String.valueOf(digitNext), 0, renderer.fontHeight + 2, nextColour);
+            double alpha = (1.0f - Math.abs(offset)) * 255.0f;
+            int baseColour = colour | (int) alpha << 24;
+            int nextColour = colour | (int) (Math.abs(offset) * 255.0f) << 24;
+            if ((baseColour & -67108864) != 0) {
+                context.drawTextWithShadow(renderer, String.valueOf(digit), 0, 0, baseColour);
+            }
+            if ((nextColour & -67108864) != 0) {
+                context.drawTextWithShadow(renderer, String.valueOf(digitNext), 0, renderer.fontHeight + 2, nextColour);
+            }
             context.getMatrices().pop();
         }
 

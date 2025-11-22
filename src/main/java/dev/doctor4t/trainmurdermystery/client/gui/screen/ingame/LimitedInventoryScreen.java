@@ -18,6 +18,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class LimitedInventoryScreen extends LimitedHandledScreen<PlayerScreenHandler> {
     public static final Identifier BACKGROUND_TEXTURE = TMM.id("textures/gui/container/limited_inventory.png");
     public static final @NotNull Identifier ID = TMM.id("textures/gui/game.png");
@@ -32,12 +34,13 @@ public class LimitedInventoryScreen extends LimitedHandledScreen<PlayerScreenHan
     protected void init() {
         super.init();
         if (!GameWorldComponent.KEY.get(this.player.getWorld()).isRole(this.player, TMMRoles.KILLER)) return;
-        var entries = GameConstants.SHOP_ENTRIES;
+        List<ShopEntry> entries = GameConstants.SHOP_ENTRIES;
         int apart = 38;
-        var x = this.width / 2 - entries.size() * apart / 2 + 9;
-        var y = this.y - 46;
-        for (var i = 0; i < entries.size(); i++)
+        int x = this.width / 2 - entries.size() * apart / 2 + 9;
+        int y = this.y - 46;
+        for (int i = 0; i < entries.size(); i++) {
             this.addDrawableChild(new StoreItemWidget(this, x + apart * i, y, entries.get(i), i));
+        }
     }
 
     @Override
@@ -84,7 +87,7 @@ public class LimitedInventoryScreen extends LimitedHandledScreen<PlayerScreenHan
                 this.screen.renderLimitedInventoryTooltip(context, this.entry.stack());
                 drawShopSlotHighlight(context, this.getX(), this.getY(), 0);
             }
-            var price = Text.literal(this.entry.price() + "\uE781");
+            Text price = Text.literal(this.entry.price() + "\uE781");
             context.drawTooltip(this.screen.textRenderer, price, this.getX() - 4 - this.screen.textRenderer.getWidth(price) / 2, this.getY() - 9);
         }
 

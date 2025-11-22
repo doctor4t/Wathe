@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BeveragePlateBlockEntity extends BlockEntity {
     private final List<ItemStack> storedItems = new ArrayList<>();
@@ -82,12 +83,16 @@ public class BeveragePlateBlockEntity extends BlockEntity {
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
-        var itemsNbt = new NbtCompound();
-        for (var i = 0; i < this.storedItems.size(); i++) {
-            if (!this.storedItems.get(i).isEmpty()) itemsNbt.put("Item" + i, this.storedItems.get(i).encode(registryLookup));
+        NbtCompound itemsNbt = new NbtCompound();
+        for (int i = 0; i < this.storedItems.size(); i++) {
+            if (!this.storedItems.get(i).isEmpty()) {
+                itemsNbt.put("Item" + i, this.storedItems.get(i).encode(registryLookup));
+            }
         }
         nbt.put("Items", itemsNbt);
-        if (this.poisoner != null) nbt.putString("poisoner", this.poisoner);
+        if (this.poisoner != null) {
+            nbt.putString("poisoner", this.poisoner);
+        }
         nbt.putBoolean("Drink", this.plate == PlateType.DRINK);
     }
 
@@ -96,10 +101,9 @@ public class BeveragePlateBlockEntity extends BlockEntity {
         super.readNbt(nbt, registryLookup);
         this.storedItems.clear();
         if (nbt.contains("Items")) {
-            var itemsNbt = nbt.getCompound("Items");
-            for (var key : itemsNbt.getKeys()) {
-                var itemStack = ItemStack.fromNbt(registryLookup, itemsNbt.get(key));
-                itemStack.ifPresent(this.storedItems::add);
+            NbtCompound itemsNbt = nbt.getCompound("Items");
+            for (String key : itemsNbt.getKeys()) {
+                ItemStack.fromNbt(registryLookup, itemsNbt.get(key)).ifPresent(this.storedItems::add);
             }
         }
         this.poisoner = nbt.contains("poisoner") ? nbt.getString("poisoner") : null;

@@ -103,9 +103,9 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @Inject(method = "eatFood", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/HungerManager;eat(Lnet/minecraft/component/type/FoodComponent;)V", shift = At.Shift.AFTER))
     private void tmm$poisonedFoodEffect(@NotNull World world, ItemStack stack, FoodComponent foodComponent, CallbackInfoReturnable<ItemStack> cir) {
         if (world.isClient) return;
-        var poisoner = stack.getOrDefault(TMMDataComponentTypes.POISONER, null);
+        String poisoner = stack.getOrDefault(TMMDataComponentTypes.POISONER, null);
         if (poisoner != null) {
-            var poisonTicks = PlayerPoisonComponent.KEY.get(this).poisonTicks;
+            int poisonTicks = PlayerPoisonComponent.KEY.get(this).poisonTicks;
             if (poisonTicks == -1) {
                 PlayerPoisonComponent.KEY.get(this).setPoisonTicks(world.getRandom().nextBetween(PlayerPoisonComponent.clampTime.getLeft(), PlayerPoisonComponent.clampTime.getRight()), UUID.fromString(poisoner));
             } else {

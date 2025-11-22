@@ -33,10 +33,12 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
             float headYaw,
             float headPitch, Operation<Void> original,
             T livingEntity) {
-        var isPsycho = livingEntity instanceof PlayerEntity player && PlayerPsychoComponent.KEY.get(player).getPsychoTicks() > 0;
-        var isItemRenderer = instance instanceof HeldItemFeatureRenderer<?, ?>;
-        if (!isPsycho || isItemRenderer) {
-            original.call(instance, matrixStack, vertexConsumerProvider, i, t, limbAngle, limbDistance, tickDelta, animationProgress, headYaw, headPitch);
+        if (!(instance instanceof HeldItemFeatureRenderer<?, ?>)) {
+            return;
         }
+        if (livingEntity instanceof PlayerEntity player && PlayerPsychoComponent.KEY.get(player).getPsychoTicks() > 0) {
+            return;
+        }
+        original.call(instance, matrixStack, vertexConsumerProvider, i, t, limbAngle, limbDistance, tickDelta, animationProgress, headYaw, headPitch);
     }
 }

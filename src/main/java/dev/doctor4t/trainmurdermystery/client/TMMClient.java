@@ -41,6 +41,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.option.CloudRenderMode;
 import net.minecraft.client.option.KeyBinding;
@@ -79,7 +80,7 @@ public class TMMClient implements ClientModInitializer {
     public static float instinctLightLevel = -.04f;
 
     public static boolean shouldDisableHudAndDebug() {
-        var client = MinecraftClient.getInstance();
+        MinecraftClient client = MinecraftClient.getInstance();
         return (client == null || (client.player != null && !client.player.isCreative() && !client.player.isSpectator()));
     }
 
@@ -263,7 +264,7 @@ public class TMMClient implements ClientModInitializer {
                 soundLevel = MinecraftClient.getInstance().options.getSoundVolume(SoundCategory.MASTER);
             }
 
-            var player = MinecraftClient.getInstance().player;
+            ClientPlayerEntity player = MinecraftClient.getInstance().player;
             if (player != null) {
                 StoreRenderer.tick();
                 TimeRenderer.tick();
@@ -380,23 +381,35 @@ public class TMMClient implements ClientModInitializer {
     }
 
     public static int getInstinctHighlight(Entity target) {
-        if (!isInstinctEnabled()) return -1;
+        if (!isInstinctEnabled()) {
+            return -1;
+        }
 //        if (target instanceof PlayerBodyEntity) return 0x606060;
-        if (target instanceof ItemEntity || target instanceof NoteEntity || target instanceof FirecrackerEntity) return 0xDB9D00;
-        if (target instanceof PlayerEntity player) {
-            if (GameFunctions.isPlayerSpectatingOrCreative(player)) return -1;
-            if (isKiller() && gameComponent.isRole(player, TMMRoles.KILLER)) return MathHelper.hsvToRgb(0F, 1.0F, 0.6F);
-            if (gameComponent.isInnocent(player)) {
-                var mood = PlayerMoodComponent.KEY.get(target).getMood();
-                if (mood < GameConstants.DEPRESSIVE_MOOD_THRESHOLD) {
-                    return 0x171DC6;
-                } else if (mood < GameConstants.MID_MOOD_THRESHOLD) {
-                    return 0x1FAFAF;
-                } else {
-                    return 0x4EDD35;
-                }
+        if (target instanceof ItemEntity || target instanceof NoteEntity || target instanceof FirecrackerEntity) {
+            return 0xDB9D00;
+        }
+
+        if (!(target instanceof PlayerEntity player)) {
+            return -1;
+        }
+        if (GameFunctions.isPlayerSpectatingOrCreative(player)) {
+            return -1;
+        }
+        if (isKiller() && gameComponent.isRole(player, TMMRoles.KILLER)) {
+            return MathHelper.hsvToRgb(0F, 1.0F, 0.6F);
+        }
+        if (gameComponent.isInnocent(player)) {
+            float mood = PlayerMoodComponent.KEY.get(target).getMood();
+            if (mood < GameConstants.DEPRESSIVE_MOOD_THRESHOLD) {
+                return 0x171DC6;
+            } else if (mood < GameConstants.MID_MOOD_THRESHOLD) {
+                return 0x1FAFAF;
+            } else {
+                return 0x4EDD35;
             }
-            if (isPlayerSpectatingOrCreative()) return 0xFFFFFF;
+        }
+        if (isPlayerSpectatingOrCreative()) {
+            return 0xFFFFFF;
         }
         return -1;
     }

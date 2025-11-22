@@ -9,8 +9,10 @@ import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.client.gui.*;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
@@ -38,17 +40,24 @@ public class InGameHudMixin {
 
     @Inject(method = "renderMainHud", at = @At("TAIL"))
     private void tmm$renderHud(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
-        if (TMMClient.trainComponent != null && TMMClient.trainComponent.hasHud()) {
-            var player = this.client.player;
-            if (player == null) return;
-            var renderer = MinecraftClient.getInstance().textRenderer;
-            MoodRenderer.renderHud(player, renderer, context, tickCounter);
-            RoleNameRenderer.renderHud(renderer, player, context, tickCounter);
-            RoundTextRenderer.renderHud(renderer, player, context);
-            if (MinecraftClient.getInstance().currentScreen == null) StoreRenderer.renderHud(renderer, player, context, tickCounter.getTickDelta(true));
-            TimeRenderer.renderHud(renderer, player, context, tickCounter.getTickDelta(true));
-            LobbyPlayersRenderer.renderHud(renderer, player, context);
+        if (TMMClient.trainComponent == null || !TMMClient.trainComponent.hasHud()) {
+            return;
         }
+
+        ClientPlayerEntity player = this.client.player;
+        if (player == null) {
+            return;
+        }
+
+        TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
+        MoodRenderer.renderHud(player, renderer, context, tickCounter);
+        RoleNameRenderer.renderHud(renderer, player, context, tickCounter);
+        RoundTextRenderer.renderHud(renderer, player, context);
+        if (MinecraftClient.getInstance().currentScreen == null) {
+            StoreRenderer.renderHud(renderer, player, context, tickCounter.getTickDelta(true));
+        }
+        TimeRenderer.renderHud(renderer, player, context, tickCounter.getTickDelta(true));
+        LobbyPlayersRenderer.renderHud(renderer, player, context);
     }
 
     @WrapMethod(method = "renderCrosshair")
@@ -57,7 +66,7 @@ public class InGameHudMixin {
             original.call(context, tickCounter);
             return;
         }
-        var player = this.client.player;
+        ClientPlayerEntity player = this.client.player;
         if (player == null) return;
         CrosshairRenderer.renderCrosshair(this.client, player, context, tickCounter);
     }
@@ -78,7 +87,9 @@ public class InGameHudMixin {
 
     @WrapMethod(method = "renderPlayerList")
     private void tmm$removePlayerList(DrawContext context, RenderTickCounter tickCounter, Operation<Void> original) {
-        if (!TMMClient.isPlayerAliveAndInSurvival()) original.call(context, tickCounter);
+        if (!TMMClient.isPlayerAliveAndInSurvival()) {
+            original.call(context, tickCounter);
+        }
     }
 
     @WrapMethod(method = "renderExperienceLevel")
@@ -101,23 +112,24 @@ public class InGameHudMixin {
     @WrapMethod(method = "renderMiscOverlays")
     private void tmm$moveSleepOverlayToUnderUI(DrawContext context, RenderTickCounter tickCounter, Operation<Void> original) {
         // sleep overlay
-        if (this.client.player != null && this.client.player.getSleepTimer() > 0) {
-            this.client.getProfiler().push("sleep");
-
-            float f = (float) this.client.player.getSleepTimer();
-
-            float g = Math.min(1, f / 30f);
-
-            if (f > 100f) {
-                g = 1 - (f - 100f) / 10f;
-            }
-
-            float fadeAlpha = MathHelper.lerp(MathHelper.clamp(Easing.SINE_IN.ease(g, 0, 1, 1), 0, 1), 0f, 1f);
-            Color color = new Color(0.04f, 0f, 0.08f, fadeAlpha);
-            context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), color.getRGB());
-
-            this.client.getProfiler().pop();
+        if (this.client.player == null || this.client.player.getSleepTimer() <= 0) {
+            return;
         }
+        this.client.getProfiler().push("sleep");
+
+        float f = (float) this.client.player.getSleepTimer();
+
+        float g = Math.min(1, f / 30f);
+
+        if (f > 100f) {
+            g = 1 - (f - 100f) / 10f;
+        }
+
+        float fadeAlpha = MathHelper.lerp(MathHelper.clamp(Easing.SINE_IN.ease(g, 0, 1, 1), 0, 1), 0f, 1f);
+        Color color = new Color(0.04f, 0f, 0.08f, fadeAlpha);
+        context.fill(RenderLayer.getGuiOverlay(), 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(), color.getRGB());
+
+        this.client.getProfiler().pop();
     }
 
     @WrapMethod(method = "renderSleepOverlay")

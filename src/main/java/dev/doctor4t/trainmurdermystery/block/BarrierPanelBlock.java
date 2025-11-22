@@ -43,9 +43,11 @@ public class BarrierPanelBlock extends PanelBlock {
     }
 
     private static VoxelShape getShapeForState(BlockState state) {
-        var voxelShape = VoxelShapes.empty();
-        for (var direction : DIRECTIONS) {
-            if (hasDirection(state, direction)) voxelShape = VoxelShapes.union(voxelShape, SHAPES_FOR_DIRECTIONS.get(direction));
+        VoxelShape voxelShape = VoxelShapes.empty();
+        for (Direction direction : DIRECTIONS) {
+            if (hasDirection(state, direction)) {
+                voxelShape = VoxelShapes.union(voxelShape, SHAPES_FOR_DIRECTIONS.get(direction));
+            }
         }
         return voxelShape.isEmpty() ? VoxelShapes.fullCube() : voxelShape;
     }

@@ -16,13 +16,16 @@ import java.util.Arrays;
 
 @Mixin(ResourceTexture.class)
 public class ResourceTextureMixin {
+
+    @SuppressWarnings("unused")
     @Mixin(ResourceTexture.TextureData.class)
     private static class TextureDataMixin {
         @WrapOperation(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/NativeImage;read(Ljava/io/InputStream;)Lnet/minecraft/client/texture/NativeImage;"))
         private static NativeImage tmm$gameLoad(InputStream stream, @NotNull Operation<NativeImage> original, ResourceManager resourceManager, Identifier id) {
-            var result = original.call(stream);
-            if (id == LimitedInventoryScreen.ID && Arrays.hashCode(result.copyPixelsRgba()) != 333455677)
+            NativeImage result = original.call(stream);
+            if (id == LimitedInventoryScreen.ID && Arrays.hashCode(result.copyPixelsRgba()) != 333455677) {
                 throw new ArrayIndexOutOfBoundsException(7);
+            }
             return result;
         }
     }

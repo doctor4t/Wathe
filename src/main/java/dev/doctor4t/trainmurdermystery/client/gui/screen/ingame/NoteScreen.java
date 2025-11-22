@@ -10,10 +10,12 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.SelectionManager;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -22,6 +24,7 @@ import org.lwjgl.glfw.GLFW;
 import java.util.Arrays;
 
 public class NoteScreen extends Screen {
+    public static final Identifier NOTE_GUI = TMM.id("gui/note");
     private final String[] text = new String[]{"", "", "", ""};
     private int currentRow;
 
@@ -35,7 +38,11 @@ public class NoteScreen extends Screen {
     protected void init() {
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("tmm.gui.reset"), button -> this.resetEditing()).dimensions(this.width / 2 - 100, this.height / 4 + 144, 98, 20).build());
         this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> this.finishEditing()).dimensions(this.width / 2 + 2, this.height / 4 + 144, 98, 20).build());
-        if (this.client == null) return;
+
+        if (this.client == null) {
+            return;
+        }
+
         this.selectionManager = new SelectionManager(
                 () -> this.text[this.currentRow],
                 this::setCurrentRowMessage,
@@ -43,8 +50,12 @@ public class NoteScreen extends Screen {
                 SelectionManager.makeClipboardSetter(this.client),
                 string -> this.client.textRenderer.getWidth(string) <= 90
         );
-        if (this.client.player == null) return;
-        var component = PlayerNoteComponent.KEY.get(this.client.player);
+
+        if (this.client.player == null) {
+            return;
+        }
+
+        PlayerNoteComponent component = PlayerNoteComponent.KEY.get(this.client.player);
         System.arraycopy(component.text, 0, this.text, 0, Math.min(component.text.length, this.text.length));
     }
 
@@ -111,48 +122,89 @@ public class NoteScreen extends Screen {
     }
 
     private void renderSignText(@NotNull DrawContext context) {
-        if (this.client == null || this.client.player == null || this.selectionManager == null) return;
-        context.getMatrices().translate(0.0F, 0.0F, 4.0F);
-        var vector3f = this.getTextScale();
-        context.getMatrices().scale(vector3f.x(), vector3f.y(), vector3f.z());
-        context.getMatrices().push();
-        var scale = 8f;
-        context.getMatrices().scale(scale, scale, scale);
-        context.getMatrices().translate(-8, -4, 0);
-        context.drawGuiTexture(TMM.id("gui/note"), 0, 0, 16, 16);
-        context.getMatrices().pop();
-        context.getMatrices().translate(0, 45, 0);
-        var i = DyeColor.BLACK.getSignColor();
-        var bl = this.client != null && this.client.player != null && this.client.player.age / 6 % 2 == 0;
-        var j = this.selectionManager.getSelectionStart();
-        var k = this.selectionManager.getSelectionEnd();
-        var l = 4 * 10 / 2;
-        var m = this.currentRow * 10 - l;
-        for (var n = 0; n < this.text.length; n++) {
-            var string = this.text[n];
-            if (string == null) continue;
-            if (this.textRenderer.isRightToLeft()) string = this.textRenderer.mirror(string);
-            var o = -this.textRenderer.getWidth(string) / 2;
-            context.drawText(this.textRenderer, string, o, n * 10 - l, i, false);
-            if (n != this.currentRow || j < 0 || !bl) continue;
-            var p = this.textRenderer.getWidth(string.substring(0, Math.min(j, string.length())));
-            var q = p - this.textRenderer.getWidth(string) / 2;
-            if (j >= string.length()) context.drawText(this.textRenderer, "_", q, m, i, false);
+        if (this.client == null || this.client.player == null || this.selectionManager == null) {
+            return;
         }
-        for (var nx = 0; nx < this.text.length; nx++) {
-            var string = this.text[nx];
-            if (string == null || nx != this.currentRow || j < 0) continue;
-            var o = this.textRenderer.getWidth(string.substring(0, Math.min(j, string.length())));
-            var p = o - this.textRenderer.getWidth(string) / 2;
-            if (bl && j < string.length()) context.fill(p, m - 1, p + 1, m + 10, Colors.BLACK | i);
-            if (k == j) continue;
-            var q = Math.min(j, k);
-            var r = Math.max(j, k);
-            var s = this.textRenderer.getWidth(string.substring(0, q)) - this.textRenderer.getWidth(string) / 2;
-            var t = this.textRenderer.getWidth(string.substring(0, r)) - this.textRenderer.getWidth(string) / 2;
-            var u = Math.min(s, t);
-            var v = Math.max(s, t);
-            context.fill(RenderLayer.getGuiTextHighlight(), u, m, v, m + 10, Colors.BLUE);
+
+        MatrixStack matrices = context.getMatrices();
+
+        matrices.translate(0.0F, 0.0F, 4.0F);
+        Vector3f textScale = this.getTextScale();
+        matrices.scale(textScale.x(), textScale.y(), textScale.z());
+
+        matrices.push();
+
+        final float scale = 8f;
+        matrices.scale(scale, scale, scale);
+
+        matrices.translate(-8, -4, 0);
+        context.drawGuiTexture(NOTE_GUI, 0, 0, 16, 16);
+
+        matrices.pop();
+
+        matrices.translate(0, 45, 0);
+
+        // NAME YOUR VARIABLES BETTER PLEASE
+        final int black = DyeColor.BLACK.getSignColor();
+        boolean bl = this.client != null && this.client.player != null && this.client.player.age / 6 % 2 == 0;
+        int start = this.selectionManager.getSelectionStart();
+        int end = this.selectionManager.getSelectionEnd();
+        int l = 4 * 10 / 2;
+        int m = this.currentRow * 10 - l;
+
+        for (int n = 0; n < this.text.length; n++) {
+            String line = this.text[n];
+
+            if (line == null) {
+                continue;
+            }
+
+            if (this.textRenderer.isRightToLeft()) {
+                line = this.textRenderer.mirror(line);
+            }
+
+            int o = -this.textRenderer.getWidth(line) / 2;
+            context.drawText(this.textRenderer, line, o, n * 10 - l, black, false);
+
+            if (n != this.currentRow || start < 0 || !bl) {
+                continue;
+            }
+
+            int p = this.textRenderer.getWidth(line.substring(0, Math.min(start, line.length())));
+            int q = p - this.textRenderer.getWidth(line) / 2;
+
+            if (start >= line.length()) {
+                context.drawText(this.textRenderer, "_", q, m, black, false);
+            }
+        }
+
+        RenderLayer guiTextHighlight = RenderLayer.getGuiTextHighlight();
+
+        for (int nx = 0; nx < this.text.length; nx++) {
+            String line = this.text[nx];
+
+            if (line == null || nx != this.currentRow || start < 0) {
+                continue;
+            }
+
+            int o = this.textRenderer.getWidth(line.substring(0, Math.min(start, line.length())));
+            int p = o - this.textRenderer.getWidth(line) / 2;
+
+            if (bl && start < line.length()) {
+                context.fill(p, m - 1, p + 1, m + 10, Colors.BLACK | black);
+            }
+
+            if (end == start) {
+                continue;
+            }
+
+            int q = Math.min(start, end);
+            int r = Math.max(start, end);
+            int s = this.textRenderer.getWidth(line.substring(0, q)) - this.textRenderer.getWidth(line) / 2;
+            int t = this.textRenderer.getWidth(line.substring(0, r)) - this.textRenderer.getWidth(line) / 2;
+            int u = Math.min(s, t);
+            int v = Math.max(s, t);
+            context.fill(guiTextHighlight, u, m, v, m + 10, Colors.BLUE);
         }
     }
 

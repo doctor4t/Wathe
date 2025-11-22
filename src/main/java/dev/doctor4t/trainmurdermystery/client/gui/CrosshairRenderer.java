@@ -12,6 +12,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -31,9 +33,11 @@ public class CrosshairRenderer {
 
     public static void renderCrosshair(@NotNull MinecraftClient client, @NotNull ClientPlayerEntity player, DrawContext context, RenderTickCounter tickCounter) {
         if (!client.options.getPerspective().isFirstPerson()) return;
-        var target = false;
-        context.getMatrices().push();
-        context.getMatrices().translate(context.getScaledWindowWidth() / 2f, context.getScaledWindowHeight() / 2f, 0);
+        boolean target = false;
+        MatrixStack matrices = context.getMatrices();
+
+        matrices.push();
+        matrices.translate(context.getScaledWindowWidth() / 2f, context.getScaledWindowHeight() / 2f, 0);
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();
         ItemStack mainHandStack = player.getMainHandStack();
@@ -42,27 +46,27 @@ public class CrosshairRenderer {
         } else if (mainHandStack.isOf(TMMItems.DERRINGER) && !player.getItemCooldownManager().isCoolingDown(mainHandStack.getItem()) && DerringerItem.getGunTarget(player) instanceof EntityHitResult) {
             target = true;
         } else if (mainHandStack.isOf(TMMItems.KNIFE)) {
-            var manager = player.getItemCooldownManager();
+            ItemCooldownManager manager = player.getItemCooldownManager();
             if (!manager.isCoolingDown(TMMItems.KNIFE) && KnifeItem.getKnifeTarget(player) instanceof EntityHitResult) {
                 target = true;
                 context.drawGuiTexture(KNIFE_ATTACK, -5, 5, 10, 7);
             } else {
-                var f = 1 - manager.getCooldownProgress(TMMItems.KNIFE, tickCounter.getTickDelta(true));
+                float inverseCooldownProgress = 1 - manager.getCooldownProgress(TMMItems.KNIFE, tickCounter.getTickDelta(true));
                 context.drawGuiTexture(KNIFE_BACKGROUND, -5, 5, 10, 7);
-                context.drawGuiTexture(KNIFE_PROGRESS, 10, 7, 0, 0, -5, 5, (int) (f * 10.0f), 7);
+                context.drawGuiTexture(KNIFE_PROGRESS, 10, 7, 0, 0, -5, 5, (int) (inverseCooldownProgress * 10.0f), 7);
             }
         } else if (mainHandStack.isOf(TMMItems.BAT)) {
             if (player.getAttackCooldownProgress(tickCounter.getTickDelta(true)) >= 1f && client.crosshairTarget instanceof EntityHitResult result && result.getEntity() instanceof PlayerEntity) {
                 target = true;
                 context.drawGuiTexture(BAT_ATTACK, -5, 5, 10, 7);
             } else {
-                var f = player.getAttackCooldownProgress(tickCounter.getTickDelta(true));
+                float cooldownProgress = player.getAttackCooldownProgress(tickCounter.getTickDelta(true));
                 context.drawGuiTexture(BAT_BACKGROUND, -5, 5, 10, 7);
-                context.drawGuiTexture(BAT_PROGRESS, 10, 7, 0, 0, -5, 5, (int) (f * 10.0f), 7);
+                context.drawGuiTexture(BAT_PROGRESS, 10, 7, 0, 0, -5, 5, (int) (cooldownProgress * 10.0f), 7);
             }
         }
-        context.getMatrices().push();
-        context.getMatrices().translate(-1.5f, -1.5f, 0);
+        matrices.push();
+        matrices.translate(-1.5f, -1.5f, 0);
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE_MINUS_DST_COLOR, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
         if (target) {
@@ -70,8 +74,8 @@ public class CrosshairRenderer {
         } else {
             context.drawGuiTexture(CROSSHAIR, 0, 0, 3, 3);
         }
-        context.getMatrices().pop();
-        context.getMatrices().pop();
+        matrices.pop();
+        matrices.pop();
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();
     }

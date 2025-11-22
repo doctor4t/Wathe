@@ -38,8 +38,8 @@ public class ShopEntry {
     }
 
     public static boolean insertStackInFreeSlot(@NotNull PlayerEntity player, ItemStack stackToInsert) {
-        for (var i = 0; i < 9; i++) {
-            var stack = player.getInventory().getStack(i);
+        for (int i = 0; i < 9; i++) {
+            ItemStack stack = player.getInventory().getStack(i);
             if (stack.isEmpty()) {
                 player.getInventory().setStack(i, stackToInsert);
                 return true;

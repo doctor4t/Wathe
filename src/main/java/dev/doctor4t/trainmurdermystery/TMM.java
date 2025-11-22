@@ -106,12 +106,12 @@ public class TMM implements ModInitializer {
     }
 
     public static boolean isSkyVisibleAdjacent(@NotNull Entity player) {
-        var mutable = new BlockPos.Mutable();
-        var playerPos = BlockPos.ofFloored(player.getEyePos());
-        for (var x = -1; x <= 1; x += 2) {
-            for (var z = -1; z <= 1; z += 2) {
-                mutable.set(playerPos.getX() + x, playerPos.getY(), playerPos.getZ() + z);
-                if (player.getWorld().isSkyVisible(mutable)) {
+        BlockPos.Mutable blockPos = new BlockPos.Mutable();
+        BlockPos playerPos = BlockPos.ofFloored(player.getEyePos());
+        for (int x = -1; x <= 1; x += 2) {
+            for (int z = -1; z <= 1; z += 2) {
+                blockPos.set(playerPos.getX() + x, playerPos.getY(), playerPos.getZ() + z);
+                if (player.getWorld().isSkyVisible(blockPos)) {
                     return !(player.getWorld().getBlockState(playerPos).getBlock() instanceof DoorPartBlock);
                 }
             }
@@ -120,11 +120,11 @@ public class TMM implements ModInitializer {
     }
 
     public static boolean isExposedToWind(@NotNull Entity player) {
-        var mutable = new BlockPos.Mutable();
-        var playerPos = BlockPos.ofFloored(player.getEyePos());
-        for (var x = 0; x <= 10; x++) {
-            mutable.set(playerPos.getX() - x, player.getEyePos().getY(), playerPos.getZ());
-            if (!player.getWorld().isSkyVisible(mutable)) {
+        BlockPos.Mutable blockPos = new BlockPos.Mutable();
+        BlockPos playerPos = BlockPos.ofFloored(player.getEyePos());
+        for (int x = 0; x <= 10; x++) {
+            blockPos.set(playerPos.getX() - x, player.getEyePos().getY(), playerPos.getZ());
+            if (!player.getWorld().isSkyVisible(blockPos)) {
                 return false;
             }
         }

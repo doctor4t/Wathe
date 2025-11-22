@@ -4,6 +4,7 @@ import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import dev.doctor4t.trainmurdermystery.util.KnifeStabPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
@@ -24,7 +25,7 @@ public class KnifeItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, @NotNull PlayerEntity user, Hand hand) {
-        var itemStack = user.getStackInHand(hand);
+        ItemStack itemStack = user.getStackInHand(hand);
         user.setCurrentHand(hand);
         user.playSound(TMMSounds.ITEM_KNIFE_PREPARE, 1.0f, 1.0f);
         return TypedActionResult.consume(itemStack);
@@ -32,17 +33,24 @@ public class KnifeItem extends Item {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if (world.isClient) {
+            return;
+        }
+        if (!(user instanceof PlayerEntity attacker)) {
+            return;
+        }
         if (user.isSpectator()) {
             return;
         }
-
-        if (remainingUseTicks >= this.getMaxUseTime(stack, user) - 10 || !(user instanceof PlayerEntity attacker) || !world.isClient)
+        if (remainingUseTicks >= this.getMaxUseTime(stack, user) - 10) {
             return;
-        var collision = getKnifeTarget(attacker);
-        if (collision instanceof EntityHitResult entityHitResult) {
-            var target = entityHitResult.getEntity();
-            ClientPlayNetworking.send(new KnifeStabPayload(target.getId()));
         }
+        HitResult collision = getKnifeTarget(attacker);
+        if (!(collision instanceof EntityHitResult entityHitResult)) {
+            return;
+        }
+        Entity target = entityHitResult.getEntity();
+        ClientPlayNetworking.send(new KnifeStabPayload(target.getId()));
     }
 
     public static HitResult getKnifeTarget(PlayerEntity user) {

@@ -14,8 +14,11 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.util.SkinTextures;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,82 +39,86 @@ public class RoundTextRenderer {
 
     @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     public static void renderHud(TextRenderer renderer, ClientPlayerEntity player, @NotNull DrawContext context) {
-        var isLooseEnds = GameWorldComponent.KEY.get(player.getWorld()).getGameMode() == GameWorldComponent.GameMode.LOOSE_ENDS;
+        boolean isLooseEnds = GameWorldComponent.KEY.get(player.getWorld()).getGameMode() == GameWorldComponent.GameMode.LOOSE_ENDS;
 
+        // 47 OCCURRENCES and no extraction?? How many hours of sleep were you running on
+        MatrixStack matrices = context.getMatrices();
+
+        // TODO: also fix after vars
         if (welcomeTime > 0) {
-            context.getMatrices().push();
-            context.getMatrices().translate(context.getScaledWindowWidth() / 2f, context.getScaledWindowHeight() / 2f + 3.5, 0);
-            context.getMatrices().push();
-            context.getMatrices().scale(2.6f, 2.6f, 1f);
-            var color = isLooseEnds ? 0x9F0000 : 0xFFFFFF;
+            matrices.push();
+            matrices.translate(context.getScaledWindowWidth() / 2f, context.getScaledWindowHeight() / 2f + 3.5, 0);
+            matrices.push();
+            matrices.scale(2.6f, 2.6f, 1f);
+            int color = isLooseEnds ? 0x9F0000 : 0xFFFFFF;
             if (welcomeTime <= 180) {
-                var welcomeText = isLooseEnds ? Text.translatable("announcement.loose_ends.welcome") : role.welcomeText;
+                Text welcomeText = isLooseEnds ? Text.translatable("announcement.loose_ends.welcome") : role.welcomeText;
                 context.drawTextWithShadow(renderer, welcomeText, -renderer.getWidth(welcomeText) / 2, -12, color);
             }
-            context.getMatrices().pop();
-            context.getMatrices().push();
-            context.getMatrices().scale(1.2f, 1.2f, 1f);
+            matrices.pop();
+            matrices.push();
+            matrices.scale(1.2f, 1.2f, 1f);
             if (welcomeTime <= 120) {
-                var premiseText = isLooseEnds ? Text.translatable("announcement.loose_ends.premise") : role.premiseText.apply(killers);
+                Text premiseText = isLooseEnds ? Text.translatable("announcement.loose_ends.premise") : role.premiseText.apply(killers);
                 context.drawTextWithShadow(renderer, premiseText, -renderer.getWidth(premiseText) / 2, 0, color);
             }
-            context.getMatrices().pop();
-            context.getMatrices().push();
-            context.getMatrices().scale(1f, 1f, 1f);
+            matrices.pop();
+            matrices.push();
+            matrices.scale(1f, 1f, 1f);
             if (welcomeTime <= 60) {
-                var goalText = isLooseEnds ? Text.translatable("announcement.loose_ends.goal") : role.goalText.apply(targets);
+                Text goalText = isLooseEnds ? Text.translatable("announcement.loose_ends.goal") : role.goalText.apply(targets);
                 context.drawTextWithShadow(renderer, goalText, -renderer.getWidth(goalText) / 2, 14, color);
             }
-            context.getMatrices().pop();
-            context.getMatrices().pop();
+            matrices.pop();
+            matrices.pop();
         }
-        var game = GameWorldComponent.KEY.get(player.getWorld());
+        GameWorldComponent game = GameWorldComponent.KEY.get(player.getWorld());
         if (endTime > 0 && endTime < END_DURATION - (GameConstants.FADE_TIME * 2) && !game.isRunning() && game.getGameMode() != GameWorldComponent.GameMode.DISCOVERY) {
-            var roundEnd = GameRoundEndComponent.KEY.get(player.getWorld());
+            GameRoundEndComponent roundEnd = GameRoundEndComponent.KEY.get(player.getWorld());
             if (roundEnd.getWinStatus() == GameFunctions.WinStatus.NONE) return;
             var winner = player.getWorld().getPlayerByUuid(game.getLooseEndWinner() == null ? UUID.randomUUID() : game.getLooseEndWinner());
             var endText = role.getEndText(roundEnd.getWinStatus(), winner == null ? Text.empty() : winner.getDisplayName());
             if (endText == null) return;
-            context.getMatrices().push();
-            context.getMatrices().translate(context.getScaledWindowWidth() / 2f, context.getScaledWindowHeight() / 2f - 40, 0);
-            context.getMatrices().push();
-            context.getMatrices().scale(2.6f, 2.6f, 1f);
+            matrices.push();
+            matrices.translate(context.getScaledWindowWidth() / 2f, context.getScaledWindowHeight() / 2f - 40, 0);
+            matrices.push();
+            matrices.scale(2.6f, 2.6f, 1f);
             context.drawTextWithShadow(renderer, endText, -renderer.getWidth(endText) / 2, -12, 0xFFFFFF);
-            context.getMatrices().pop();
-            context.getMatrices().push();
-            context.getMatrices().scale(1.2f, 1.2f, 1f);
+            matrices.pop();
+            matrices.push();
+            matrices.scale(1.2f, 1.2f, 1f);
             var winMessage = Text.translatable("game.win." + roundEnd.getWinStatus().name().toLowerCase().toLowerCase());
             context.drawTextWithShadow(renderer, winMessage, -renderer.getWidth(winMessage) / 2, -4, 0xFFFFFF);
-            context.getMatrices().pop();
+            matrices.pop();
             if (isLooseEnds) {
                 context.drawTextWithShadow(renderer, RoleAnnouncementTexts.LOOSE_END.titleText, -renderer.getWidth(RoleAnnouncementTexts.LOOSE_END.titleText) / 2, 14, 0xFFFFFF);
                 var looseEnds = 0;
                 for (var entry : roundEnd.getPlayers()) {
-                    context.getMatrices().push();
-                    context.getMatrices().scale(2f, 2f, 1f);
-                    context.getMatrices().translate(((looseEnds % 6) - 3.5) * 12, 14 + (looseEnds / 6) * 12, 0);
+                    matrices.push();
+                    matrices.scale(2f, 2f, 1f);
+                    matrices.translate(((looseEnds % 6) - 3.5) * 12, 14 + (looseEnds / 6) * 12, 0);
                     looseEnds++;
                     var texture = TMMClient.PLAYER_ENTRIES_CACHE.get(entry.player().getId()).getSkinTextures().texture();
                     if (texture != null) {
                         RenderSystem.enableBlend();
-                        context.getMatrices().push();
-                        context.getMatrices().translate(8, 0, 0);
+                        matrices.push();
+                        matrices.translate(8, 0, 0);
                         var offColour = entry.wasDead() ? 0.4f : 1f;
                         context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 8 / 64f, 16 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
-                        context.getMatrices().translate(-0.5, -0.5, 0);
-                        context.getMatrices().scale(1.125f, 1.125f, 1f);
+                        matrices.translate(-0.5, -0.5, 0);
+                        matrices.scale(1.125f, 1.125f, 1f);
                         context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 40 / 64f, 48 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
-                        context.getMatrices().pop();
+                        matrices.pop();
                     }
                     if (entry.wasDead()) {
-                        context.getMatrices().translate(13, 0, 0);
-                        context.getMatrices().scale(2f, 1f, 1f);
+                        matrices.translate(13, 0, 0);
+                        matrices.scale(2f, 1f, 1f);
                         context.drawText(renderer, "x", -renderer.getWidth("x") / 2, 0, 0xE10000, false);
                         context.drawText(renderer, "x", -renderer.getWidth("x") / 2, 1, 0x550000, false);
                     }
-                    context.getMatrices().pop();
+                    matrices.pop();
                 }
-                context.getMatrices().pop();
+                matrices.pop();
             } else {
                 var vigilanteTotal = 1;
                 for (var entry : roundEnd.getPlayers())
@@ -123,18 +130,18 @@ public class RoundTextRenderer {
                 var vigilantes = 0;
                 var killers = 0;
                 for (var entry : roundEnd.getPlayers()) {
-                    context.getMatrices().push();
-                    context.getMatrices().scale(2f, 2f, 1f);
+                    matrices.push();
+                    matrices.scale(2f, 2f, 1f);
 
                     if (entry.role() == RoleAnnouncementTexts.CIVILIAN) {
-                        context.getMatrices().translate(-60 + (civilians % 4) * 12, 14 + (civilians / 4) * 12, 0);
+                        matrices.translate(-60 + (civilians % 4) * 12, 14 + (civilians / 4) * 12, 0);
                         civilians++;
                     } else if (entry.role() == RoleAnnouncementTexts.VIGILANTE) {
-                        context.getMatrices().translate(7 + (vigilantes % 2) * 12, 14 + (vigilantes / 2) * 12, 0);
+                        matrices.translate(7 + (vigilantes % 2) * 12, 14 + (vigilantes / 2) * 12, 0);
                         vigilantes++;
                     } else if (entry.role() == RoleAnnouncementTexts.KILLER) {
-                        context.getMatrices().translate(0, 8 + ((vigilanteTotal) / 2) * 12, 0);
-                        context.getMatrices().translate(7 + (killers % 2) * 12, 14 + (killers / 2) * 12, 0);
+                        matrices.translate(0, 8 + ((vigilanteTotal) / 2) * 12, 0);
+                        matrices.translate(7 + (killers % 2) * 12, 14 + (killers / 2) * 12, 0);
                         killers++;
                     }
 
@@ -143,55 +150,52 @@ public class RoundTextRenderer {
                         var texture = playerListEntry.getSkinTextures().texture();
                         if (texture != null) {
                             RenderSystem.enableBlend();
-                            context.getMatrices().push();
-                            context.getMatrices().translate(8, 0, 0);
+                            matrices.push();
+                            matrices.translate(8, 0, 0);
                             var offColour = entry.wasDead() ? 0.4f : 1f;
                             context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 8 / 64f, 16 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
-                            context.getMatrices().translate(-0.5, -0.5, 0);
-                            context.getMatrices().scale(1.125f, 1.125f, 1f);
+                            matrices.translate(-0.5, -0.5, 0);
+                            matrices.scale(1.125f, 1.125f, 1f);
                             context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 40 / 64f, 48 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
-                            context.getMatrices().pop();
+                            matrices.pop();
                         }
                         if (entry.wasDead()) {
-                            context.getMatrices().translate(13, 0, 0);
-                            context.getMatrices().scale(2f, 1f, 1f);
+                            matrices.translate(13, 0, 0);
+                            matrices.scale(2f, 1f, 1f);
                             context.drawText(renderer, "x", -renderer.getWidth("x") / 2, 0, 0xE10000, false);
                             context.drawText(renderer, "x", -renderer.getWidth("x") / 2, 1, 0x550000, false);
                         }
                     }
-                    context.getMatrices().pop();
+                    matrices.pop();
                 }
-                context.getMatrices().pop();
+                matrices.pop();
             }
         }
     }
 
     public static void tick() {
+        // TODO: fix after vars
         if (MinecraftClient.getInstance().world != null && GameWorldComponent.KEY.get(MinecraftClient.getInstance().world).getGameMode() != GameWorldComponent.GameMode.DISCOVERY) {
-            var player = MinecraftClient.getInstance().player;
+            ClientPlayerEntity player = MinecraftClient.getInstance().player;
             if (welcomeTime > 0) {
-                switch (welcomeTime) {
-                    case 200 -> {
-                        if (player != null)
-                            player.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), TMMSounds.UI_RISER, SoundCategory.MASTER, 10f, 1f, player.getRandom().nextLong());
+                if (player != null) {
+                    SoundEvent soundEvent = null;
+                    float pitch = 1;
+                    switch (welcomeTime) {
+                        case 200 -> soundEvent = TMMSounds.UI_RISER;
+                        case 180 -> player.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), TMMSounds.UI_PIANO, SoundCategory.MASTER, 10f, 1.25f, player.getRandom().nextLong());
+                        case 120 -> player.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), TMMSounds.UI_PIANO, SoundCategory.MASTER, 10f, 1.5f, player.getRandom().nextLong());
+                        case 60 -> {
+                            soundEvent = TMMSounds.UI_PIANO;
+                            pitch = 1.75f;
+                        }
+                        case 1 -> soundEvent = TMMSounds.UI_PIANO_STINGER;
                     }
-                    case 180 -> {
-                        if (player != null)
-                            player.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), TMMSounds.UI_PIANO, SoundCategory.MASTER, 10f, 1.25f, player.getRandom().nextLong());
-                    }
-                    case 120 -> {
-                        if (player != null)
-                            player.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), TMMSounds.UI_PIANO, SoundCategory.MASTER, 10f, 1.5f, player.getRandom().nextLong());
-                    }
-                    case 60 -> {
-                        if (player != null)
-                            player.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), TMMSounds.UI_PIANO, SoundCategory.MASTER, 10f, 1.75f, player.getRandom().nextLong());
-                    }
-                    case 1 -> {
-                        if (player != null)
-                            player.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), TMMSounds.UI_PIANO_STINGER, SoundCategory.MASTER, 10f, 1f, player.getRandom().nextLong());
+                    if (soundEvent != null) {
+                        player.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), soundEvent, SoundCategory.MASTER, 10f, pitch, player.getRandom().nextLong());
                     }
                 }
+
                 welcomeTime--;
             }
             if (endTime > 0) {
@@ -201,7 +205,7 @@ public class RoundTextRenderer {
                 }
                 endTime--;
             }
-            var options = MinecraftClient.getInstance().options;
+            GameOptions options = MinecraftClient.getInstance().options;
             if (options != null && options.playerListKey.isPressed()) endTime = Math.max(2, endTime);
         }
     }
@@ -219,7 +223,7 @@ public class RoundTextRenderer {
     }
 
     public static GameProfile getGameProfile(String disguise) {
-        var optional = SkullBlockEntity.fetchProfileByName(disguise).getNow(failCache(disguise));
+        Optional<GameProfile> optional = SkullBlockEntity.fetchProfileByName(disguise).getNow(failCache(disguise));
         return optional.orElse(failCache(disguise).get());
     }
 
@@ -230,5 +234,4 @@ public class RoundTextRenderer {
     public static Optional<GameProfile> failCache(String name) {
         return failCache.computeIfAbsent(name, (d) -> Optional.of(new GameProfile(UUID.randomUUID(), name)));
     }
-
 }

@@ -57,7 +57,7 @@ public class SmallDoorBlock extends DoorPartBlock {
                             new SmallDoorBlock((BlockEntityType<SmallDoorBlockEntity>) type, settings))
     );
 
-    // I see no reason for this to be a supplier
+    // I see no reason for this to be a supplier - SkyNotTheLimit
     private final BlockEntityType<SmallDoorBlockEntity> blockEntityType;
 
     public SmallDoorBlock(BlockEntityType<SmallDoorBlockEntity> blockEntityType, Settings settings) {

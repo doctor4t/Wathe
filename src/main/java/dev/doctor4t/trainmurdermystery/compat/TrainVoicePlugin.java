@@ -1,6 +1,7 @@
 package dev.doctor4t.trainmurdermystery.compat;
 
 import de.maxhenkel.voicechat.api.Group;
+import de.maxhenkel.voicechat.api.VoicechatConnection;
 import de.maxhenkel.voicechat.api.VoicechatPlugin;
 import de.maxhenkel.voicechat.api.VoicechatServerApi;
 import de.maxhenkel.voicechat.api.events.EventRegistration;
@@ -12,32 +13,45 @@ import java.util.UUID;
 
 public class TrainVoicePlugin implements VoicechatPlugin {
     public static final UUID GROUP_ID = UUID.randomUUID();
-    public static VoicechatServerApi SERVER_API;
-    public static Group GROUP;
+    public static VoicechatServerApi serverAPI;
+    public static Group group;
 
     public static boolean isVoiceChatMissing() {
-        return SERVER_API == null;
+        return serverAPI == null;
     }
 
     public static void addPlayer(@NotNull UUID player) {
-        if (isVoiceChatMissing()) return;
-        var connection = SERVER_API.getConnectionOf(player);
-        if (connection != null) {
-            if (GROUP == null) GROUP = SERVER_API.groupBuilder().setHidden(true).setId(GROUP_ID).setName("Train Spectators").setPersistent(true).setType(Group.Type.OPEN).build();
-            if (GROUP != null) connection.setGroup(GROUP);
+        if (isVoiceChatMissing()) {
+            return;
         }
+        VoicechatConnection connection = serverAPI.getConnectionOf(player);
+        if (connection == null) {
+            return;
+        }
+        if (group == null) {
+            group = serverAPI.groupBuilder().setHidden(true).setId(GROUP_ID).setName("Train Spectators").setPersistent(true).setType(Group.Type.OPEN).build();
+            if (group == null) {
+                return;
+            }
+        }
+        connection.setGroup(group);
     }
 
     public static void resetPlayer(@NotNull UUID player) {
-        if (isVoiceChatMissing()) return;
-        var connection = SERVER_API.getConnectionOf(player);
-        if (connection != null) connection.setGroup(null);
+        if (isVoiceChatMissing()) {
+            return;
+        }
+        VoicechatConnection connection = serverAPI.getConnectionOf(player);
+        if (connection == null) {
+            return;
+        }
+        connection.setGroup(null);
     }
 
     @Override
     public void registerEvents(@NotNull EventRegistration registration) {
         registration.registerEvent(VoicechatServerStartedEvent.class, event -> {
-            SERVER_API = event.getVoicechat();
+            serverAPI = event.getVoicechat();
         });
     }
 
