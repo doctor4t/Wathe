@@ -46,7 +46,14 @@ public class LobbyPlayersRenderer {
             context.getMatrices().translate(0, context.getScaledWindowHeight(), 0);
             context.getMatrices().scale(scale, scale, 1f);
             int i = 0;
-            for (Text text : TextUtils.getWithLineBreaks(Text.translatable("Thank you for playing The Last Voyage of the Harpy Express!\nMe and my team spent a lot of time working\non this mod and we hope you enjoy it.\nIf you do and wish to make a video or stream\nplease make sure to credit my channel,\nvideo and the mod page!\n - RAT / doctor4t"))) {
+            MutableText thanksText = Text.translatable("credits.trainmurdermystery.thank_you");
+
+            String fallback = "Thank you for playing The Last Voyage of the Harpy Express!\nMe and my team spent a lot of time working\non this mod and we hope you enjoy it.\nIf you do and wish to make a video or stream\nplease make sure to credit my channel,\nvideo and the mod page!\n - RAT / doctor4t";
+            if (!thanksText.getString().contains(" - RAT / doctor4t")) {
+                thanksText = Text.literal(fallback);
+            }
+
+            for (Text text : TextUtils.getWithLineBreaks(thanksText)) {
                 i++;
                 context.drawTextWithShadow(renderer, text, 10, -90 + 10 * i, 0xFFFFFFFF);
             }

@@ -69,7 +69,7 @@ public record GunShootPayload(int target) implements CustomPayload {
                         PlayerMoodComponent.KEY.get(player).setMood(0);
                     }, 4);
                 }
-                GameFunctions.killPlayer(target, true, player);
+                GameFunctions.killPlayer(target, true, player, TMM.id("gun_shot"));
             }
 
             player.getWorld().playSound(null, player.getX(), player.getEyeY(), player.getZ(), TMMSounds.ITEM_REVOLVER_SHOOT, SoundCategory.PLAYERS, 5f, 1f + player.getRandom().nextFloat() * .1f - .05f);

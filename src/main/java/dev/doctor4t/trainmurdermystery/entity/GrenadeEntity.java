@@ -1,5 +1,6 @@
 package dev.doctor4t.trainmurdermystery.entity;
 
+import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.cca.TMMComponents;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.TMMEntities;
@@ -42,7 +43,7 @@ public class GrenadeEntity extends ThrownItemEntity {
             for (var player : world.getPlayers(serverPlayerEntity ->
                             this.getBoundingBox().expand(3f).contains(serverPlayerEntity.getPos()) &&
                             GameFunctions.isPlayerAliveAndSurvival(serverPlayerEntity))) {
-                GameFunctions.killPlayer(player, true, this.getOwner() instanceof PlayerEntity playerEntity ? playerEntity : null);
+                GameFunctions.killPlayer(player, true, this.getOwner() instanceof PlayerEntity playerEntity ? playerEntity : null, TMM.id("grenade"));
             }
 
             this.discard();

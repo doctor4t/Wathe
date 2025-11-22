@@ -27,3 +27,4 @@ accessible method net/minecraft/client/gui/DrawContext drawTexturedQuad (Lnet/mi
 
 accessible class net/minecraft/client/texture/ResourceTexture$TextureData
 
+accessible field net/minecraft/client/option/GameOptions viewDistance Lnet/minecraft/client/option/SimpleOption;

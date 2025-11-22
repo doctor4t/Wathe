@@ -2,6 +2,7 @@ package dev.doctor4t.trainmurdermystery.block;
 
 import dev.doctor4t.trainmurdermystery.block_entity.DoorBlockEntity;
 import dev.doctor4t.trainmurdermystery.block_entity.SmallDoorBlockEntity;
+import dev.doctor4t.trainmurdermystery.event.AllowPlayerOpenLockedDoor;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import net.minecraft.block.Block;
@@ -43,13 +44,32 @@ public class SmallDoorBlock extends DoorPartBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
     protected static final VoxelShape X_SHAPE = Block.createCuboidShape(7, 0, 0, 9, 16, 16);
     protected static final VoxelShape Z_SHAPE = Block.createCuboidShape(0, 0, 7, 16, 16, 9);
-    private static final VoxelShape[] SHAPES;
+    private static final VoxelShape[] SHAPES = createShapes();
     private final Supplier<BlockEntityType<SmallDoorBlockEntity>> typeSupplier;
 
     public SmallDoorBlock(Supplier<BlockEntityType<SmallDoorBlockEntity>> typeSupplier, Settings settings) {
         super(settings);
         this.setDefaultState(super.getDefaultState().with(HALF, DoubleBlockHalf.LOWER));
         this.typeSupplier = typeSupplier;
+    }
+
+    private static VoxelShape[] createShapes() {
+        VoxelShape[] shapes = new VoxelShape[16];
+        VoxelShape lowerXShape = Block.createCuboidShape(7, 0, 0, 9, 32, 16);
+        VoxelShape lowerZShape = Block.createCuboidShape(0, 0, 7, 16, 32, 9);
+        VoxelShape upperXShape = Block.createCuboidShape(7, -16, 0, 9, 16, 16);
+        VoxelShape upperZShape = Block.createCuboidShape(0, -16, 7, 16, 16, 9);
+        for (Direction direction : Direction.Type.HORIZONTAL) {
+            int id = direction.getHorizontal();
+            boolean xAxis = direction.getAxis() == Direction.Axis.X;
+            shapes[id] = xAxis ? lowerXShape : lowerZShape;
+            shapes[id + 4] = xAxis ? upperXShape : upperZShape;
+            Vector3f offset = direction.rotateYClockwise().getUnitVector().mul(7);
+            Box box = new Box(7, 0, 7, 9, 32, 9).offset(offset);
+            shapes[id + 8] = Block.createCuboidShape(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ);
+            shapes[id + 12] = Block.createCuboidShape(box.minX, box.minY - 16, box.minZ, box.maxX, box.maxY - 16, box.maxZ);
+        }
+        return shapes;
     }
 
     @Override
@@ -119,72 +139,63 @@ public class SmallDoorBlock extends DoorPartBlock {
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         BlockPos lowerPos = state.get(HALF) == DoubleBlockHalf.LOWER ? pos : pos.down();
-        if (!(world.getBlockEntity(lowerPos) instanceof SmallDoorBlockEntity entity)) {
-            return ActionResult.PASS;
-        }
-
-        if (entity.isBlasted()) {
-            return ActionResult.PASS;
-        }
-
-        if (player.isCreative()) {
-            return open(state, world, entity, lowerPos);
-        }
-
-        boolean requiresKey = !entity.getKeyName().isEmpty();
-        boolean hasLockpick = player.getMainHandStack().isOf(TMMItems.LOCKPICK);
-        boolean jammed = entity.isJammed();
-
-        if (entity.isOpen()) {
-            return open(state, world, entity, lowerPos);
-        }
-
-        if (jammed) {
-            if (!world.isClient) {
-                world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.BLOCK_DOOR_LOCKED, SoundCategory.BLOCKS, 1f, 1f);
-                player.sendMessage(Text.translatable("tip.door.jammed"), true);
+        if (world.getBlockEntity(lowerPos) instanceof SmallDoorBlockEntity entity) {
+            if (entity.isBlasted()) {
+                return ActionResult.PASS;
             }
-            return ActionResult.PASS;
-        }
 
-        if (!requiresKey) {
-            // open the door freely
-            return open(state, world, entity, lowerPos);
-        }
-
-        if (player.getMainHandStack().isOf(TMMItems.CROWBAR)) {
-            return ActionResult.FAIL;
-        }
-
-        if (player.getMainHandStack().isOf(TMMItems.KEY) || hasLockpick) {
-            LoreComponent lore = player.getMainHandStack().get(DataComponentTypes.LORE);
-            boolean isRightKey = lore != null && !lore.lines().isEmpty() && lore.lines().getFirst().getString().equals(entity.getKeyName());
-            if (isRightKey || hasLockpick) {
-                if (isRightKey) {
-                    world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.ITEM_KEY_DOOR, SoundCategory.BLOCKS, 1f, 1f);
-                }
-                if (hasLockpick) {
-                    world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.ITEM_LOCKPICK_DOOR, SoundCategory.BLOCKS, 1f, 1f);
-                }
+            if (player.isCreative() || AllowPlayerOpenLockedDoor.EVENT.invoker().allowOpen(player)) {
                 return open(state, world, entity, lowerPos);
-            }
+            } else {
+                boolean requiresKey = !entity.getKeyName().isEmpty();
+                boolean hasLockpick = player.getMainHandStack().isOf(TMMItems.LOCKPICK);
+                boolean jammed = entity.isJammed();
 
-            if (!world.isClient) {
-                world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.BLOCK_DOOR_LOCKED, SoundCategory.BLOCKS, 1f, 1f);
-                player.sendMessage(Text.translatable("tip.door.requires_different_key"), true);
+                if (entity.isOpen()) {
+                    return open(state, world, entity, lowerPos);
+                } else if (requiresKey && !jammed) {
+                    if (player.getMainHandStack().isOf(TMMItems.CROWBAR)) return ActionResult.FAIL;
+                    if (player.getMainHandStack().isOf(TMMItems.KEY) || hasLockpick) {
+                        LoreComponent lore = player.getMainHandStack().get(DataComponentTypes.LORE);
+                        boolean isRightKey = lore != null && !lore.lines().isEmpty() && lore.lines().getFirst().getString().equals(entity.getKeyName());
+                        if (isRightKey || hasLockpick) {
+                            if (isRightKey)
+                                world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.ITEM_KEY_DOOR, SoundCategory.BLOCKS, 1f, 1f);
+                            if (hasLockpick)
+                                world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.ITEM_LOCKPICK_DOOR, SoundCategory.BLOCKS, 1f, 1f);
+                            return open(state, world, entity, lowerPos);
+                        } else {
+                            if (!world.isClient) {
+                                world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.BLOCK_DOOR_LOCKED, SoundCategory.BLOCKS, 1f, 1f);
+                                player.sendMessage(Text.translatable("tip.door.requires_different_key"), true);
+                            }
+                            return ActionResult.FAIL;
+                        }
+                    }
+
+                    if (!world.isClient) {
+                        world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.BLOCK_DOOR_LOCKED, SoundCategory.BLOCKS, 1f, 1f);
+                        player.sendMessage(Text.translatable("tip.door.requires_key"), true);
+                    }
+                    return ActionResult.FAIL;
+                } else {
+                    if (jammed) {
+                        if (!world.isClient) {
+                            world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.BLOCK_DOOR_LOCKED, SoundCategory.BLOCKS, 1f, 1f);
+                            player.sendMessage(Text.translatable("tip.door.jammed"), true);
+                        }
+                    } else {
+                        // open the door freely
+                        return open(state, world, entity, lowerPos);
+                    }
+                }
             }
-            return ActionResult.FAIL;
         }
 
-        if (!world.isClient) {
-            world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.BLOCK_DOOR_LOCKED, SoundCategory.BLOCKS, 1f, 1f);
-            player.sendMessage(Text.translatable("tip.door.requires_key"), true);
-        }
-
-        return ActionResult.FAIL;
+        return ActionResult.PASS;
     }
 
-    protected static @NotNull ActionResult open(BlockState state, World world, SmallDoorBlockEntity entity, BlockPos lowerPos) {
+    static @NotNull ActionResult open(BlockState state, World world, SmallDoorBlockEntity entity, BlockPos lowerPos) {
         if (world.isClient) return ActionResult.SUCCESS;
         toggleDoor(state, world, entity, lowerPos);
         return ActionResult.CONSUME;
@@ -202,22 +213,5 @@ public class SmallDoorBlock extends DoorPartBlock {
         }
     }
 
-    static {
-        VoxelShape[] shapes = new VoxelShape[16];
-        VoxelShape lowerXShape = Block.createCuboidShape(7, 0, 0, 9, 32, 16);
-        VoxelShape lowerZShape = Block.createCuboidShape(0, 0, 7, 16, 32, 9);
-        VoxelShape upperXShape = Block.createCuboidShape(7, -16, 0, 9, 16, 16);
-        VoxelShape upperZShape = Block.createCuboidShape(0, -16, 7, 16, 16, 9);
-        for (Direction direction : Direction.Type.HORIZONTAL) {
-            int id = direction.getHorizontal();
-            boolean xAxis = direction.getAxis() == Direction.Axis.X;
-            shapes[id] = xAxis ? lowerXShape : lowerZShape;
-            shapes[id + 4] = xAxis ? upperXShape : upperZShape;
-            Vector3f offset = direction.rotateYClockwise().getUnitVector().mul(7);
-            Box box = new Box(7, 0, 7, 9, 32, 9).offset(offset);
-            shapes[id + 8] = Block.createCuboidShape(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ);
-            shapes[id + 12] = Block.createCuboidShape(box.minX, box.minY - 16, box.minZ, box.maxX, box.maxY - 16, box.maxZ);
-        }
-        SHAPES = shapes;
-    }
+
 }

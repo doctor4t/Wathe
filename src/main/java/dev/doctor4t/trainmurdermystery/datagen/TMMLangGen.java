@@ -130,8 +130,15 @@ public class TMMLangGen extends FabricLanguageProvider {
         builder.add("game.start_error.not_enough_players", "Game cannot start: 6 players minimum are required.");
         builder.add("game.start_error.game_running", "Game cannot start: a game is already running. Please try again from the lobby.");
 
-        builder.add("tmm.gui.reset", "Reset");
+        builder.add("tmm.gui.reset", "Clear");
 
         builder.add("commands.supporter_only", "Super silly supporter commands are reserved for Ko-Fi and YouTube members; if you wanna try them out, please consider supporting! <3");
+
+        builder.add("trainmurdermystery.midnightconfig.title", "The Last Voyage of the Harpy Express - Config");
+        builder.add("trainmurdermystery.midnightconfig.ultraPerfMode", "Ultra Performance Mode");
+        builder.add("trainmurdermystery.midnightconfig.ultraPerfMode.tooltip", "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2.");
+        builder.add("trainmurdermystery.midnightconfig.disableScreenShake", "Disable Screen Shake");
+
+        builder.add("credits.trainmurdermystery.thank_you", "Thank you for playing The Last Voyage of the Harpy Express!\nMe and my team spent a lot of time working\non this mod and we hope you enjoy it.\nIf you do and wish to make a video or stream\nplease make sure to credit my channel,\nvideo and the mod page!\n - RAT / doctor4t");
     }
 }

@@ -53,8 +53,8 @@ loom {
 
 fabricApi {
 	configureDataGeneration() {
-		setModId("trainmurdermystery")
-		setClient(true)
+		modId = "trainmurdermystery"
+		client = true
 	}
 }
 
@@ -76,12 +76,19 @@ dependencies {
 	modImplementation include ("org.ladysnake.cardinal-components-api:cardinal-components-world:${project.cca_version}")
 	modImplementation include ("org.ladysnake.cardinal-components-api:cardinal-components-entity:${project.cca_version}")
 	modImplementation include ("org.ladysnake.cardinal-components-api:cardinal-components-scoreboard:${project.cca_version}")
+	// Midnightlib
+	modIncludeImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
 
 	// Runtime mods
 	modLocalImplementation "com.terraformersmc:modmenu:${mod_menu_version}"
 
 	modImplementation "de.maxhenkel.voicechat:voicechat-api:${voicechat_api_version}"
 	modRuntimeOnly "maven.modrinth:simple-voice-chat:fabric-${voicechat_version}"
+
+	modImplementation "maven.modrinth:sodium:${sodium_version}-fabric"
+	modImplementation "maven.modrinth:iris:${iris_version}-fabric"
+	modRuntimeOnly("org.anarres:jcpp:${jcpp_version}")
+	modImplementation("io.github.douira:glsl-transformer:${glslTransformer_version}")
 }
 
 processResources {

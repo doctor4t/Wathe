@@ -2,6 +2,7 @@
   "required": true,
   "package": "dev.doctor4t.trainmurdermystery.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "dev.doctor4t.trainmurdermystery.mixin.TmmMixinPlugin",
   "mixins": [
     "AbstractBlockSettingsMixin",
     "DedicatedPlayerManagerMixin",
@@ -46,8 +47,16 @@
     "client.scenery.BackgroundRendererMixin",
     "client.scenery.CameraMixin",
     "client.scenery.ClientWorldMixin",
+    "client.scenery.SceneryWorldRendererMixin",
     "client.scenery.WorldRendererMixin",
     "client.ui.InGameHudMixin",
-    "client.ui.TooltipBackgroundRendererMixin"
+    "client.ui.TooltipBackgroundRendererMixin",
+    "compat.sodium.DefaultChunkRendererMixin",
+    "compat.sodium.DefaultShaderInterfaceMixin",
+    "compat.sodium.OcclusionCullerMixin",
+    "compat.sodium.RenderSectionManagerMixin",
+    "compat.sodium.ShaderLoaderMixin",
+    "compat.sodium.SodiumShaderMixin",
+    "compat.sodium.SodiumTransformerMixin"
   ]
 }
