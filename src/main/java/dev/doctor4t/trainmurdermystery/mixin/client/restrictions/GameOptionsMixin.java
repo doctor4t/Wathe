@@ -6,6 +6,7 @@ import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.Perspective;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -13,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class GameOptionsMixin {
     @ModifyReturnValue(method = "getPerspective", at = @At("RETURN"))
     public Perspective getPerspective(Perspective original) {
-        if (GameFunctions.isPlayerAliveAndSurvival(MinecraftClient.getInstance().player) && TMMClient.gameComponent.isRunning()) {
+        if (TMMClient.isPlayerAliveAndInSurvival() && TMMClient.gameComponent.isRunning()) {
             return Perspective.FIRST_PERSON;
         } else {
             return original;
