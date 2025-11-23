@@ -168,7 +168,6 @@ public class TMM implements ModInitializer {
         double x = Math.abs(player1.getX() - player2.getX());
         double y = Math.abs(player1.getY() - player2.getY());
         double z = Math.abs(player1.getZ() - player2.getZ());
-        LOGGER.info(String.valueOf(x + y + z));
         return x + y + z;
     }
 }
