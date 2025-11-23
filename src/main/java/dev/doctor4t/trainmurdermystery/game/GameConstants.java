@@ -12,6 +12,7 @@ import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -42,6 +43,9 @@ public interface GameConstants {
     }
 
     int JAMMED_DOOR_TIME = getInTicks(1, 0);
+
+    // Revolver
+    HashSet<PlayerEntity> PREVENT_REVOLVER_PICKUP = new HashSet<>();
 
     // Sprint
     int MAX_SPRINTING_TICKS = getInTicks(0, 10);

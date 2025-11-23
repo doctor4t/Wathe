@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
+import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
@@ -28,8 +29,16 @@ public abstract class ItemEntityMixin {
 
     @WrapMethod(method = "onPlayerCollision")
     public void tmm$preventGunPickup(PlayerEntity player, Operation<Void> original) {
-        if (player.isCreative() || !this.getStack().isIn(TMMItemTags.GUNS) || (!GameWorldComponent.KEY.get(player.getWorld()).isRole(player, TMMRoles.KILLER) && !player.equals(this.getOwner()) && !player.getInventory().contains(itemStack -> itemStack.isIn(TMMItemTags.GUNS)))) {
+        if (player.isCreative() || !this.getStack().isIn(TMMItemTags.GUNS)) {
             original.call(player);
+            return;
         }
+
+        if (GameWorldComponent.KEY.get(player.getWorld()).isRole(player, TMMRoles.KILLER)) return;
+        if (player.equals(this.getOwner())) return;
+        if (player.getInventory().contains(itemStack -> itemStack.isIn(TMMItemTags.GUNS))) return;
+        if (GameConstants.PREVENT_REVOLVER_PICKUP.contains(player)) return;
+
+        original.call(player);
     }
 }

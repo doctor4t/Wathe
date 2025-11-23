@@ -65,6 +65,7 @@ public record GunShootPayload(int target) implements CustomPayload {
                             item.setPickupDelay(10);
                             item.setThrower(player);
                         }
+                        GameConstants.PREVENT_REVOLVER_PICKUP.add(player);
                         ServerPlayNetworking.send(player, new GunDropPayload());
                         PlayerMoodComponent.KEY.get(player).setMood(0);
                     }, 4);
