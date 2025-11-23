@@ -126,7 +126,9 @@ public class FoodPlatterBlock extends BlockWithEntity {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull World world, BlockState state, BlockEntityType<T> type) {
-        if (!world.isClient || !type.equals(TMMBlockEntities.BEVERAGE_PLATE)) return null;
+        if (!world.isClient || !type.equals(TMMBlockEntities.BEVERAGE_PLATE)) {
+            return null;
+        }
         return BeveragePlateBlockEntity::clientTick;
     }
 }
