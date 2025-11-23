@@ -7,13 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class TMMRoles {
+public final class TMMRoles {
     public static final List<Role> ROLES = new ArrayList<>();
 
     public static final Role CIVILIAN = registerRole(new Role(TMM.id("civilian"), 0x36E51B, true));
     public static final Role VIGILANTE = registerRole(new Role(TMM.id("vigilante"), 0x1B8AE5, true));
     public static final Role KILLER = registerRole(new Role(TMM.id("killer"), 0xC13838, false));
     public static final Role LOOSE_END = registerRole(new Role(TMM.id("loose_end"), 0x9F0000, false));
+
+    private TMMRoles() {
+    }
 
     public static Role registerRole(Role role) {
         ROLES.add(role);
