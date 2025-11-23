@@ -3,8 +3,6 @@ package dev.doctor4t.trainmurdermystery.mixin.client.scenery;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
-import dev.doctor4t.trainmurdermystery.cca.TMMComponents;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.world.ClientWorld;

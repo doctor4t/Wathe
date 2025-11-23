@@ -1,11 +1,8 @@
 package dev.doctor4t.trainmurdermystery.mixin.client.items;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
-import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
 import dev.doctor4t.trainmurdermystery.util.MatrixParticleManager;
 import dev.doctor4t.trainmurdermystery.util.MatrixUtils;
@@ -23,9 +20,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.HashMap;
-import java.util.UUID;
 
 @Mixin(HeldItemRenderer.class)
 public class HeldItemRendererMixin {

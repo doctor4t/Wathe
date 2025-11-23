@@ -91,8 +91,9 @@ public class RoundTextRenderer {
                     context.getMatrices().scale(2f, 2f, 1f);
                     context.getMatrices().translate(((looseEnds % 6) - 3.5) * 12, 14 + (looseEnds / 6) * 12, 0);
                     looseEnds++;
-                    var texture = TMMClient.PLAYER_ENTRIES_CACHE.get(entry.player().getId()).getSkinTextures().texture();
-                    if (texture != null) {
+                    var playerEntry = TMMClient.PLAYER_ENTRIES_CACHE.get(entry.player().getId());
+                    if (playerEntry != null && playerEntry.getSkinTextures().texture() != null) {
+                        var texture = playerEntry.getSkinTextures().texture();
                         RenderSystem.enableBlend();
                         context.getMatrices().push();
                         context.getMatrices().translate(8, 0, 0);

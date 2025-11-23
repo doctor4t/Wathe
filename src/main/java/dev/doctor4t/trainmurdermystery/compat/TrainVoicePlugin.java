@@ -23,7 +23,8 @@ public class TrainVoicePlugin implements VoicechatPlugin {
         if (isVoiceChatMissing()) return;
         var connection = SERVER_API.getConnectionOf(player);
         if (connection != null) {
-            if (GROUP == null) GROUP = SERVER_API.groupBuilder().setHidden(true).setId(GROUP_ID).setName("Train Spectators").setPersistent(true).setType(Group.Type.OPEN).build();
+            if (GROUP == null)
+                GROUP = SERVER_API.groupBuilder().setHidden(true).setId(GROUP_ID).setName("Train Spectators").setPersistent(true).setType(Group.Type.OPEN).build();
             if (GROUP != null) connection.setGroup(GROUP);
         }
     }

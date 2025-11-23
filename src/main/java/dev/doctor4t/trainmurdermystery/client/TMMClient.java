@@ -236,9 +236,9 @@ public class TMMClient implements ClientModInitializer {
             prevInstinctLightLevel = instinctLightLevel;
             // instinct night vision
             if (TMMClient.isInstinctEnabled()) {
-                instinctLightLevel+=.1f;
+                instinctLightLevel += .1f;
             } else {
-                instinctLightLevel-=.1f;
+                instinctLightLevel -= .1f;
             }
             instinctLightLevel = MathHelper.clamp(instinctLightLevel, -.04f, .5f);
 
@@ -376,16 +376,17 @@ public class TMMClient implements ClientModInitializer {
     }
 
     public static boolean isKiller() {
-        return gameComponent != null && gameComponent.isRole(MinecraftClient.getInstance().player, TMMRoles.KILLER);
+        return gameComponent != null && gameComponent.canUseKillerFeatures(MinecraftClient.getInstance().player);
     }
 
     public static int getInstinctHighlight(Entity target) {
         if (!isInstinctEnabled()) return -1;
 //        if (target instanceof PlayerBodyEntity) return 0x606060;
-        if (target instanceof ItemEntity || target instanceof NoteEntity || target instanceof FirecrackerEntity) return 0xDB9D00;
+        if (target instanceof ItemEntity || target instanceof NoteEntity || target instanceof FirecrackerEntity)
+            return 0xDB9D00;
         if (target instanceof PlayerEntity player) {
             if (GameFunctions.isPlayerSpectatingOrCreative(player)) return -1;
-            if (isKiller() && gameComponent.isRole(player, TMMRoles.KILLER)) return MathHelper.hsvToRgb(0F, 1.0F, 0.6F);
+            if (isKiller() && gameComponent.canUseKillerFeatures(player)) return MathHelper.hsvToRgb(0F, 1.0F, 0.6F);
             if (gameComponent.isInnocent(player)) {
                 var mood = PlayerMoodComponent.KEY.get(target).getMood();
                 if (mood < GameConstants.DEPRESSIVE_MOOD_THRESHOLD) {

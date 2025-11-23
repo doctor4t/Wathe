@@ -138,6 +138,7 @@ public class TMMLangGen extends FabricLanguageProvider {
         builder.add("trainmurdermystery.midnightconfig.ultraPerfMode", "Ultra Performance Mode");
         builder.add("trainmurdermystery.midnightconfig.ultraPerfMode.tooltip", "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2.");
         builder.add("trainmurdermystery.midnightconfig.disableScreenShake", "Disable Screen Shake");
+
         builder.add("credits.trainmurdermystery.thank_you", "Thank you for playing The Last Voyage of the Harpy Express!\nMe and my team spent a lot of time working\non this mod and we hope you enjoy it.\nIf you do and wish to make a video or stream\nplease make sure to credit my channel,\nvideo and the mod page!\n - RAT / doctor4t");
     }
 }

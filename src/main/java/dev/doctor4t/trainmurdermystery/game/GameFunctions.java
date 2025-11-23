@@ -7,6 +7,8 @@ import dev.doctor4t.trainmurdermystery.cca.*;
 import dev.doctor4t.trainmurdermystery.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.trainmurdermystery.compat.TrainVoicePlugin;
 import dev.doctor4t.trainmurdermystery.entity.PlayerBodyEntity;
+import dev.doctor4t.trainmurdermystery.event.AllowPlayerDeath;
+import dev.doctor4t.trainmurdermystery.event.ShouldDropOnDeath;
 import dev.doctor4t.trainmurdermystery.index.TMMDataComponentTypes;
 import dev.doctor4t.trainmurdermystery.index.TMMEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
@@ -34,6 +36,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Clearable;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -148,7 +151,7 @@ public class GameFunctions {
     private static int assignRolesAndGetKillerCount(@NotNull ServerWorld world, @NotNull List<ServerPlayerEntity> players, GameWorldComponent gameComponent) {
         // select roles
         var roleSelector = ScoreboardRoleSelectorComponent.KEY.get(world.getScoreboard());
-        var killerCount = (int) Math.floor(players.size() * .2f);
+        var killerCount = (int) Math.floor(players.size() / 6f);
         var total = roleSelector.assignKillers(world, gameComponent, players, killerCount);
         roleSelector.assignVigilantes(world, gameComponent, players, killerCount);
         return total;
@@ -250,7 +253,7 @@ public class GameFunctions {
         GameTimeComponent.KEY.get(world).reset();
 
         // reset train
-        tryResetTrain(world);
+        gameComponent.queueTrainReset();
 
         // select rooms
         Collections.shuffle(players);
@@ -272,13 +275,13 @@ public class GameFunctions {
                         List<Text> text = new ArrayList<>();
                         UnaryOperator<Style> stylizer = style -> style.withItalic(false).withColor(letterColor);
 
-                Text displayName = serverPlayerEntity.getDisplayName();
-                String string = displayName != null ? displayName.getString() : serverPlayerEntity.getName().getString();
-                if (string.charAt(string.length()-1) == '\uE780') { // remove ratty supporter icon
-                    string = string.substring(0, string.length()-1);
-                }
+                        Text displayName = serverPlayerEntity.getDisplayName();
+                        String string = displayName != null ? displayName.getString() : serverPlayerEntity.getName().getString();
+                        if (string.charAt(string.length() - 1) == '\uE780') { // remove ratty supporter icon
+                            string = string.substring(0, string.length() - 1);
+                        }
 
-                text.add(Text.translatable(tipString + "name", string).styled(style -> style.withItalic(false).withColor(0xFFFFFF)));
+                        text.add(Text.translatable(tipString + "name", string).styled(style -> style.withItalic(false).withColor(0xFFFFFF)));
                         text.add(Text.translatable(tipString + "room").styled(stylizer));
                         text.add(Text.translatable(tipString + "tooltip1",
                                 Text.translatable(tipString + "room." + switch (finalRoomNumber) {
@@ -305,9 +308,6 @@ public class GameFunctions {
         TrainWorldComponent trainComponent = TrainWorldComponent.KEY.get(world);
         trainComponent.setSpeed(0);
         trainComponent.setTimeOfDay(TrainWorldComponent.TimeOfDay.DAY);
-
-        // reset train
-        tryResetTrain(world);
 
         // discard all player bodies
         for (var body : world.getEntitiesByType(TMMEntities.PLAYER_BODY, playerBodyEntity -> true)) body.discard();
@@ -350,7 +350,13 @@ public class GameFunctions {
     }
 
     public static void killPlayer(PlayerEntity victim, boolean spawnBody, @Nullable PlayerEntity killer) {
+        killPlayer(victim, spawnBody, killer, TMM.id("generic"));
+    }
+
+    public static void killPlayer(PlayerEntity victim, boolean spawnBody, @Nullable PlayerEntity killer, Identifier identifier) {
         var component = PlayerPsychoComponent.KEY.get(victim);
+
+        if (!AllowPlayerDeath.EVENT.invoker().allowDeath(victim, identifier)) return;
         if (component.getPsychoTicks() > 0) {
             if (component.getArmour() > 0) {
                 component.setArmour(component.getArmour() - 1);
@@ -416,7 +422,7 @@ public class GameFunctions {
     }
 
     public static boolean shouldDropOnDeath(@NotNull ItemStack stack) {
-        return !stack.isEmpty() && stack.isOf(TMMItems.REVOLVER);
+        return !stack.isEmpty() && (stack.isOf(TMMItems.REVOLVER) || ShouldDropOnDeath.EVENT.invoker().shouldDrop(stack));
     }
 
     public static boolean isPlayerAliveAndSurvival(PlayerEntity player) {

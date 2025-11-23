@@ -18,7 +18,7 @@ public class TimeRenderer {
 
     public static void renderHud(TextRenderer renderer, @NotNull ClientPlayerEntity player, @NotNull DrawContext context, float delta) {
         GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(player.getWorld());
-        if (gameWorldComponent.isRunning() && (gameWorldComponent.getGameMode() == GameWorldComponent.GameMode.DISCOVERY || gameWorldComponent.isRole(player, TMMRoles.KILLER) || GameFunctions.isPlayerSpectatingOrCreative(player))) {
+        if (gameWorldComponent.isRunning() && (gameWorldComponent.getGameMode() == GameWorldComponent.GameMode.DISCOVERY || gameWorldComponent.canUseKillerFeatures(player)|| GameFunctions.isPlayerSpectatingOrCreative(player))) {
             var time = GameTimeComponent.KEY.get(player.getWorld()).getTime();
             if (Math.abs(view.getTarget() - time) > 10) offsetDelta = time > view.getTarget() ? .6f : -.6f;
             if (time < GameConstants.getInTicks(1, 0)) {
@@ -114,8 +114,10 @@ public class TimeRenderer {
             var alpha = (1.0f - Math.abs(offset)) * 255.0f;
             var baseColour = colour | (int) alpha << 24;
             var nextColour = colour | (int) (Math.abs(offset) * 255.0f) << 24;
-            if ((baseColour & -67108864) != 0) context.drawTextWithShadow(renderer, String.valueOf(digit), 0, 0, baseColour);
-            if ((nextColour & -67108864) != 0) context.drawTextWithShadow(renderer, String.valueOf(digitNext), 0, renderer.fontHeight + 2, nextColour);
+            if ((baseColour & -67108864) != 0)
+                context.drawTextWithShadow(renderer, String.valueOf(digit), 0, 0, baseColour);
+            if ((nextColour & -67108864) != 0)
+                context.drawTextWithShadow(renderer, String.valueOf(digitNext), 0, renderer.fontHeight + 2, nextColour);
             context.getMatrices().pop();
         }
 

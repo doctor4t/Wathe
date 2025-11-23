@@ -3,6 +3,7 @@ package dev.doctor4t.trainmurdermystery.client.gui.screen.ingame;
 import com.google.common.collect.Sets;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
+import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
@@ -573,6 +574,11 @@ public abstract class LimitedHandledScreen<T extends ScreenHandler> extends Scre
     @Override
     public final void tick() {
         super.tick();
+
+        if (TMMClient.gameComponent.getFade() > 0) {
+            this.client.player.closeHandledScreen();
+        }
+
         if (this.client.player.isAlive() && !this.client.player.isRemoved()) {
             this.handledScreenTick();
         } else {

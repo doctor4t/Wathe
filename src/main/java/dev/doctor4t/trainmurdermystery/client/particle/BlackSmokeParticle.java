@@ -31,7 +31,7 @@ public class BlackSmokeParticle extends SpriteBillboardParticle {
         this.prevPosZ = this.z;
         if (this.age++ < this.maxAge && !(this.alpha <= 0.0F)) {
             this.velocityY *= .95f;
-            this.velocityX = MathHelper.clamp(this.velocityX+.1f, 0, 1);
+            this.velocityX = MathHelper.clamp(this.velocityX + .1f, 0, 1);
             this.move(this.velocityX, this.velocityY, this.velocityZ);
 
             if (this.age >= this.maxAge - 60 && this.alpha > 0.01F) {

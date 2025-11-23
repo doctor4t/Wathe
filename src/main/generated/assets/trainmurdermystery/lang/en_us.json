@@ -256,6 +256,7 @@
   "commands.supporter_only": "Super silly supporter commands are reserved for Ko-Fi and YouTube members; if you wanna try them out, please consider supporting! <3",
   "container.cabinet": "Cabinet",
   "container.cargo_box": "Cargo Box",
+  "credits.trainmurdermystery.thank_you": "Thank you for playing The Last Voyage of the Harpy Express!\nMe and my team spent a lot of time working\non this mod and we hope you enjoy it.\nIf you do and wish to make a video or stream\nplease make sure to credit my channel,\nvideo and the mod page!\n - RAT / doctor4t",
   "entity.trainmurdermystery.firecracker": "Firecracker",
   "entity.trainmurdermystery.grenade": "Grenade",
   "entity.trainmurdermystery.note": "Note",
@@ -342,6 +343,5 @@
   "trainmurdermystery.midnightconfig.disableScreenShake": "Disable Screen Shake",
   "trainmurdermystery.midnightconfig.title": "The Last Voyage of the Harpy Express - Config",
   "trainmurdermystery.midnightconfig.ultraPerfMode": "Ultra Performance Mode",
-  "trainmurdermystery.midnightconfig.ultraPerfMode.tooltip": "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2.",
-  "credits.trainmurdermystery.thank_you": "Thank you for playing The Last Voyage of the Harpy Express!\nMe and my team spent a lot of time working\non this mod and we hope you enjoy it.\nIf you do and wish to make a video or stream\nplease make sure to credit my channel,\nvideo and the mod page!\n - RAT / doctor4t"
+  "trainmurdermystery.midnightconfig.ultraPerfMode.tooltip": "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2."
 }

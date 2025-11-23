@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "dev.doctor4t.trainmurdermystery.mixin.TmmMixinPlugin",
   "mixins": [
+    "AbstractBlockInvoker",
     "AbstractBlockSettingsMixin",
     "DedicatedPlayerManagerMixin",
     "EntityMixin",

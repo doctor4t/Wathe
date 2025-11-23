@@ -137,7 +137,8 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
     private void reduceKillers() {
         var minimum = Integer.MAX_VALUE;
         for (var times : this.killerRounds.values()) minimum = Math.min(minimum, times);
-        for (var times : this.killerRounds.keySet()) this.killerRounds.put(times, this.killerRounds.get(times) - minimum);
+        for (var times : this.killerRounds.keySet())
+            this.killerRounds.put(times, this.killerRounds.get(times) - minimum);
     }
 
     public void assignVigilantes(ServerWorld world, GameWorldComponent gameComponent, @NotNull List<ServerPlayerEntity> players, int vigilanteCount) {
@@ -145,7 +146,7 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
         var vigilantes = new ArrayList<ServerPlayerEntity>();
         for (var uuid : this.forcedVigilantes) {
             var player = world.getPlayerByUuid(uuid);
-            if (player instanceof ServerPlayerEntity serverPlayer && players.contains(serverPlayer) && !gameComponent.isRole(serverPlayer, TMMRoles.KILLER)) {
+            if (player instanceof ServerPlayerEntity serverPlayer && players.contains(serverPlayer) && !gameComponent.canUseKillerFeatures(player)) {
                 player.giveItemStack(new ItemStack(TMMItems.REVOLVER));
                 gameComponent.addRole(player, TMMRoles.VIGILANTE);
                 vigilanteCount--;
@@ -184,7 +185,8 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
     private void reduceVigilantes() {
         var minimum = Integer.MAX_VALUE;
         for (var times : this.vigilanteRounds.values()) minimum = Math.min(minimum, times);
-        for (var times : this.vigilanteRounds.keySet()) this.vigilanteRounds.put(times, this.vigilanteRounds.get(times) - minimum);
+        for (var times : this.vigilanteRounds.keySet())
+            this.vigilanteRounds.put(times, this.vigilanteRounds.get(times) - minimum);
     }
 
     @Override

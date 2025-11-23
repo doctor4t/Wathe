@@ -3,7 +3,6 @@ package dev.doctor4t.trainmurdermystery.client.particle;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.ParticleEffect;
-import net.minecraft.util.math.random.Random;
 
 public class PoisonParticle extends SpriteBillboardParticle {
     protected PoisonParticle(ClientWorld clientWorld,

@@ -2,7 +2,6 @@ package dev.doctor4t.trainmurdermystery.cca;
 
 import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.api.TMMRoles;
-import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +12,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -49,6 +47,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     public enum GameStatus {
         INACTIVE, STARTING, ACTIVE, STOPPING
     }
+
     private GameMode gameMode = GameMode.MURDER;
 
     public enum GameMode implements StringIdentifiable {
@@ -162,6 +161,16 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         return roles.get(uuid);
     }
 
+    public List<UUID> getAllKillerTeamPlayers() {
+        List<UUID> ret = new ArrayList<>();
+        roles.forEach((uuid, playerRole) -> {
+            if (playerRole.canUseKiller()) {
+                ret.add(uuid);
+            }
+        });
+
+        return ret;
+    }
     public List<UUID> getAllWithRole(TMMRoles.Role role) {
         List<UUID> ret = new ArrayList<>();
         roles.forEach((uuid, playerRole) -> {
@@ -181,6 +190,9 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         return this.roles.get(uuid) == role;
     }
 
+    public boolean canUseKillerFeatures(@NotNull PlayerEntity player) {
+        return getRole(player) != null && getRole(player).canUseKiller();
+    }
     public boolean isInnocent(@NotNull PlayerEntity player) {
         return getRole(player) == null || getRole(player).isInnocent();
     }
@@ -191,7 +203,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     }
 
     public void queueTrainReset() {
-        ticksUntilNextResetAttempt = 20;
+        ticksUntilNextResetAttempt = 10;
     }
 
     public int getPsychosActive() {
@@ -316,9 +328,11 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     public void serverTick() {
         tickCommon();
 
-        if (ticksUntilNextResetAttempt-- == 0) {
+        if (--ticksUntilNextResetAttempt == 0) {
             if (GameFunctions.tryResetTrain((ServerWorld) this.world)) {
-                ticksUntilNextResetAttempt = 5;
+                queueTrainReset();
+            } else {
+                ticksUntilNextResetAttempt = -1;
             }
         }
 
@@ -350,7 +364,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
                 for (ServerPlayerEntity player : serverWorld.getPlayers()) {
                     // kill players who fell off the train
                     if (GameFunctions.isPlayerAliveAndSurvival(player) && player.getY() < GameConstants.PLAY_AREA.minY) {
-                        GameFunctions.killPlayer(player, false, player.getLastAttacker() instanceof PlayerEntity killerPlayer ? killerPlayer : null);
+                        GameFunctions.killPlayer(player, false, player.getLastAttacker() instanceof PlayerEntity killerPlayer ? killerPlayer : null, TMM.id("fell_out_of_train"));
                     }
 
                     // passive money
@@ -371,7 +385,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
                     // check passenger win condition (all killers are dead)
                     if (winStatus == GameFunctions.WinStatus.NONE) {
                         winStatus = GameFunctions.WinStatus.PASSENGERS;
-                        for (UUID player : this.getAllWithRole(TMMRoles.KILLER)) {
+                        for (UUID player : this.getAllKillerTeamPlayers()) {
                             if (!GameFunctions.isPlayerEliminated(serverWorld.getPlayerByUuid(player))) {
                                 winStatus = GameFunctions.WinStatus.NONE;
                             }
@@ -401,16 +415,18 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
                 }
 
                 // check if out of time
-                if (winStatus == GameFunctions.WinStatus.NONE && !GameTimeComponent.KEY.get(serverWorld).hasTime()) winStatus = GameFunctions.WinStatus.TIME;
+                if (winStatus == GameFunctions.WinStatus.NONE && !GameTimeComponent.KEY.get(serverWorld).hasTime())
+                    winStatus = GameFunctions.WinStatus.TIME;
 
                 // stop game if ran out of time on discovery mode
-                if (gameMode == GameMode.DISCOVERY && winStatus == GameFunctions.WinStatus.TIME) GameFunctions.stopGame(serverWorld);
+                if (gameMode == GameMode.DISCOVERY && winStatus == GameFunctions.WinStatus.TIME)
+                    GameFunctions.stopGame(serverWorld);
 
                 // game end on win and display
                 if (winStatus != GameFunctions.WinStatus.NONE && this.gameStatus == GameStatus.ACTIVE) {
                     GameRoundEndComponent.KEY.get(serverWorld).setRoundEndData(serverWorld.getPlayers(), winStatus);
                     for (ServerPlayerEntity player : serverWorld.getPlayers()) {
-                        if (winStatus == GameFunctions.WinStatus.TIME && this.isRole(player, TMMRoles.KILLER))
+                        if (winStatus == GameFunctions.WinStatus.TIME && this.canUseKillerFeatures(player))
                             GameFunctions.killPlayer(player, true, null);
                     }
                     GameFunctions.stopGame(serverWorld);

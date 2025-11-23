@@ -32,7 +32,7 @@ public class RoleAnnouncementTexts {
         public final Function<Integer, Text> goalText;
         public final Text winText;
 
-        RoleAnnouncementText(String name, int colour) {
+        public RoleAnnouncementText(String name, int colour) {
             this.name = name;
             this.colour = colour;
             this.roleText = Text.translatable("announcement.role." + this.name.toLowerCase()).withColor(this.colour);

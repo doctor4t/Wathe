@@ -14,7 +14,7 @@ import java.util.function.BiConsumer;
 public class SetVisualCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("tmm:setVisual")
-                        .requires(source -> source.hasPermissionLevel(2))
+                .requires(source -> source.hasPermissionLevel(2))
                 .then(CommandManager.literal("snow")
                         .then(CommandManager.argument("enabled", BoolArgumentType.bool())
                                 .executes(context -> execute(context.getSource(), TrainWorldComponent::setSnow, BoolArgumentType.getBool(context, "enabled")))))
@@ -31,7 +31,7 @@ public class SetVisualCommand {
                         .then(CommandManager.argument("timeOfDay", TimeOfDayArgumentType.timeofday())
                                 .executes(context -> execute(context.getSource(), TrainWorldComponent::setTimeOfDay, TimeOfDayArgumentType.getTimeofday(context, "timeOfDay")))))
                 .then(CommandManager.literal("reset")
-                                .executes(context -> reset(context.getSource())))
+                        .executes(context -> reset(context.getSource())))
         );
     }
 

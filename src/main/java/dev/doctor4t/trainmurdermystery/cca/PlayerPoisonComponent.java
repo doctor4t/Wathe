@@ -86,7 +86,7 @@ public class PlayerPoisonComponent implements AutoSyncedComponent, ServerTicking
             this.poisonTicks--;
             if (this.poisonTicks == 0) {
                 this.poisonTicks = -1;
-                GameFunctions.killPlayer(this.player, true, this.poisoner == null ? null : this.player.getWorld().getPlayerByUuid(this.poisoner));
+                GameFunctions.killPlayer(this.player, true, this.poisoner == null ? null : this.player.getWorld().getPlayerByUuid(this.poisoner), TMM.id("poison"));
                 this.poisoner = null;
                 this.sync();
             }

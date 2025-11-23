@@ -1,7 +1,6 @@
 package dev.doctor4t.trainmurdermystery.datagen;
 
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
-import dev.doctor4t.trainmurdermystery.index.tag.TMMBlockTags;
 import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -20,5 +19,17 @@ public class TMMItemTagGen extends FabricTagProvider.ItemTagProvider {
         this.getOrCreateTagBuilder(TMMItemTags.GUNS)
                 .add(TMMItems.REVOLVER)
                 .add(TMMItems.DERRINGER);
+
+        this.getOrCreateTagBuilder(TMMItemTags.PSYCHOSIS_ITEMS)
+                .add(TMMItems.LETTER)
+                .add(TMMItems.FIRECRACKER)
+                .add(TMMItems.KNIFE)
+                .add(TMMItems.REVOLVER)
+                .add(TMMItems.GRENADE)
+                .add(TMMItems.POISON_VIAL)
+                .add(TMMItems.SCORPION)
+                .add(TMMItems.LOCKPICK)
+                .add(TMMItems.CROWBAR)
+                .add(TMMItems.BODY_BAG);
     }
 }

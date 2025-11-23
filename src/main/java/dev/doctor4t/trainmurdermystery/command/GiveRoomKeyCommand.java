@@ -1,9 +1,7 @@
 package dev.doctor4t.trainmurdermystery.command;
 
-import com.google.common.base.Supplier;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
