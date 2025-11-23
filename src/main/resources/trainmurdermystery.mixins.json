@@ -12,8 +12,12 @@
     "ItemEntityMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
+    "MeCommandMixin",
+    "MessageCommandMixin",
     "PlayerEntityMixin",
     "PlayerInventoryMixin",
+    "PlayerManagerMixin",
+    "SayCommandMixin",
     "ServerPlayerEntityMixin",
     "ServerPlayNetworkHandlerMixin",
     "client.LivingEntityRendererMixin"
