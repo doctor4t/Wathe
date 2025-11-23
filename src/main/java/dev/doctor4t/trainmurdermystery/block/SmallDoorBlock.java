@@ -41,6 +41,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+import java.util.function.Supplier;
+
 public class SmallDoorBlock extends DoorPartBlock {
 
     public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
@@ -51,19 +53,18 @@ public class SmallDoorBlock extends DoorPartBlock {
     private static final MapCodec<SmallDoorBlock> CODEC = RecordCodecBuilder.mapCodec(
             (instance) ->
                     instance.group(
-                            Registries.BLOCK_ENTITY_TYPE.getCodec().fieldOf("blockEntityType").forGetter(smallDoor -> smallDoor.blockEntityType),
+                            Registries.BLOCK_ENTITY_TYPE.getCodec().fieldOf("blockEntityType").forGetter(smallDoor -> smallDoor.typeSupplier.get()),
                             createSettingsCodec()
                     ).apply(instance, (type, settings) ->
-                            new SmallDoorBlock((BlockEntityType<SmallDoorBlockEntity>) type, settings))
+                            new SmallDoorBlock(() -> (BlockEntityType<SmallDoorBlockEntity>) type, settings))
     );
 
-    // I see no reason for this to be a supplier - SkyNotTheLimit
-    private final BlockEntityType<SmallDoorBlockEntity> blockEntityType;
+    private final Supplier<BlockEntityType<SmallDoorBlockEntity>> typeSupplier;
 
-    public SmallDoorBlock(BlockEntityType<SmallDoorBlockEntity> blockEntityType, Settings settings) {
+    public SmallDoorBlock(Supplier<BlockEntityType<SmallDoorBlockEntity>> typeSupplier, Settings settings) {
         super(settings);
         this.setDefaultState(super.getDefaultState().with(HALF, DoubleBlockHalf.LOWER));
-        this.blockEntityType = blockEntityType;
+        this.typeSupplier = typeSupplier;
     }
 
     @Override
@@ -117,7 +118,7 @@ public class SmallDoorBlock extends DoorPartBlock {
 
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return state.get(HALF) == DoubleBlockHalf.LOWER ? this.blockEntityType.instantiate(pos, state) : null;
+        return state.get(HALF) == DoubleBlockHalf.LOWER ? this.typeSupplier.get().instantiate(pos, state) : null;
     }
 
     @Override
@@ -127,7 +128,7 @@ public class SmallDoorBlock extends DoorPartBlock {
 
     @Override
     protected BlockEntityType<? extends DoorBlockEntity> getBlockEntityType() {
-        return this.blockEntityType;
+        return this.typeSupplier.get();
     }
 
     @Override
