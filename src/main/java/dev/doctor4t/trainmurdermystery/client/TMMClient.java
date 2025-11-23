@@ -89,6 +89,7 @@ public class TMMClient implements ClientModInitializer {
     public static HandParticleManager handParticleManager;
     public static Map<PlayerEntity, Vec3d> particleMap;
     private static boolean prevGameRunning;
+    // THESE ARE ALL NULL BEFORE FIRST TICK - SkyNotTheLimit
     @Nullable
     public static GameWorldComponent gameComponent;
     @Nullable
@@ -231,9 +232,14 @@ public class TMMClient implements ClientModInitializer {
 
         // Caching components
         ClientTickEvents.START_WORLD_TICK.register(clientWorld -> {
+            // WARNING - POSSIBLE WORLD LEAK WHEN LEAVING WORLD - FIX PLEASE - SkyNotTheLimit
             gameComponent = GameWorldComponent.KEY.get(clientWorld);
             trainComponent = TrainWorldComponent.KEY.get(clientWorld);
-            moodComponent = PlayerMoodComponent.KEY.get(MinecraftClient.getInstance().player);
+            if (MinecraftClient.getInstance().player == null) {
+                moodComponent = null;
+            } else {
+                moodComponent = PlayerMoodComponent.KEY.get(MinecraftClient.getInstance().player);
+            }
         });
 
         // Lock options
