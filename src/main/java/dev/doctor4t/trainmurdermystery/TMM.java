@@ -7,6 +7,7 @@ import dev.doctor4t.trainmurdermystery.command.*;
 import dev.doctor4t.trainmurdermystery.command.argument.TMMGameModeArgumentType;
 import dev.doctor4t.trainmurdermystery.command.argument.TimeOfDayArgumentType;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
+import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.*;
 import dev.doctor4t.trainmurdermystery.util.*;
 import dev.upcraft.datasync.api.DataSyncAPI;
@@ -15,11 +16,13 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -74,6 +77,18 @@ public class TMM implements ModInitializer {
             AutoStartCommand.register(dispatcher);
             LockToSupportersCommand.register(dispatcher);
         }));
+
+        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> {
+            MinecraftServer server = sender.getServer();
+            // send message only to players less than 20 blocks away or to spectators
+            server.getPlayerManager().broadcast(message.getContent(), (player) -> {
+                if ((compareCoordinatesDistance(sender.getBlockPos(), player.getBlockPos()) <= 20 && GameFunctions.isPlayerAliveAndSurvival(sender)) || GameFunctions.isPlayerSpectatingOrCreative(player)) {
+                    return Text.literal(sender.getName().getString() + ": " + message.getContent().getString());
+                }
+                return null;
+            }, false);
+            return false;
+        });
 
         // server lock to supporters
         ServerPlayerEvents.JOIN.register(player -> {
@@ -147,5 +162,13 @@ public class TMM implements ModInitializer {
     public static @NotNull Boolean isSupporter(PlayerEntity player) {
         Optional<Entitlements> entitlements = Entitlements.token().get(player.getUuid());
         return entitlements.map(value -> value.keys().stream().anyMatch(identifier -> identifier.equals(COMMAND_ACCESS))).orElse(false);
+    }
+
+    public static double compareCoordinatesDistance(BlockPos player1, BlockPos player2) {
+        double x = Math.abs(player1.getX() - player2.getX());
+        double y = Math.abs(player1.getY() - player2.getY());
+        double z = Math.abs(player1.getZ() - player2.getZ());
+        LOGGER.info(String.valueOf(x + y + z));
+        return x + y + z;
     }
 }
