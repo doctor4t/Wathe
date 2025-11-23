@@ -39,7 +39,7 @@ public class GameRoundEndComponent implements AutoSyncedComponent {
         for (ServerPlayerEntity player : players) {
             RoleAnnouncementTexts.RoleAnnouncementText role;
             GameWorldComponent game = GameWorldComponent.KEY.get(this.world);
-            if (game.isRole(player, TMMRoles.KILLER)) {
+            if (game.canUseKillerFeatures(player)) {
                 role = RoleAnnouncementTexts.KILLER;
             } else if (game.isRole(player, TMMRoles.VIGILANTE)) {
                 role = RoleAnnouncementTexts.VIGILANTE;

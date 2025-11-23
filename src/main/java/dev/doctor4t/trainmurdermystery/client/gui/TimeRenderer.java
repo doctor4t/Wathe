@@ -1,6 +1,5 @@
 package dev.doctor4t.trainmurdermystery.client.gui;
 
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.cca.GameTimeComponent;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
@@ -29,7 +28,7 @@ public class TimeRenderer {
             return;
         }
         if (gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.DISCOVERY
-                && !gameWorldComponent.isRole(player, TMMRoles.KILLER)
+                && !gameWorldComponent.canUseKillerFeatures(player)
                 && !GameFunctions.isPlayerSpectatingOrCreative(player)
         ) {
             return;

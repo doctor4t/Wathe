@@ -1,6 +1,5 @@
 package dev.doctor4t.trainmurdermystery.client.gui;
 
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerShopComponent;
 import net.fabricmc.api.EnvType;
@@ -24,7 +23,7 @@ public final class StoreRenderer {
     }
 
     public static void renderHud(TextRenderer renderer, @NotNull ClientPlayerEntity player, @NotNull DrawContext context, float delta) {
-        if (!GameWorldComponent.KEY.get(player.getWorld()).isRole(player, TMMRoles.KILLER)) {
+        if (!GameWorldComponent.KEY.get(player.getWorld()).canUseKillerFeatures(player)) {
             return;
         }
 

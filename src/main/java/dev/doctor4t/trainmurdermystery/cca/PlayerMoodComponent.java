@@ -1,12 +1,11 @@
 package dev.doctor4t.trainmurdermystery.cca;
 
 import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
-import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import dev.doctor4t.trainmurdermystery.networking.TaskCompleteS2CPayload;
+import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -14,8 +13,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
@@ -24,18 +27,15 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 
 import static dev.doctor4t.trainmurdermystery.TMM.isSkyVisibleAdjacent;
 
 public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
-    public static final Item[] PSYCHOSIS_ITEM_POOL = {
+    /*public static final Item[] PSYCHOSIS_ITEM_POOL = {
             TMMItems.LETTER, TMMItems.FIRECRACKER, TMMItems.KNIFE, TMMItems.REVOLVER, TMMItems.GRENADE, TMMItems.POISON_VIAL, TMMItems.SCORPION, TMMItems.LOCKPICK, TMMItems.CROWBAR, TMMItems.BODY_BAG
-    };
+    };*/
 
     public static final ComponentKey<PlayerMoodComponent> KEY = ComponentRegistry.getOrCreate(TMM.id("mood"), PlayerMoodComponent.class);
     private final PlayerEntity player;
@@ -45,6 +45,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
     private float mood = 1f;
     private final HashMap<UUID, ItemStack> psychosisItems = new HashMap<>();
     private boolean dirty = false;
+    private static List<Item> cachedPsychosisItems = null;
 
     public PlayerMoodComponent(PlayerEntity player) {
         this.player = player;
@@ -63,6 +64,22 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         this.markDirty();
     }
 
+    private List<Item> getPsychosisItemPool() {
+        if (cachedPsychosisItems == null) {
+            cachedPsychosisItems = this.player.getRegistryManager()
+                    .createRegistryLookup()
+                    .getOrThrow(RegistryKeys.ITEM)
+                    .getOptional(TMMItemTags.PSYCHOSIS_ITEMS)
+                    .map(RegistryEntryList.ListBacked::stream)
+                    .map(stream -> stream.map(RegistryEntry::value).toList())
+                    .orElseGet(() -> {
+                        TMM.LOGGER.error("Server provided empty tag {}", TMMItemTags.PSYCHOSIS_ITEMS.id());
+                        return List.of();
+                    });
+        }
+        return cachedPsychosisItems;
+    }
+
     @Override
     public void clientTick() {
         if (!GameWorldComponent.KEY.get(this.player.getWorld()).isRunning() || !TMMClient.isPlayerAliveAndInSurvival()){
@@ -72,17 +89,23 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
             this.setMood(this.mood - this.tasks.size() * GameConstants.MOOD_DRAIN);
         }
 
-        if (!this.isLowerThanMid()) {
-            if (!this.psychosisItems.isEmpty()) {
-                this.psychosisItems.clear();
-            }
-            return;
-        }
+        if (this.isLowerThanMid()) {
+            // imagine random items for players
+            for (PlayerEntity playerEntity : this.player.getWorld().getPlayers()) {
+                if (!playerEntity.equals(this.player) && this.player.getWorld().getRandom().nextInt(GameConstants.ITEM_PSYCHOSIS_REROLL_TIME) == 0) {
+                    ItemStack psychosisStack;
+                    List<Item> taggedItems = getPsychosisItemPool();
 
-        // imagine random items for players
-        for (PlayerEntity playerEntity : this.player.getWorld().getPlayers()) {
-            if (!playerEntity.equals(this.player) && this.player.getWorld().getRandom().nextInt(GameConstants.ITEM_PSYCHOSIS_REROLL_TIME) == 0) {
-                this.psychosisItems.put(playerEntity.getUuid(), playerEntity.getRandom().nextFloat() < GameConstants.ITEM_PSYCHOSIS_CHANCE ? PSYCHOSIS_ITEM_POOL[playerEntity.getRandom().nextInt(PSYCHOSIS_ITEM_POOL.length)].getDefaultStack() : playerEntity.getMainHandStack());
+                    if (!taggedItems.isEmpty() && this.player.getRandom().nextFloat() < GameConstants.ITEM_PSYCHOSIS_CHANCE) {
+                        Item item = Util.getRandom(taggedItems, this.player.getRandom());
+                        psychosisStack = new ItemStack(item);
+                    } else {
+                        psychosisStack = playerEntity.getMainHandStack();
+                    }
+
+                    //this.psychosisItems.put(playerEntity.getUuid(), playerEntity.getRandom().nextFloat() < GameConstants.ITEM_PSYCHOSIS_CHANCE ? PSYCHOSIS_ITEM_POOL[playerEntity.getRandom().nextInt(PSYCHOSIS_ITEM_POOL.length)].getDefaultStack() : playerEntity.getMainHandStack());
+                    this.psychosisItems.put(playerEntity.getUuid(), psychosisStack);
+                }
             }
         }
     }
@@ -111,7 +134,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
             this.markDirty();
         }
 
-        ArrayList<Task> removals = new ArrayList<>();
+        List<Task> removals = new ArrayList<>();
         for (TrainTask task : this.tasks.values()) {
             task.tick(this.player);
             if (task.isFulfilled(this.player)) {
@@ -163,12 +186,12 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
 
     public float getMood() {
         GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(this.player.getWorld());
-        return gameWorldComponent.isRole(this.player, TMMRoles.KILLER) || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER ? 1 : this.mood;
+        return gameWorldComponent.canUseKillerFeatures(player) || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER ? 1 : this.mood;
     }
 
     public void setMood(float mood) {
         GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(this.player.getWorld());
-        this.mood = gameWorldComponent.isRole(this.player, TMMRoles.KILLER) || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER ? 1 : Math.clamp(mood, 0, 1);
+        this.mood = gameWorldComponent.canUseKillerFeatures(player) || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER ? 1 : Math.clamp(mood, 0, 1);
         this.markDirty();
     }
 
@@ -197,7 +220,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
     }
 
     @Override
-    public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+    public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.@NotNull WrapperLookup registryLookup) {
         tag.putFloat("mood", this.mood);
         NbtList tasks = new NbtList();
         for (TrainTask task : this.tasks.values()) {
@@ -207,7 +230,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
     }
 
     @Override
-    public void readFromNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+    public void readFromNbt(@NotNull NbtCompound tag, RegistryWrapper.@NotNull WrapperLookup registryLookup) {
         this.mood = tag.contains("mood", NbtElement.FLOAT_TYPE) ? tag.getFloat("mood") : 1f;
         this.tasks.clear();
         if (tag.contains("tasks", NbtElement.LIST_TYPE)) {

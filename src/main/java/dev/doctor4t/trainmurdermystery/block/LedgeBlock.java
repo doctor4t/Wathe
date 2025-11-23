@@ -10,6 +10,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
 public class LedgeBlock extends HorizontalFacingBlock {
@@ -19,6 +20,11 @@ public class LedgeBlock extends HorizontalFacingBlock {
     protected static final VoxelShape EAST_SHAPE = Block.createCuboidShape(8, 14, 0, 16, 16, 16);
     protected static final VoxelShape SOUTH_SHAPE = Block.createCuboidShape(0, 14, 8, 16, 16, 16);
     protected static final VoxelShape WEST_SHAPE = Block.createCuboidShape(0, 14, 0, 8, 16, 16);
+
+    protected static final VoxelShape NORTH_SHAPE_SMALL = Block.createCuboidShape(0, 14, 0, 16, 16, 2);
+    protected static final VoxelShape EAST_SHAPE_SMALL = Block.createCuboidShape(14, 14, 0, 16, 16, 16);
+    protected static final VoxelShape SOUTH_SHAPE_SMALL = Block.createCuboidShape(0, 14, 14, 16, 16, 16);
+    protected static final VoxelShape WEST_SHAPE_SMALL = Block.createCuboidShape(0, 14, 0, 2, 16, 16);
 
     public LedgeBlock(Settings settings) {
         super(settings);
@@ -39,12 +45,40 @@ public class LedgeBlock extends HorizontalFacingBlock {
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return switch (state.get(FACING)) {
+            case NORTH -> NORTH_SHAPE_SMALL;
+            case SOUTH -> SOUTH_SHAPE_SMALL;
+            case WEST -> WEST_SHAPE_SMALL;
+            case EAST -> EAST_SHAPE_SMALL;
+            default -> null;
+        };
+    }
+
+    public VoxelShape getCollisionShapeBig(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return switch (state.get(FACING)) {
             case NORTH -> NORTH_SHAPE;
             case SOUTH -> SOUTH_SHAPE;
             case WEST -> WEST_SHAPE;
             case EAST -> EAST_SHAPE;
             default -> null;
         };
+    }
+
+    public VoxelShape getCollisionShapeSmall(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return switch (state.get(FACING)) {
+            case NORTH -> NORTH_SHAPE_SMALL;
+            case SOUTH -> SOUTH_SHAPE_SMALL;
+            case WEST -> WEST_SHAPE_SMALL;
+            case EAST -> EAST_SHAPE_SMALL;
+            default -> null;
+        };
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        if (!context.isAbove(state.getOutlineShape(world, pos), pos, true)) {
+            return getCollisionShapeSmall(state, world, pos, context);
+        }
+        return getCollisionShapeBig(state, world, pos, context);
     }
 
     @Override

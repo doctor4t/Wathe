@@ -23,7 +23,8 @@ public abstract class ItemEntityMixin {
 
     @WrapMethod(method = "onPlayerCollision")
     public void preventGunPickup(PlayerEntity player, Operation<Void> original) {
-        if (player.isCreative() || !this.getStack().isIn(TMMItemTags.GUNS)) {
+        // TODO: fix logic
+        if (player.isCreative() || !this.getStack().isIn(TMMItemTags.GUNS) || (GameWorldComponent.KEY.get(player.getWorld()).isInnocent(player) && !player.equals(this.getOwner()) && !player.getInventory().contains(itemStack -> itemStack.isIn(TMMItemTags.GUNS)))) {
             original.call(player);
             return;
         }

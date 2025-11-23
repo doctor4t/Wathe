@@ -409,7 +409,7 @@ public class TMMClient implements ClientModInitializer {
 
     public static boolean isKiller(World world) {
         GameWorldComponent gameComponent = getGameComponent(world);
-        return gameComponent != null && gameComponent.isRole(MinecraftClient.getInstance().player, TMMRoles.KILLER);
+        return gameComponent != null && gameComponent.canUseKillerFeatures(MinecraftClient.getInstance().player);
     }
 
     public static int getInstinctHighlight(Entity target) {
@@ -432,7 +432,7 @@ public class TMMClient implements ClientModInitializer {
 
         GameWorldComponent gameComponent = getGameComponent(world);
 
-        if (isKiller(world) && gameComponent != null && gameComponent.isRole(player, TMMRoles.KILLER)) {
+        if (isKiller(world) && gameComponent != null && gameComponent.canUseKillerFeatures(player)) {
             return MathHelper.hsvToRgb(0F, 1.0F, 0.6F);
         }
         if (gameComponent != null && gameComponent.isInnocent(player)) {

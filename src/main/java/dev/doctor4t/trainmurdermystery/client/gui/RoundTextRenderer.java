@@ -211,17 +211,21 @@ public final class RoundTextRenderer {
             matrices.scale(2f, 2f, 1f);
             matrices.translate(((looseEnds % 6) - 3.5) * 12, 14 + (looseEnds / 6) * 12, 0);
             looseEnds++;
-            Identifier texture = TMMClient.PLAYER_ENTRIES_CACHE.get(entry.player().getId()).getSkinTextures().texture();
-            if (texture != null) {
-                RenderSystem.enableBlend();
-                matrices.push();
-                matrices.translate(8, 0, 0);
-                float offColour = entry.wasDead() ? 0.4f : 1f;
-                context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 8 / 64f, 16 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
-                matrices.translate(-0.5, -0.5, 0);
-                matrices.scale(1.125f, 1.125f, 1f);
-                context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 40 / 64f, 48 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
-                matrices.pop();
+            PlayerListEntry playerListEntry = TMMClient.PLAYER_ENTRIES_CACHE.get(entry.player().getId());
+            if (playerListEntry != null) {
+                Identifier texture = playerListEntry.getSkinTextures().texture();
+
+                if (texture != null) {
+                    RenderSystem.enableBlend();
+                    matrices.push();
+                    matrices.translate(8, 0, 0);
+                    float offColour = entry.wasDead() ? 0.4f : 1f;
+                    context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 8 / 64f, 16 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
+                    matrices.translate(-0.5, -0.5, 0);
+                    matrices.scale(1.125f, 1.125f, 1f);
+                    context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 40 / 64f, 48 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
+                    matrices.pop();
+                }
             }
             if (entry.wasDead()) {
                 matrices.translate(13, 0, 0);

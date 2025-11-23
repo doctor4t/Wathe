@@ -19,5 +19,17 @@ public class TMMItemTagGen extends FabricTagProvider.ItemTagProvider {
         this.getOrCreateTagBuilder(TMMItemTags.GUNS)
                 .add(TMMItems.REVOLVER)
                 .add(TMMItems.DERRINGER);
+
+        this.getOrCreateTagBuilder(TMMItemTags.PSYCHOSIS_ITEMS)
+                .add(TMMItems.LETTER)
+                .add(TMMItems.FIRECRACKER)
+                .add(TMMItems.KNIFE)
+                .add(TMMItems.REVOLVER)
+                .add(TMMItems.GRENADE)
+                .add(TMMItems.POISON_VIAL)
+                .add(TMMItems.SCORPION)
+                .add(TMMItems.LOCKPICK)
+                .add(TMMItems.CROWBAR)
+                .add(TMMItems.BODY_BAG);
     }
 }

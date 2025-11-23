@@ -64,7 +64,7 @@ public final class RoleNameRenderer {
 
         nametagAlpha = MathHelper.lerp(tickCounter.getTickDelta(true) / 4, nametagAlpha, 1f);
         nametag = target.getDisplayName();
-        if (component.isRole(target, TMMRoles.KILLER)) {
+        if (component.canUseKillerFeatures(target)) {
             targetRole = TrainRole.KILLER;
         } else {
             targetRole = TrainRole.BYSTANDER;
@@ -86,7 +86,7 @@ public final class RoleNameRenderer {
         context.drawTextWithShadow(renderer, nametag, -nameWidth / 2, 16, MathHelper.packRgb(1f, 1f, 1f) | ((int) (nametagAlpha * 255) << 24));
         if (component.isRunning()) {
             TrainRole playerRole = TrainRole.BYSTANDER;
-            if (component.isRole(player, TMMRoles.KILLER)) {
+            if (component.canUseKillerFeatures(player)) {
                 playerRole = TrainRole.KILLER;
             }
             if (playerRole == TrainRole.KILLER && targetRole == TrainRole.KILLER) {

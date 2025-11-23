@@ -34,7 +34,10 @@ public class LimitedInventoryScreen extends LimitedHandledScreen<PlayerScreenHan
     @Override
     protected void init() {
         super.init();
-        if (!GameWorldComponent.KEY.get(this.player.getWorld()).isRole(this.player, TMMRoles.KILLER)) return;
+        if (!GameWorldComponent.KEY.get(this.player.getWorld()).canUseKillerFeatures(player)) {
+            return;
+        }
+
         List<ShopEntry> entries = GameConstants.SHOP_ENTRIES;
         int apart = 38;
         int x = this.width / 2 - entries.size() * apart / 2 + 9;
