@@ -7,6 +7,7 @@ import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
 import dev.doctor4t.trainmurdermystery.util.MatrixParticleManager;
 import dev.doctor4t.trainmurdermystery.util.MatrixUtils;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
@@ -39,15 +40,25 @@ public class HeldItemRendererMixin {
             TMMClient.handParticleManager.render(matrices, vertexConsumers, light);
         }
 
-        if (entity instanceof PlayerEntity playerEntity && stack.isIn(TMMItemTags.GUNS)) {
-            if (playerEntity.getUuid() != MinecraftClient.getInstance().player.getUuid()) {
-                MatrixParticleManager.setMuzzlePosForPlayer(playerEntity, MatrixUtils.matrixToVec(matrices));
-            } else if (!renderMode.isFirstPerson()) {
-                MatrixParticleManager.setMuzzlePosForPlayer(playerEntity, MatrixUtils.matrixToVec(matrices));
-            }
+        if (!(entity instanceof PlayerEntity playerEntity) || !stack.isIn(TMMItemTags.GUNS)) {
+            return;
+        }
+
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (player == null) {
+            MatrixParticleManager.setMuzzlePosForPlayer(playerEntity, MatrixUtils.matrixToVec(matrices));
+            return;
+        }
+        if (playerEntity.getUuid() != MinecraftClient.getInstance().player.getUuid()) {
+            MatrixParticleManager.setMuzzlePosForPlayer(playerEntity, MatrixUtils.matrixToVec(matrices));
+            return;
+        }
+        if (!renderMode.isFirstPerson()) {
+            MatrixParticleManager.setMuzzlePosForPlayer(playerEntity, MatrixUtils.matrixToVec(matrices));
         }
     }
 
+    // you do realise that FabricItem#allowComponentsUpdateAnimation exists, right? - SkyNotTheLimit
     @ModifyExpressionValue(
             method = "updateHeldItems",
             at = @At(
@@ -55,7 +66,7 @@ public class HeldItemRendererMixin {
                     target = "Lnet/minecraft/item/ItemStack;areEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"
             )
     )
-    private boolean tmm$ignoreNbtUpdateForRevolver(boolean original, @Local(ordinal = 0) ItemStack newItemStack) {
+    private boolean ignoreNbtUpdateForRevolver(boolean original, @Local(ordinal = 0) ItemStack newItemStack) {
         if (!original) {
             if (this.mainHand.isIn(TMMItemTags.GUNS) && newItemStack.isIn(TMMItemTags.GUNS)) {
                 return true;

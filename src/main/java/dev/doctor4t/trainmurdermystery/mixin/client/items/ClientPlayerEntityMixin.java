@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(ClientPlayerEntity.class)
 public class ClientPlayerEntityMixin {
     @ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"))
-    public boolean tmm$disableItemSlowdown(boolean original) {
+    public boolean disableItemSlowdown(boolean original) {
         return false;
     }
 

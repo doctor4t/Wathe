@@ -19,7 +19,7 @@ public abstract class MinecraftClientMixin {
     public ClientPlayerEntity player;
 
     @WrapOperation(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V", ordinal = 1))
-    private void tmm$replaceInventoryScreenWithLimitedInventoryScreen(MinecraftClient instance, Screen screen, Operation<Void> original) {
+    private void replaceInventoryScreenWithLimitedInventoryScreen(MinecraftClient instance, Screen screen, Operation<Void> original) {
         if (TMMClient.gameComponent.getFade() > 0) {
             return;
         }

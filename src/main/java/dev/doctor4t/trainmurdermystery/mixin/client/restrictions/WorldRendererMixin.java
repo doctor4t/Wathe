@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(WorldRenderer.class)
 public class WorldRendererMixin {
     @ModifyExpressionValue(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getTeamColorValue()I"))
-    public int render(int original, @Local Entity entity) {
+    public int applyInstinctHighlight(int original, @Local Entity entity) {
         int highlight = TMMClient.getInstinctHighlight(entity);
         return highlight == -1 ? original : highlight;
     }

@@ -16,7 +16,7 @@ import java.util.UUID;
 @Mixin(HeldItemFeatureRenderer.class)
 public class HeldItemFeatureRendererMixin {
     @WrapOperation(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/entity/LivingEntity;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getMainHandStack()Lnet/minecraft/item/ItemStack;"))
-    public ItemStack tmm$hideNoteAndRenderPsychosisItems(LivingEntity instance, Operation<ItemStack> original) {
+    public ItemStack hideNoteAndRenderPsychosisItems(LivingEntity instance, Operation<ItemStack> original) {
         ItemStack ret = original.call(instance);
 
         if (ret.isOf(TMMItems.NOTE)) {

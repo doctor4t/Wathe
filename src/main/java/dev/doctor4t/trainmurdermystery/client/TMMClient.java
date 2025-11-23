@@ -74,9 +74,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.glfw.GLFW;
 
+import java.awt.Color;
 import java.util.*;
 
 public class TMMClient implements ClientModInitializer {
+    public static final Vec3d DUSK_BACKGROUND_COLOR = ;
     private static float soundLevel = 0f;
     public static HandParticleManager handParticleManager;
     public static Map<PlayerEntity, Vec3d> particleMap;
@@ -444,5 +446,10 @@ public class TMMClient implements ClientModInitializer {
 
     public static int getLockedRenderDistance(boolean ultraPerfMode) {
         return ultraPerfMode ? 2 : 32;
+    }
+
+    static {
+        Color color = new Color(0xE406060B, true);
+        DUSK_BACKGROUND_COLOR = Vec3d.unpackRgb(color.getRGB());
     }
 }

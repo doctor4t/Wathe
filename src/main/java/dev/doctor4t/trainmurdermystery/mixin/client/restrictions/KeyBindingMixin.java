@@ -3,6 +3,7 @@ package dev.doctor4t.trainmurdermystery.mixin.client.restrictions;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,35 +15,34 @@ public abstract class KeyBindingMixin {
     @Shadow
     public abstract boolean equals(KeyBinding other);
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     @Unique
-    private boolean shouldSuppressKey() {
+    private boolean tmm$shouldSuppressKey() {
         if (TMMClient.isPlayerAliveAndInSurvival()) {
-            return this.equals(MinecraftClient.getInstance().options.swapHandsKey) ||
-                    this.equals(MinecraftClient.getInstance().options.chatKey) ||
-                    this.equals(MinecraftClient.getInstance().options.commandKey) ||
-                    this.equals(MinecraftClient.getInstance().options.jumpKey) ||
-                    this.equals(MinecraftClient.getInstance().options.togglePerspectiveKey) ||
-                    this.equals(MinecraftClient.getInstance().options.dropKey) ||
-                    this.equals(MinecraftClient.getInstance().options.advancementsKey);
+            GameOptions options = MinecraftClient.getInstance().options;
+            return this.equals(options.swapHandsKey) ||
+                    this.equals(options.chatKey) ||
+                    this.equals(options.commandKey) ||
+                    this.equals(options.jumpKey) ||
+                    this.equals(options.togglePerspectiveKey) ||
+                    this.equals(options.dropKey) ||
+                    this.equals(options.advancementsKey);
         }
         return false;
     }
 
     @ModifyReturnValue(method = "wasPressed", at = @At("RETURN"))
-    private boolean tmm$restrainWasPressedKeys(boolean original) {
-        if (this.shouldSuppressKey()) return false;
-        else return original;
+    private boolean restrainWasPressedKeys(boolean original) {
+        return !this.tmm$shouldSuppressKey() && original;
     }
 
     @ModifyReturnValue(method = "isPressed", at = @At("RETURN"))
-    private boolean tmm$restrainIsPressedKeys(boolean original) {
-        if (this.shouldSuppressKey()) return false;
-        else return original;
+    private boolean restrainIsPressedKeys(boolean original) {
+        return !this.tmm$shouldSuppressKey() && original;
     }
 
     @ModifyReturnValue(method = "matchesKey", at = @At("RETURN"))
-    private boolean tmm$restrainMatchesKey(boolean original) {
-        if (this.shouldSuppressKey()) return false;
-        else return original;
+    private boolean restrainMatchesKey(boolean original) {
+        return !this.tmm$shouldSuppressKey() && original;
     }
 }

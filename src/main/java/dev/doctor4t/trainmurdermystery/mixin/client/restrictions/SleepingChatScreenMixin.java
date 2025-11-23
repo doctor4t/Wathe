@@ -24,24 +24,25 @@ public abstract class SleepingChatScreenMixin extends ChatScreen {
     }
 
     @WrapMethod(method = "render")
-    public void tmm$disableSleepChat(DrawContext context, int mouseX, int mouseY, float delta, Operation<Void> original) {
-        if (!TMMClient.isPlayerAliveAndInSurvival()) {
-            original.call(context, mouseX, mouseY, delta);
+    public void disableSleepChat(DrawContext context, int mouseX, int mouseY, float delta, Operation<Void> original) {
+        if (TMMClient.isPlayerAliveAndInSurvival()) {
+            return;
         }
+        original.call(context, mouseX, mouseY, delta);
     }
 
     @WrapMethod(method = "render")
-    public void tmm$onlyRenderStopSleepingButton(DrawContext context, int mouseX, int mouseY, float delta, Operation<Void> original) {
+    public void onlyRenderStopSleepingButton(DrawContext context, int mouseX, int mouseY, float delta, Operation<Void> original) {
         this.stopSleepingButton.render(context, mouseX, mouseY, delta);
     }
 
     @WrapMethod(method = "charTyped")
-    public boolean tmm$disableCharTyping(char chr, int modifiers, Operation<Boolean> original) {
+    public boolean disableCharTyping(char chr, int modifiers, Operation<Boolean> original) {
         return false;
     }
 
     @WrapMethod(method = "keyPressed")
-    public boolean tmm$disableKeyPressed(int keyCode, int scanCode, int modifiers, Operation<Boolean> original) {
+    public boolean disableKeyPressed(int keyCode, int scanCode, int modifiers, Operation<Boolean> original) {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             this.stopSleeping();
         }
@@ -50,7 +51,7 @@ public abstract class SleepingChatScreenMixin extends ChatScreen {
     }
 
     @WrapMethod(method = "closeChatIfEmpty")
-    public void tmm$alwaysCloseChatOnLeavingBed(Operation<Void> original) {
+    public void alwaysCloseChatOnLeavingBed(Operation<Void> original) {
         this.client.setScreen(null);
     }
 }

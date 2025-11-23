@@ -18,11 +18,11 @@ public abstract class CreativeInventoryScreenMixin extends AbstractInventoryScre
     }
 
     @WrapMethod(method = "handledScreenTick")
-    public void tmm$replaceSurvivalInventory(Operation<Void> original) {
-        if (TMMClient.isPlayerAliveAndInSurvival()) {
-            this.client.setScreen(new LimitedInventoryScreen(this.client.player));
-        } else {
+    public void replaceSurvivalInventory(Operation<Void> original) {
+        if (!TMMClient.isPlayerAliveAndInSurvival()) {
             original.call();
+            return;
         }
+        this.client.setScreen(new LimitedInventoryScreen(this.client.player));
     }
 }
