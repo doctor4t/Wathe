@@ -44,7 +44,9 @@ public class ScrollingDigit {
             this.value = this.target;
         }
         // now you can play the update sound or whatever - SkyNotTheLimit
-        this.tickCallback.accept(this);
+        if (this.tickCallback != null) {
+            this.tickCallback.accept(this);
+        }
     }
 
     public void render(@NotNull TextRenderer renderer, @NotNull DrawContext context, int colour, float delta) {

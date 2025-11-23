@@ -136,15 +136,17 @@ public class TMM implements ModInitializer {
 
     public static int executeSupporterCommand(ServerCommandSource source, Runnable runnable) {
         ServerPlayerEntity player = source.getPlayer();
-        if (player == null) return 0;
-
-        if (isSupporter(player)) {
-            runnable.run();
-            return 1;
-        } else {
-            player.sendMessage(Text.translatable("commands.supporter_only"));
+        if (player == null) {
             return 0;
         }
+
+        if (isSupporter(player) || DEVELOPMENT) {
+            runnable.run();
+            return 1;
+        }
+
+        player.sendMessage(Text.translatable("commands.supporter_only"));
+        return 0;
     }
 
     public static @NotNull Boolean isSupporter(PlayerEntity player) {
