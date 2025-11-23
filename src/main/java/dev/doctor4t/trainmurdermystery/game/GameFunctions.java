@@ -148,7 +148,7 @@ public class GameFunctions {
             }
         }
 
-        gameComponent.sync();
+        gameComponent.markDirty();
     }
 
     private static int assignRolesAndGetKillerCount(@NotNull ServerWorld world, @NotNull List<ServerPlayerEntity> players, GameWorldComponent gameComponent) {
@@ -260,7 +260,7 @@ public class GameFunctions {
 
         gameComponent.setGameStatus(GameWorldComponent.GameStatus.ACTIVE);
         trainComponent.setTime(0);
-        gameComponent.sync();
+        gameComponent.markDirty();
     }
 
     public static void finalizeGame(ServerWorld world) {
@@ -287,7 +287,7 @@ public class GameFunctions {
         gameComponent.clearRoleMap();
         gameComponent.setGameStatus(GameWorldComponent.GameStatus.INACTIVE);
         trainComponent.setTime(0);
-        gameComponent.sync();
+        gameComponent.markDirty();
     }
 
     public static void resetPlayer(ServerPlayerEntity player) {

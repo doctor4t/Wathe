@@ -20,23 +20,22 @@ import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
-import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
-import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: use dirty style
-// TODO: CommonTickingComponent
-public class GameWorldComponent implements AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
+public class GameWorldComponent implements AutoSyncedComponent, CommonTickingComponent {
     public static final ComponentKey<GameWorldComponent> KEY = ComponentRegistry.getOrCreate(TMM.id("game"), GameWorldComponent.class);
     private final World world;
 
     private boolean lockedToSupporters = false;
     private boolean enableWeights = false;
     private GameMode gameMode = GameMode.MURDER;
+
+    private boolean dirty = false;
 
     public void setWeightsEnabled(boolean enabled) {
         this.enableWeights = enabled;
@@ -85,7 +84,15 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         this.world = world;
     }
 
-    public void sync() {
+    public void markDirty() {
+        this.dirty = true;
+    }
+
+    protected void syncIfDirty() {
+        if (!this.dirty) {
+            return;
+        }
+        this.dirty = false;
         GameWorldComponent.KEY.sync(this.world);
     }
 
@@ -95,7 +102,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
     public void setBound(boolean bound) {
         this.bound = bound;
-        this.sync();
+        this.markDirty();
     }
 
     public int getFade() {
@@ -108,7 +115,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
     public void setGameStatus(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
-        this.sync();
+        this.markDirty();
     }
 
     public GameStatus getGameStatus() {
@@ -183,6 +190,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     public boolean canUseKillerFeatures(@NotNull PlayerEntity player) {
         return getRole(player) != null && getRole(player).canUseKiller();
     }
+
     public boolean isInnocent(@NotNull PlayerEntity player) {
         return getRole(player) == null || getRole(player).isInnocent();
     }
@@ -206,7 +214,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
     public void setPsychosActive(int psychosActive) {
         this.psychosActive = Math.max(0, psychosActive);
-        this.sync();
+        this.markDirty();
     }
 
     public GameMode getGameMode() {
@@ -215,7 +223,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
     public void setGameMode(GameMode discoveryMode) {
         this.gameMode = discoveryMode;
-        this.sync();
+        this.markDirty();
     }
 
     public UUID getLooseEndWinner() {
@@ -224,7 +232,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
     public void setLooseEndWinner(UUID looseEndWinner) {
         this.looseEndWinner = looseEndWinner;
-        this.sync();
+        this.markDirty();
     }
 
     public boolean isLockedToSupporters() {
@@ -293,13 +301,12 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
     @Override
     public void clientTick() {
-        tickCommon();
+        CommonTickingComponent.super.clientTick();
     }
-
 
     @Override
     public void serverTick() {
-        tickCommon();
+        CommonTickingComponent.super.serverTick();
 
         ServerWorld serverWorld;
         if (this.world instanceof ServerWorld) {
@@ -317,6 +324,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         }
 
         if (serverWorld == null) {
+            this.syncIfDirty();
             return;
         }
 
@@ -330,6 +338,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         }
 
         if (!serverWorld.getServer().getOverworld().equals(serverWorld)) {
+            this.syncIfDirty();
             return;
         }
 
@@ -349,11 +358,14 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         }
 
         if (world.getTime() % 20 == 0) {
-            this.sync();
+            this.markDirty();
         }
+
+        this.syncIfDirty();
     }
 
-    private void tickCommon() {
+    @Override
+    public void tick() {
         // fade and start / stop game
         if (this.getGameStatus() == GameStatus.ACTIVE || this.getGameStatus() == GameStatus.INACTIVE) {
             this.setFade(fade - 1);
