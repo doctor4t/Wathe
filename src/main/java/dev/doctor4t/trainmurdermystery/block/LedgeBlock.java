@@ -10,6 +10,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
 public class LedgeBlock extends HorizontalFacingBlock {
@@ -45,6 +46,14 @@ public class LedgeBlock extends HorizontalFacingBlock {
             case EAST -> EAST_SHAPE;
             default -> null;
         };
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        if (!context.isAbove(state.getOutlineShape(world, pos), pos, true)) {
+            return VoxelShapes.empty();
+        }
+        return super.getCollisionShape(state, world, pos, context);
     }
 
     @Override
