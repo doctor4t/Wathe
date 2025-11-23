@@ -151,7 +151,7 @@ public class GameFunctions {
     private static int assignRolesAndGetKillerCount(@NotNull ServerWorld world, @NotNull List<ServerPlayerEntity> players, GameWorldComponent gameComponent) {
         // select roles
         var roleSelector = ScoreboardRoleSelectorComponent.KEY.get(world.getScoreboard());
-        var killerCount = (int) Math.floor(players.size() / 6f);
+        var killerCount = (int) Math.floor(players.size() * .2f);
         var total = roleSelector.assignKillers(world, gameComponent, players, killerCount);
         roleSelector.assignVigilantes(world, gameComponent, players, killerCount);
         return total;
@@ -316,7 +316,7 @@ public class GameFunctions {
             if (component.getArmour() > 0) {
                 component.setArmour(component.getArmour() - 1);
                 component.sync();
-                victim.playSoundToPlayer(TMMSounds.ITEM_PSYCHO_ARMOUR, SoundCategory.MASTER, `5`F, 1F);
+                victim.playSoundToPlayer(TMMSounds.ITEM_PSYCHO_ARMOUR, SoundCategory.MASTER, 5F, 1F);
                 return;
             } else {
                 component.stopPsycho();
