@@ -98,7 +98,6 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
             this.setMood(this.mood - this.tasks.size() * GameConstants.MOOD_DRAIN);
         }
 
-        boolean shouldSync = false;
         this.nextTaskTimer--;
         if (this.nextTaskTimer <= 0) {
             TrainTask task = this.generateTask();
@@ -109,8 +108,9 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
             }
             this.nextTaskTimer = (int) (this.player.getRandom().nextFloat() * (GameConstants.MAX_TASK_COOLDOWN - GameConstants.MIN_TASK_COOLDOWN) + GameConstants.MIN_TASK_COOLDOWN);
             this.nextTaskTimer = Math.max(this.nextTaskTimer, 2);
-            shouldSync = true;
+            this.markDirty();
         }
+
         ArrayList<Task> removals = new ArrayList<>();
         for (TrainTask task : this.tasks.values()) {
             task.tick(this.player);
@@ -120,19 +120,22 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
                 if (this.player instanceof ServerPlayerEntity serverPlayer){
                     ServerPlayNetworking.send(serverPlayer, TaskCompleteS2CPayload.INSTANCE);
                 }
-                shouldSync = true;
+                this.markDirty();
             }
         }
         for (Task task : removals) {
             this.tasks.remove(task);
         }
-        if (shouldSync) {
+        if (this.dirty) {
             KEY.sync(this.player);
         }
     }
 
     private @Nullable TrainTask generateTask() {
-        if (!this.tasks.isEmpty()) return null;
+        if (!this.tasks.isEmpty()) {
+            return null;
+        }
+
         Map<Task, Float> map = new HashMap<>();
         float total = 0f;
         for (Task task : Task.values()) {
@@ -141,7 +144,9 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
             map.put(task, weight);
             total += weight;
         }
+
         float random = this.player.getRandom().nextFloat() * total;
+
         for (Map.Entry<Task, Float> entry : map.entrySet()) {
             random -= entry.getValue();
             if (random <= 0) {

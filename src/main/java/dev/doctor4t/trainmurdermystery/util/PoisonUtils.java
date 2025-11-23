@@ -31,9 +31,7 @@ public class PoisonUtils {
         float maxAmplitude = 0.1f;
         float minAmplitude = 0.025f;
 
-        float result = getResult(poisonComponent, minAmplitude, maxAmplitude);
-
-        return result;
+        return getResult(poisonComponent, minAmplitude, maxAmplitude);
     }
 
     private static float getResult(PlayerPoisonComponent poisonComponent, float minAmplitude, float maxAmplitude) {

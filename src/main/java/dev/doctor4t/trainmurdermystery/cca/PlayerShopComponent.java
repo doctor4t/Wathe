@@ -5,7 +5,6 @@ import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import dev.doctor4t.trainmurdermystery.util.ShopEntry;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;

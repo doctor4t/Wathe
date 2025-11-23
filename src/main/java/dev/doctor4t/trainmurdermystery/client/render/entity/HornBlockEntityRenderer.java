@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("ClassCanBeRecord")
 @Environment(EnvType.CLIENT)
 public class HornBlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
-    protected static final BlockState CHAIN = Blocks.CHAIN.getDefaultState();;
+    protected static final BlockState CHAIN = Blocks.CHAIN.getDefaultState();
 
     protected final BlockRenderManager renderManager;
 

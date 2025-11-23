@@ -77,7 +77,11 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.Color;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class TMMClient implements ClientModInitializer {
     public static final Vec3d DUSK_BACKGROUND_COLOR;

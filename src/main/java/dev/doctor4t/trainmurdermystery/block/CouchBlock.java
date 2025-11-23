@@ -16,7 +16,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class CouchBlock extends HorizontalFacingMountableBlock {
     public static final VoxelShape SHAPE = Block.createCuboidShape(0, 0, 0, 16, 8, 16);

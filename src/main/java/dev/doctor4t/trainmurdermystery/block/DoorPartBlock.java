@@ -1,6 +1,5 @@
 package dev.doctor4t.trainmurdermystery.block;
 
-import com.mojang.serialization.MapCodec;
 import dev.doctor4t.trainmurdermystery.block_entity.DoorBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;

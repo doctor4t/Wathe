@@ -78,6 +78,7 @@ public interface PrivacyBlock {
         return pos.offset(diagonal[0]).offset(diagonal[1]);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     default boolean canInteract(BlockState state, BlockPos pos, World world, PlayerEntity player, Hand hand) {
         if (state.get(INTERACTION_COOLDOWN)) {
             return false;

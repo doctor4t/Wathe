@@ -15,8 +15,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.function.Supplier;
-
 public class TrainDoorBlock extends SmallDoorBlock {
     public TrainDoorBlock(BlockEntityType<SmallDoorBlockEntity> type, Settings settings) {
         super(type, settings);

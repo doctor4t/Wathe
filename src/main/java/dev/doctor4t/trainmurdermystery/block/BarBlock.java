@@ -56,6 +56,7 @@ public class BarBlock extends PillarBlock {
                 .with(BOTTOM, !this.isConnectedBar(world.getBlockState(pos.offset(topDirection.getOpposite())), axis));
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isConnectedBar(BlockState state, Direction.Axis axis) {
         return state.isOf(this) && state.get(AXIS) == axis;
     }
