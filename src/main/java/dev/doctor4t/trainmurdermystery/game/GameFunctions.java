@@ -2,7 +2,6 @@ package dev.doctor4t.trainmurdermystery.game;
 
 import com.google.common.collect.Lists;
 import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.cca.*;
 import dev.doctor4t.trainmurdermystery.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.trainmurdermystery.compat.TrainVoicePlugin;
@@ -362,7 +361,7 @@ public class GameFunctions {
         for (List<ItemStack> list : victim.getInventory().combinedInventory) {
             for (var i = 0; i < list.size(); i++) {
                 var stack = list.get(i);
-                if (shouldDropOnDeath(stack)) {
+                if (shouldDropOnDeath(stack, victim)) {
                     victim.dropItem(stack, true, false);
                     list.set(i, ItemStack.EMPTY);
                 }
@@ -376,8 +375,8 @@ public class GameFunctions {
         TrainVoicePlugin.addPlayer(victim.getUuid());
     }
 
-    public static boolean shouldDropOnDeath(@NotNull ItemStack stack) {
-        return !stack.isEmpty() && (stack.isOf(TMMItems.REVOLVER) || ShouldDropOnDeath.EVENT.invoker().shouldDrop(stack));
+    public static boolean shouldDropOnDeath(@NotNull ItemStack stack, PlayerEntity victim) {
+        return !stack.isEmpty() && (stack.isOf(TMMItems.REVOLVER) || ShouldDropOnDeath.EVENT.invoker().shouldDrop(victim, stack));
     }
 
     public static boolean isPlayerAliveAndSurvival(PlayerEntity player) {

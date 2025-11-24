@@ -1,7 +1,7 @@
 package dev.doctor4t.trainmurdermystery.mixin.client.restrictions;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
+import dev.doctor4t.trainmurdermystery.api.role.TMMRoles;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.entity.Entity;

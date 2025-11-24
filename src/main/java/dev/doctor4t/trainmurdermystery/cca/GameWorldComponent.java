@@ -1,9 +1,9 @@
 package dev.doctor4t.trainmurdermystery.cca;
 
 import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.api.CustomRole;
-import dev.doctor4t.trainmurdermystery.api.CustomTeam;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
+import dev.doctor4t.trainmurdermystery.api.role.CustomRole;
+import dev.doctor4t.trainmurdermystery.api.team.CustomTeam;
+import dev.doctor4t.trainmurdermystery.api.role.TMMRoles;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import net.minecraft.entity.player.PlayerEntity;

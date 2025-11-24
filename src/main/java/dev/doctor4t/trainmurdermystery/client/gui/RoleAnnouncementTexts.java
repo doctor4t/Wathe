@@ -1,7 +1,7 @@
 package dev.doctor4t.trainmurdermystery.client.gui;
 
 import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.api.TMMTeams;
+import dev.doctor4t.trainmurdermystery.api.team.TMMTeams;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;

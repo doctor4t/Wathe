@@ -2,8 +2,8 @@ package dev.doctor4t.trainmurdermystery.client.gui;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
-import dev.doctor4t.trainmurdermystery.api.TMMTeams;
+import dev.doctor4t.trainmurdermystery.api.role.TMMRoles;
+import dev.doctor4t.trainmurdermystery.api.team.TMMTeams;
 import dev.doctor4t.trainmurdermystery.cca.GameRoundEndComponent;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;

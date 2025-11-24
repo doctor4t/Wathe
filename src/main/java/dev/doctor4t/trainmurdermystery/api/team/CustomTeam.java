@@ -1,5 +1,6 @@
-package dev.doctor4t.trainmurdermystery.api;
+package dev.doctor4t.trainmurdermystery.api.team;
 
+import dev.doctor4t.trainmurdermystery.api.role.CustomRole;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import net.minecraft.util.Identifier;
 

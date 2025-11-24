@@ -1,9 +1,11 @@
 package dev.doctor4t.trainmurdermystery.cca;
 
 import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
+import dev.doctor4t.trainmurdermystery.api.role.CustomRole;
+import dev.doctor4t.trainmurdermystery.api.role.TMMRoles;
 import dev.doctor4t.trainmurdermystery.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -187,6 +189,23 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
         for (var times : this.vigilanteRounds.values()) minimum = Math.min(minimum, times);
         for (var times : this.vigilanteRounds.keySet())
             this.vigilanteRounds.put(times, this.vigilanteRounds.get(times) - minimum);
+    }
+
+    private CustomRole getRandomRole(){
+        CustomRole role = TMMRoles.ROLES.get(new Random().nextInt(TMMRoles.ROLES.size()));
+        if (role.id() == TMMRoles.KILLER.id() || role.id() == TMMRoles.VIGILANTE.id() || role.id() == TMMRoles.LOOSE_END.id()) return getRandomRole();
+        return role;
+    }
+
+    public void assignOtherRoles(GameWorldComponent game, List<? extends PlayerEntity> players){
+        var killers = game.getAllWithRole(TMMRoles.KILLER);
+        var vigis = game.getAllWithRole(TMMRoles.VIGILANTE);
+        for (var player : players){
+            if (killers.contains(player.getUuid()) || vigis.contains(player.getUuid())) continue;
+            var role = getRandomRole();
+            game.addRole(player, role);
+            TMM.LOGGER.info("Assigned {} to {}", role.id().getPath(), player.getDisplayName().getString());
+        }
     }
 
     @Override

@@ -1,21 +1,15 @@
 package dev.doctor4t.trainmurdermystery.cca;
 
-import com.mojang.datafixers.types.templates.Named;
 import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
 import dev.doctor4t.trainmurdermystery.util.TaskCompletePayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameterSet;
-import net.minecraft.loot.context.LootContextType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -35,7 +29,6 @@ import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static dev.doctor4t.trainmurdermystery.TMM.isSkyVisibleAdjacent;
 
