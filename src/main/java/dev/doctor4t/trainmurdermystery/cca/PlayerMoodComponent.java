@@ -175,12 +175,12 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
 
     public float getMood() {
         GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(this.player.getWorld());
-        return gameWorldComponent.canUseKillerFeatures(player) || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER ? 1 : this.mood;
+        return !gameWorldComponent.hasMood(player) || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER ? 1 : this.mood;
     }
 
     public void setMood(float mood) {
         GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(this.player.getWorld());
-        this.mood = gameWorldComponent.canUseKillerFeatures(player) || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER ? 1 : Math.clamp(mood, 0, 1);
+        this.mood = !gameWorldComponent.hasMood(player) || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER ? 1 : Math.clamp(mood, 0, 1);
         this.sync();
     }
 

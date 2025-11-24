@@ -1,6 +1,8 @@
 package dev.doctor4t.trainmurdermystery.cca;
 
 import dev.doctor4t.trainmurdermystery.TMM;
+import dev.doctor4t.trainmurdermystery.api.CustomRole;
+import dev.doctor4t.trainmurdermystery.api.CustomTeam;
 import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
@@ -48,6 +50,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     }
 
     private GameMode gameMode = GameMode.MURDER;
+    public World getWorld() { return world; }
 
     public enum GameMode implements StringIdentifiable {
         MURDER(10),
@@ -71,7 +74,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     private GameStatus gameStatus = GameStatus.INACTIVE;
     private int fade = 0;
 
-    private final HashMap<UUID, TMMRoles.Role> roles = new HashMap<>();
+    private final HashMap<UUID, CustomRole> roles = new HashMap<>();
 
     private int ticksUntilNextResetAttempt = -1;
 
@@ -117,19 +120,19 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         return this.gameStatus == GameStatus.ACTIVE || this.gameStatus == GameStatus.STOPPING;
     }
 
-    public void addRole(PlayerEntity player, TMMRoles.Role role) {
+    public void addRole(PlayerEntity player, CustomRole role) {
         this.addRole(player.getUuid(), role);
     }
 
-    public void addRole(UUID player, TMMRoles.Role role) {
+    public void addRole(UUID player, CustomRole role) {
         this.roles.put(player, role);
     }
 
-    public void resetRole(TMMRoles.Role role) {
+    public void resetRole(CustomRole role) {
         roles.entrySet().removeIf(entry -> entry.getValue() == role);
     }
 
-    public void setRoles(List<UUID> players, TMMRoles.Role role) {
+    public void setRoles(List<UUID> players, CustomRole role) {
         resetRole(role);
 
         for (UUID player : players) {
@@ -137,29 +140,48 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         }
     }
 
-    public HashMap<UUID, TMMRoles.Role> getRoles() {
+    public HashMap<UUID, CustomRole> getRoles() {
         return roles;
     }
 
-    public TMMRoles.Role getRole(PlayerEntity player) {
+    public CustomRole getRole(PlayerEntity player) {
         return getRole(player.getUuid());
     }
 
-    public @Nullable TMMRoles.Role getRole(UUID uuid) {
+    public @Nullable CustomRole getRole(UUID uuid) {
         return roles.get(uuid);
     }
+
+    public CustomTeam getTeam(PlayerEntity player) {
+        return getTeam(player.getUuid());
+    }
+
+    public @Nullable CustomTeam getTeam(UUID uuid) {
+        CustomRole role = getRole(uuid);
+        return role != null ? role.team() : null;
+    }
+
+    public boolean sameTeam(PlayerEntity first, PlayerEntity second){
+        if (first == null || second == null) return false;
+        CustomRole firstRole = getRole(first);
+        CustomRole secondRole = getRole(second);
+        if (firstRole == null || secondRole == null) return false;
+        return firstRole.team().id() == secondRole.team().id();
+    }
+
+
 
     public List<UUID> getAllKillerTeamPlayers() {
         List<UUID> ret = new ArrayList<>();
         roles.forEach((uuid, playerRole) -> {
-            if (playerRole.canUseKiller()) {
+            if (playerRole.team().isKiller()) {
                 ret.add(uuid);
             }
         });
 
         return ret;
     }
-    public List<UUID> getAllWithRole(TMMRoles.Role role) {
+    public List<UUID> getAllWithRole(CustomRole role) {
         List<UUID> ret = new ArrayList<>();
         roles.forEach((uuid, playerRole) -> {
             if (playerRole == role) {
@@ -170,19 +192,23 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         return ret;
     }
 
-    public boolean isRole(@NotNull PlayerEntity player, TMMRoles.Role role) {
+    public boolean isRole(@NotNull PlayerEntity player, CustomRole role) {
         return isRole(player.getUuid(), role);
     }
 
-    public boolean isRole(@NotNull UUID uuid, TMMRoles.Role role) {
+    public boolean isRole(@NotNull UUID uuid, CustomRole role) {
         return this.roles.get(uuid) == role;
     }
 
     public boolean canUseKillerFeatures(@NotNull PlayerEntity player) {
-        return getRole(player) != null && getRole(player).canUseKiller();
+        return getRole(player) != null && getRole(player).team().isKiller();
+    }
+
+    public boolean hasMood(@NotNull PlayerEntity player) {
+        return getRole(player) != null && getRole(player).hasMood();
     }
     public boolean isInnocent(@NotNull PlayerEntity player) {
-        return getRole(player) == null || getRole(player).isInnocent();
+        return getRole(player) == null || getRole(player).forcesDroppedGun();
     }
 
     public void clearRoleMap() {
@@ -244,8 +270,8 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         this.fade = nbtCompound.getInt("Fade");
         this.psychosActive = nbtCompound.getInt("PsychosActive");
 
-        for (TMMRoles.Role role : TMMRoles.ROLES) {
-            this.setRoles(uuidListFromNbt(nbtCompound, role.identifier().toString()), role);
+        for (CustomRole role : TMMRoles.ROLES) {
+            this.setRoles(uuidListFromNbt(nbtCompound, role.id().toString()), role);
         }
 
         if (nbtCompound.contains("LooseEndWinner")) {
@@ -274,8 +300,8 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         nbtCompound.putInt("Fade", fade);
         nbtCompound.putInt("PsychosActive", psychosActive);
 
-        for (TMMRoles.Role role : TMMRoles.ROLES) {
-            nbtCompound.put(role.identifier().toString(), nbtFromUuidList(getAllWithRole(role)));
+        for (CustomRole role : TMMRoles.ROLES) {
+            nbtCompound.put(role.id().toString(), nbtFromUuidList(getAllWithRole(role)));
         }
 
         if (this.looseEndWinner != null) nbtCompound.putUuid("LooseEndWinner", this.looseEndWinner);
@@ -364,7 +390,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
                     }
                 }
 
-                // check if last man standing in loose end
+                // check if last man standing in Loose End
                 if (gameMode == GameMode.LOOSE_ENDS) {
                     int playersLeft = 0;
                     PlayerEntity lastPlayer = null;

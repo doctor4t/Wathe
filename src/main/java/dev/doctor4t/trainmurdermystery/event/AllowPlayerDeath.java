@@ -14,14 +14,14 @@ public interface AllowPlayerDeath {
      * 'fell_out_of_train', 'poison', 'grenade', 'bat_hit', 'gun_shot', 'knife_stab'.
      * Any other death type not explicitly defined will default to 'generic'.
      */
-    Event<AllowPlayerDeath> EVENT = createArrayBacked(AllowPlayerDeath.class, listeners -> (player, identifier) -> {
+    Event<AllowPlayerDeath> EVENT = createArrayBacked(AllowPlayerDeath.class, listeners -> (victim, killer, identifier) -> {
         for (AllowPlayerDeath listener : listeners) {
-            if (!listener.allowDeath(player, identifier)) {
+            if (!listener.allowDeath(victim, killer, identifier)) {
                 return false;
             }
         }
         return true;
     });
 
-    boolean allowDeath(PlayerEntity player, Identifier identifier);
+    boolean allowDeath(PlayerEntity victim, PlayerEntity killer, Identifier identifier);
 }

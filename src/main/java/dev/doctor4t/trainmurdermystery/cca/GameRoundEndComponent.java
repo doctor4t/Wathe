@@ -38,13 +38,10 @@ public class GameRoundEndComponent implements AutoSyncedComponent {
         for (var player : players) {
             var role = RoleAnnouncementTexts.BLANK;
             var game = GameWorldComponent.KEY.get(this.world);
-            if (game.canUseKillerFeatures(player)) {
-                role = RoleAnnouncementTexts.KILLER;
-            } else if (game.isRole(player, TMMRoles.VIGILANTE)) {
-                role = RoleAnnouncementTexts.VIGILANTE;
-            } else {
-                role = RoleAnnouncementTexts.CIVILIAN;
-            }
+            if (game.getTeam(player) != null && !game.getTeam(player).showsOnEndScreen())
+                continue;
+            if (game.getRole(player) != null)
+                role = game.getRole(player).announcementText();
             this.players.add(new RoundEndData(player.getGameProfile(), role, !GameFunctions.isPlayerAliveAndSurvival(player)));
         }
         this.winStatus = winStatus;
@@ -55,11 +52,7 @@ public class GameRoundEndComponent implements AutoSyncedComponent {
         if (GameFunctions.WinStatus.NONE == this.winStatus) return false;
         for (var detail : this.players) {
             if (!detail.player.getId().equals(uuid)) continue;
-            return switch (this.winStatus) {
-                case KILLERS -> detail.role == RoleAnnouncementTexts.KILLER;
-                case PASSENGERS, TIME -> detail.role != RoleAnnouncementTexts.KILLER;
-                default -> false;
-            };
+            return TMMRoles.getFromId(detail.role.roleId).didWin(GameWorldComponent.KEY.get(world));
         }
         return false;
     }
@@ -89,7 +82,7 @@ public class GameRoundEndComponent implements AutoSyncedComponent {
 
     public record RoundEndData(GameProfile player, RoleAnnouncementTexts.RoleAnnouncementText role, boolean wasDead) {
         public RoundEndData(@NotNull NbtCompound tag) {
-            this(new GameProfile(tag.getUuid("uuid"), tag.getString("name")), RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.get(tag.getInt("role")), tag.getBoolean("wasDead"));
+            this(new GameProfile(tag.getUuid("uuid"), tag.getString("name")), tag.getInt("role") > -1 ? RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.get(tag.getInt("role")) : RoleAnnouncementTexts.BLANK, tag.getBoolean("wasDead"));
         }
 
         public @NotNull NbtCompound writeToNbt() {

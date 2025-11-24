@@ -2,6 +2,8 @@ package dev.doctor4t.trainmurdermystery.client.gui;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.doctor4t.trainmurdermystery.api.TMMRoles;
+import dev.doctor4t.trainmurdermystery.api.TMMTeams;
 import dev.doctor4t.trainmurdermystery.cca.GameRoundEndComponent;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
@@ -114,53 +116,116 @@ public class RoundTextRenderer {
                 }
                 context.getMatrices().pop();
             } else {
-                var vigilanteTotal = 1;
-                for (var entry : roundEnd.getPlayers())
-                    if (entry.role() == RoleAnnouncementTexts.VIGILANTE) vigilanteTotal += 1;
-                context.drawTextWithShadow(renderer, RoleAnnouncementTexts.CIVILIAN.titleText, -renderer.getWidth(RoleAnnouncementTexts.CIVILIAN.titleText) / 2 - 60, 14, 0xFFFFFF);
-                context.drawTextWithShadow(renderer, RoleAnnouncementTexts.VIGILANTE.titleText, -renderer.getWidth(RoleAnnouncementTexts.VIGILANTE.titleText) / 2 + 50, 14, 0xFFFFFF);
-                context.drawTextWithShadow(renderer, RoleAnnouncementTexts.KILLER.titleText, -renderer.getWidth(RoleAnnouncementTexts.KILLER.titleText) / 2 + 50, 14 + 16 + 24 * ((vigilanteTotal) / 2), 0xFFFFFF);
-                var civilians = 0;
-                var vigilantes = 0;
-                var killers = 0;
-                for (var entry : roundEnd.getPlayers()) {
-                    context.getMatrices().push();
-                    context.getMatrices().scale(2f, 2f, 1f);
-
-                    if (entry.role() == RoleAnnouncementTexts.CIVILIAN) {
-                        context.getMatrices().translate(-60 + (civilians % 4) * 12, 14 + (civilians / 4) * 12, 0);
-                        civilians++;
-                    } else if (entry.role() == RoleAnnouncementTexts.VIGILANTE) {
-                        context.getMatrices().translate(7 + (vigilantes % 2) * 12, 14 + (vigilantes / 2) * 12, 0);
-                        vigilantes++;
-                    } else if (entry.role() == RoleAnnouncementTexts.KILLER) {
-                        context.getMatrices().translate(0, 8 + ((vigilanteTotal) / 2) * 12, 0);
-                        context.getMatrices().translate(7 + (killers % 2) * 12, 14 + (killers / 2) * 12, 0);
-                        killers++;
+                if (TMMRoles.hasAddedRoles()){
+                    var innocentTotal = 0;
+                    var neutralTotal = 0;
+                    for (var entry : roundEnd.getPlayers()) {
+                        var role = TMMRoles.getFromId(entry.role().roleId);
+                        if (role == null) innocentTotal++;
+                        else if (role.team() == TMMTeams.INNOCENT) innocentTotal++;
+                        else if (role.team() == TMMTeams.NEUTRAL_BENIGN || role.team() == TMMTeams.NEUTRAL_KILLER) neutralTotal++;
                     }
+                    context.drawTextWithShadow(renderer, RoleAnnouncementTexts.INNOCENT_TEAM, -renderer.getWidth(RoleAnnouncementTexts.INNOCENT_TEAM) / 2 - 60, 14, 0xFFFFFF);
+                    context.drawTextWithShadow(renderer, RoleAnnouncementTexts.NEUTRAL_TEAM, -renderer.getWidth(RoleAnnouncementTexts.NEUTRAL_TEAM) / 2 + 50, 14, 0xFFFFFF);
+                    context.drawTextWithShadow(renderer, RoleAnnouncementTexts.KILLER_TEAM, -renderer.getWidth(RoleAnnouncementTexts.KILLER_TEAM) / 2 + 50, 14 + 16 + 24 * (neutralTotal / 2), 0xFFFFFF);
+                    context.drawTextWithShadow(renderer, RoleAnnouncementTexts.EXTERNAL_TEAM, -renderer.getWidth(RoleAnnouncementTexts.KILLER_TEAM) / 2 - 60, 14 + 16 + 24 * (innocentTotal / 2), 0xFFFFFF);
+                    var innocent = 0;
+                    var neutral = 0;
+                    var killer = 0;
+                    var other = 0;
 
-                    PlayerListEntry playerListEntry = TMMClient.PLAYER_ENTRIES_CACHE.get(entry.player().getId());
-                    if (playerListEntry != null) {
-                        var texture = playerListEntry.getSkinTextures().texture();
-                        if (texture != null) {
-                            RenderSystem.enableBlend();
-                            context.getMatrices().push();
-                            context.getMatrices().translate(8, 0, 0);
-                            var offColour = entry.wasDead() ? 0.4f : 1f;
-                            context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 8 / 64f, 16 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
-                            context.getMatrices().translate(-0.5, -0.5, 0);
-                            context.getMatrices().scale(1.125f, 1.125f, 1f);
-                            context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 40 / 64f, 48 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
-                            context.getMatrices().pop();
+                    for (var entry : roundEnd.getPlayers()) {
+                        var role = TMMRoles.getFromId(entry.role().roleId);
+                        context.getMatrices().push();
+                        context.getMatrices().scale(2f, 2f, 1f);
+                        if (role == null || role.team() == TMMTeams.INNOCENT) {
+                            context.getMatrices().translate(-60 + (innocent % 4) * 12, 14 + (innocent / 4) * 12, 0);
+                            innocent++;
+                        } else if (role.team() == TMMTeams.NEUTRAL_BENIGN || role.team() == TMMTeams.NEUTRAL_KILLER) {
+                            context.getMatrices().translate(7 + (neutral % 2) * 12, 14 + (neutral / 2) * 12, 0);
+                            neutral++;
+                        } else if (role.team() == TMMTeams.KILLER) {
+                            context.getMatrices().translate(0, 8 + (neutralTotal / 2) * 12, 0);
+                            context.getMatrices().translate(7 + (killer % 2) * 12, 14 + (killer / 2) * 12, 0);
+                            killer++;
+                        } else {
+                            context.getMatrices().translate(0, 8 + (innocentTotal / 2) * 12, 0);
+                            context.getMatrices().translate(7 + (other % 2) * 12, 14 + (other / 2) * 12, 0);
+                            other++;
                         }
-                        if (entry.wasDead()) {
-                            context.getMatrices().translate(13, 0, 0);
-                            context.getMatrices().scale(2f, 1f, 1f);
-                            context.drawText(renderer, "x", -renderer.getWidth("x") / 2, 0, 0xE10000, false);
-                            context.drawText(renderer, "x", -renderer.getWidth("x") / 2, 1, 0x550000, false);
+                        PlayerListEntry playerListEntry = TMMClient.PLAYER_ENTRIES_CACHE.get(entry.player().getId());
+                        if (playerListEntry != null) {
+                            var texture = playerListEntry.getSkinTextures().texture();
+                            if (texture != null) {
+                                RenderSystem.enableBlend();
+                                context.getMatrices().push();
+                                context.getMatrices().translate(8, 0, 0);
+                                var offColour = entry.wasDead() ? 0.4f : 1f;
+                                context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 8 / 64f, 16 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
+                                context.getMatrices().translate(-0.5, -0.5, 0);
+                                context.getMatrices().scale(1.125f, 1.125f, 1f);
+                                context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 40 / 64f, 48 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
+                                context.getMatrices().pop();
+                            }
+                            if (entry.wasDead()) {
+                                context.getMatrices().translate(13, 0, 0);
+                                context.getMatrices().scale(2f, 1f, 1f);
+                                context.drawText(renderer, "x", -renderer.getWidth("x") / 2, 0, 0xE10000, false);
+                                context.drawText(renderer, "x", -renderer.getWidth("x") / 2, 1, 0x550000, false);
+                            }
                         }
+                        context.getMatrices().pop();
                     }
-                    context.getMatrices().pop();
+                }
+                else {
+                    var vigilanteTotal = 1;
+                    for (var entry : roundEnd.getPlayers())
+                        if (entry.role() == RoleAnnouncementTexts.VIGILANTE) vigilanteTotal += 1;
+                    context.drawTextWithShadow(renderer, RoleAnnouncementTexts.CIVILIAN.titleText, -renderer.getWidth(RoleAnnouncementTexts.CIVILIAN.titleText) / 2 - 60, 14, 0xFFFFFF);
+                    context.drawTextWithShadow(renderer, RoleAnnouncementTexts.VIGILANTE.titleText, -renderer.getWidth(RoleAnnouncementTexts.VIGILANTE.titleText) / 2 + 50, 14, 0xFFFFFF);
+                    context.drawTextWithShadow(renderer, RoleAnnouncementTexts.KILLER.titleText, -renderer.getWidth(RoleAnnouncementTexts.KILLER.titleText) / 2 + 50, 14 + 16 + 24 * ((vigilanteTotal) / 2), 0xFFFFFF);
+                    var civilians = 0;
+                    var vigilantes = 0;
+                    var killers = 0;
+                    for (var entry : roundEnd.getPlayers()) {
+                        context.getMatrices().push();
+                        context.getMatrices().scale(2f, 2f, 1f);
+
+                        if (entry.role() == RoleAnnouncementTexts.CIVILIAN) {
+                            context.getMatrices().translate(-60 + (civilians % 4) * 12, 14 + (civilians / 4) * 12, 0);
+                            civilians++;
+                        } else if (entry.role() == RoleAnnouncementTexts.VIGILANTE) {
+                            context.getMatrices().translate(7 + (vigilantes % 2) * 12, 14 + (vigilantes / 2) * 12, 0);
+                            vigilantes++;
+                        } else if (entry.role() == RoleAnnouncementTexts.KILLER) {
+                            context.getMatrices().translate(0, 8 + ((vigilanteTotal) / 2) * 12, 0);
+                            context.getMatrices().translate(7 + (killers % 2) * 12, 14 + (killers / 2) * 12, 0);
+                            killers++;
+                        }
+
+                        PlayerListEntry playerListEntry = TMMClient.PLAYER_ENTRIES_CACHE.get(entry.player().getId());
+                        if (playerListEntry != null) {
+                            var texture = playerListEntry.getSkinTextures().texture();
+                            if (texture != null) {
+                                RenderSystem.enableBlend();
+                                context.getMatrices().push();
+                                context.getMatrices().translate(8, 0, 0);
+                                var offColour = entry.wasDead() ? 0.4f : 1f;
+                                context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 8 / 64f, 16 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
+                                context.getMatrices().translate(-0.5, -0.5, 0);
+                                context.getMatrices().scale(1.125f, 1.125f, 1f);
+                                context.drawTexturedQuad(texture, 0, 8, 0, 8, 0, 40 / 64f, 48 / 64f, 8 / 64f, 16 / 64f, 1f, offColour, offColour, 1f);
+                                context.getMatrices().pop();
+                            }
+                            if (entry.wasDead()) {
+                                context.getMatrices().translate(13, 0, 0);
+                                context.getMatrices().scale(2f, 1f, 1f);
+                                context.drawText(renderer, "x", -renderer.getWidth("x") / 2, 0, 0xE10000, false);
+                                context.drawText(renderer, "x", -renderer.getWidth("x") / 2, 1, 0x550000, false);
+                            }
+                        }
+                        context.getMatrices().pop();
+                    }
                 }
                 context.getMatrices().pop();
             }

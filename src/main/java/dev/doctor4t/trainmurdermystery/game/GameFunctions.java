@@ -141,7 +141,7 @@ public class GameFunctions {
             var killerCount = assignRolesAndGetKillerCount(world, players, gameComponent);
 
             for (var player : players) {
-                ServerPlayNetworking.send(player, new AnnounceWelcomePayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(gameComponent.isRole(player, TMMRoles.KILLER) ? RoleAnnouncementTexts.KILLER : gameComponent.isRole(player, TMMRoles.VIGILANTE) ? RoleAnnouncementTexts.VIGILANTE : RoleAnnouncementTexts.CIVILIAN), killerCount, players.size() - killerCount));
+                ServerPlayNetworking.send(player, new AnnounceWelcomePayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(gameComponent.getRole(player).announcementText()), killerCount, players.size() - killerCount));
             }
         }
 
@@ -310,8 +310,9 @@ public class GameFunctions {
 
     public static void killPlayer(PlayerEntity victim, boolean spawnBody, @Nullable PlayerEntity killer, Identifier identifier) {
         var component = PlayerPsychoComponent.KEY.get(victim);
-
-        if (!AllowPlayerDeath.EVENT.invoker().allowDeath(victim, identifier)) return;
+        var gwc = GameWorldComponent.KEY.get(victim.getWorld());
+        if (gwc.sameTeam(victim, killer) && !gwc.getTeam(victim).killsTeammates()) return;
+        if (!AllowPlayerDeath.EVENT.invoker().allowDeath(victim, killer, identifier)) return;
         if (component.getPsychoTicks() > 0) {
             if (component.getArmour() > 0) {
                 component.setArmour(component.getArmour() - 1);
@@ -368,8 +369,7 @@ public class GameFunctions {
             }
         }
 
-        var gameWorldComponent = GameWorldComponent.KEY.get(victim.getWorld());
-        if (gameWorldComponent.isInnocent(victim)) {
+        if (gwc.isInnocent(victim)) {
             GameTimeComponent.KEY.get(victim.getWorld()).addTime(GameConstants.TIME_ON_CIVILIAN_KILL);
         }
 
