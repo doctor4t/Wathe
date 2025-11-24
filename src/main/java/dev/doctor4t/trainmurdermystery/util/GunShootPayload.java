@@ -58,6 +58,14 @@ public record GunShootPayload(int target) implements CustomPayload {
                 Item revolver = TMMItems.REVOLVER;
                 if (game.isInnocent(target) && !player.isCreative() && mainHandStack.isOf(revolver)) {
                     Scheduler.schedule(() -> {
+                        var punishment = game.getInnocentShootPunishment();
+                        if (punishment == GameWorldComponent.ShootInnocentPunishment.KILL_SHOOTER && game.isInnocent(player)) {
+                            GameFunctions.killPlayer(player, true, player, TMM.id("gun_shot"));
+                            return;
+                        }
+
+                        if (punishment == GameWorldComponent.ShootInnocentPunishment.PREVENT_ALL_GUN_PICKUP) GameConstants.PREVENT_REVOLVER_PICKUP.add(player);
+
                         if (!context.player().getInventory().contains((s) -> s.isIn(TMMItemTags.GUNS))) return;
                         player.getInventory().remove((s) -> s.isOf(revolver), 1, player.getInventory());
                         var item = player.dropItem(revolver.getDefaultStack(), false, false);
@@ -65,7 +73,7 @@ public record GunShootPayload(int target) implements CustomPayload {
                             item.setPickupDelay(10);
                             item.setThrower(player);
                         }
-                        GameConstants.PREVENT_REVOLVER_PICKUP.add(player);
+
                         ServerPlayNetworking.send(player, new GunDropPayload());
                         PlayerMoodComponent.KEY.get(player).setMood(0);
                     }, 4);

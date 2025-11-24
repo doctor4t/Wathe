@@ -34,6 +34,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
     private boolean lockedToSupporters = false;
     private boolean enableWeights = false;
+    private ShootInnocentPunishment innocentShootPunishment = ShootInnocentPunishment.DEFAULT;
 
     public void setWeightsEnabled(boolean enabled) {
         this.enableWeights = enabled;
@@ -59,6 +60,17 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         GameMode(int startTime) {
             this.startTime = startTime;
         }
+
+        @Override
+        public String asString() {
+            return name();
+        }
+    }
+
+    public enum ShootInnocentPunishment implements StringIdentifiable {
+        DEFAULT,
+        PREVENT_ALL_GUN_PICKUP,
+        KILL_SHOOTER;
 
         @Override
         public String asString() {
@@ -216,6 +228,15 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         this.sync();
     }
 
+    public ShootInnocentPunishment getInnocentShootPunishment() {
+        return innocentShootPunishment;
+    }
+
+    public void setInnocentShootPunishment(ShootInnocentPunishment innocentShootPunishment) {
+        this.innocentShootPunishment = innocentShootPunishment;
+        this.sync();
+    }
+
     public UUID getLooseEndWinner() {
         return this.looseEndWinner;
     }
@@ -253,6 +274,10 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         } else {
             this.looseEndWinner = null;
         }
+
+        if (nbtCompound.contains("InnocentShootPunishment")) {
+            this.innocentShootPunishment = ShootInnocentPunishment.valueOf(nbtCompound.getString("InnocentShootPunishment"));
+        }
     }
 
     private ArrayList<UUID> uuidListFromNbt(NbtCompound nbtCompound, String listName) {
@@ -270,6 +295,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
         nbtCompound.putString("GameMode", gameMode.name());
         nbtCompound.putString("GameStatus", this.gameStatus.toString());
+        nbtCompound.putString("InnocentShootPunishment", innocentShootPunishment.name());
 
         nbtCompound.putInt("Fade", fade);
         nbtCompound.putInt("PsychosActive", psychosActive);
