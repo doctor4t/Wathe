@@ -191,8 +191,8 @@ public class GameFunctions {
                 Vec3d target = targetPositions.get(index++);
                 player.requestTeleport(target.getX(), target.getY(), target.getZ());
             }
-        } else if (gameComponent.getSpawnMode() == GameWorldComponent.SpawnMode.RANDOM_POS && !GameConstants.RANDOM_SPAWN_POSITIONS.isEmpty()) {
-            List<GameConstants.SpawnPoint> pool = new ArrayList<>(GameConstants.RANDOM_SPAWN_POSITIONS);
+        } else if (gameComponent.getSpawnMode() == GameWorldComponent.SpawnMode.RANDOM_POS && !gameComponent.getRandomSpawnPositions().isEmpty()) {
+            List<GameConstants.SpawnPoint> pool = new ArrayList<>(gameComponent.getRandomSpawnPositions());
             Collections.shuffle(pool);
 
             int playerCount = players.size();

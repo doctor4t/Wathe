@@ -14,6 +14,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,6 +36,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     private boolean lockedToSupporters = false;
     private boolean enableWeights = false;
     private SpawnMode spawnMode = SpawnMode.DISABLED;
+    private final List<GameConstants.SpawnPoint> randomSpawnPositions = new ArrayList<>();
 
     public void setWeightsEnabled(boolean enabled) {
         this.enableWeights = enabled;
@@ -254,6 +256,23 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         this.sync();
     }
 
+    public List<GameConstants.SpawnPoint> getRandomSpawnPositions() {
+        if (this.randomSpawnPositions.isEmpty()) {
+            return GameConstants.RANDOM_SPAWN_POSITIONS;
+        }
+        return this.randomSpawnPositions;
+    }
+
+    public void addRandomSpawnPosition(GameConstants.SpawnPoint spawnPoint) {
+        this.randomSpawnPositions.add(spawnPoint);
+        this.sync();
+    }
+
+    public void clearRandomSpawnPositions() {
+        this.randomSpawnPositions.clear();
+        this.sync();
+    }
+
     @Override
     public void readFromNbt(@NotNull NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
         this.lockedToSupporters = nbtCompound.getBoolean("LockedToSupporters");
@@ -280,6 +299,19 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
             this.looseEndWinner = nbtCompound.getUuid("LooseEndWinner");
         } else {
             this.looseEndWinner = null;
+        }
+
+        this.randomSpawnPositions.clear();
+        NbtList spawnList = nbtCompound.getList("RandomSpawnPositions", NbtElement.COMPOUND_TYPE);
+        for (NbtElement element : spawnList) {
+            if (element instanceof NbtCompound spawnNbt) {
+                double x = spawnNbt.getDouble("X");
+                double y = spawnNbt.getDouble("Y");
+                double z = spawnNbt.getDouble("Z");
+                float yaw = spawnNbt.getFloat("Yaw");
+                float pitch = spawnNbt.getFloat("Pitch");
+                this.randomSpawnPositions.add(new GameConstants.SpawnPoint(new Vec3d(x, y, z), yaw, pitch));
+            }
         }
     }
 
@@ -308,6 +340,20 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         }
 
         if (this.looseEndWinner != null) nbtCompound.putUuid("LooseEndWinner", this.looseEndWinner);
+
+        if (!this.randomSpawnPositions.isEmpty()) {
+            NbtList spawnList = new NbtList();
+            for (GameConstants.SpawnPoint spawnPoint : this.randomSpawnPositions) {
+                NbtCompound spawnNbt = new NbtCompound();
+                spawnNbt.putDouble("X", spawnPoint.pos().getX());
+                spawnNbt.putDouble("Y", spawnPoint.pos().getY());
+                spawnNbt.putDouble("Z", spawnPoint.pos().getZ());
+                spawnNbt.putFloat("Yaw", spawnPoint.yaw());
+                spawnNbt.putFloat("Pitch", spawnPoint.pitch());
+                spawnList.add(spawnNbt);
+            }
+            nbtCompound.put("RandomSpawnPositions", spawnList);
+        }
     }
 
     private NbtList nbtFromUuidList(List<UUID> list) {
