@@ -24,6 +24,7 @@ public abstract class KeyBindingMixin {
                     this.equals(MinecraftClient.getInstance().options.dropKey) ||
                     this.equals(MinecraftClient.getInstance().options.advancementsKey);
         }
+        if (TMMClient.gameComponent == null) return false; // just to be safe
         if (TMMClient.isPlayerAliveAndInSurvival() && TMMClient.gameComponent.isRunning()) {
             return this.equals(MinecraftClient.getInstance().options.togglePerspectiveKey);
         }
