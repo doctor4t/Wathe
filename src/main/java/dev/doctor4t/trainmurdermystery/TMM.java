@@ -17,6 +17,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -145,6 +146,9 @@ public class TMM implements ModInitializer {
     }
 
     public static @NotNull Boolean isSupporter(PlayerEntity player) {
+        if (FabricLoader.getInstance().isDevelopmentEnvironment())
+            return true;
+
         Optional<Entitlements> entitlements = Entitlements.token().get(player.getUuid());
         return entitlements.map(value -> value.keys().stream().anyMatch(identifier -> identifier.equals(COMMAND_ACCESS))).orElse(false);
     }
