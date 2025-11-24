@@ -304,7 +304,7 @@
   "item.trainmurdermystery.psycho_mode": "Режим психа",
   "item.trainmurdermystery.psycho_mode.tooltip": "\"Тебе нравится причинять боль другим?\"\nСкрывает вашу личность и позволяет буйствовать с битой в течение 30 секунд\nБита убивает при полном замахе и не может быть убрана на время действия способности\nСрабатывает сразу после покупки, перезарядка 5 минут",
   "item.trainmurdermystery.revolver": "Револьвер",
-  "item.trainmurdermystery.revolver.tooltip": "Наведите и нажмите ПКМ, чтобы выстрелить\nВыпадает если вы убили невиновного",
+  "item.trainmurdermystery.revolver.tooltip": "Наведите и нажмите ПКМ, чтобы выстрелить\nВыпадает, если вы убили невиновного",
   "item.trainmurdermystery.scorpion": "Скорпион",
   "item.trainmurdermystery.scorpion.tooltip": "Подложите в кровать, чтобы отравить следующего, кто решит на ней отдохнуть",
   "item.trainmurdermystery.thrown_grenade": "Брошенная Граната",
