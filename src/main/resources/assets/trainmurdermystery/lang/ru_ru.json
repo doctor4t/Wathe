@@ -277,7 +277,7 @@
   "item.trainmurdermystery.blackout": "Темнота",
   "item.trainmurdermystery.blackout.tooltip": "Выключает весь свет на борту на 15-20 секунд\nИспользуйте инстинкт [левый Alt], чтобы видеть цели в темноте\nАктивируется сразу после покупки, перезарядка 5 минут",
   "item.trainmurdermystery.body_bag": "Мешок для Трупов",
-  "item.trainmurdermystery.body_bag.tooltip": "Используйте на труп, чтобы его убрать\nОдноразовый, перезарядка 5 минут",
+  "item.trainmurdermystery.body_bag.tooltip": "Используйте на труп, чтобы убрать его\nОдноразовый, перезарядка 5 минут",
   "item.trainmurdermystery.champagne": "Шампанское",
   "item.trainmurdermystery.cosmopolitan": "Космополитен",
   "item.trainmurdermystery.crowbar": "Лом",
