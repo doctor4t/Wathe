@@ -55,8 +55,8 @@ public interface GameConstants {
     Box READY_AREA = new Box(-1017, -1, -363.5f, -813, 3, -357.5f);
     Vec3d PLAY_OFFSET = new Vec3d(963, 121, -175);
     Consumer<ServerPlayerEntity> SPECTATOR_TP = serverPlayerEntity -> serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), -68, 133, -535.5, -90, 15);
-    Box PLAY_AREA = new Box(-140, 118, -535.5f - 15, 230, 200, -535.5f + 15);
-    Box BACKUP_TRAIN_LOCATION = new Box(-57, 64, -531, 177, 74, -541);
+    Box PLAY_AREA = new Box(-140, 118, -535.5f - 15, 230, 200, -545.5f + 15);
+    Box BACKUP_TRAIN_LOCATION = new Box(-77, 64, -529, 217, 81, -543);
     Box TRAIN_LOCATION = BACKUP_TRAIN_LOCATION.offset(0, 55, 0);
 
     // Task Variables
