@@ -140,7 +140,7 @@ public class TMM implements ModInitializer {
             return 0;
         }
 
-        if (isSupporter(player) || DEVELOPMENT) {
+        if (isSupporter(player)) {
             runnable.run();
             return 1;
         }
@@ -150,8 +150,9 @@ public class TMM implements ModInitializer {
     }
 
     public static @NotNull Boolean isSupporter(PlayerEntity player) {
-        if (FabricLoader.getInstance().isDevelopmentEnvironment())
+        if (DEVELOPMENT) {
             return true;
+        }
 
         Optional<Entitlements> entitlements = Entitlements.token().get(player.getUuid());
         return entitlements.map(value -> value.keys().stream().anyMatch(identifier -> identifier.equals(COMMAND_ACCESS))).orElse(false);
