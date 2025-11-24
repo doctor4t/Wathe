@@ -108,7 +108,7 @@ public class GameFunctions {
         TrainWorldComponent trainComponent = TrainWorldComponent.KEY.get(world);
         List<ServerPlayerEntity> players = world.getPlayers(serverPlayerEntity -> GameConstants.READY_AREA.contains(serverPlayerEntity.getPos()));
 
-        GameConstants.PREVENT_REVOLVER_PICKUP.clear();
+        gameComponent.resetPreventRevolverPickup();
 
         GameWorldComponent.GameMode gameMode = gameComponent.getGameMode();
         boolean isMurder = gameMode == GameWorldComponent.GameMode.MURDER;

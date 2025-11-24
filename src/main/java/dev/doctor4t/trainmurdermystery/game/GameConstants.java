@@ -44,9 +44,6 @@ public interface GameConstants {
 
     int JAMMED_DOOR_TIME = getInTicks(1, 0);
 
-    // Revolver
-    HashSet<PlayerEntity> PREVENT_REVOLVER_PICKUP = new HashSet<>();
-
     // Sprint
     int MAX_SPRINTING_TICKS = getInTicks(0, 10);
 

@@ -64,7 +64,7 @@ public record GunShootPayload(int target) implements CustomPayload {
                             return;
                         }
 
-                        if (punishment == GameWorldComponent.ShootInnocentPunishment.PREVENT_ALL_GUN_PICKUP) GameConstants.PREVENT_REVOLVER_PICKUP.add(player);
+                        if (punishment == GameWorldComponent.ShootInnocentPunishment.PREVENT_ALL_GUN_PICKUP) game.addPreventRevolverPickup(player);
 
                         if (!context.player().getInventory().contains((s) -> s.isIn(TMMItemTags.GUNS))) return;
                         player.getInventory().remove((s) -> s.isOf(revolver), 1, player.getInventory());

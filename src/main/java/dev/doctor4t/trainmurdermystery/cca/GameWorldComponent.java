@@ -23,10 +23,7 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class GameWorldComponent implements AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
     public static final ComponentKey<GameWorldComponent> KEY = ComponentRegistry.getOrCreate(TMM.id("game"), GameWorldComponent.class);
@@ -35,6 +32,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     private boolean lockedToSupporters = false;
     private boolean enableWeights = false;
     private ShootInnocentPunishment innocentShootPunishment = ShootInnocentPunishment.DEFAULT;
+    HashSet<PlayerEntity> preventRevolverPickup = new HashSet<>();
 
     public void setWeightsEnabled(boolean enabled) {
         this.enableWeights = enabled;
@@ -235,6 +233,18 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     public void setInnocentShootPunishment(ShootInnocentPunishment innocentShootPunishment) {
         this.innocentShootPunishment = innocentShootPunishment;
         this.sync();
+    }
+
+    public void addPreventRevolverPickup(PlayerEntity player) {
+        preventRevolverPickup.add(player);
+    }
+
+    public void resetPreventRevolverPickup() {
+        preventRevolverPickup.clear();
+    }
+
+    public boolean canPickupRevolver(PlayerEntity player) {
+        return !preventRevolverPickup.contains(player);
     }
 
     public UUID getLooseEndWinner() {

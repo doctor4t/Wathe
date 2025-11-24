@@ -10,7 +10,6 @@ import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.index.*;
 import dev.doctor4t.trainmurdermystery.util.*;
 import dev.upcraft.datasync.api.DataSyncAPI;
-import dev.upcraft.datasync.api.util.Entitlements;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -28,8 +27,6 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
 
 public class TMM implements ModInitializer {
     public static final String MOD_ID = "trainmurdermystery";
@@ -73,7 +70,7 @@ public class TMM implements ModInitializer {
             SetBoundCommand.register(dispatcher);
             AutoStartCommand.register(dispatcher);
             LockToSupportersCommand.register(dispatcher);
-            SetShootInnocentPunishmentCommand.register(dispatcher);
+            SetShootCivilianPunishmentCommand.register(dispatcher);
         }));
 
         // server lock to supporters
