@@ -8,11 +8,14 @@ import net.minecraft.block.BedBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.enums.BedPart;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -28,8 +31,8 @@ public class PoisonUtils {
             return 1f;
         }
 
-        float maxAmplitude = 0.1f;
-        float minAmplitude = 0.025f;
+        final float maxAmplitude = 0.1f;
+        final float minAmplitude = 0.025f;
 
         return getResult(poisonComponent, minAmplitude, maxAmplitude);
     }
@@ -37,16 +40,15 @@ public class PoisonUtils {
     private static float getResult(PlayerPoisonComponent poisonComponent, float minAmplitude, float maxAmplitude) {
         float amplitude = minAmplitude + (maxAmplitude - minAmplitude) * (1f - ((float) poisonComponent.poisonTicks / 1200f));
 
-        float result;
-
         if (poisonComponent.pulseProgress < 0.25f) {
-            result = 1f - amplitude * (float) Math.sin(Math.PI * (poisonComponent.pulseProgress / 0.25f));
-        } else if (poisonComponent.pulseProgress < 0.5f) {
-            result = 1f - amplitude * (float) Math.sin(Math.PI * ((poisonComponent.pulseProgress - 0.25f) / 0.25f));
-        } else {
-            result = 1f;
+            return 1f - amplitude * (float) Math.sin(Math.PI * (poisonComponent.pulseProgress / 0.25f));
         }
-        return result;
+
+        if (poisonComponent.pulseProgress < 0.5f) {
+            return 1f - amplitude * (float) Math.sin(Math.PI * ((poisonComponent.pulseProgress - 0.25f) / 0.25f));
+        }
+
+        return 1f;
     }
 
     public static void bedPoison(ServerPlayerEntity player) {
@@ -54,30 +56,36 @@ public class PoisonUtils {
         BlockPos bedPos = player.getBlockPos();
 
         TrimmedBedBlockEntity blockEntity = findHeadInBoxWithObstacles(world, bedPos);
-        if (blockEntity == null) return;
-
-        if (!world.isClient) {
-            blockEntity.setHasScorpion(false, null);
-            int poisonTicks = PlayerPoisonComponent.KEY.get(player).poisonTicks;
-
-            UUID poisoner = blockEntity.getPoisoner();
-
-            if (poisonTicks == -1) {
-                PlayerPoisonComponent.KEY.get(player).setPoisonTicks(
-                        world.getRandom().nextBetween(PlayerPoisonComponent.clampTime.getLeft(), PlayerPoisonComponent.clampTime.getRight()),
-                        poisoner
-                );
-            } else {
-                PlayerPoisonComponent.KEY.get(player).setPoisonTicks(
-                        MathHelper.clamp(poisonTicks - world.getRandom().nextBetween(100, 300), 0, PlayerPoisonComponent.clampTime.getRight()),
-                        poisoner
-                );
-            }
-
-            ServerPlayNetworking.send(
-                    player, new PoisonOverlayS2CPayload("game.player.stung")
-            );
+        if (blockEntity == null) {
+            return;
         }
+
+        if (world.isClient) {
+            return;
+        }
+
+        UUID poisoner = blockEntity.getPoisoner();
+
+        blockEntity.setHasScorpion(false, null);
+
+        updatePoisonTicks(player, poisoner, world.getRandom());
+
+        ServerPlayNetworking.send(
+                player, new PoisonOverlayS2CPayload("game.player.stung")
+        );
+    }
+
+    public static void updatePoisonTicks(PlayerEntity player, @Nullable UUID poisoner, Random random) {
+        int poisonTicks = PlayerPoisonComponent.KEY.get(player).poisonTicks;
+
+        int updated;
+        if (poisonTicks == -1) {
+            updated = random.nextBetween(PlayerPoisonComponent.TIME_BOUNDS.getLeft(), PlayerPoisonComponent.TIME_BOUNDS.getRight());
+        } else {
+            updated = MathHelper.clamp(poisonTicks - random.nextBetween(100, 300), 0, PlayerPoisonComponent.TIME_BOUNDS.getRight());
+        }
+
+        PlayerPoisonComponent.KEY.get(player).setPoisonTicks(updated, poisoner);
     }
 
     private static TrimmedBedBlockEntity findHeadInBoxWithObstacles(World world, BlockPos centerPos) {
@@ -172,7 +180,6 @@ public class PoisonUtils {
         BlockState state = world.getBlockState(pos);
         return !(state.getBlock() instanceof BedBlock);
     }
-
 
     /**
      * Resolve a bed block (head or foot) into its head entity.

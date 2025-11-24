@@ -21,20 +21,6 @@ public class TrimmedBedBlockEntity extends BlockEntity {
     private boolean hasScorpion = false;
     private UUID poisoner;
 
-    public boolean hasScorpion() {
-        return hasScorpion;
-    }
-
-    public void setHasScorpion(boolean hasScorpion, @Nullable UUID poisoner) {
-        this.hasScorpion = hasScorpion;
-        this.poisoner = poisoner;
-        sync();
-    }
-
-    public UUID getPoisoner() {
-        return poisoner;
-    }
-
     public TrimmedBedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
@@ -48,6 +34,20 @@ public class TrimmedBedBlockEntity extends BlockEntity {
             markDirty();
             world.updateListeners(pos, getCachedState(), getCachedState(), 3);
         }
+    }
+
+    public boolean hasScorpion() {
+        return this.hasScorpion;
+    }
+
+    public void setHasScorpion(boolean hasScorpion, @Nullable UUID poisoner) {
+        this.hasScorpion = hasScorpion;
+        this.poisoner = poisoner;
+        sync();
+    }
+
+    public UUID getPoisoner() {
+        return this.poisoner;
     }
 
     public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T t) {
@@ -86,7 +86,9 @@ public class TrimmedBedBlockEntity extends BlockEntity {
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
         nbt.putBoolean("hasScorpion", this.hasScorpion);
-        if (this.poisoner != null) nbt.putUuid("poisoner", this.poisoner);
+        if (this.poisoner != null) {
+            nbt.putUuid("poisoner", this.poisoner);
+        }
     }
 
     @Override

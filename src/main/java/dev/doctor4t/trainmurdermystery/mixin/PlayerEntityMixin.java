@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.datafixers.util.Either;
+import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerMoodComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerPoisonComponent;
@@ -121,16 +122,15 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             return;
         }
 
-        int poisonTicks = PlayerPoisonComponent.KEY.get(this).poisonTicks;
-        int updated;
-
-        if (poisonTicks == -1) {
-            updated = world.getRandom().nextBetween(PlayerPoisonComponent.clampTime.getLeft(), PlayerPoisonComponent.clampTime.getRight());
-        } else {
-            updated = MathHelper.clamp(poisonTicks - world.getRandom().nextBetween(100, 300), 0, PlayerPoisonComponent.clampTime.getRight());
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(poisoner);
+        } catch (IllegalArgumentException e) {
+            TMM.LOGGER.error("Unable to read UUID from String {} when attempting to eat poisoned food!", poisoner, e);
+            uuid = null;
         }
 
-        PlayerPoisonComponent.KEY.get(this).setPoisonTicks(updated, UUID.fromString(poisoner));
+        PoisonUtils.updatePoisonTicks((PlayerEntity) (Object) this, uuid, world.getRandom());
     }
 
     @Inject(method = "wakeUp(ZZ)V", at = @At("HEAD"))
