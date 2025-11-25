@@ -2,9 +2,9 @@ package dev.doctor4t.trainmurdermystery.game;
 
 import com.google.common.collect.Lists;
 import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
+import dev.doctor4t.trainmurdermystery.api.GameMode;
+import dev.doctor4t.trainmurdermystery.api.TMMGameModes;
 import dev.doctor4t.trainmurdermystery.cca.*;
-import dev.doctor4t.trainmurdermystery.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.trainmurdermystery.compat.TrainVoicePlugin;
 import dev.doctor4t.trainmurdermystery.entity.PlayerBodyEntity;
 import dev.doctor4t.trainmurdermystery.event.AllowPlayerDeath;
@@ -14,7 +14,6 @@ import dev.doctor4t.trainmurdermystery.index.TMMEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import dev.doctor4t.trainmurdermystery.util.AnnounceEndingPayload;
-import dev.doctor4t.trainmurdermystery.util.AnnounceWelcomePayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -26,7 +25,6 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -41,7 +39,10 @@ import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.*;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.GameRules;
+import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,17 +84,17 @@ public class GameFunctions {
         }
     }
 
-    public static void startGame(ServerWorld world, GameWorldComponent.GameMode gameMode, int time) {
+    public static void startGame(ServerWorld world, GameMode gameMode, int time) {
         GameWorldComponent component = GameWorldComponent.KEY.get(world);
         int playerCount = Math.toIntExact(world.getPlayers().stream().filter(serverPlayerEntity -> (GameConstants.READY_AREA.contains(serverPlayerEntity.getPos()))).count());
         component.setGameMode(gameMode);
         GameTimeComponent.KEY.get(world).setResetTime(time);
 
-        if (playerCount >= GameConstants.MIN_PLAYER_COUNT || gameMode != GameWorldComponent.GameMode.MURDER) {
+        if (playerCount >= gameMode.minPlayerCount) {
             component.setGameStatus(GameWorldComponent.GameStatus.STARTING);
         } else {
             for (ServerPlayerEntity player : world.getPlayers()) {
-                player.sendMessage(Text.translatable("game.start_error.not_enough_players"), true);
+                player.sendMessage(Text.translatable("game.start_error.not_enough_players", gameMode.minPlayerCount), true);
             }
         }
     }
@@ -103,89 +104,45 @@ public class GameFunctions {
         component.setGameStatus(GameWorldComponent.GameStatus.STOPPING);
     }
 
-    public static void initializeGame(ServerWorld world) {
-        GameWorldComponent gameComponent = GameWorldComponent.KEY.get(world);
-        TrainWorldComponent trainComponent = TrainWorldComponent.KEY.get(world);
-        List<ServerPlayerEntity> players = world.getPlayers(serverPlayerEntity -> GameConstants.READY_AREA.contains(serverPlayerEntity.getPos()));
+    public static void initializeGame(ServerWorld serverWorld) {
+        GameWorldComponent gameComponent = GameWorldComponent.KEY.get(serverWorld);
+        List<ServerPlayerEntity> readyPlayerList = getReadyPlayerList(serverWorld);
 
-        GameWorldComponent.GameMode gameMode = gameComponent.getGameMode();
-        boolean isMurder = gameMode == GameWorldComponent.GameMode.MURDER;
-
-        trainComponent.setTimeOfDay(switch (gameMode) {
-            case MURDER -> TrainWorldComponent.TimeOfDay.NIGHT;
-            case DISCOVERY -> TrainWorldComponent.TimeOfDay.DAY;
-            case LOOSE_ENDS -> TrainWorldComponent.TimeOfDay.SUNDOWN;
-        });
-        trainComponent.setSnow(true);
-        baseInitialize(world, trainComponent, gameComponent, players);
-
-        if (gameMode == GameWorldComponent.GameMode.LOOSE_ENDS) {
-            for (ServerPlayerEntity player : players) {
-                player.getInventory().clear();
-
-                ItemStack derringer = new ItemStack(TMMItems.DERRINGER);
-                ItemStack knife = new ItemStack(TMMItems.KNIFE);
-
-                int cooldown = GameConstants.getInTicks(1, 0);
-                ItemCooldownManager itemCooldownManager = player.getItemCooldownManager();
-                itemCooldownManager.set(TMMItems.DERRINGER, cooldown);
-                itemCooldownManager.set(TMMItems.KNIFE, cooldown);
-
-                player.giveItemStack(new ItemStack(TMMItems.CROWBAR));
-                player.giveItemStack(derringer);
-                player.giveItemStack(knife);
-
-                ServerPlayNetworking.send(player, new AnnounceWelcomePayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(RoleAnnouncementTexts.LOOSE_END), -1, -1));
-            }
-        } else if (isMurder) {
-            var killerCount = assignRolesAndGetKillerCount(world, players, gameComponent);
-
-            for (var player : players) {
-                ServerPlayNetworking.send(player, new AnnounceWelcomePayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(gameComponent.isRole(player, TMMRoles.KILLER) ? RoleAnnouncementTexts.KILLER : gameComponent.isRole(player, TMMRoles.VIGILANTE) ? RoleAnnouncementTexts.VIGILANTE : RoleAnnouncementTexts.CIVILIAN), killerCount, players.size() - killerCount));
-            }
-        }
+        baseInitialize(serverWorld, gameComponent, readyPlayerList);
+        gameComponent.getGameMode().initializeGame(serverWorld, gameComponent, readyPlayerList);
 
         gameComponent.sync();
     }
 
-    private static int assignRolesAndGetKillerCount(@NotNull ServerWorld world, @NotNull List<ServerPlayerEntity> players, GameWorldComponent gameComponent) {
-        // select roles
-        var roleSelector = ScoreboardRoleSelectorComponent.KEY.get(world.getScoreboard());
-        var killerCount = (int) Math.floor(players.size() / 6f);
-        var total = roleSelector.assignKillers(world, gameComponent, players, killerCount);
-        roleSelector.assignVigilantes(world, gameComponent, players, killerCount);
-        return total;
-    }
+    private static void baseInitialize(ServerWorld serverWorld, GameWorldComponent gameComponent, List<ServerPlayerEntity> players) {
+        TrainWorldComponent.KEY.get(serverWorld).reset();
+        WorldBlackoutComponent.KEY.get(serverWorld).reset();
 
-    private static void baseInitialize(ServerWorld world, TrainWorldComponent trainComponent, GameWorldComponent gameComponent, List<ServerPlayerEntity> players) {
-        trainComponent.setSpeed(130);
-        WorldBlackoutComponent.KEY.get(world).reset();
-
-        world.getGameRules().get(GameRules.KEEP_INVENTORY).set(true, world.getServer());
-        world.getGameRules().get(GameRules.DO_WEATHER_CYCLE).set(false, world.getServer());
-        world.getGameRules().get(GameRules.DO_DAYLIGHT_CYCLE).set(false, world.getServer());
-        world.getGameRules().get(GameRules.DO_MOB_GRIEFING).set(false, world.getServer());
-        world.getGameRules().get(GameRules.DO_MOB_SPAWNING).set(false, world.getServer());
-        world.getGameRules().get(GameRules.ANNOUNCE_ADVANCEMENTS).set(false, world.getServer());
-        world.getGameRules().get(GameRules.DO_TRADER_SPAWNING).set(false, world.getServer());
-        world.getGameRules().get(GameRules.PLAYERS_SLEEPING_PERCENTAGE).set(9999, world.getServer());
-        world.getServer().setDifficulty(Difficulty.PEACEFUL, true);
+        serverWorld.getGameRules().get(GameRules.KEEP_INVENTORY).set(true, serverWorld.getServer());
+        serverWorld.getGameRules().get(GameRules.DO_WEATHER_CYCLE).set(false, serverWorld.getServer());
+        serverWorld.getGameRules().get(GameRules.DO_DAYLIGHT_CYCLE).set(false, serverWorld.getServer());
+        serverWorld.getGameRules().get(GameRules.DO_MOB_GRIEFING).set(false, serverWorld.getServer());
+        serverWorld.getGameRules().get(GameRules.DO_MOB_SPAWNING).set(false, serverWorld.getServer());
+        serverWorld.getGameRules().get(GameRules.ANNOUNCE_ADVANCEMENTS).set(false, serverWorld.getServer());
+        serverWorld.getGameRules().get(GameRules.DO_TRADER_SPAWNING).set(false, serverWorld.getServer());
+        serverWorld.getGameRules().get(GameRules.PLAYERS_SLEEPING_PERCENTAGE).set(9999, serverWorld.getServer());
+        serverWorld.getServer().setDifficulty(Difficulty.PEACEFUL, true);
 
         // dismount all players as it can cause issues
-        for (ServerPlayerEntity player : world.getPlayers()) {
+        for (ServerPlayerEntity player : serverWorld.getPlayers()) {
             player.dismountVehicle();
         }
 
         // teleport players to play area
         for (ServerPlayerEntity player : players) {
-            player.changeGameMode(GameMode.ADVENTURE);
+            player.changeGameMode(net.minecraft.world.GameMode.ADVENTURE);
             Vec3d pos = player.getPos().add(GameConstants.PLAY_OFFSET);
             player.requestTeleport(pos.getX(), pos.getY() + 1, pos.getZ());
         }
 
         // teleport non playing players
-        for (ServerPlayerEntity player : world.getPlayers(serverPlayerEntity -> !players.contains(serverPlayerEntity))) {
-            player.changeGameMode(GameMode.SPECTATOR);
+        for (ServerPlayerEntity player : serverWorld.getPlayers(serverPlayerEntity -> !players.contains(serverPlayerEntity))) {
+            player.changeGameMode(net.minecraft.world.GameMode.SPECTATOR);
             GameConstants.SPECTATOR_TP.accept(player);
         }
 
@@ -205,7 +162,7 @@ public class GameFunctions {
             for (var item : copy) serverPlayerEntity.getItemCooldownManager().remove(item);
         }
         gameComponent.clearRoleMap();
-        GameTimeComponent.KEY.get(world).reset();
+        GameTimeComponent.KEY.get(serverWorld).reset();
 
         // reset train
         gameComponent.queueTrainReset();
@@ -254,11 +211,18 @@ public class GameFunctions {
         }
 
         gameComponent.setGameStatus(GameWorldComponent.GameStatus.ACTIVE);
-        trainComponent.setTime(0);
         gameComponent.sync();
     }
 
+    private static List<ServerPlayerEntity> getReadyPlayerList(ServerWorld serverWorld) {
+        List<ServerPlayerEntity> players = serverWorld.getPlayers(serverPlayerEntity -> GameConstants.READY_AREA.contains(serverPlayerEntity.getPos()));
+        return players;
+    }
+
     public static void finalizeGame(ServerWorld world) {
+        GameWorldComponent gameComponent = GameWorldComponent.KEY.get(world);
+        gameComponent.getGameMode().finalizeGame(world, gameComponent);
+
         WorldBlackoutComponent.KEY.get(world).reset();
         TrainWorldComponent trainComponent = TrainWorldComponent.KEY.get(world);
         trainComponent.setSpeed(0);
@@ -276,7 +240,6 @@ public class GameFunctions {
 
         // reset game component
         GameTimeComponent.KEY.get(world).reset();
-        var gameComponent = GameWorldComponent.KEY.get(world);
         gameComponent.clearRoleMap();
         gameComponent.setGameStatus(GameWorldComponent.GameStatus.INACTIVE);
         trainComponent.setTime(0);
@@ -294,7 +257,7 @@ public class GameFunctions {
         PlayerNoteComponent.KEY.get(player).reset();
         TrainVoicePlugin.resetPlayer(player.getUuid());
 
-        player.changeGameMode(GameMode.ADVENTURE);
+        player.changeGameMode(net.minecraft.world.GameMode.ADVENTURE);
         player.wakeUp();
         var teleportTarget = new TeleportTarget(player.getServerWorld(), GameConstants.SPAWN_POS, Vec3d.ZERO, 90, 0, TeleportTarget.NO_OP);
         player.teleportTo(teleportTarget);
@@ -324,7 +287,7 @@ public class GameFunctions {
         }
 
         if (victim instanceof ServerPlayerEntity serverPlayerEntity && isPlayerAliveAndSurvival(serverPlayerEntity)) {
-            serverPlayerEntity.changeGameMode(GameMode.SPECTATOR);
+            serverPlayerEntity.changeGameMode(net.minecraft.world.GameMode.SPECTATOR);
         } else {
             return;
         }

@@ -1,4 +1,17 @@
 ------------------------------------------------------
+The Last Voyage of the Harpy Express 1.2 - 1.21.1
+------------------------------------------------------
+- Completely rewrote the game logic to now use a new API GameMode class, allowing for moddable new game modes with custom default start times, minimum player counts, initialization and finalization methods, and client and server game loop ticking
+- Changed the Role record into a class for better custom extendability and added new role variables to allow more precise role customization:
+  - moodType: Allows to set whether the mood is functional, fake (like killers), or non-functional
+  - maxSprintTime: The max sprint time that a role can sprint for
+  - canSeeTime: Whether a role can see the time left before the end of the game
+- Discovery mode now requires 1+ player to be boarded to start, and loose ends requires 2+
+- /start now uses the identifier of the game mode you want to start and will suggest other game modes if they are registered / added via add-ons
+- Made the /start command available for everyone, restricting only Discovery and Loose Ends game modes start commands to supporters
+- Removed Sprinkler ambience as it would be unreliably playing with sound physics remastered and potentially cause performance issues
+
+------------------------------------------------------
 The Last Voyage of the Harpy Express 1.1.5 - 1.21.1
 ------------------------------------------------------
 - Fixed a crash that could happen on server start

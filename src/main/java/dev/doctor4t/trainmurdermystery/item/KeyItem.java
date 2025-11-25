@@ -11,9 +11,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class KeyItem extends Item implements AdventureUsable {
     public KeyItem(Settings settings) {
@@ -30,12 +33,17 @@ public class KeyItem extends Item implements AdventureUsable {
         if (state.getBlock() instanceof SmallDoorBlock) {
             BlockPos lowerPos = state.get(SmallDoorBlock.HALF) == DoubleBlockHalf.LOWER ? pos : pos.down();
             if (world.getBlockEntity(lowerPos) instanceof SmallDoorBlockEntity entity) {
-                // Sneaking creative player with key sets the door to require a key with the same name
                 ItemStack mainHandStack = player.getMainHandStack();
                 LoreComponent loreComponent = mainHandStack.get(DataComponentTypes.LORE);
                 if (loreComponent != null) {
-                    String roomName = loreComponent.lines().getFirst().getString();
+                    List<Text> lines = loreComponent.lines();
+                    if (lines == null || lines.isEmpty()) {
+                        return ActionResult.PASS;
+                    }
+
+                    // Sneaking creative player with key sets the door to require a key with the same name
                     if (player.isCreative() && player.isSneaking()) {
+                        String roomName = lines.getFirst().getString();
                         entity.setKeyName(roomName);
                         return ActionResult.SUCCESS;
                     }
@@ -44,7 +52,6 @@ public class KeyItem extends Item implements AdventureUsable {
 
             return ActionResult.PASS;
         }
-
         return super.useOnBlock(context);
     }
 }

@@ -331,11 +331,17 @@
   "tip.door.locked": "Dør låst, kan ikke åpnes.",
   "tip.door.requires_different_key": "Dør låst, denne nøkkelen passer ikke.",
   "tip.door.requires_key": "Dør låst, krever nøkkel.",
-  "tip.letter.name": "Hei, %s, velkommen til Harpy Express!",
+  "tip.letter.name": "Hei, %s, velkommen til Harpyekspressens!",
   "tip.letter.room": "Vedlagt finner du billett og nøkkel til ",
   "tip.letter.room.cabin_suite": "Suitens lugar",
   "tip.letter.room.grand_suite": "Grand Suite-lugar",
   "tip.letter.room.twin_cabin": "todelt lugar",
   "tip.letter.tooltip1": "%s for din reise 1. januar 1923.",
-  "tip.letter.tooltip2": "La Sirène ønsker deg en hyggelig og trygg tur."
+  "tip.letter.tooltip2": "La Sirène ønsker deg en hyggelig og trygg tur.",
+  "credits.trainmurdermystery.thank_you": "Tusen takk for at du spilte Harpyekspressens siste reise!\nJeg og teamet mitt brukte mye tid på denne modden,\n og vi håper du liker den. Hvis du gjør\n det og ønsker å lage en video eller strømme,\nhusk å kreditere kanalen min, videoen og mod-siden!\n - RAT / doctor4t",
+  "tmm.gui.reset": "Tøk",
+  "trainmurdermystery.midnightconfig.disableScreenShake": "Deaktiver skjermristing",
+  "trainmurdermystery.midnightconfig.title": "Harpyekspressens siste reise - Konfigurasjon",
+  "trainmurdermystery.midnightconfig.ultraPerfMode": "Ultraytelsesmodus",
+  "trainmurdermystery.midnightconfig.ultraPerfMode.tooltip": "Fjerner detaljer gir en dårligere visuell opplevelse, men maksimerer ytelsen. Setter kantavstanden til 2."
 }

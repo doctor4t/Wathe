@@ -43,9 +43,7 @@ public class SetVisualCommand {
 
     private static <T> int execute(ServerCommandSource source, BiConsumer<TrainWorldComponent, T> consumer, T value) {
         return TMM.executeSupporterCommand(source,
-                () -> {
-                    consumer.accept(TrainWorldComponent.KEY.get(source.getWorld()), value);
-                }
+                () -> consumer.accept(TrainWorldComponent.KEY.get(source.getWorld()), value)
         );
     }
 

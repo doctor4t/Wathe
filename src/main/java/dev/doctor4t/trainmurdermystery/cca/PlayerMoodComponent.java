@@ -2,6 +2,7 @@ package dev.doctor4t.trainmurdermystery.cca;
 
 import com.mojang.datafixers.types.templates.Named;
 import dev.doctor4t.trainmurdermystery.TMM;
+import dev.doctor4t.trainmurdermystery.api.Role;
 import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
@@ -175,12 +176,21 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
 
     public float getMood() {
         GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(this.player.getWorld());
-        return gameWorldComponent.canUseKillerFeatures(player) || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER ? 1 : this.mood;
+
+        Role role = gameWorldComponent.getRole(player);
+        if (gameWorldComponent.isRunning() && role != null && role.getMoodType() == Role.MoodType.REAL) {
+            return this.mood;
+        } else return 1;
     }
 
     public void setMood(float mood) {
-        GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(this.player.getWorld());
-        this.mood = gameWorldComponent.canUseKillerFeatures(player) || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER ? 1 : Math.clamp(mood, 0, 1);
+        Role role = GameWorldComponent.KEY.get(this.player.getWorld()).getRole(player);
+
+        if (role == null || role.getMoodType() == Role.MoodType.REAL) {
+            this.mood = Math.clamp(mood, 0, 1);
+        } else {
+            this.mood = 1;
+        }
         this.sync();
     }
 

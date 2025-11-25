@@ -130,6 +130,8 @@ public class TrainWorldComponent implements AutoSyncedComponent, ServerTickingCo
         this.snow = true;
         this.fog = true;
         this.hud = true;
+        this.speed = 130;
+        this.time = 0;
         this.sync();
     }
 

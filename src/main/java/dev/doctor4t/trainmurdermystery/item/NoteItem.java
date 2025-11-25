@@ -1,12 +1,8 @@
 package dev.doctor4t.trainmurdermystery.item;
 
 import dev.doctor4t.trainmurdermystery.cca.PlayerNoteComponent;
-import dev.doctor4t.trainmurdermystery.client.gui.screen.ingame.NoteScreen;
 import dev.doctor4t.trainmurdermystery.index.TMMEntities;
 import dev.doctor4t.trainmurdermystery.util.AdventureUsable;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,9 +21,7 @@ public class NoteItem extends Item implements AdventureUsable {
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public TypedActionResult<ItemStack> use(@NotNull World world, PlayerEntity user, Hand hand) {
-        if (world.isClient && user.isSneaking()) MinecraftClient.getInstance().setScreen(new NoteScreen());
         return super.use(world, user, hand);
     }
 
@@ -44,6 +38,8 @@ public class NoteItem extends Item implements AdventureUsable {
         if (world.isClient) return ActionResult.PASS;
         var note = TMMEntities.NOTE.create(world);
 
+        if (note == null) return ActionResult.PASS;
+
         switch (context.getSide()) {
             case DOWN -> {
                 return ActionResult.PASS;
@@ -52,7 +48,6 @@ public class NoteItem extends Item implements AdventureUsable {
             case NORTH, SOUTH, WEST, EAST -> note.setYaw(180f + (world.random.nextFloat() - .5f) * 30f);
         }
 
-        if (note == null) return ActionResult.PASS;
         var side = context.getSide();
         note.setDirection(side);
         note.setLines(component.text);

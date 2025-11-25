@@ -4,7 +4,7 @@ import com.google.common.reflect.Reflection;
 import dev.doctor4t.trainmurdermystery.block.DoorPartBlock;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.command.*;
-import dev.doctor4t.trainmurdermystery.command.argument.TMMGameModeArgumentType;
+import dev.doctor4t.trainmurdermystery.command.argument.GameModeArgumentType;
 import dev.doctor4t.trainmurdermystery.command.argument.TimeOfDayArgumentType;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.index.*;
@@ -55,7 +55,7 @@ public class TMM implements ModInitializer {
 
         // Register command argument types
         ArgumentTypeRegistry.registerArgumentType(id("timeofday"), TimeOfDayArgumentType.class, ConstantArgumentSerializer.of(TimeOfDayArgumentType::timeofday));
-        ArgumentTypeRegistry.registerArgumentType(id("gamemode"), TMMGameModeArgumentType.class, ConstantArgumentSerializer.of(TMMGameModeArgumentType::gamemode));
+        ArgumentTypeRegistry.registerArgumentType(id("gamemode"), GameModeArgumentType.class, ConstantArgumentSerializer.of(GameModeArgumentType::gameMode));
 
         // Register commands
         CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
@@ -133,7 +133,7 @@ public class TMM implements ModInitializer {
 
     public static int executeSupporterCommand(ServerCommandSource source, Runnable runnable) {
         ServerPlayerEntity player = source.getPlayer();
-        if (player == null) return 0;
+        if (player == null || !player.getClass().equals(ServerPlayerEntity.class)) return 0;
 
         if (isSupporter(player)) {
             runnable.run();

@@ -1,5 +1,6 @@
 package dev.doctor4t.trainmurdermystery.client.gui;
 
+import dev.doctor4t.trainmurdermystery.api.Role;
 import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.cca.GameTimeComponent;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
@@ -18,7 +19,8 @@ public class TimeRenderer {
 
     public static void renderHud(TextRenderer renderer, @NotNull ClientPlayerEntity player, @NotNull DrawContext context, float delta) {
         GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(player.getWorld());
-        if (gameWorldComponent.isRunning() && (gameWorldComponent.getGameMode() == GameWorldComponent.GameMode.DISCOVERY || gameWorldComponent.canUseKillerFeatures(player)|| GameFunctions.isPlayerSpectatingOrCreative(player))) {
+        Role role = gameWorldComponent.getRole(player);
+        if (gameWorldComponent.isRunning() && (role != null && role.canSeeTime() || GameFunctions.isPlayerSpectatingOrCreative(player))) {
             var time = GameTimeComponent.KEY.get(player.getWorld()).getTime();
             if (Math.abs(view.getTarget() - time) > 10) offsetDelta = time > view.getTarget() ? .6f : -.6f;
             if (time < GameConstants.getInTicks(1, 0)) {
