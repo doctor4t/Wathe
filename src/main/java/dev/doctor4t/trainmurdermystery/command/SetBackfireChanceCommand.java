@@ -21,18 +21,14 @@ public class SetBackfireChanceCommand {
                         .requires(source -> source.hasPermissionLevel(2))
                         .then(
                                 CommandManager.argument("chance", FloatArgumentType.floatArg(0f, 1f))
-                                        .executes(context -> execute(context.getSource(), ImmutableList.of(context.getSource().getEntityOrThrow()), FloatArgumentType.getFloat(context, "chance")))
+                                        .executes(context -> execute(context.getSource(), FloatArgumentType.getFloat(context, "chance")))
                         )
         );
     }
 
-    private static int execute(ServerCommandSource source, Collection<? extends Entity> targets, float chance) {
+    private static int execute(ServerCommandSource source, float chance) {
         return TMM.executeSupporterCommand(source,
-                () -> {
-                    for (Entity target : targets) {
-                        GameWorldComponent.KEY.get(target).setBackfireChance(chance);
-                    }
-                }
+                () -> GameWorldComponent.KEY.get(source.getWorld()).setBackfireChance(chance)
         );
     }
 

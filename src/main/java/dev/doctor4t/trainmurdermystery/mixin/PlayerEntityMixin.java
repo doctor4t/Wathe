@@ -68,7 +68,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @Inject(method = "tickMovement", at = @At("HEAD"))
     public void tmm$limitSprint(CallbackInfo ci) {
         GameWorldComponent gameComponent = GameWorldComponent.KEY.get(this.getWorld());
-        if (GameFunctions.isPlayerAliveAndSurvival((PlayerEntity) (Object) this) && !(gameComponent != null || !gameComponent.isRunning())) {
+        if (GameFunctions.isPlayerAliveAndSurvival((PlayerEntity) (Object) this) && gameComponent != null && gameComponent.isRunning()) {
             if (this.isSprinting()) {
                 sprintingTicks = Math.max(sprintingTicks - 1, 0);
             } else {
