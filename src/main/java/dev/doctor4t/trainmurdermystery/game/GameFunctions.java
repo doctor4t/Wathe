@@ -13,7 +13,7 @@ import dev.doctor4t.trainmurdermystery.index.TMMDataComponentTypes;
 import dev.doctor4t.trainmurdermystery.index.TMMEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
-import dev.doctor4t.trainmurdermystery.util.AnnounceEndingPayload;
+import dev.doctor4t.trainmurdermystery.networking.AnnounceEndingS2CPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -253,7 +253,7 @@ public class GameFunctions {
     }
 
     public static void resetPlayer(ServerPlayerEntity player) {
-        ServerPlayNetworking.send(player, new AnnounceEndingPayload());
+        ServerPlayNetworking.send(player, AnnounceEndingS2CPayload.INSTANCE);
         player.dismountVehicle();
         player.getInventory().clear();
         PlayerMoodComponent.KEY.get(player).reset();

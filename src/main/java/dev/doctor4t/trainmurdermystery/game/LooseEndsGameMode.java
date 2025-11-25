@@ -8,7 +8,7 @@ import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.cca.TrainWorldComponent;
 import dev.doctor4t.trainmurdermystery.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
-import dev.doctor4t.trainmurdermystery.util.AnnounceWelcomePayload;
+import dev.doctor4t.trainmurdermystery.networking.AnnounceWelcomeS2CPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,7 +45,7 @@ public class LooseEndsGameMode extends GameMode {
 
             gameWorldComponent.addRole(player, TMMRoles.LOOSE_END);
 
-            ServerPlayNetworking.send(player, new AnnounceWelcomePayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(RoleAnnouncementTexts.LOOSE_END), -1, -1));
+            ServerPlayNetworking.send(player, new AnnounceWelcomeS2CPayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(RoleAnnouncementTexts.LOOSE_END), -1, -1));
         }
     }
 

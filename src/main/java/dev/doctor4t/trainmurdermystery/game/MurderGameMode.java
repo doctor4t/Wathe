@@ -4,7 +4,7 @@ import dev.doctor4t.trainmurdermystery.api.GameMode;
 import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.cca.*;
 import dev.doctor4t.trainmurdermystery.client.gui.RoleAnnouncementTexts;
-import dev.doctor4t.trainmurdermystery.util.AnnounceWelcomePayload;
+import dev.doctor4t.trainmurdermystery.networking.AnnounceWelcomeS2CPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -40,7 +40,7 @@ public class MurderGameMode extends GameMode {
         var killerCount = assignRolesAndGetKillerCount(serverWorld, players, gameWorldComponent);
 
         for (var player : players) {
-            ServerPlayNetworking.send(player, new AnnounceWelcomePayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(gameWorldComponent.isRole(player, TMMRoles.KILLER) ? RoleAnnouncementTexts.KILLER : gameWorldComponent.isRole(player, TMMRoles.VIGILANTE) ? RoleAnnouncementTexts.VIGILANTE : RoleAnnouncementTexts.CIVILIAN), killerCount, players.size() - killerCount));
+            ServerPlayNetworking.send(player, new AnnounceWelcomeS2CPayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(gameWorldComponent.isRole(player, TMMRoles.KILLER) ? RoleAnnouncementTexts.KILLER : gameWorldComponent.isRole(player, TMMRoles.VIGILANTE) ? RoleAnnouncementTexts.VIGILANTE : RoleAnnouncementTexts.CIVILIAN), killerCount, players.size() - killerCount));
         }
     }
 

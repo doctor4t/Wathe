@@ -8,7 +8,7 @@ import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
-import dev.doctor4t.trainmurdermystery.util.TaskCompletePayload;
+import dev.doctor4t.trainmurdermystery.networking.TaskCompleteS2CPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -141,7 +141,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
                 removals.add(task.getType());
                 this.setMood(this.mood + GameConstants.MOOD_GAIN);
                 if (this.player instanceof ServerPlayerEntity tempPlayer)
-                    ServerPlayNetworking.send(tempPlayer, new TaskCompletePayload());
+                    ServerPlayNetworking.send(tempPlayer, TaskCompleteS2CPayload.INSTANCE);
                 shouldSync = true;
             }
         }
