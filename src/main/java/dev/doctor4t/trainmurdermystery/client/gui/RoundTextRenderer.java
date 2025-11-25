@@ -2,6 +2,7 @@ package dev.doctor4t.trainmurdermystery.client.gui;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.doctor4t.trainmurdermystery.api.TMMGameModes;
 import dev.doctor4t.trainmurdermystery.cca.GameRoundEndComponent;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
@@ -36,7 +37,7 @@ public class RoundTextRenderer {
 
     @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     public static void renderHud(TextRenderer renderer, ClientPlayerEntity player, @NotNull DrawContext context) {
-        var isLooseEnds = GameWorldComponent.KEY.get(player.getWorld()).getGameMode() == GameWorldComponent.GameMode.LOOSE_ENDS;
+        var isLooseEnds = GameWorldComponent.KEY.get(player.getWorld()).getGameMode() == TMMGameModes.LOOSE_ENDS;
 
         if (welcomeTime > 0) {
             context.getMatrices().push();
@@ -66,7 +67,7 @@ public class RoundTextRenderer {
             context.getMatrices().pop();
         }
         var game = GameWorldComponent.KEY.get(player.getWorld());
-        if (endTime > 0 && endTime < END_DURATION - (GameConstants.FADE_TIME * 2) && !game.isRunning() && game.getGameMode() != GameWorldComponent.GameMode.DISCOVERY) {
+        if (endTime > 0 && endTime < END_DURATION - (GameConstants.FADE_TIME * 2) && !game.isRunning() && game.getGameMode() != TMMGameModes.DISCOVERY) {
             var roundEnd = GameRoundEndComponent.KEY.get(player.getWorld());
             if (roundEnd.getWinStatus() == GameFunctions.WinStatus.NONE) return;
             var winner = player.getWorld().getPlayerByUuid(game.getLooseEndWinner() == null ? UUID.randomUUID() : game.getLooseEndWinner());
@@ -168,7 +169,7 @@ public class RoundTextRenderer {
     }
 
     public static void tick() {
-        if (MinecraftClient.getInstance().world != null && GameWorldComponent.KEY.get(MinecraftClient.getInstance().world).getGameMode() != GameWorldComponent.GameMode.DISCOVERY) {
+        if (MinecraftClient.getInstance().world != null && GameWorldComponent.KEY.get(MinecraftClient.getInstance().world).getGameMode() != TMMGameModes.DISCOVERY) {
             var player = MinecraftClient.getInstance().player;
             if (welcomeTime > 0) {
                 switch (welcomeTime) {

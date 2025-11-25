@@ -1,6 +1,7 @@
 package dev.doctor4t.trainmurdermystery.networking;
 
 import dev.doctor4t.trainmurdermystery.TMM;
+import dev.doctor4t.trainmurdermystery.api.TMMGameModes;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
@@ -34,7 +35,7 @@ public record KnifeStabC2SPayload(int target) implements CustomPayload {
             GameFunctions.killPlayer(target, true, player, TMM.id("knife_stab"));
             target.playSound(TMMSounds.ITEM_KNIFE_STAB, 1.0f, 1.0f);
             player.swingHand(Hand.MAIN_HAND);
-            if (!player.isCreative() && GameWorldComponent.KEY.get(context.player().getWorld()).getGameMode() != GameWorldComponent.GameMode.LOOSE_ENDS) {
+            if (!player.isCreative() && GameWorldComponent.KEY.get(context.player().getWorld()).getGameMode() != TMMGameModes.LOOSE_ENDS) {
                 player.getItemCooldownManager().set(TMMItems.KNIFE, GameConstants.ITEM_COOLDOWNS.get(TMMItems.KNIFE));
             }
         }

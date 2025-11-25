@@ -41,6 +41,7 @@
 		"cardinal-components": [
 			"trainmurdermystery:train",
 			"trainmurdermystery:game",
+			"trainmurdermystery:areas",
 			"trainmurdermystery:role",
 			"trainmurdermystery:mood",
 			"trainmurdermystery:shop",

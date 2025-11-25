@@ -1,15 +1,22 @@
 package dev.doctor4t.trainmurdermystery.cca;
 
+import com.mojang.datafixers.types.templates.Named;
 import dev.doctor4t.trainmurdermystery.TMM;
+import dev.doctor4t.trainmurdermystery.api.Role;
+import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
-import dev.doctor4t.trainmurdermystery.networking.TaskCompleteS2CPayload;
+import dev.doctor4t.trainmurdermystery.util.TaskCompletePayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContextType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -29,6 +36,7 @@ import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static dev.doctor4t.trainmurdermystery.TMM.isSkyVisibleAdjacent;
 
@@ -132,9 +140,8 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
             if (task.isFulfilled(this.player)) {
                 removals.add(task.getType());
                 this.setMood(this.mood + GameConstants.MOOD_GAIN);
-                if (this.player instanceof ServerPlayerEntity serverPlayer){
-                    ServerPlayNetworking.send(serverPlayer, TaskCompleteS2CPayload.INSTANCE);
-                }
+                if (this.player instanceof ServerPlayerEntity tempPlayer)
+                    ServerPlayNetworking.send(tempPlayer, new TaskCompletePayload());
                 shouldSync = true;
             }
         }
@@ -169,12 +176,21 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
 
     public float getMood() {
         GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(this.player.getWorld());
-        return gameWorldComponent.canUseKillerFeatures(player) || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER ? 1 : this.mood;
+
+        Role role = gameWorldComponent.getRole(player);
+        if (gameWorldComponent.isRunning() && role != null && role.getMoodType() == Role.MoodType.REAL) {
+            return this.mood;
+        } else return 1;
     }
 
     public void setMood(float mood) {
-        GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(this.player.getWorld());
-        this.mood = gameWorldComponent.canUseKillerFeatures(player) || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER ? 1 : Math.clamp(mood, 0, 1);
+        Role role = GameWorldComponent.KEY.get(this.player.getWorld()).getRole(player);
+
+        if (role == null || role.getMoodType() == Role.MoodType.REAL) {
+            this.mood = Math.clamp(mood, 0, 1);
+        } else {
+            this.mood = 1;
+        }
         this.sync();
     }
 

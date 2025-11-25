@@ -1,7 +1,8 @@
 package dev.doctor4t.trainmurdermystery.client.gui;
 
 import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
+import dev.doctor4t.trainmurdermystery.api.Role;
+import dev.doctor4t.trainmurdermystery.api.TMMGameModes;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerMoodComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerPsychoComponent;
@@ -44,7 +45,7 @@ public class MoodRenderer {
     @Environment(EnvType.CLIENT)
     public static void renderHud(@NotNull PlayerEntity player, TextRenderer textRenderer, DrawContext context, RenderTickCounter tickCounter) {
         GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(player.getWorld());
-        if (!gameWorldComponent.isRunning() || !TMMClient.isPlayerAliveAndInSurvival() || gameWorldComponent.getGameMode() != GameWorldComponent.GameMode.MURDER)
+        if (!gameWorldComponent.isRunning() || !TMMClient.isPlayerAliveAndInSurvival() || gameWorldComponent.getGameMode() != TMMGameModes.MURDER)
             return;
         var component = PlayerMoodComponent.KEY.get(player);
         var oldMood = moodRender;
@@ -88,10 +89,13 @@ public class MoodRenderer {
             moodOffset = MathHelper.lerp(tickCounter.getTickDelta(true) / 8, moodOffset, maxRenderer.offset);
             moodTextWidth = MathHelper.lerp(tickCounter.getTickDelta(true) / 32, moodTextWidth, textRenderer.getWidth(maxRenderer.text));
         }
-        if (gameWorldComponent.canUseKillerFeatures(player)) {
-            renderKiller(textRenderer, context);
-        } else {
-            renderCivilian(textRenderer, context, oldMood);
+        Role role = gameWorldComponent.getRole(player);
+        if (role != null) {
+            if (role.getMoodType() == Role.MoodType.FAKE) {
+                renderKiller(textRenderer, context);
+            } else if (role.getMoodType() == Role.MoodType.REAL) {
+                renderCivilian(textRenderer, context, oldMood);
+            }
         }
         arrowProgress = MathHelper.lerp(tickCounter.getTickDelta(true) / 24, arrowProgress, 0f);
     }

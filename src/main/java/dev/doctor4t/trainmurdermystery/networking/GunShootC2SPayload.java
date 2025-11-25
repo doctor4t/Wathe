@@ -58,6 +58,12 @@ public record GunShootC2SPayload(int target) implements CustomPayload {
                 var game = GameWorldComponent.KEY.get(player.getWorld());
                 Item revolver = TMMItems.REVOLVER;
                 if (game.isInnocent(target) && !player.isCreative() && mainHandStack.isOf(revolver)) {
+                    // backfire: if you kill an innocent you have a chance of shooting yourself instead
+                    if (player.getRandom().nextFloat() <= game.getBackfireChance()) {
+                        GameFunctions.killPlayer(player, true, player, TMM.id("gun_shot"));
+                        return;
+                    }
+
                     Scheduler.schedule(() -> {
                         if (!context.player().getInventory().contains((s) -> s.isIn(TMMItemTags.GUNS))){
                             return;
