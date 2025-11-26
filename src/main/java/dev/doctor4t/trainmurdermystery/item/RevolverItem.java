@@ -5,7 +5,7 @@ import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.client.particle.HandParticle;
 import dev.doctor4t.trainmurdermystery.client.render.TMMRenderLayers;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
-import dev.doctor4t.trainmurdermystery.util.GunShootPayload;
+import dev.doctor4t.trainmurdermystery.networking.GunShootC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,9 +30,9 @@ public class RevolverItem extends Item {
             HitResult collision = getGunTarget(user);
             if (collision instanceof EntityHitResult entityHitResult) {
                 Entity target = entityHitResult.getEntity();
-                ClientPlayNetworking.send(new GunShootPayload(target.getId()));
+                ClientPlayNetworking.send(new GunShootC2SPayload(target.getId()));
             } else {
-                ClientPlayNetworking.send(new GunShootPayload(-1));
+                ClientPlayNetworking.send(new GunShootC2SPayload(-1));
             }
             user.setPitch(user.getPitch() - 4);
             spawnHandParticle();

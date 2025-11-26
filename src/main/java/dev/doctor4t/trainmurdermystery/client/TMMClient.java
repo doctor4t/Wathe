@@ -325,19 +325,15 @@ public class TMMClient implements ClientModInitializer {
 
     private static void registerClientPayloadHandlers() {
         ClientPlayNetworking.registerGlobalReceiver(ShootMuzzleS2CPayload.ID, (payload, context) -> {
-            MinecraftClient client = context.client();
+            MinecraftClient client = MinecraftClient.getInstance();
             client.execute(() -> {
-                if (client.world == null || client.player == null) {
-                    return;
-                }
+                if (client.world == null || client.player == null) return;
                 PlayerEntity shooter = client.world.getPlayerByUuid(payload.shooterUuid());
-                if (shooter == null || shooter.getUuid() == client.player.getUuid() && client.options.getPerspective() == Perspective.FIRST_PERSON) {
+                if (shooter == null || shooter.getUuid() == client.player.getUuid() && client.options.getPerspective() == Perspective.FIRST_PERSON)
                     return;
-                }
                 Vec3d muzzlePos = MatrixParticleManager.getMuzzlePosForPlayer(shooter);
-                if (muzzlePos != null) {
+                if (muzzlePos != null)
                     client.world.addParticle(TMMParticles.GUNSHOT, muzzlePos.x, muzzlePos.y, muzzlePos.z, 0, 0, 0);
-                }
             });
         });
 

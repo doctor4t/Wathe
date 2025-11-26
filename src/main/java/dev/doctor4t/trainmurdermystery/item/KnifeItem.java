@@ -2,7 +2,7 @@ package dev.doctor4t.trainmurdermystery.item;
 
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
-import dev.doctor4t.trainmurdermystery.util.KnifeStabPayload;
+import dev.doctor4t.trainmurdermystery.networking.KnifeStabC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -42,7 +42,7 @@ public class KnifeItem extends Item {
         HitResult collision = getKnifeTarget(attacker);
         if (collision instanceof EntityHitResult entityHitResult) {
             Entity target = entityHitResult.getEntity();
-            ClientPlayNetworking.send(new KnifeStabPayload(target.getId()));
+            ClientPlayNetworking.send(new KnifeStabC2SPayload(target.getId()));
         }
     }
 
