@@ -1,6 +1,6 @@
 package dev.doctor4t.trainmurdermystery.mixin.compat.sodium;
 
-import dev.doctor4t.trainmurdermystery.compat.SodiumShaderInterface;
+import dev.doctor4t.trainmurdermystery.client.compat.SodiumShaderInterface;
 import net.caffeinemc.mods.sodium.client.gl.buffer.GlMutableBuffer;
 import net.caffeinemc.mods.sodium.client.gl.shader.uniform.GlUniformBlock;
 import net.caffeinemc.mods.sodium.client.render.chunk.shader.ShaderBindingContext;

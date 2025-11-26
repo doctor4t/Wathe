@@ -3,7 +3,7 @@ package dev.doctor4t.trainmurdermystery.mixin.compat.sodium;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
-import dev.doctor4t.trainmurdermystery.compat.SodiumShaderInterface;
+import dev.doctor4t.trainmurdermystery.client.compat.SodiumShaderInterface;
 import net.caffeinemc.mods.sodium.client.gl.buffer.GlBufferUsage;
 import net.caffeinemc.mods.sodium.client.gl.buffer.GlMutableBuffer;
 import net.caffeinemc.mods.sodium.client.gl.device.CommandList;

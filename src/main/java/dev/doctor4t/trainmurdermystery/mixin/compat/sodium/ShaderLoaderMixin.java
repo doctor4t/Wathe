@@ -1,6 +1,6 @@
 package dev.doctor4t.trainmurdermystery.mixin.compat.sodium;
 
-import dev.doctor4t.trainmurdermystery.compat.IrisHelper;
+import dev.doctor4t.trainmurdermystery.client.compat.IrisHelper;
 import dev.doctor4t.trainmurdermystery.client.util.ShaderEditor;
 import net.caffeinemc.mods.sodium.client.gl.shader.ShaderLoader;
 import net.minecraft.util.Identifier;
