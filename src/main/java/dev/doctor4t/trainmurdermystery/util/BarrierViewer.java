@@ -8,7 +8,7 @@ public class BarrierViewer {
     public static boolean isBarrierVisible() {
         if (isVisible == null) {
             try {
-                var clazz = Class.forName("xyz.amymialee.visiblebarriers.VisibleBarriers");
+                Class<?> clazz = Class.forName("xyz.amymialee.visiblebarriers.VisibleBarriers");
                 isVisible = () -> {
                     try {
                         return (boolean) clazz.getField("toggleVisible").getBoolean(null);

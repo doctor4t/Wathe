@@ -8,21 +8,25 @@ import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class LobbyPlayersRenderer {
     public static void renderHud(TextRenderer renderer, @NotNull ClientPlayerEntity player, @NotNull DrawContext context) {
-        var game = GameWorldComponent.KEY.get(player.getWorld());
+        GameWorldComponent game = GameWorldComponent.KEY.get(player.getWorld());
         if (!game.isRunning()) {
             context.getMatrices().push();
             context.getMatrices().translate(context.getScaledWindowWidth() / 2f, 6, 0);
-            var world = player.getWorld();
-            var players = world.getPlayers();
-            var count = players.size();
+            World world = player.getWorld();
+            List<? extends PlayerEntity> players = world.getPlayers();
+            int count = players.size();
             int readyPlayerCount = GameFunctions.getReadyPlayerCount(world);
-            var playerCountText = Text.translatable("lobby.players.count", readyPlayerCount, count);
+            MutableText playerCountText = Text.translatable("lobby.players.count", readyPlayerCount, count);
             context.drawTextWithShadow(renderer, playerCountText, -renderer.getWidth(playerCountText) / 2, 0, 0xFFFFFFFF);
 
             AutoStartComponent autoStartComponent = AutoStartComponent.KEY.get(world);

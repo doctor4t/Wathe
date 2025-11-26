@@ -44,8 +44,8 @@ public class MinecraftClientMixin {
 
     @WrapOperation(method = "handleInputEvents", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerInventory;selectedSlot:I"))
     private void tmm$invalid(@NotNull PlayerInventory instance, int value, Operation<Void> original) {
-        var oldSlot = instance.selectedSlot;
-        var component = PlayerPsychoComponent.KEY.get(instance.player);
+        int oldSlot = instance.selectedSlot;
+        PlayerPsychoComponent component = PlayerPsychoComponent.KEY.get(instance.player);
         if (component.getPsychoTicks() > 0 &&
                 (instance.getStack(oldSlot).isOf(TMMItems.BAT)) &&
                 (!instance.getStack(value).isOf(TMMItems.BAT))

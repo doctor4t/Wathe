@@ -6,6 +6,7 @@ import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,9 +36,9 @@ public class GameRoundEndComponent implements AutoSyncedComponent {
 
     public void setRoundEndData(@NotNull List<ServerPlayerEntity> players, GameFunctions.WinStatus winStatus) {
         this.players.clear();
-        for (var player : players) {
-            var role = RoleAnnouncementTexts.BLANK;
-            var game = GameWorldComponent.KEY.get(this.world);
+        for (ServerPlayerEntity player : players) {
+            RoleAnnouncementTexts.RoleAnnouncementText role = RoleAnnouncementTexts.BLANK;
+            GameWorldComponent game = GameWorldComponent.KEY.get(this.world);
             if (game.canUseKillerFeatures(player)) {
                 role = RoleAnnouncementTexts.KILLER;
             } else if (game.isRole(player, TMMRoles.VIGILANTE)) {
@@ -53,7 +54,7 @@ public class GameRoundEndComponent implements AutoSyncedComponent {
 
     public boolean didWin(UUID uuid) {
         if (GameFunctions.WinStatus.NONE == this.winStatus) return false;
-        for (var detail : this.players) {
+        for (RoundEndData detail : this.players) {
             if (!detail.player.getId().equals(uuid)) continue;
             return switch (this.winStatus) {
                 case KILLERS -> detail.role == RoleAnnouncementTexts.KILLER;
@@ -74,8 +75,8 @@ public class GameRoundEndComponent implements AutoSyncedComponent {
 
     @Override
     public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        var list = new NbtList();
-        for (var detail : this.players) list.add(detail.writeToNbt());
+        NbtList list = new NbtList();
+        for (RoundEndData detail : this.players) list.add(detail.writeToNbt());
         tag.put("players", list);
         tag.putInt("winstatus", this.winStatus.ordinal());
     }
@@ -83,7 +84,7 @@ public class GameRoundEndComponent implements AutoSyncedComponent {
     @Override
     public void readFromNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         this.players.clear();
-        for (var element : tag.getList("players", 10)) this.players.add(new RoundEndData((NbtCompound) element));
+        for (NbtElement element : tag.getList("players", 10)) this.players.add(new RoundEndData((NbtCompound) element));
         this.winStatus = GameFunctions.WinStatus.values()[tag.getInt("winstatus")];
     }
 
@@ -93,7 +94,7 @@ public class GameRoundEndComponent implements AutoSyncedComponent {
         }
 
         public @NotNull NbtCompound writeToNbt() {
-            var tag = new NbtCompound();
+            NbtCompound tag = new NbtCompound();
             tag.putUuid("uuid", this.player.getId());
             tag.putString("name", this.player.getName());
             tag.putInt("role", RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(this.role));

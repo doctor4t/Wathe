@@ -2,7 +2,7 @@ package dev.doctor4t.trainmurdermystery.item;
 
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
-import dev.doctor4t.trainmurdermystery.networking.KnifeStabC2SPayload;
+import dev.doctor4t.trainmurdermystery.util.KnifeStabPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -25,7 +25,7 @@ public class KnifeItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, @NotNull PlayerEntity user, Hand hand) {
-        var itemStack = user.getStackInHand(hand);
+        ItemStack itemStack = user.getStackInHand(hand);
         user.setCurrentHand(hand);
         user.playSound(TMMSounds.ITEM_KNIFE_PREPARE, 1.0f, 1.0f);
         return TypedActionResult.consume(itemStack);
@@ -39,13 +39,11 @@ public class KnifeItem extends Item {
 
         if (remainingUseTicks >= this.getMaxUseTime(stack, user) - 10 || !(user instanceof PlayerEntity attacker) || !world.isClient)
             return;
-
         HitResult collision = getKnifeTarget(attacker);
-        if (!(collision instanceof EntityHitResult entityHitResult)) {
-            return;
+        if (collision instanceof EntityHitResult entityHitResult) {
+            Entity target = entityHitResult.getEntity();
+            ClientPlayNetworking.send(new KnifeStabPayload(target.getId()));
         }
-        Entity target = entityHitResult.getEntity();
-        ClientPlayNetworking.send(new KnifeStabC2SPayload(target.getId()));
     }
 
     public static HitResult getKnifeTarget(PlayerEntity user) {

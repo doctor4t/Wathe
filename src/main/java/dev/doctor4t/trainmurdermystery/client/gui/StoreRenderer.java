@@ -19,15 +19,15 @@ public class StoreRenderer {
 
     public static void renderHud(TextRenderer renderer, @NotNull ClientPlayerEntity player, @NotNull DrawContext context, float delta) {
         if (!GameWorldComponent.KEY.get(player.getWorld()).canUseKillerFeatures(player)) return;
-        var balance = PlayerShopComponent.KEY.get(player).balance;
+        int balance = PlayerShopComponent.KEY.get(player).balance;
         if (view.getTarget() != balance) {
             offsetDelta = balance > view.getTarget() ? .6f : -.6f;
             view.setTarget(balance);
         }
-        var r = offsetDelta > 0 ? 1f - offsetDelta : 1f;
-        var g = offsetDelta < 0 ? 1f + offsetDelta : 1f;
-        var b = 1f - Math.abs(offsetDelta);
-        var colour = MathHelper.packRgb(r, g, b) | 0xFF000000;
+        float r = offsetDelta > 0 ? 1f - offsetDelta : 1f;
+        float g = offsetDelta < 0 ? 1f + offsetDelta : 1f;
+        float b = 1f - Math.abs(offsetDelta);
+        int colour = MathHelper.packRgb(r, g, b) | 0xFF000000;
         context.getMatrices().push();
         context.getMatrices().translate(context.getScaledWindowWidth() - 12, 6, 0);
         view.render(renderer, context, 0, 0, colour, delta);
@@ -45,9 +45,9 @@ public class StoreRenderer {
 
         public void setTarget(float target) {
             this.target = target;
-            var length = String.valueOf(target).length();
+            int length = String.valueOf(target).length();
             while (this.digits.size() < length) this.digits.add(new ScrollingDigit(this.digits.isEmpty()));
-            for (var i = 0; i < this.digits.size(); i++) {
+            for (int i = 0; i < this.digits.size(); i++) {
                 if (i == 0) {
                     this.digits.get(i).setTarget((float) (target / Math.pow(10, i)));
                 } else {
@@ -57,15 +57,15 @@ public class StoreRenderer {
         }
 
         public void update() {
-            for (var digit : this.digits) digit.update();
+            for (ScrollingDigit digit : this.digits) digit.update();
         }
 
         public void render(TextRenderer renderer, @NotNull DrawContext context, int x, int y, int colour, float delta) {
             context.getMatrices().push();
             context.getMatrices().translate(x, y, 0);
             context.drawTextWithShadow(renderer, "\uE781", 0, 0, colour);
-            var offset = -8;
-            for (var digit : this.digits) {
+            int offset = -8;
+            for (ScrollingDigit digit : this.digits) {
                 context.getMatrices().push();
                 context.getMatrices().translate(offset, 0, 0);
                 digit.render(renderer, context, colour, delta);
@@ -98,20 +98,20 @@ public class StoreRenderer {
 
         public void render(@NotNull TextRenderer renderer, @NotNull DrawContext context, int colour, float delta) {
             if (MathHelper.floor(this.lastValue) != MathHelper.floor(this.value)) {
-                var player = MinecraftClient.getInstance().player;
+                ClientPlayerEntity player = MinecraftClient.getInstance().player;
 //                if (player != null)player.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), TMMSounds.BALANCE_CLICK, SoundCategory.PLAYERS, 0.1f, 1 + this.lastValue - this.value, player.getRandom().nextLong());
             }
-            var value = MathHelper.lerp(delta, this.lastValue, this.value);
-            var digit = MathHelper.floor(value) % 10;
-            var digitNext = MathHelper.floor(value + 1) % 10;
-            var offset = value % 1;
+            float value = MathHelper.lerp(delta, this.lastValue, this.value);
+            int digit = MathHelper.floor(value) % 10;
+            int digitNext = MathHelper.floor(value + 1) % 10;
+            float offset = value % 1;
             colour &= 0xFFFFFF;
             context.getMatrices().push();
             context.getMatrices().translate(0, -offset * (renderer.fontHeight + 2), 0);
-            var alpha = (1.0f - Math.abs(offset)) * 255.0f;
+            float alpha = (1.0f - Math.abs(offset)) * 255.0f;
             if (value < 1 && !this.force) alpha *= value;
-            var baseColour = colour | (int) alpha << 24;
-            var nextColour = colour | (int) (Math.abs(offset) * 255.0f) << 24;
+            int baseColour = colour | (int) alpha << 24;
+            int nextColour = colour | (int) (Math.abs(offset) * 255.0f) << 24;
             if ((baseColour & -67108864) != 0)
                 context.drawTextWithShadow(renderer, String.valueOf(digit), 0, 0, baseColour);
             if ((nextColour & -67108864) != 0)

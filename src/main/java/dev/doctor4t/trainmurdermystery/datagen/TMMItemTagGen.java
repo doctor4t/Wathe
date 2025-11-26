@@ -4,6 +4,7 @@ import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
@@ -21,6 +22,7 @@ public class TMMItemTagGen extends FabricTagProvider.ItemTagProvider {
                 .add(TMMItems.DERRINGER);
 
         this.getOrCreateTagBuilder(TMMItemTags.PSYCHOSIS_ITEMS)
+                .add(Items.AIR)
                 .add(TMMItems.LETTER)
                 .add(TMMItems.FIRECRACKER)
                 .add(TMMItems.KNIFE)

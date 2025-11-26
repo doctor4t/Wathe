@@ -1,18 +1,25 @@
 package dev.doctor4t.trainmurdermystery.util;
 
+import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.block_entity.TrimmedBedBlockEntity;
 import dev.doctor4t.trainmurdermystery.cca.PlayerPoisonComponent;
-import dev.doctor4t.trainmurdermystery.networking.PoisonOverlayS2CPayload;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.enums.BedPart;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -77,7 +84,7 @@ public class PoisonUtils {
             }
 
             ServerPlayNetworking.send(
-                    player, new PoisonOverlayS2CPayload("game.player.stung")
+                    player, new PoisonOverlayPayload("game.player.stung")
             );
         }
     }
@@ -194,5 +201,35 @@ public class PoisonUtils {
         }
 
         return null;
+    }
+
+
+    public record PoisonOverlayPayload(String translationKey) implements CustomPayload {
+        public static final Id<PoisonOverlayPayload> ID =
+                new Id<>(TMM.id("poisoned_text"));
+
+        public static final PacketCodec<RegistryByteBuf, PoisonOverlayPayload> CODEC =
+                PacketCodec.of(PoisonOverlayPayload::write, PoisonOverlayPayload::read);
+
+        private void write(RegistryByteBuf buf) {
+            buf.writeString(translationKey);
+        }
+
+        private static PoisonOverlayPayload read(RegistryByteBuf buf) {
+            return new PoisonOverlayPayload(buf.readString());
+        }
+
+        @Override
+        public Id<? extends CustomPayload> getId() {
+            return ID;
+        }
+
+        public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<PoisonOverlayPayload> {
+            @Override
+            public void receive(@NotNull PoisonOverlayPayload payload, ClientPlayNetworking.@NotNull Context context) {
+                MinecraftClient client = MinecraftClient.getInstance();
+                client.execute(() -> client.inGameHud.setOverlayMessage(Text.translatable(payload.translationKey()), false));
+            }
+        }
     }
 }

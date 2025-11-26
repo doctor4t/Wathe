@@ -4,6 +4,7 @@ import dev.doctor4t.ratatouille.util.TextUtils;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Style;
@@ -53,14 +54,14 @@ public class TMMItemTooltips {
 
     private static void addCooldownText(Item item, List<Text> tooltipList, @NotNull ItemStack itemStack) {
         if (!itemStack.isOf(item)) return;
-        var itemCooldownManager = MinecraftClient.getInstance().player.getItemCooldownManager();
+        ItemCooldownManager itemCooldownManager = MinecraftClient.getInstance().player.getItemCooldownManager();
         if (itemCooldownManager.isCoolingDown(item)) {
-            var knifeEntry = itemCooldownManager.entries.get(item);
-            var timeLeft = knifeEntry.endTick - itemCooldownManager.tick;
+            ItemCooldownManager.Entry knifeEntry = itemCooldownManager.entries.get(item);
+            int timeLeft = knifeEntry.endTick - itemCooldownManager.tick;
             if (timeLeft > 0) {
-                var minutes = (int) Math.floor((double) timeLeft / 1200);
-                var seconds = (timeLeft - (minutes * 1200)) / 20;
-                var countdown = (minutes > 0 ? minutes + "m" : "") + (seconds > 0 ? seconds + "s" : "");
+                int minutes = (int) Math.floor((double) timeLeft / 1200);
+                int seconds = (timeLeft - (minutes * 1200)) / 20;
+                String countdown = (minutes > 0 ? minutes + "m" : "") + (seconds > 0 ? seconds + "s" : "");
                 tooltipList.add(Text.translatable("tip.cooldown", countdown).withColor(COOLDOWN_COLOR));
             }
         }

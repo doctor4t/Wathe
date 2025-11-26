@@ -11,6 +11,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -30,7 +31,7 @@ public class CrosshairRenderer {
 
     public static void renderCrosshair(@NotNull MinecraftClient client, @NotNull ClientPlayerEntity player, DrawContext context, RenderTickCounter tickCounter) {
         if (!client.options.getPerspective().isFirstPerson()) return;
-        var target = false;
+        boolean target = false;
         context.getMatrices().push();
         context.getMatrices().translate(context.getScaledWindowWidth() / 2f, context.getScaledWindowHeight() / 2f, 0);
         RenderSystem.defaultBlendFunc();
@@ -41,12 +42,12 @@ public class CrosshairRenderer {
         } else if (mainHandStack.isOf(TMMItems.DERRINGER) && !player.getItemCooldownManager().isCoolingDown(mainHandStack.getItem()) && DerringerItem.getGunTarget(player) instanceof EntityHitResult) {
             target = true;
         } else if (mainHandStack.isOf(TMMItems.KNIFE)) {
-            var manager = player.getItemCooldownManager();
+            ItemCooldownManager manager = player.getItemCooldownManager();
             if (!manager.isCoolingDown(TMMItems.KNIFE) && KnifeItem.getKnifeTarget(player) instanceof EntityHitResult) {
                 target = true;
                 context.drawGuiTexture(KNIFE_ATTACK, -5, 5, 10, 7);
             } else {
-                var f = 1 - manager.getCooldownProgress(TMMItems.KNIFE, tickCounter.getTickDelta(true));
+                float f = 1 - manager.getCooldownProgress(TMMItems.KNIFE, tickCounter.getTickDelta(true));
                 context.drawGuiTexture(KNIFE_BACKGROUND, -5, 5, 10, 7);
                 context.drawGuiTexture(KNIFE_PROGRESS, 10, 7, 0, 0, -5, 5, (int) (f * 10.0f), 7);
             }
@@ -55,7 +56,7 @@ public class CrosshairRenderer {
                 target = true;
                 context.drawGuiTexture(BAT_ATTACK, -5, 5, 10, 7);
             } else {
-                var f = player.getAttackCooldownProgress(tickCounter.getTickDelta(true));
+                float f = player.getAttackCooldownProgress(tickCounter.getTickDelta(true));
                 context.drawGuiTexture(BAT_BACKGROUND, -5, 5, 10, 7);
                 context.drawGuiTexture(BAT_PROGRESS, 10, 7, 0, 0, -5, 5, (int) (f * 10.0f), 7);
             }

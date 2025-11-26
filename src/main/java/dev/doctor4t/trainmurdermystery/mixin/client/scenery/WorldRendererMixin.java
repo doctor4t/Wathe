@@ -42,7 +42,7 @@ public abstract class WorldRendererMixin {
 
     @Unique
     private static void tmm$doFog(float fogStart, float fogEnd) {
-        var fogData = new BackgroundRenderer.FogData(BackgroundRenderer.FogType.FOG_SKY);
+        BackgroundRenderer.FogData fogData = new BackgroundRenderer.FogData(BackgroundRenderer.FogType.FOG_SKY);
 
         fogData.fogStart = fogStart;
         fogData.fogEnd = fogEnd;

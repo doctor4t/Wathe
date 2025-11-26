@@ -20,10 +20,10 @@ public class GrenadeItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(@NotNull World world, @NotNull PlayerEntity user, Hand hand) {
-        var itemStack = user.getStackInHand(hand);
+        ItemStack itemStack = user.getStackInHand(hand);
         world.playSound(null, user.getX(), user.getY(), user.getZ(), TMMSounds.ITEM_GRENADE_THROW, SoundCategory.NEUTRAL, 0.5F, 1F + (world.random.nextFloat() - .5f) / 10f);
         if (!world.isClient) {
-            var grenade = new GrenadeEntity(TMMEntities.GRENADE, world);
+            GrenadeEntity grenade = new GrenadeEntity(TMMEntities.GRENADE, world);
             grenade.setOwner(user);
             grenade.setPos(user.getX(), user.getEyeY() - 0.1, user.getZ());
             grenade.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 0.5F, 1.0F);

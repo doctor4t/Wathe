@@ -19,9 +19,9 @@ public class PlayerInventoryMixin {
 
     @WrapMethod(method = "scrollInHotbar")
     private void tmm$invalid(double scrollAmount, @NotNull Operation<Void> original) {
-        var oldSlot = this.player.getInventory().selectedSlot;
+        int oldSlot = this.player.getInventory().selectedSlot;
         original.call(scrollAmount);
-        var component = PlayerPsychoComponent.KEY.get(this.player);
+        PlayerPsychoComponent component = PlayerPsychoComponent.KEY.get(this.player);
         if (component.getPsychoTicks() > 0 &&
                 (this.player.getInventory().getStack(oldSlot).isOf(TMMItems.BAT)) &&
                 (!this.player.getInventory().getStack(this.player.getInventory().selectedSlot).isOf(TMMItems.BAT))

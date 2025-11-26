@@ -7,6 +7,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.RotationAxis;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,28 +28,28 @@ public class PlateBlockEntityRenderer implements BlockEntityRenderer<BeveragePla
     }
 
     public void renderFood(@NotNull BeveragePlateBlockEntity entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        var itemCount = entity.getStoredItems().size();
+        int itemCount = entity.getStoredItems().size();
         if (itemCount == 0) return;
 
-        var radius = 0.25;
-        var centerX = 0.5;
-        var centerY = 0.0375;
-        var centerZ = 0.5;
+        double radius = 0.25;
+        double centerX = 0.5;
+        double centerY = 0.0375;
+        double centerZ = 0.5;
 
-        for (var i = 0; i < itemCount; i++) {
-            var stack = entity.getStoredItems().get(i);
+        for (int i = 0; i < itemCount; i++) {
+            ItemStack stack = entity.getStoredItems().get(i);
             if (stack == null) continue;
 
-            var angle = (2 * Math.PI / itemCount) * i;
+            double angle = (2 * Math.PI / itemCount) * i;
 
-            var x = centerX + radius * Math.cos(angle);
-            var z = centerZ + radius * Math.sin(angle);
+            double x = centerX + radius * Math.cos(angle);
+            double z = centerZ + radius * Math.sin(angle);
 
             matrices.push();
 
             matrices.translate(x, centerY, z);
 
-            var rotationDegrees = (float) Math.toDegrees(angle) + 90f;
+            float rotationDegrees = (float) Math.toDegrees(angle) + 90f;
 
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotationDegrees));
             matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(75f));
@@ -60,28 +61,28 @@ public class PlateBlockEntityRenderer implements BlockEntityRenderer<BeveragePla
     }
 
     public void renderDrinks(@NotNull BeveragePlateBlockEntity entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        var itemCount = entity.getStoredItems().size();
+        int itemCount = entity.getStoredItems().size();
         if (itemCount == 0) return;
 
-        var radius = 0.25;
-        var centerX = 0.5;
-        var centerY = 0.225;
-        var centerZ = 0.5;
+        double radius = 0.25;
+        double centerX = 0.5;
+        double centerY = 0.225;
+        double centerZ = 0.5;
 
-        for (var i = 0; i < itemCount; i++) {
-            var stack = entity.getStoredItems().get(i);
+        for (int i = 0; i < itemCount; i++) {
+            ItemStack stack = entity.getStoredItems().get(i);
             if (stack == null) continue;
 
-            var angle = (2 * Math.PI / itemCount) * i;
+            double angle = (2 * Math.PI / itemCount) * i;
 
-            var x = centerX + radius * Math.cos(angle);
-            var z = centerZ + radius * Math.sin(angle);
+            double x = centerX + radius * Math.cos(angle);
+            double z = centerZ + radius * Math.sin(angle);
 
             matrices.push();
 
             matrices.translate(x, centerY, z);
 
-            var rotationDegrees = (float) Math.toDegrees(angle) + 90f;
+            float rotationDegrees = (float) Math.toDegrees(angle) + 90f;
 
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotationDegrees));
             matrices.scale(0.4f, 0.4f, 0.4f);

@@ -34,7 +34,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class HornBlock extends BlockWithEntity implements Waterloggable {
+public class HornBlock extends BlockWithEntity {
     private static final MapCodec<HornBlock> CODEC = createCodec(HornBlock::new);
 
     public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
@@ -61,7 +61,7 @@ public class HornBlock extends BlockWithEntity implements Waterloggable {
                 boolean isOp = serverWorld.getServer().getPermissionLevel(player.getGameProfile()) >= 2;
 
                 boolean isSoundReady = hornBlockEntity.cooldown <= 0;
-                var mid = Vec3d.ofCenter(pos);
+                Vec3d mid = Vec3d.ofCenter(pos);
                 world.playSound(null, mid.getX(), mid.getY(), mid.getZ(), SoundEvents.BLOCK_CHAIN_BREAK, SoundCategory.BLOCKS, 0.5f, .8f + (world.random.nextFloat() - .5f) * .2f);
                 if (isSoundReady || isOp)
                     world.playSound(null, mid.getX(), mid.getY() + 3, mid.getZ(), TMMSounds.AMBIENT_TRAIN_HORN, SoundCategory.AMBIENT, 100.0f, 1.0f);
