@@ -13,18 +13,17 @@ public class ForceResetTrainCommand {
                 .executes(context -> {
                     ServerCommandSource source = context.getSource();
                     if (!source.getWorld().equals(source.getServer().getOverworld())) {
-                        source.sendError(Text.literal("Only works in Overworld!"));
+                        source.sendError(Text.translatable("commands.trainmurdermystery.forcereset.error.dimension"));
                         return 0;
                     }
 
                     boolean retryNeeded = GameFunctions.tryResetTrain(source.getWorld());
 
                     if (retryNeeded) {
-                        // With the fix, this now means "Load requested"
-                        source.sendFeedback(() -> Text.literal("Chunks were unloaded. Loading them now... run this command again in a second!"), false);
+                        source.sendFeedback(() -> Text.translatable("commands.trainmurdermystery.forcereset.chunks_loading"), false);
                         return 0;
                     } else {
-                        source.sendFeedback(() -> Text.literal("§aTrain successfully reset!"), true);
+                        source.sendFeedback(() -> Text.translatable("commands.trainmurdermystery.forcereset.success"), true);
                         return 1;
                     }
                 })

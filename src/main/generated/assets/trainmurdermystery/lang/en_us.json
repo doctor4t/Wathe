@@ -344,5 +344,12 @@
   "trainmurdermystery.midnightconfig.disableScreenShake": "Disable Screen Shake",
   "trainmurdermystery.midnightconfig.title": "The Last Voyage of the Harpy Express - Config",
   "trainmurdermystery.midnightconfig.ultraPerfMode": "Ultra Performance Mode",
-  "trainmurdermystery.midnightconfig.ultraPerfMode.tooltip": "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2."
+  "trainmurdermystery.midnightconfig.ultraPerfMode.tooltip": "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2.",
+  "commands.trainmurdermystery.forcereset.error.dimension": "Only works in Overworld!",
+  "commands.trainmurdermystery.forcereset.chunks_loading": "Chunks were unloaded. Loading them now... run this command again in a second!",
+  "commands.trainmurdermystery.forcereset.success": "Train successfully reset!",
+  "commands.trainmurdermystery.setzone.error.no_wand": "You must be holding the Zone Wand to perform this action.",
+  "commands.trainmurdermystery.setzone.error.no_positions": "Positions not set! Use Right-Click (A) and Shift-Right-Click (B) with the wand.",
+  "commands.trainmurdermystery.setzone.warning.y_locked": "Note: Locked minimum Y-level to 64.",
+  "commands.trainmurdermystery.setzone.success": "Updated Train successfully!"
 }

@@ -283,14 +283,14 @@
   "item.trainmurdermystery.crowbar": "Brecheisen",
   "item.trainmurdermystery.crowbar.tooltip": "Benutze es an einer beliebigen Tür, um sie dauerhaft zu öffnen",
   "item.trainmurdermystery.derringer": "Derringer",
-  "item.trainmurdermystery.derringer.tooltip": "Zielen, Rechtsklick und Schießen\nKann nur einmal abgefeuert werden, also mach es zählt!\nSchuss wird nach einem Kill wieder aufgefüllt",
+  "item.trainmurdermystery.derringer.tooltip": "Zielen, Rechtsklick und Schießen\nKann nur einmal abgefeuert werden, also mach es zählt!\nSchuss wird nach einem Mord wieder aufgefüllt",
   "item.trainmurdermystery.firecracker": "Böller",
   "item.trainmurdermystery.firecracker.tooltip": "Explodiert 15 Sekunden nach Platzierung auf dem Boden\nGut geeignet, um Schüsse zu simulieren und Leute anzulocken",
   "item.trainmurdermystery.grenade": "Granate",
   "item.trainmurdermystery.grenade.tooltip": "Rechtsklick zum Werfen, explodiert beim Aufprall\nGut um Gruppen von Leuten zu beseitigen, aber pass auf den Explosionsradius auf!\nEinmalige Nutzung, 5 Minuten Abklingzeit",
   "item.trainmurdermystery.key": "Schlüssel",
   "item.trainmurdermystery.knife": "Messer",
-  "item.trainmurdermystery.knife.tooltip": "Rechtsklick, eine Sekunde halten und nah an das Opfer herangehen\nNach einem Kill für 1 Minute nicht nutzbar\nAngreifen zum Zurückstoßen / Schubsen eines Spielers (keine Abklingzeit)",
+  "item.trainmurdermystery.knife.tooltip": "Rechtsklick, eine Sekunde halten und nah an das Opfer herangehen\nNach einem Mord für 1 Minute nicht nutzbar\nAngreifen zum Zurückstoßen / Schubsen eines Spielers (keine Abklingzeit)",
   "item.trainmurdermystery.letter": "Brief",
   "item.trainmurdermystery.lockpick": "Dietrich",
   "item.trainmurdermystery.lockpick.tooltip": "Benutze ihn an einer verschlossenen Tür, um sie zu öffnen (keine Abklingzeit)\nSchleichen+Benutzen an einer Tür, um sie für 1 Minute zu verklemmen (3 Minuten Abklingzeit)",
@@ -343,5 +343,17 @@
   "trainmurdermystery.midnightconfig.disableScreenShake": "Kamerawackeln deaktivieren",
   "trainmurdermystery.midnightconfig.title": "The Last Voyage of the Harpy Express - Konfig",
   "trainmurdermystery.midnightconfig.ultraPerfMode": "Ultra-Performance-Modus",
-  "trainmurdermystery.midnightconfig.ultraPerfMode.tooltip": "Deaktiviert die Szenerie für eine schlechtere visuelle Erfahrung, aber maximale Leistung. Senkt die Sichtweite auf 2."
+  "trainmurdermystery.midnightconfig.ultraPerfMode.tooltip": "Deaktiviert die Szenerie für eine schlechtere visuelle Erfahrung, aber maximale Leistung. Senkt die Sichtweite auf 2.",
+
+  "item.trainmurdermystery.zone_wand": "Zonen-Stab",
+
+  "commands.trainmurdermystery.forcereset.error.dimension": "Funktioniert nur in der Oberwelt!",
+  "commands.trainmurdermystery.forcereset.chunks_loading": "Chunks waren entladen. Lade sie jetzt... führe den Befehl gleich erneut aus!",
+  "commands.trainmurdermystery.forcereset.success": "Zug erfolgreich zurückgesetzt!",
+
+  "commands.trainmurdermystery.setzone.error.no_wand": "Du musst den Zonen-Stab halten, um dies zu tun.",
+  "commands.trainmurdermystery.setzone.error.no_positions": "Positionen nicht gesetzt! Nutze Rechtsklick (A) und Umschalt-Rechtsklick (B) mit dem Stab.",
+  "commands.trainmurdermystery.setzone.warning.y_locked": "Hinweis: Minimale Y-Höhe auf 64 festgesetzt.",
+  "commands.trainmurdermystery.setzone.success": "Zug erfolgreich aktualisiert!"
+
 }

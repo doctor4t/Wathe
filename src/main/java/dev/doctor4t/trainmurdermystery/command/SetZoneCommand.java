@@ -10,14 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
 public class SetZoneCommand {
-    // The Z coordinate that the train MUST be centered on
-    private static final int TRAIN_CENTER_Z = -536;
-
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("tmm:setzone")
                 .requires(source -> source.hasPermissionLevel(2))
@@ -45,7 +41,7 @@ public class SetZoneCommand {
 
         ItemStack stack = player.getMainHandStack();
         if (!stack.isOf(TMMItems.ZONE_WAND)) {
-            source.sendError(Text.literal("You must be holding the Zone Wand to perform this action."));
+            source.sendError(Text.translatable("commands.trainmurdermystery.setzone.error.no_wand"));
             return 0;
         }
 
@@ -53,31 +49,9 @@ public class SetZoneCommand {
         BlockPos posB = stack.get(TMMDataComponentTypes.POS_B);
 
         if (posA == null || posB == null) {
-            source.sendError(Text.literal("Positions not set! Use Right-Click (A) and Shift-Right-Click (B) with the wand."));
+            source.sendError(Text.translatable("commands.trainmurdermystery.setzone.error.no_positions"));
             return 0;
         }
-
-        // --- SYMMETRY CHECK START ---
-        // If setting the Train (Template or Paste), ensure it is symmetric around Z = -536
-        if (type == ZoneType.RESET_TEMPLATE || type == ZoneType.RESET_PASTE) {
-            // Calculate the average Z (midpoint)
-            // We multiply by 2 to stick to integers: (Z1 + Z2) must equal (Center * 2)
-            int sumZ = posA.getZ() + posB.getZ();
-            int targetSum = TRAIN_CENTER_Z * 2;
-
-            if (sumZ != targetSum) {
-                // Calculate distances for the error message
-                int distA = Math.abs(posA.getZ() - TRAIN_CENTER_Z);
-                int distB = Math.abs(posB.getZ() - TRAIN_CENTER_Z);
-
-                source.sendError(Text.literal("Error: Train is not symmetric!")
-                        .formatted(Formatting.RED));
-                source.sendError(Text.literal(String.format("Center must be Z=%d. Current Distances: A=%d, B=%d",
-                        TRAIN_CENTER_Z, distA, distB)).formatted(Formatting.YELLOW));
-                return 0;
-            }
-        }
-        // --- SYMMETRY CHECK END ---
 
         double minX = Math.min(posA.getX(), posB.getX());
         double minY = Math.min(posA.getY(), posB.getY());
@@ -86,10 +60,12 @@ public class SetZoneCommand {
         double maxY = Math.max(posA.getY(), posB.getY()) + 1;
         double maxZ = Math.max(posA.getZ(), posB.getZ()) + 1;
 
-        // Lock floor logic (from previous step)
+        // Lock floor logic (Template Area only)
         if (type == ZoneType.RESET_TEMPLATE) {
-            minY = 64.0;
-            source.sendFeedback(() -> Text.literal("§eNote: Locked minimum Y-level to 64."), false);
+            if (minY != 64.0) {
+                minY = 64.0;
+                source.sendFeedback(() -> Text.translatable("commands.trainmurdermystery.setzone.warning.y_locked"), false);
+            }
         }
 
         Box newZone = new Box(minX, minY, minZ, maxX, maxY, maxZ);
@@ -103,7 +79,7 @@ public class SetZoneCommand {
         }
 
         areas.sync();
-        source.sendFeedback(() -> Text.literal("§aUpdated " + type.name() + " successfully!"), true);
+        source.sendFeedback(() -> Text.translatable("commands.trainmurdermystery.setzone.success", type.name()), true);
         return 1;
     }
 }
