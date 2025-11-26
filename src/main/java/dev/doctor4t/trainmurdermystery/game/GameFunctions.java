@@ -48,6 +48,8 @@ import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.server.world.ChunkTicketType;
+import net.minecraft.util.math.ChunkPos;
 
 import java.util.*;
 import java.util.function.UnaryOperator;
@@ -255,6 +257,20 @@ public class GameFunctions {
         gameComponent.sync();
     }
 
+    private static void forceLoadBox(ServerWorld world, BlockBox box) {
+        int minX = box.getMinX() >> 4;
+        int minZ = box.getMinZ() >> 4;
+        int maxX = box.getMaxX() >> 4;
+        int maxZ = box.getMaxZ() >> 4;
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int z = minZ; z <= maxZ; z++) {
+                // PORTAL ticket keeps chunk loaded for a short time (good for temporary ops)
+                world.getChunkManager().addTicket(ChunkTicketType.PORTAL, new ChunkPos(x, z), 2, new BlockPos(x << 4, 0, z << 4));
+            }
+        }
+    }
+
     public static void resetPlayer(ServerPlayerEntity player) {
         ServerPlayNetworking.send(player, new AnnounceEndingPayload());
         player.dismountVehicle();
@@ -397,6 +413,7 @@ public class GameFunctions {
 
             Mode mode = Mode.FORCE;
 
+            // Check if BOTH the template (backup) and the paste area (train) are loaded
             if (serverWorld.isRegionLoaded(backupMinPos, backupMaxPos) && serverWorld.isRegionLoaded(trainMinPos, trainMaxPos)) {
                 List<BlockInfo> list = Lists.newArrayList();
                 List<BlockInfo> list2 = Lists.newArrayList();
@@ -473,15 +490,24 @@ public class GameFunctions {
                     return true;
                 }
             } else {
-                TMM.LOGGER.info("Train reset failed: Clone positions not loaded. Queueing another attempt.");
+                // --- NEW LOGIC STARTS HERE ---
+                TMM.LOGGER.info("Train reset pending: Chunks not loaded. Requesting temporary load...");
+
+                // We force the chunks to load.
+                // 'tryResetTrain' returns 'true' so the game will try again next tick.
+                // By the time it tries again, these chunks should be loaded.
+                forceLoadBox(serverWorld, backupTrainBox);
+                forceLoadBox(serverWorld, trainBox);
+
                 return true;
+                // --- NEW LOGIC ENDS HERE ---
             }
 
             // discard all player bodies and items
             for (PlayerBodyEntity body : serverWorld.getEntitiesByType(TMMEntities.PLAYER_BODY, playerBodyEntity -> true)) {
                 body.discard();
             }
-            for (ItemEntity item : serverWorld.getEntitiesByType(EntityType.ITEM, playerBodyEntity -> true)) {
+            for (net.minecraft.entity.ItemEntity item : serverWorld.getEntitiesByType(net.minecraft.entity.EntityType.ITEM, playerBodyEntity -> true)) {
                 item.discard();
             }
             for (FirecrackerEntity entity : serverWorld.getEntitiesByType(TMMEntities.FIRECRACKER, entity -> true)) entity.discard();

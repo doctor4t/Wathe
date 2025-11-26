@@ -28,6 +28,7 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import dev.doctor4t.trainmurdermystery.command.SetZoneCommand;
 
 import java.util.Optional;
 
@@ -74,6 +75,9 @@ public class TMM implements ModInitializer {
             AutoStartCommand.register(dispatcher);
             LockToSupportersCommand.register(dispatcher);
             SetBackfireChanceCommand.register(dispatcher);
+
+            SetZoneCommand.register(dispatcher);
+            ForceResetTrainCommand.register(dispatcher);
         }));
 
         // server lock to supporters

@@ -42,6 +42,8 @@ public @SuppressWarnings("unchecked") interface TMMItems {
     Item CHAMPAGNE = registrar.create("champagne", new CocktailItem(new Item.Settings().maxCount(1).food(FoodComponents.HONEY_BOTTLE)), EQUIPMENT_GROUP);
     Item NOTE = registrar.create("note", new NoteItem(new Item.Settings().maxCount(4)), EQUIPMENT_GROUP);
 
+    Item ZONE_WAND = registrar.create("zone_wand", new ZoneWandItem(new Item.Settings().maxCount(1)), EQUIPMENT_GROUP);
+
     static void initialize() {
         registrar.registerEntries();
 
