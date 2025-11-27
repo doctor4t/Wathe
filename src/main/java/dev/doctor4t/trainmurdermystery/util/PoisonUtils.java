@@ -227,7 +227,7 @@ public class PoisonUtils {
         public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<PoisonOverlayPayload> {
             @Override
             public void receive(@NotNull PoisonOverlayPayload payload, ClientPlayNetworking.@NotNull Context context) {
-                var client = MinecraftClient.getInstance();
+                MinecraftClient client = MinecraftClient.getInstance();
                 client.execute(() -> client.inGameHud.setOverlayMessage(Text.translatable(payload.translationKey()), false));
             }
         }

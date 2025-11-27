@@ -41,6 +41,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.option.CloudRenderMode;
 import net.minecraft.client.option.KeyBinding;
@@ -79,7 +80,7 @@ public class TMMClient implements ClientModInitializer {
     public static float instinctLightLevel = -.04f;
 
     public static boolean shouldDisableHudAndDebug() {
-        var client = MinecraftClient.getInstance();
+        MinecraftClient client = MinecraftClient.getInstance();
         return (client == null || (client.player != null && !client.player.isCreative() && !client.player.isSpectator()));
     }
 
@@ -203,7 +204,7 @@ public class TMMClient implements ClientModInitializer {
         AmbienceUtil.registerBackgroundAmbience(new BackgroundAmbience(TMMSounds.AMBIENT_TRAIN_INSIDE, player -> isTrainMoving() && !TMM.isSkyVisibleAdjacent(player), 20));
         AmbienceUtil.registerBackgroundAmbience(new BackgroundAmbience(TMMSounds.AMBIENT_TRAIN_OUTSIDE, player -> isTrainMoving() && TMM.isSkyVisibleAdjacent(player), 20));
         AmbienceUtil.registerBackgroundAmbience(new BackgroundAmbience(TMMSounds.AMBIENT_PSYCHO_DRONE, player -> gameComponent.isPsychoActive(), 20));
-        AmbienceUtil.registerBlockEntityAmbience(TMMBlockEntities.SPRINKLER, new BlockEntityAmbience(TMMSounds.BLOCK_SPRINKLER_RUN, 0.5f, blockEntity -> blockEntity instanceof SprinklerBlockEntity sprinklerBlockEntity && sprinklerBlockEntity.isPowered(), 20));
+//        AmbienceUtil.registerBlockEntityAmbience(TMMBlockEntities.SPRINKLER, new BlockEntityAmbience(TMMSounds.BLOCK_SPRINKLER_RUN, 0.5f, blockEntity -> blockEntity instanceof SprinklerBlockEntity sprinklerBlockEntity && sprinklerBlockEntity.isPowered(), 20));
 
         // Caching components
         ClientTickEvents.START_WORLD_TICK.register(clientWorld -> {
@@ -263,7 +264,7 @@ public class TMMClient implements ClientModInitializer {
                 soundLevel = MinecraftClient.getInstance().options.getSoundVolume(SoundCategory.MASTER);
             }
 
-            var player = MinecraftClient.getInstance().player;
+            ClientPlayerEntity player = MinecraftClient.getInstance().player;
             if (player != null) {
                 StoreRenderer.tick();
                 TimeRenderer.tick();
@@ -388,7 +389,7 @@ public class TMMClient implements ClientModInitializer {
             if (GameFunctions.isPlayerSpectatingOrCreative(player)) return -1;
             if (isKiller() && gameComponent.canUseKillerFeatures(player)) return MathHelper.hsvToRgb(0F, 1.0F, 0.6F);
             if (gameComponent.isInnocent(player)) {
-                var mood = PlayerMoodComponent.KEY.get(target).getMood();
+                float mood = PlayerMoodComponent.KEY.get(target).getMood();
                 if (mood < GameConstants.DEPRESSIVE_MOOD_THRESHOLD) {
                     return 0x171DC6;
                 } else if (mood < GameConstants.MID_MOOD_THRESHOLD) {

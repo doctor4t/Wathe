@@ -9,8 +9,10 @@ import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.client.gui.*;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
@@ -39,9 +41,9 @@ public class InGameHudMixin {
     @Inject(method = "renderMainHud", at = @At("TAIL"))
     private void tmm$renderHud(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
         if (TMMClient.trainComponent != null && TMMClient.trainComponent.hasHud()) {
-            var player = this.client.player;
+            ClientPlayerEntity player = this.client.player;
             if (player == null) return;
-            var renderer = MinecraftClient.getInstance().textRenderer;
+            TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
             MoodRenderer.renderHud(player, renderer, context, tickCounter);
             RoleNameRenderer.renderHud(renderer, player, context, tickCounter);
             RoundTextRenderer.renderHud(renderer, player, context);
@@ -58,7 +60,7 @@ public class InGameHudMixin {
             original.call(context, tickCounter);
             return;
         }
-        var player = this.client.player;
+        ClientPlayerEntity player = this.client.player;
         if (player == null) return;
         CrosshairRenderer.renderCrosshair(this.client, player, context, tickCounter);
     }

@@ -76,6 +76,12 @@ public abstract class TMMButtonBlock extends ButtonBlock {
 
     private boolean tryOpenDoors(World world, BlockPos pos) {
         if (world.getBlockEntity(pos) instanceof SmallDoorBlockEntity entity) {
+            if (entity.isJammed()) {
+                if (!world.isClient)
+                    world.playSound(null, entity.getPos().getX() + .5f, entity.getPos().getY() + 1, entity.getPos().getZ() + .5f, TMMSounds.BLOCK_DOOR_LOCKED, SoundCategory.BLOCKS, 1f, 1f);
+                return false;
+            }
+
             entity.toggle(false);
             return true;
         }

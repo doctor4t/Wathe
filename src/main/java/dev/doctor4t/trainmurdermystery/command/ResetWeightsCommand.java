@@ -10,8 +10,6 @@ public class ResetWeightsCommand {
     public static void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("tmm:resetWeights").requires(source -> source.hasPermissionLevel(2)).executes(context -> {
             ScoreboardRoleSelectorComponent scoreboardRoleSelectorComponent = ScoreboardRoleSelectorComponent.KEY.get(context.getSource().getServer());
-
-            System.out.println(scoreboardRoleSelectorComponent);
             scoreboardRoleSelectorComponent.reset();
             return 1;
         }));

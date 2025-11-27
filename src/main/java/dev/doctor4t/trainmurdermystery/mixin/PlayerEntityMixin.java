@@ -4,8 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.datafixers.util.Either;
-import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
+import dev.doctor4t.trainmurdermystery.api.Role;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerMoodComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerPoisonComponent;
@@ -70,15 +69,18 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @Inject(method = "tickMovement", at = @At("HEAD"))
     public void tmm$limitSprint(CallbackInfo ci) {
         GameWorldComponent gameComponent = GameWorldComponent.KEY.get(this.getWorld());
-        if (GameFunctions.isPlayerAliveAndSurvival((PlayerEntity) (Object) this) && !(gameComponent != null && (gameComponent.canUseKillerFeatures((PlayerEntity)(Object) this) || !gameComponent.isRunning() || gameComponent.getGameMode() == GameWorldComponent.GameMode.LOOSE_ENDS))) {
-            if (this.isSprinting()) {
-                sprintingTicks = Math.max(sprintingTicks - 1, 0);
-            } else {
-                sprintingTicks = Math.min(sprintingTicks + 0.25f, GameConstants.MAX_SPRINTING_TICKS);
-            }
+        if (GameFunctions.isPlayerAliveAndSurvival((PlayerEntity) (Object) this) && gameComponent != null && gameComponent.isRunning()) {
+            Role role = gameComponent.getRole((PlayerEntity) (Object) this);
+            if (role != null && role.getMaxSprintTime() >= 0) {
+                if (this.isSprinting()) {
+                    sprintingTicks = Math.max(sprintingTicks - 1, 0);
+                } else {
+                    sprintingTicks = Math.min(sprintingTicks + 0.25f, role.getMaxSprintTime());
+                }
 
-            if (sprintingTicks <= 0) {
-                this.setSprinting(false);
+                if (sprintingTicks <= 0) {
+                    this.setSprinting(false);
+                }
             }
         }
     }
@@ -86,26 +88,28 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @WrapMethod(method = "attack")
     public void attack(Entity target, Operation<Void> original) {
         PlayerEntity self = (PlayerEntity) (Object) this;
-        if (!GameFunctions.isPlayerAliveAndSurvival(self) || this.getMainHandStack().isOf(TMMItems.KNIFE)
-                || IsPlayerPunchable.EVENT.invoker().gotPunchable(target) || AllowPlayerPunching.EVENT.invoker().allowPunching(self)) {
-            original.call(target);
-        }
 
-        if (GameFunctions.isPlayerAliveAndSurvival(self) && getMainHandStack().isOf(TMMItems.BAT) && target instanceof PlayerEntity playerTarget && this.getAttackCooldownProgress(0.5F) >= 1f) {
-            GameFunctions.killPlayer(playerTarget, true, self, TMM.id("bat_hit"));
+        if (getMainHandStack().isOf(TMMItems.BAT) && target instanceof PlayerEntity playerTarget && this.getAttackCooldownProgress(0.5F) >= 1f) {
+            GameFunctions.killPlayer(playerTarget, true, self, GameConstants.DeathReasons.BAT);
             self.getEntityWorld().playSound(self,
                     playerTarget.getX(), playerTarget.getEyeY(), playerTarget.getZ(),
                     TMMSounds.ITEM_BAT_HIT, SoundCategory.PLAYERS,
                     3f, 1f);
+            return;
+        }
+
+        if (!GameFunctions.isPlayerAliveAndSurvival(self) || this.getMainHandStack().isOf(TMMItems.KNIFE)
+                || IsPlayerPunchable.EVENT.invoker().gotPunchable(target) || AllowPlayerPunching.EVENT.invoker().allowPunching(self)) {
+            original.call(target);
         }
     }
 
     @Inject(method = "eatFood", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/HungerManager;eat(Lnet/minecraft/component/type/FoodComponent;)V", shift = At.Shift.AFTER))
     private void tmm$poisonedFoodEffect(@NotNull World world, ItemStack stack, FoodComponent foodComponent, CallbackInfoReturnable<ItemStack> cir) {
         if (world.isClient) return;
-        var poisoner = stack.getOrDefault(TMMDataComponentTypes.POISONER, null);
+        String poisoner = stack.getOrDefault(TMMDataComponentTypes.POISONER, null);
         if (poisoner != null) {
-            var poisonTicks = PlayerPoisonComponent.KEY.get(this).poisonTicks;
+            int poisonTicks = PlayerPoisonComponent.KEY.get(this).poisonTicks;
             if (poisonTicks == -1) {
                 PlayerPoisonComponent.KEY.get(this).setPoisonTicks(world.getRandom().nextBetween(PlayerPoisonComponent.clampTime.getLeft(), PlayerPoisonComponent.clampTime.getRight()), UUID.fromString(poisoner));
             } else {

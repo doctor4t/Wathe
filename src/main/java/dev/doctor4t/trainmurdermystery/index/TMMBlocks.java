@@ -54,7 +54,7 @@ public interface TMMBlocks {
     Block BLACK_HULL_SHEET_SLAB = registrar.createWithItem("black_hull_sheet_slab", new SlabBlock(AbstractBlock.Settings.copy(BLACK_HULL_SHEETS)), TMMItems.BUILDING_GROUP);
     Block BLACK_HULL_SHEET_WALL = registrar.createWithItem("black_hull_sheet_wall", new WallBlock(AbstractBlock.Settings.copy(BLACK_HULL_SHEETS).solid()), TMMItems.BUILDING_GROUP);
     Block GOLD_BAR = registrar.createWithItem("gold_bar", new BarBlock(AbstractBlock.Settings.copy(TARNISHED_GOLD).nonOpaque().strength(0.5f)), TMMItems.DECORATION_GROUP);
-    Block GOLD_LEDGE = registrar.createWithItem("gold_ledge", new LedgeBlock(AbstractBlock.Settings.copy(TARNISHED_GOLD).nonOpaque().strength(0.5f)), TMMItems.DECORATION_GROUP);
+    Block GOLD_LEDGE = registrar.createWithItem("gold_ledge", new LedgeBlock(AbstractBlock.Settings.copy(TARNISHED_GOLD).nonOpaque().strength(0.5f).dynamicBounds()), TMMItems.DECORATION_GROUP);
     Block METAL_SHEET = registrar.createWithItem("metal_sheet", new Block(AbstractBlock.Settings.create().strength(2f).sounds(BlockSoundGroup.COPPER)), TMMItems.BUILDING_GROUP);
     Block METAL_SHEET_STAIRS = registrar.createWithItem("metal_sheet_stairs", new StairsBlock(METAL_SHEET.getDefaultState(), AbstractBlock.Settings.copy(METAL_SHEET)), TMMItems.BUILDING_GROUP);
     Block METAL_SHEET_SLAB = registrar.createWithItem("metal_sheet_slab", new SlabBlock(AbstractBlock.Settings.copy(METAL_SHEET)), TMMItems.BUILDING_GROUP);

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class WorldRendererMixin {
     @ModifyExpressionValue(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getTeamColorValue()I"))
     public int render(int original, @Local Entity entity) {
-        var highlight = TMMClient.getInstinctHighlight(entity);
+        int highlight = TMMClient.getInstinctHighlight(entity);
         return highlight == -1 ? original : highlight;
     }
 }

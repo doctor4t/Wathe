@@ -159,14 +159,14 @@ public abstract class LimitedHandledScreen<T extends ScreenHandler> extends Scre
     }
 
     public void renderLimitedInventoryTooltip(DrawContext context, ItemStack itemStack) {
-        var tooltips = this.getTooltipFromItem(itemStack);
+        List<Text> tooltips = this.getTooltipFromItem(itemStack);
         List<Text> name = new ArrayList<>();
         name.add(tooltips.getFirst());
         tooltips.removeFirst();
-        var nameWidth = this.textRenderer.getWidth(itemStack.getName().getString());
-        var tooltipWidth = 0;
-        for (var text : tooltips) {
-            var newWidth = this.textRenderer.getWidth(text.getString());
+        int nameWidth = this.textRenderer.getWidth(itemStack.getName().getString());
+        int tooltipWidth = 0;
+        for (Text text : tooltips) {
+            int newWidth = this.textRenderer.getWidth(text.getString());
             if (newWidth > tooltipWidth) tooltipWidth = newWidth;
         }
         context.drawTooltip(this.textRenderer, name, itemStack.getTooltipData(), this.x + 76 - (nameWidth / 2), this.y - 2);

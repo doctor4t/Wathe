@@ -44,7 +44,7 @@ public class NoteScreen extends Screen {
                 string -> this.client.textRenderer.getWidth(string) <= 90
         );
         if (this.client.player == null) return;
-        var component = PlayerNoteComponent.KEY.get(this.client.player);
+        PlayerNoteComponent component = PlayerNoteComponent.KEY.get(this.client.player);
         System.arraycopy(component.text, 0, this.text, 0, Math.min(component.text.length, this.text.length));
     }
 
@@ -113,45 +113,45 @@ public class NoteScreen extends Screen {
     private void renderSignText(@NotNull DrawContext context) {
         if (this.client == null || this.client.player == null || this.selectionManager == null) return;
         context.getMatrices().translate(0.0F, 0.0F, 4.0F);
-        var vector3f = this.getTextScale();
+        Vector3f vector3f = this.getTextScale();
         context.getMatrices().scale(vector3f.x(), vector3f.y(), vector3f.z());
         context.getMatrices().push();
-        var scale = 8f;
+        float scale = 8f;
         context.getMatrices().scale(scale, scale, scale);
         context.getMatrices().translate(-8, -4, 0);
         context.drawGuiTexture(TMM.id("gui/note"), 0, 0, 16, 16);
         context.getMatrices().pop();
         context.getMatrices().translate(0, 45, 0);
-        var i = DyeColor.BLACK.getSignColor();
-        var bl = this.client != null && this.client.player != null && this.client.player.age / 6 % 2 == 0;
-        var j = this.selectionManager.getSelectionStart();
-        var k = this.selectionManager.getSelectionEnd();
-        var l = 4 * 10 / 2;
-        var m = this.currentRow * 10 - l;
-        for (var n = 0; n < this.text.length; n++) {
-            var string = this.text[n];
+        int i = DyeColor.BLACK.getSignColor();
+        boolean bl = this.client != null && this.client.player != null && this.client.player.age / 6 % 2 == 0;
+        int j = this.selectionManager.getSelectionStart();
+        int k = this.selectionManager.getSelectionEnd();
+        int l = 4 * 10 / 2;
+        int m = this.currentRow * 10 - l;
+        for (int n = 0; n < this.text.length; n++) {
+            String string = this.text[n];
             if (string == null) continue;
             if (this.textRenderer.isRightToLeft()) string = this.textRenderer.mirror(string);
-            var o = -this.textRenderer.getWidth(string) / 2;
+            int o = -this.textRenderer.getWidth(string) / 2;
             context.drawText(this.textRenderer, string, o, n * 10 - l, i, false);
             if (n != this.currentRow || j < 0 || !bl) continue;
-            var p = this.textRenderer.getWidth(string.substring(0, Math.min(j, string.length())));
-            var q = p - this.textRenderer.getWidth(string) / 2;
+            int p = this.textRenderer.getWidth(string.substring(0, Math.min(j, string.length())));
+            int q = p - this.textRenderer.getWidth(string) / 2;
             if (j >= string.length()) context.drawText(this.textRenderer, "_", q, m, i, false);
         }
-        for (var nx = 0; nx < this.text.length; nx++) {
-            var string = this.text[nx];
+        for (int nx = 0; nx < this.text.length; nx++) {
+            String string = this.text[nx];
             if (string == null || nx != this.currentRow || j < 0) continue;
-            var o = this.textRenderer.getWidth(string.substring(0, Math.min(j, string.length())));
-            var p = o - this.textRenderer.getWidth(string) / 2;
+            int o = this.textRenderer.getWidth(string.substring(0, Math.min(j, string.length())));
+            int p = o - this.textRenderer.getWidth(string) / 2;
             if (bl && j < string.length()) context.fill(p, m - 1, p + 1, m + 10, Colors.BLACK | i);
             if (k == j) continue;
-            var q = Math.min(j, k);
-            var r = Math.max(j, k);
-            var s = this.textRenderer.getWidth(string.substring(0, q)) - this.textRenderer.getWidth(string) / 2;
-            var t = this.textRenderer.getWidth(string.substring(0, r)) - this.textRenderer.getWidth(string) / 2;
-            var u = Math.min(s, t);
-            var v = Math.max(s, t);
+            int q = Math.min(j, k);
+            int r = Math.max(j, k);
+            int s = this.textRenderer.getWidth(string.substring(0, q)) - this.textRenderer.getWidth(string) / 2;
+            int t = this.textRenderer.getWidth(string.substring(0, r)) - this.textRenderer.getWidth(string) / 2;
+            int u = Math.min(s, t);
+            int v = Math.max(s, t);
             context.fill(RenderLayer.getGuiTextHighlight(), u, m, v, m + 10, Colors.BLUE);
         }
     }

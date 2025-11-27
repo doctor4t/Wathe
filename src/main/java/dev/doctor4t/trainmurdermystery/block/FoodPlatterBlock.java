@@ -14,6 +14,7 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
@@ -25,6 +26,8 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class FoodPlatterBlock extends BlockWithEntity {
     public static final MapCodec<FoodPlatterBlock> CODEC = createCodec(FoodPlatterBlock::new);
@@ -40,7 +43,7 @@ public class FoodPlatterBlock extends BlockWithEntity {
 
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        var plate = new BeveragePlateBlockEntity(pos, state);
+        BeveragePlateBlockEntity plate = new BeveragePlateBlockEntity(pos, state);
         plate.setDrink(false);
         return plate;
     }
@@ -70,7 +73,7 @@ public class FoodPlatterBlock extends BlockWithEntity {
         if (!(world.getBlockEntity(pos) instanceof BeveragePlateBlockEntity blockEntity)) return ActionResult.PASS;
 
         if (player.isCreative()) {
-            var heldItem = player.getStackInHand(Hand.MAIN_HAND);
+            ItemStack heldItem = player.getStackInHand(Hand.MAIN_HAND);
             if (!heldItem.isEmpty()) {
                 blockEntity.addItem(heldItem);
                 return ActionResult.SUCCESS;
@@ -83,14 +86,14 @@ public class FoodPlatterBlock extends BlockWithEntity {
             return ActionResult.SUCCESS;
         }
         if (player.getStackInHand(Hand.MAIN_HAND).isEmpty()) {
-            var platter = blockEntity.getStoredItems();
+            List<ItemStack> platter = blockEntity.getStoredItems();
             if (platter.isEmpty()) return ActionResult.SUCCESS;
 
 
-            var hasPlatterItem = false;
-            for (var platterItem : platter) {
-                for (var i = 0; i < player.getInventory().size(); i++) {
-                    var invItem = player.getInventory().getStack(i);
+            boolean hasPlatterItem = false;
+            for (ItemStack platterItem : platter) {
+                for (int i = 0; i < player.getInventory().size(); i++) {
+                    ItemStack invItem = player.getInventory().getStack(i);
                     if (invItem.getItem() == platterItem.getItem()) {
                         hasPlatterItem = true;
                         break;
@@ -100,10 +103,10 @@ public class FoodPlatterBlock extends BlockWithEntity {
             }
 
             if (!hasPlatterItem) {
-                var randomItem = platter.get(world.random.nextInt(platter.size())).copy();
+                ItemStack randomItem = platter.get(world.random.nextInt(platter.size())).copy();
                 randomItem.setCount(1);
                 randomItem.set(DataComponentTypes.MAX_STACK_SIZE, 1);
-                var poisoner = blockEntity.getPoisoner();
+                String poisoner = blockEntity.getPoisoner();
                 if (poisoner != null) {
                     randomItem.set(TMMDataComponentTypes.POISONER, poisoner);
                     blockEntity.setPoisoner(null);

@@ -9,6 +9,7 @@ import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.TMMDataComponentTypes;
 import dev.doctor4t.trainmurdermystery.util.GunShootPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
@@ -34,9 +35,9 @@ public class DerringerItem extends RevolverItem {
         boolean used = stack.getOrDefault(TMMDataComponentTypes.USED, false);
 
         if (world.isClient) {
-            var collision = getGunTarget(user);
+            HitResult collision = getGunTarget(user);
             if (collision instanceof EntityHitResult entityHitResult) {
-                var target = entityHitResult.getEntity();
+                Entity target = entityHitResult.getEntity();
                 ClientPlayNetworking.send(new GunShootPayload(target.getId()));
             } else {
                 ClientPlayNetworking.send(new GunShootPayload(-1));
@@ -50,7 +51,7 @@ public class DerringerItem extends RevolverItem {
     }
 
     public static void spawnHandParticle() {
-        var handParticle = new HandParticle()
+        HandParticle handParticle = new HandParticle()
                 .setTexture(TMM.id("textures/particle/gunshot.png"))
                 .setPos(0.1f, 0.2f, -0.2f)
                 .setMaxAge(3)
@@ -64,7 +65,7 @@ public class DerringerItem extends RevolverItem {
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        var used = stack.getOrDefault(TMMDataComponentTypes.USED, false);
+        Boolean used = stack.getOrDefault(TMMDataComponentTypes.USED, false);
         if (used) {
             tooltip.add(Text.translatable("tip.derringer.used").withColor(TMMItemTooltips.COOLDOWN_COLOR));
         }

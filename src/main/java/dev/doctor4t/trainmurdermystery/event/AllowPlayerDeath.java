@@ -13,15 +13,17 @@ public interface AllowPlayerDeath {
      * The game currently has the following death type names defined:
      * 'fell_out_of_train', 'poison', 'grenade', 'bat_hit', 'gun_shot', 'knife_stab'.
      * Any other death type not explicitly defined will default to 'generic'.
+     * @see dev.doctor4t.trainmurdermystery.game.GameConstants.DeathReasons
      */
-    Event<AllowPlayerDeath> EVENT = createArrayBacked(AllowPlayerDeath.class, listeners -> (player, identifier) -> {
+    Event<AllowPlayerDeath> EVENT = createArrayBacked(AllowPlayerDeath.class, listeners -> (player, deathReason) -> {
         for (AllowPlayerDeath listener : listeners) {
-            if (!listener.allowDeath(player, identifier)) {
+            if (!listener.allowDeath(player, deathReason)) {
                 return false;
             }
         }
         return true;
     });
 
-    boolean allowDeath(PlayerEntity player, Identifier identifier);
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    boolean allowDeath(PlayerEntity player, Identifier deathReason);
 }

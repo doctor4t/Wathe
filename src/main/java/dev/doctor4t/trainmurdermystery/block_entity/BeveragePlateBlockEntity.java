@@ -1,12 +1,8 @@
 package dev.doctor4t.trainmurdermystery.block_entity;
 
-import dev.doctor4t.trainmurdermystery.client.TMMClient;
-import dev.doctor4t.trainmurdermystery.event.CanSeePoison;
 import dev.doctor4t.trainmurdermystery.index.TMMBlockEntities;
-import dev.doctor4t.trainmurdermystery.index.TMMParticles;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -20,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BeveragePlateBlockEntity extends BlockEntity {
     private final List<ItemStack> storedItems = new ArrayList<>();
@@ -37,19 +34,8 @@ public class BeveragePlateBlockEntity extends BlockEntity {
         }
     }
 
-    public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T t) {
-        if (!(t instanceof BeveragePlateBlockEntity tray)) return;
-//        if ((!TMMClient.isKiller() && !CanSeePoison.EVENT.invoker().visible(MinecraftClient.getInstance().player)) || tray.poisoner == null)
-        if ((!TMMClient.isKiller()) || tray.poisoner == null)
-            return;
-        if (world.getRandom().nextBetween(0, 20) < 17) return;
-        world.addParticle(
-                TMMParticles.POISON,
-                pos.getX() + 0.5f,
-                pos.getY(),
-                pos.getZ() + 0.5f,
-                0f, 0.05f, 0f
-        );
+    @SuppressWarnings("unused")
+    public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T blockEntity) {
     }
 
     public List<ItemStack> getStoredItems() {
@@ -83,8 +69,8 @@ public class BeveragePlateBlockEntity extends BlockEntity {
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
-        var itemsNbt = new NbtCompound();
-        for (var i = 0; i < this.storedItems.size(); i++) {
+        NbtCompound itemsNbt = new NbtCompound();
+        for (int i = 0; i < this.storedItems.size(); i++) {
             if (!this.storedItems.get(i).isEmpty())
                 itemsNbt.put("Item" + i, this.storedItems.get(i).encode(registryLookup));
         }
@@ -98,9 +84,9 @@ public class BeveragePlateBlockEntity extends BlockEntity {
         super.readNbt(nbt, registryLookup);
         this.storedItems.clear();
         if (nbt.contains("Items")) {
-            var itemsNbt = nbt.getCompound("Items");
-            for (var key : itemsNbt.getKeys()) {
-                var itemStack = ItemStack.fromNbt(registryLookup, itemsNbt.get(key));
+            NbtCompound itemsNbt = nbt.getCompound("Items");
+            for (String key : itemsNbt.getKeys()) {
+                Optional<ItemStack> itemStack = ItemStack.fromNbt(registryLookup, itemsNbt.get(key));
                 itemStack.ifPresent(this.storedItems::add);
             }
         }
