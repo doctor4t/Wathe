@@ -1,9 +1,9 @@
 package dev.doctor4t.trainmurdermystery.cca;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.api.Role;
+import dev.doctor4t.trainmurdermystery.api.TaskType;
+import dev.doctor4t.trainmurdermystery.api.TrainTask;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
@@ -184,11 +184,11 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
     }
 
     public void eatFood() {
-        if (this.tasks.get(TaskType.EAT) instanceof EatTask eatTask) eatTask.fulfilled = true;
+        if (this.tasks.get(TaskTypeImpl.EAT) instanceof EatTask eatTask) eatTask.fulfilled = true;
     }
 
     public void drinkCocktail() {
-        if (this.tasks.get(TaskType.DRINK) instanceof DrinkTask drinkTask) drinkTask.fulfilled = true;
+        if (this.tasks.get(TaskTypeImpl.DRINK) instanceof DrinkTask drinkTask) drinkTask.fulfilled = true;
     }
 
     public boolean isLowerThanMid() {
@@ -210,7 +210,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         for (TrainTask task : this.tasks.values()) {
             NbtCompound nbt = new NbtCompound();
             nbt.put("id", Identifier.CODEC
-                    .encodeStart(registryLookup.getOps(NbtOps.INSTANCE), task.getType().id)
+                    .encodeStart(registryLookup.getOps(NbtOps.INSTANCE), task.getType().getId())
                     .getOrThrow()
             );
             task.writeCustomDataToNbt(nbt);
@@ -241,25 +241,23 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
     }
 
     @SuppressWarnings("ClassCanBeRecord")
-    public static class TaskType {
-        public static final BiMap<Identifier, TaskType> TYPES = HashBiMap.create();
-
-        public static final TaskType SLEEP = register(
+    public static class TaskTypeImpl implements TaskType {
+        public static final TaskType SLEEP = TaskType.register(
                 TMM.id("sleep"),
                 () -> new SleepTask(GameConstants.SLEEP_TASK_DURATION),
                 nbt -> new SleepTask(nbt.getInt("timer"))
         );
-        public static final TaskType OUTSIDE = register(
+        public static final TaskType OUTSIDE = TaskType.register(
                 TMM.id("outside"),
                 () -> new OutsideTask(GameConstants.OUTSIDE_TASK_DURATION),
                 nbt -> new OutsideTask(nbt.getInt("timer"))
         );
-        public static final TaskType EAT = register(
+        public static final TaskType EAT = TaskType.register(
                 TMM.id("EAT"),
                 EatTask::new,
                 nbt -> new EatTask()
         );
-        public static final TaskType DRINK = register(
+        public static final TaskType DRINK = TaskType.register(
                 TMM.id("drink"),
                 DrinkTask::new,
                 nbt -> new DrinkTask()
@@ -269,31 +267,25 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         protected final @NotNull Supplier<TrainTask> creator;
         protected final @NotNull Function<NbtCompound, TrainTask> fromNbt;
 
-        public TaskType(Identifier id, @NotNull Supplier<TrainTask> creator, @NotNull Function<NbtCompound, TrainTask> fromNbt) {
+        public TaskTypeImpl(Identifier id, @NotNull Supplier<TrainTask> creator, @NotNull Function<NbtCompound, TrainTask> fromNbt) {
             this.id = id;
             this.creator = creator;
             this.fromNbt = fromNbt;
         }
 
+        @Override
         public Identifier getId() {
             return this.id;
         }
 
+        @Override
         public TrainTask createTask() {
             return this.creator.get();
         }
 
+        @Override
         public TrainTask getFromNbt(NbtCompound nbt) {
             return this.fromNbt.apply(nbt);
-        }
-
-        public static TaskType register(Identifier id, @NotNull Supplier<TrainTask> creator, @NotNull Function<NbtCompound, TrainTask> fromNbt) {
-            return register(new TaskType(id, creator, fromNbt));
-        }
-
-        public static TaskType register(TaskType type) {
-            TYPES.put(type.id, type);
-            return type;
         }
     }
 
@@ -316,7 +308,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
 
         @Override
         public TaskType getType() {
-            return TaskType.SLEEP;
+            return TaskTypeImpl.SLEEP;
         }
 
         @Override
@@ -344,7 +336,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
 
         @Override
         public TaskType getType() {
-            return TaskType.OUTSIDE;
+            return TaskTypeImpl.OUTSIDE;
         }
 
         @Override
@@ -363,7 +355,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
 
         @Override
         public TaskType getType() {
-            return TaskType.EAT;
+            return TaskTypeImpl.EAT;
         }
     }
 
@@ -377,19 +369,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
 
         @Override
         public TaskType getType() {
-            return TaskType.DRINK;
-        }
-    }
-
-    public interface TrainTask {
-        default void tick(@NotNull PlayerEntity player) {
-        }
-
-        boolean isFulfilled(PlayerEntity player);
-
-        TaskType getType();
-
-        default void writeCustomDataToNbt(NbtCompound nbt) {
+            return TaskTypeImpl.DRINK;
         }
     }
 }
