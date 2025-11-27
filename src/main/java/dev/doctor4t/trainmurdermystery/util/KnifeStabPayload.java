@@ -9,6 +9,7 @@ import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -30,6 +31,8 @@ public record KnifeStabPayload(int target) implements CustomPayload {
         @Override
         public void receive(@NotNull KnifeStabPayload payload, ServerPlayNetworking.@NotNull Context context) {
             ServerPlayerEntity player = context.player();
+            ItemStack mainHandStack = player.getMainHandStack();
+            if (!mainHandStack.isOf(TMMItems.KNIFE)) return;
             if (!(player.getServerWorld().getEntityById(payload.target()) instanceof PlayerEntity target)) return;
             if (target.distanceTo(player) > 3.0) return;
             GameFunctions.killPlayer(target, true, player, GameConstants.DeathReasons.KNIFE);
