@@ -157,12 +157,15 @@ public interface TMMBlocks {
     Block MARBLE_TILE_STAIRS = registrar.createWithItem("marble_tile_stairs", new StairsBlock(MARBLE_TILES.getDefaultState(), AbstractBlock.Settings.copy(MARBLE_TILES)), TMMItems.BUILDING_GROUP);
     Block MARBLE_TILE_SLAB = registrar.createWithItem("marble_tile_slab", new SlabBlock(AbstractBlock.Settings.copy(MARBLE_TILES)), TMMItems.BUILDING_GROUP);
     Block MARBLE_TILE_WALL = registrar.createWithItem("marble_tile_wall", new WallBlock(AbstractBlock.Settings.copy(MARBLE_TILES).solid()), TMMItems.BUILDING_GROUP);
-
-    // Carpets
+    
+    // Moquettes
     Block RED_MOQUETTE = registrar.createWithItem("red_moquette", new Block(AbstractBlock.Settings.copy(Blocks.RED_WOOL).strength(-1.0f, 3600000.0f)), TMMItems.BUILDING_GROUP);
+    Block TRIMMED_RED_MOQUETTE_STAIRS = registrar.createWithItem("trimmed_red_moquette_stairs", new TrimmedStairsBlock(AbstractBlock.Settings.copy(RED_MOQUETTE)), TMMItems.BUILDING_GROUP);
     Block BROWN_MOQUETTE = registrar.createWithItem("brown_moquette", new Block(AbstractBlock.Settings.copy(Blocks.BROWN_WOOL).strength(-1.0f, 3600000.0f)), TMMItems.BUILDING_GROUP);
+    Block TRIMMED_BROWN_MOQUETTE_STAIRS = registrar.createWithItem("trimmed_brown_moquette_stairs", new TrimmedStairsBlock(AbstractBlock.Settings.copy(BROWN_MOQUETTE)), TMMItems.BUILDING_GROUP);
     Block BLUE_MOQUETTE = registrar.createWithItem("blue_moquette", new Block(AbstractBlock.Settings.copy(Blocks.BLUE_WOOL).strength(-1.0f, 3600000.0f)), TMMItems.BUILDING_GROUP);
-
+    Block TRIMMED_BLUE_MOQUETTE_STAIRS = registrar.createWithItem("trimmed_blue_moquette_stairs", new TrimmedStairsBlock(AbstractBlock.Settings.copy(BLUE_MOQUETTE)), TMMItems.BUILDING_GROUP);
+    
     // Woods
     Block MAHOGANY_PLANKS = registrar.createWithItem("mahogany_planks", new Block(AbstractBlock.Settings.copy(Blocks.MANGROVE_PLANKS).strength(-1.0f, 3600000.0f).sounds(BlockSoundGroup.CHERRY_WOOD)), TMMItems.BUILDING_GROUP);
     Block MAHOGANY_STAIRS = registrar.createWithItem("mahogany_stairs", new StairsBlock(MAHOGANY_PLANKS.getDefaultState(), AbstractBlock.Settings.copy(MAHOGANY_PLANKS)), TMMItems.BUILDING_GROUP);

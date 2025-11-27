@@ -1,6 +1,6 @@
 {
 	"credit": "Made by Farcr",
-	"ambientocclusion": false,
+	"ambientocclusion": true,
 	"parent": "block/block",
 	"textures": {
 		"particle": "#texture"

@@ -92,6 +92,9 @@ public class TMMBlockLootTableGen extends FabricBlockLootTableProvider {
         this.addSelfDrop(TMMBlocks.EBONY_PANEL, this::panelDrops);
         this.addSelfDrop(TMMBlocks.EBONY_CABINET, this::nameableContainerDrops);
         this.addSelfDrop(TMMBlocks.TRIMMED_EBONY_STAIRS);
+        this.addSelfDrop(TMMBlocks.TRIMMED_RED_MOQUETTE_STAIRS);
+        this.addSelfDrop(TMMBlocks.TRIMMED_BROWN_MOQUETTE_STAIRS);
+        this.addSelfDrop(TMMBlocks.TRIMMED_BLUE_MOQUETTE_STAIRS);
         this.addSelfDrop(TMMBlocks.EBONY_BOOKSHELF);
         this.addSelfDrop(TMMBlocks.OAK_BRANCH);
         this.addSelfDrop(TMMBlocks.SPRUCE_BRANCH);

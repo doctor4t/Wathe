@@ -1,0 +1,6 @@
+{
+  "parent": "trainmurdermystery:block/template_trimmed_stairs",
+  "textures": {
+    "texture": "trainmurdermystery:block/trimmed_brown_moquette_stairs_left"
+  }
+}
