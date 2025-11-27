@@ -11,6 +11,6 @@ public class LimitedInventoryScreenProcessor extends ScreenProcessor<LimitedInve
 
     @Override
     public VirtualMouseBehaviour virtualMouseBehaviour() {
-        return VirtualMouseBehaviour.DEFAULT;
+        return VirtualMouseBehaviour.ENABLED;
     }
 }

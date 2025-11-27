@@ -36,6 +36,9 @@ repositories {
 	// QuiltMC Parsers
 	maven { url "https://maven.quiltmc.org/repository/release" }
 
+	// IsXander Libraries
+	maven { url "https://maven.isxander.dev/releases" }
+
 	// Datasync
 	maven { url = "https://maven.uuid.gg/releases" }
 
@@ -93,9 +96,13 @@ dependencies {
 	modRuntimeOnly("org.anarres:jcpp:${jcpp_version}")
 	modImplementation("io.github.douira:glsl-transformer:${glslTransformer_version}")
 
-	modRuntimeOnly("maven.modrinth:cloth-config:${cloth_config_version}")
-	modRuntimeOnly("org.hid4java:hid4java:0.8.0")
-	modRuntimeOnly("org.quiltmc.parsers:json:0.3.0")
+	// Controlify Compat
+	modRuntimeOnly "dev.isxander:libsdl4j:${sdl13Target}-${sdl134jBuild}"
+	modRuntimeOnly "dev.isxander:steamdeck4j:${steamdeck4j_version}"
+
+	modRuntimeOnly "maven.modrinth:cloth-config:${cloth_config_version}"
+	modRuntimeOnly "org.hid4java:hid4java:0.8.0"
+	modRuntimeOnly "org.quiltmc.parsers:gson:0.3.1"
 
 	modImplementation "maven.modrinth:yacl:${yet_another_config_lib_version}-fabric"
 	modImplementation "maven.modrinth:controlify:${controlify_version}-fabric,1.21.1"
