@@ -352,7 +352,7 @@
   "commands.trainmurdermystery.forcereset.success": "Zug erfolgreich zurückgesetzt!",
 
   "commands.trainmurdermystery.setzone.error.no_wand": "Du musst den Zonen-Stab halten, um dies zu tun.",
-  "commands.trainmurdermystery.setzone.error.no_positions": "Positionen nicht gesetzt! Nutze Rechtsklick (A) und Umschalt-Rechtsklick (B) mit dem Stab.",
+  "commands.trainmurdermystery.setzone.error.no_positions": "Positionen nicht gesetzt! Nutze Rechtsklick (A) und Umschalt Rechtsklick (B) mit dem Stab.",
   "commands.trainmurdermystery.setzone.warning.y_locked": "Hinweis: Minimale Y-Höhe auf 64 festgesetzt.",
   "commands.trainmurdermystery.setzone.success": "Zug erfolgreich aktualisiert!"
 
