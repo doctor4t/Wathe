@@ -16,7 +16,8 @@
     "PlayerInventoryMixin",
     "ServerPlayerEntityMixin",
     "ServerPlayNetworkHandlerMixin",
-    "client.LivingEntityRendererMixin"
+    "client.LivingEntityRendererMixin",
+    "compat.controlify.LimitedInventoryScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
