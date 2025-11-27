@@ -14,14 +14,15 @@ public class ShopEntry {
     private final int price;
     private final Type type;
 
-    public enum Type {
-        WEAPON("gui/shop_slot_weapon"),
-        POISON("gui/shop_slot_poison"),
-        TOOL("gui/shop_slot_tool");
+    @SuppressWarnings("ClassCanBeRecord")
+    public static class Type {
+        public static final Type WEAPON = new Type("gui/shop_slot_weapon");
+        public static final Type POISON = new Type("gui/shop_slot_poison");
+        public static final Type TOOL = new Type("gui/shop_slot_tool");
 
-        final Identifier texture;
+        protected final Identifier texture;
 
-        Type(String texture) {
+        public Type(String texture) {
             this.texture = TMM.id(texture);
         }
 

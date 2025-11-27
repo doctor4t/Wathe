@@ -35,7 +35,7 @@ public class MoodRenderer {
     public static final Identifier MOOD_PSYCHO = TMM.id("hud/mood_psycho");
     public static final Identifier MOOD_PSYCHO_HIT = TMM.id("hud/mood_psycho_hit");
     public static final Identifier MOOD_PSYCHO_EYES = TMM.id("hud/mood_psycho_eyes");
-    private static final Map<PlayerMoodComponent.Task, TaskRenderer> renderers = new HashMap<>();
+    private static final Map<PlayerMoodComponent.TaskType, TaskRenderer> renderers = new HashMap<>();
     public static Random random = new Random();
     public static float arrowProgress = 1f;
     public static float moodRender = 0f;
@@ -57,28 +57,28 @@ public class MoodRenderer {
             renderPsycho(player, textRenderer, context, psycho, tickCounter);
             return;
         }
-        for (PlayerMoodComponent.Task task : component.tasks.keySet()) {
+        for (PlayerMoodComponent.TaskType task : component.tasks.keySet()) {
             if (!renderers.containsKey(task)) {
                 for (TaskRenderer renderer : renderers.values()) renderer.index++;
                 renderers.put(task, new TaskRenderer());
             }
         }
-        ArrayList<PlayerMoodComponent.Task> toRemove = new ArrayList<>();
-        for (PlayerMoodComponent.Task taskType : PlayerMoodComponent.Task.values()) {
+        ArrayList<PlayerMoodComponent.TaskType> toRemove = new ArrayList<>();
+        for (PlayerMoodComponent.TaskType taskType : PlayerMoodComponent.TaskType.TYPES.values()) {
             TaskRenderer task = renderers.get(taskType);
             if (task != null) {
                 task.present = false;
                 if (task.tick(component.tasks.get(taskType), tickCounter.getTickDelta(true))) toRemove.add(taskType);
             }
         }
-        for (PlayerMoodComponent.Task task : toRemove) renderers.remove(task);
+        for (PlayerMoodComponent.TaskType task : toRemove) renderers.remove(task);
         if (!toRemove.isEmpty()) {
             ArrayList<TaskRenderer> renderersList = new ArrayList<>(renderers.values());
             renderersList.sort((a, b) -> Float.compare(a.offset, b.offset));
             for (int i = 0; i < renderersList.size(); i++) renderersList.get(i).index = i;
         }
         TaskRenderer maxRenderer = null;
-        for (Map.Entry<PlayerMoodComponent.Task, TaskRenderer> entry : renderers.entrySet()) {
+        for (Map.Entry<PlayerMoodComponent.TaskType, TaskRenderer> entry : renderers.entrySet()) {
             TaskRenderer renderer = entry.getValue();
             context.getMatrices().push();
             context.getMatrices().translate(0, 10 * renderer.offset, 0);
@@ -210,7 +210,7 @@ public class MoodRenderer {
 
         public boolean tick(PlayerMoodComponent.TrainTask present, float delta) {
             if (present != null)
-                this.text = Text.translatable("task." + (TMMClient.isKiller() ? "fake" : "feel")).append(Text.translatable("task." + present.getName()));
+                this.text = Text.translatable("task." + (TMMClient.isKiller() ? "fake" : "feel")).append(Text.translatable("task." + present.getType().getId()));
             this.present = present != null;
             this.alpha = MathHelper.lerp(delta / 16, this.alpha, present != null ? 1f : 0f);
             this.offset = MathHelper.lerp(delta / 32, this.offset, this.index);
