@@ -325,7 +325,7 @@ public class TMMClient implements ClientModInitializer {
     }
 
     public static boolean isTrainMoving() {
-        return trainComponent != null && trainComponent.getSpeed() > 0;
+        return trainComponent != null && trainComponent.getSpeed() > 0 && trainComponent.playing();
     }
 
     public static class CustomModelProvider implements ModelLoadingPlugin {
