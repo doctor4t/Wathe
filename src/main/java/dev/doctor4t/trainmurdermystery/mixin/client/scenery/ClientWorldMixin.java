@@ -1,5 +1,6 @@
 package dev.doctor4t.trainmurdermystery.mixin.client.scenery;
 
+import dev.doctor4t.trainmurdermystery.TMMConfig;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.index.TMMBlocks;
 import dev.doctor4t.trainmurdermystery.index.TMMParticles;
@@ -66,7 +67,7 @@ public abstract class ClientWorldMixin extends World {
             for (int i = 0; i < 200; i++) {
                 Vec3d playerVel = player.getMovement();
                 Vec3d pos = new Vec3d(player.getX() - 20f + random.nextFloat() + playerVel.getX(), player.getY() + (random.nextFloat() * 2 - 1) * 10f + playerVel.getY(), player.getZ() + (random.nextFloat() * 2 - 1) * 10f + playerVel.getZ());
-                if (this.client.world.isSkyVisible(BlockPos.ofFloored(pos))) {
+                if (TMMConfig.snowOptLevel != TMMConfig.SnowModeConfig.TURN_OFF && this.client.world.isSkyVisible(BlockPos.ofFloored(pos))) {
                     this.addParticle(TMMParticles.SNOWFLAKE, pos.getX(), pos.getY(), pos.getZ(), 2 + playerVel.getX(), playerVel.getY(), playerVel.getZ());
                 }
             }

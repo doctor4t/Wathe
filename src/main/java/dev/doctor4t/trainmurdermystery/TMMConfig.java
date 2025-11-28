@@ -10,6 +10,8 @@ public class TMMConfig extends MidnightConfig {
     public static boolean ultraPerfMode = false;
     @Entry
     public static boolean disableScreenShake = false;
+    @Entry
+    public static SnowModeConfig snowOptLevel = SnowModeConfig.NO_OPTIMIZATION;
 
     @Override
     public void writeChanges(String modid) {
@@ -19,5 +21,11 @@ public class TMMConfig extends MidnightConfig {
         OptionLocker.overrideOption("renderDistance", lockedRenderDistance);
 
         MinecraftClient.getInstance().options.viewDistance.setValue(lockedRenderDistance);
+    }
+
+    public enum SnowModeConfig {
+        NO_OPTIMIZATION,  // Standard behavior: checking if the particle hit the block.
+        STRONG_OPTIMIZATION, // replaces the calculation against the terrain to the calculation against a box that approximates the train
+        TURN_OFF, // Client side '/tmm:setVisual snow false'
     }
 }

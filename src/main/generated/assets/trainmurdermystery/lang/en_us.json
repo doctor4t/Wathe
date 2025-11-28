@@ -343,5 +343,10 @@
   "trainmurdermystery.midnightconfig.disableScreenShake": "Disable Screen Shake",
   "trainmurdermystery.midnightconfig.title": "The Last Voyage of the Harpy Express - Config",
   "trainmurdermystery.midnightconfig.ultraPerfMode": "Ultra Performance Mode",
-  "trainmurdermystery.midnightconfig.ultraPerfMode.tooltip": "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2."
+  "trainmurdermystery.midnightconfig.ultraPerfMode.tooltip": "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2.",
+  "trainmurdermystery.midnightconfig.snowOptLevel": "Snow particles mode",
+  "trainmurdermystery.midnightconfig.snowOptLevel.tooltip": "'Optimized' may cause issues on custom maps.",
+  "trainmurdermystery.midnightconfig.enum.SnowModeConfig.NO_OPTIMIZATION": "Default",
+  "trainmurdermystery.midnightconfig.enum.SnowModeConfig.STRONG_OPTIMIZATION": "Optimized",
+  "trainmurdermystery.midnightconfig.enum.SnowModeConfig.TURN_OFF": "No particles"
 }

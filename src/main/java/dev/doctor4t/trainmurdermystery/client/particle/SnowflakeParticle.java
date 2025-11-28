@@ -1,5 +1,6 @@
 package dev.doctor4t.trainmurdermystery.client.particle;
 
+import dev.doctor4t.trainmurdermystery.TMMConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -8,10 +9,13 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Quaternionf;
 
 public class SnowflakeParticle extends SpriteBillboardParticle {
+    private static final Box roughTrainCollider = new Box(-41.5, 126.0, -538.5, 169.5, 120, -532.5);
+
     private final float yRand;
     private final float zRand;
 
@@ -27,6 +31,8 @@ public class SnowflakeParticle extends SpriteBillboardParticle {
 
     public SnowflakeParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
         super(world, x, y, z, velocityX, velocityY, velocityZ);
+
+        if (TMMConfig.snowOptLevel == TMMConfig.SnowModeConfig.STRONG_OPTIMIZATION) collidesWithWorld = false;
 
         this.velocityX = velocityX;
         this.velocityY = velocityY;
@@ -55,8 +61,8 @@ public class SnowflakeParticle extends SpriteBillboardParticle {
         this.alpha += 0.01f;
 
         float v = .2f;
-        this.velocityZ = Math.sin(this.zRand + this.age / 2f + MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true)) * v;
-        this.velocityY = -.1f + Math.sin(this.yRand + this.age / 2f + MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true)) * v;
+        this.velocityZ = MathHelper.sin(this.zRand + this.age / 2f + MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true)) * v;
+        this.velocityY = -.1f + MathHelper.sin(this.yRand + this.age / 2f + MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true)) * v;
 
         this.prevAngleX = angleX;
         this.prevAngleY = angleY;
@@ -66,6 +72,8 @@ public class SnowflakeParticle extends SpriteBillboardParticle {
         this.angleY += angleRandY;
         this.angleZ += angleRandZ;
 
+        if (TMMConfig.snowOptLevel == TMMConfig.SnowModeConfig.STRONG_OPTIMIZATION && roughTrainCollider.contains(x, y, z))
+            markDead();
         if (this.onGround || this.velocityX == 0) {
             this.markDead();
         }
