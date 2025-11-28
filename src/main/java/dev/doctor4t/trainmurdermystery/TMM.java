@@ -5,6 +5,7 @@ import dev.doctor4t.trainmurdermystery.block.DoorPartBlock;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.command.*;
 import dev.doctor4t.trainmurdermystery.command.argument.GameModeArgumentType;
+import dev.doctor4t.trainmurdermystery.command.argument.RoleArgumentType;
 import dev.doctor4t.trainmurdermystery.command.argument.TimeOfDayArgumentType;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.index.*;
@@ -56,6 +57,7 @@ public class TMM implements ModInitializer {
         // Register command argument types
         ArgumentTypeRegistry.registerArgumentType(id("timeofday"), TimeOfDayArgumentType.class, ConstantArgumentSerializer.of(TimeOfDayArgumentType::timeofday));
         ArgumentTypeRegistry.registerArgumentType(id("gamemode"), GameModeArgumentType.class, ConstantArgumentSerializer.of(GameModeArgumentType::gameMode));
+        ArgumentTypeRegistry.registerArgumentType(id("role"), RoleArgumentType.class, ConstantArgumentSerializer.of(RoleArgumentType::role));
 
         // Register commands
         CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
@@ -74,6 +76,7 @@ public class TMM implements ModInitializer {
             AutoStartCommand.register(dispatcher);
             LockToSupportersCommand.register(dispatcher);
             SetBackfireChanceCommand.register(dispatcher);
+            SetRoleCommand.register(dispatcher);
         }));
 
         // server lock to supporters
