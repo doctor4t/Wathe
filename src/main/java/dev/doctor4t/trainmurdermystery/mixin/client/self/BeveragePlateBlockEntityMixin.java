@@ -29,7 +29,11 @@ public class BeveragePlateBlockEntityMixin {
         if (!(blockEntity instanceof BeveragePlateBlockEntity tray)) {
             return;
         }
-        if ((!TMMClient.isKiller() && !CanSeePoison.EVENT.invoker().visible(MinecraftClient.getInstance().player)) || tray.getPoisoner() == null) {
+        if (
+                (!TMMClient.isKiller() &&
+                        !TMMClient.isPlayerSpectatingOrCreative() &&
+                        !CanSeePoison.EVENT.invoker().visible(MinecraftClient.getInstance().player)
+                ) || tray.getPoisoner() == null) {
             return;
         }
         if (world.getRandom().nextBetween(0, 20) < 17) {
