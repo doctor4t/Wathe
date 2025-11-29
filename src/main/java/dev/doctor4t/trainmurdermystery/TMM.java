@@ -3,6 +3,8 @@ package dev.doctor4t.trainmurdermystery;
 import com.google.common.reflect.Reflection;
 import dev.doctor4t.trainmurdermystery.block.DoorPartBlock;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
+import dev.doctor4t.trainmurdermystery.checks.JumpCheck;
+import dev.doctor4t.trainmurdermystery.checks.ServerChecks;
 import dev.doctor4t.trainmurdermystery.command.*;
 import dev.doctor4t.trainmurdermystery.command.argument.GameModeArgumentType;
 import dev.doctor4t.trainmurdermystery.command.argument.TimeOfDayArgumentType;
@@ -15,8 +17,10 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.Block;
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,6 +45,10 @@ public class TMM implements ModInitializer {
 
     @Override
     public void onInitialize() {
+
+        //Server Keybind Checks
+        ServerChecks.init();
+
         // Init constants
         GameConstants.init();
 
