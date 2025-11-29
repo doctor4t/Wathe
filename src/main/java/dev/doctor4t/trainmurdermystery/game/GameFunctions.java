@@ -490,7 +490,6 @@ public class GameFunctions {
                     return true;
                 }
             } else {
-                // --- NEW LOGIC STARTS HERE ---
                 TMM.LOGGER.info("Train reset pending: Chunks not loaded. Requesting temporary load...");
 
                 // We force the chunks to load.
@@ -500,7 +499,6 @@ public class GameFunctions {
                 forceLoadBox(serverWorld, trainBox);
 
                 return true;
-                // --- NEW LOGIC ENDS HERE ---
             }
 
             // discard all player bodies and items
