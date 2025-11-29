@@ -103,9 +103,6 @@ public class TMM implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(NoteEditPayload.ID, new NoteEditPayload.Receiver());
 
         Scheduler.init();
-        if (FabricLoader.getInstance().isModLoaded("controlify")) {
-
-        }
     }
 
     public static boolean isSkyVisibleAdjacent(@NotNull Entity player) {

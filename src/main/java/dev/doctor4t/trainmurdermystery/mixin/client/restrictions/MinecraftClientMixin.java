@@ -21,23 +21,20 @@ public abstract class MinecraftClientMixin {
     @Nullable
     public ClientPlayerEntity player;
 
-    /* @WrapOperation(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V", ordinal = 1))
-    private void tmm$replaceInventoryScreenWithLimitedInventoryScreen(MinecraftClient instance, Screen screen, Operation<Void> original) {
-        if (TMMClient.gameComponent.getFade() > 0) {
-            return;
-        }
-
-        original.call(instance, TMMClient.isPlayerAliveAndInSurvival() ? new LimitedInventoryScreen(this.player) : screen);
-    }*/
+    @Shadow
+    public void setScreen(Screen screen) {}
 
     @Inject(method = "setScreen(Lnet/minecraft/client/gui/screen/Screen;)V", at = @At("HEAD"), cancellable = true)
     private void tmm$redirectInventorySetScreen(Screen screen, CallbackInfo info) {
         if (screen instanceof InventoryScreen && TMMClient.isPlayerAliveAndInSurvival()) {
-            assert this.player != null;
+            if (TMMClient.gameComponent.getFade() > 0) {
+                return;
+            }
 
-            MinecraftClient client = (MinecraftClient)(Object)this;
-            client.setScreen(new LimitedInventoryScreen(this.player));
-            info.cancel();
+            if (this.player != null) {
+                this.setScreen(new LimitedInventoryScreen(this.player));
+                info.cancel();
+            }
         }
     }
 }

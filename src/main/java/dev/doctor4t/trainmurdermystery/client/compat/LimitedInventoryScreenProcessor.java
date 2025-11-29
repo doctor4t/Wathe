@@ -1,4 +1,4 @@
-package dev.doctor4t.trainmurdermystery.compat.controlify;
+package dev.doctor4t.trainmurdermystery.client.compat;
 
 import dev.doctor4t.trainmurdermystery.client.gui.screen.ingame.LimitedInventoryScreen;
 import dev.isxander.controlify.screenop.ScreenProcessor;

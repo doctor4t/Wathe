@@ -33,7 +33,7 @@
 			"dev.doctor4t.trainmurdermystery.compat.TrainVoicePlugin"
 		],
 		"controlify": [
-			"dev.doctor4t.trainmurdermystery.compat.controlify.ControlifyEntrypoint"
+			"dev.doctor4t.trainmurdermystery.compat.controlify.ControlifyCompat"
 		]
 	},
 	"mixins": [
