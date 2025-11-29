@@ -61,13 +61,16 @@ public abstract class ClientWorldMixin extends World {
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void tmm$addSnowflakes(BooleanSupplier shouldKeepTicking, CallbackInfo ci) {
-        if (TMMClient.isTrainMoving() && TMMClient.getTrainComponent().isSnowing()) {
+        if (TMMConfig.snowOptLevel != TMMConfig.SnowModeConfig.TURN_OFF &&
+                TMMClient.isTrainMoving() &&
+                TMMClient.getTrainComponent().isSnowing()
+        ) {
             ClientPlayerEntity player = client.player;
             Random random = player.getRandom();
             for (int i = 0; i < 200; i++) {
                 Vec3d playerVel = player.getMovement();
                 Vec3d pos = new Vec3d(player.getX() - 20f + random.nextFloat() + playerVel.getX(), player.getY() + (random.nextFloat() * 2 - 1) * 10f + playerVel.getY(), player.getZ() + (random.nextFloat() * 2 - 1) * 10f + playerVel.getZ());
-                if (TMMConfig.snowOptLevel != TMMConfig.SnowModeConfig.TURN_OFF && this.client.world.isSkyVisible(BlockPos.ofFloored(pos))) {
+                if (this.client.world.isSkyVisible(BlockPos.ofFloored(pos))) {
                     this.addParticle(TMMParticles.SNOWFLAKE, pos.getX(), pos.getY(), pos.getZ(), 2 + playerVel.getX(), playerVel.getY(), playerVel.getZ());
                 }
             }
