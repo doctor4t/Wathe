@@ -27,6 +27,9 @@ import net.minecraft.util.hit.HitResult;
 import org.jetbrains.annotations.NotNull;
 
 public record GunShootPayload(int target) implements CustomPayload {
+
+    public static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger("trainmurdermystery");
+
     public static final Id<GunShootPayload> ID = new Id<>(TMM.id("gunshoot"));
     public static final PacketCodec<PacketByteBuf, GunShootPayload> CODEC = PacketCodec.tuple(PacketCodecs.INTEGER, GunShootPayload::target, GunShootPayload::new);
 
@@ -42,33 +45,35 @@ public record GunShootPayload(int target) implements CustomPayload {
 
             ItemStack mainHandStack = player.getMainHandStack();
 
+            LOGGER.debug("test");
+
             double range = 20d;
-            HitResult collision = ProjectileUtil.getCollision(player, entity -> entity instanceof PlayerEntity user && GameFunctions.isPlayerAliveAndSurvival(player), range);
-            if (collision instanceof EntityHitResult entityHitResult) {
-                if (!mainHandStack.isIn(TMMItemTags.GUNS) || player.getItemCooldownManager().isCoolingDown(player.getMainHandStack().getItem()))
-                    return;
 
-                player.getWorld().playSound(null, player.getX(), player.getEyeY(), player.getZ(), TMMSounds.ITEM_REVOLVER_CLICK, SoundCategory.PLAYERS, 0.5f, 1f + player.getRandom().nextFloat() * .1f - .05f);
+            if (!mainHandStack.isIn(TMMItemTags.GUNS) || player.getItemCooldownManager().isCoolingDown(player.getMainHandStack().getItem())) return;
 
-                // cancel if derringer has been shot
-                Boolean isUsed = mainHandStack.get(TMMDataComponentTypes.USED);
-                if (mainHandStack.isOf(TMMItems.DERRINGER)) {
-                    if (isUsed == null) {
-                        isUsed = false;
-                    }
+            player.getWorld().playSound(null, player.getX(), player.getEyeY(), player.getZ(), TMMSounds.ITEM_REVOLVER_CLICK, SoundCategory.PLAYERS, 0.5f, 1f + player.getRandom().nextFloat() * .1f - .05f);
 
-                    if (isUsed) {
-                        return;
-                    }
-
-                    if (!player.isCreative()) mainHandStack.set(TMMDataComponentTypes.USED, true);
+            // cancel if derringer has been shot
+            Boolean isUsed = mainHandStack.get(TMMDataComponentTypes.USED);
+            if (mainHandStack.isOf(TMMItems.DERRINGER)) {
+                if (isUsed == null) {
+                    isUsed = false;
                 }
 
-                if (player.getServerWorld().getEntityById(payload.target()) instanceof PlayerEntity target && target.distanceTo(player) < range) {
-                    GameWorldComponent game = GameWorldComponent.KEY.get(player.getWorld());
-                    Item revolver = TMMItems.REVOLVER;
+                if (isUsed) {
+                    return;
+                }
 
-                    boolean backfire = false;
+                if (!player.isCreative()) mainHandStack.set(TMMDataComponentTypes.USED, true);
+            }
+
+            if (player.getServerWorld().getEntityById(payload.target()) instanceof PlayerEntity target && target.distanceTo(player) < range) {
+                GameWorldComponent game = GameWorldComponent.KEY.get(player.getWorld());
+                Item revolver = TMMItems.REVOLVER;
+
+                boolean backfire = false;
+                HitResult collision = ProjectileUtil.getCollision(player, entity -> entity instanceof PlayerEntity user && GameFunctions.isPlayerAliveAndSurvival(player), range);
+                if (collision instanceof EntityHitResult entityHitResult) {
 
                     if (game.isInnocent(target) && !player.isCreative() && mainHandStack.isOf(revolver)) {
                         // backfire: if you kill an innocent you have a chance of shooting yourself instead
@@ -94,15 +99,15 @@ public record GunShootPayload(int target) implements CustomPayload {
                         GameFunctions.killPlayer(target, true, player, GameConstants.DeathReasons.GUN);
                     }
                 }
-
-                player.getWorld().playSound(null, player.getX(), player.getEyeY(), player.getZ(), TMMSounds.ITEM_REVOLVER_SHOOT, SoundCategory.PLAYERS, 5f, 1f + player.getRandom().nextFloat() * .1f - .05f);
-
-                for (ServerPlayerEntity tracking : PlayerLookup.tracking(player))
-                    ServerPlayNetworking.send(tracking, new ShootMuzzleS2CPayload(player.getUuidAsString()));
-                ServerPlayNetworking.send(player, new ShootMuzzleS2CPayload(player.getUuidAsString()));
-                if (!player.isCreative())
-                    player.getItemCooldownManager().set(mainHandStack.getItem(), GameConstants.ITEM_COOLDOWNS.getOrDefault(mainHandStack.getItem(), 0));
             }
+
+            player.getWorld().playSound(null, player.getX(), player.getEyeY(), player.getZ(), TMMSounds.ITEM_REVOLVER_SHOOT, SoundCategory.PLAYERS, 5f, 1f + player.getRandom().nextFloat() * .1f - .05f);
+
+            for (ServerPlayerEntity tracking : PlayerLookup.tracking(player))
+                ServerPlayNetworking.send(tracking, new ShootMuzzleS2CPayload(player.getUuidAsString()));
+            ServerPlayNetworking.send(player, new ShootMuzzleS2CPayload(player.getUuidAsString()));
+            if (!player.isCreative())
+                player.getItemCooldownManager().set(mainHandStack.getItem(), GameConstants.ITEM_COOLDOWNS.getOrDefault(mainHandStack.getItem(), 0));
         }
     }
 }
