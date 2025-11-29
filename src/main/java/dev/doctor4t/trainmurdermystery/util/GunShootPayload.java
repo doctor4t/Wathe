@@ -42,6 +42,10 @@ public record GunShootPayload(int target) implements CustomPayload {
             ItemStack mainHandStack = player.getMainHandStack();
             if (!mainHandStack.isIn(TMMItemTags.GUNS)) return;
 
+            if (player.getItemCooldownManager().isCoolingDown(mainHandStack.getItem())) {
+                return;
+            }
+
             player.getWorld().playSound(null, player.getX(), player.getEyeY(), player.getZ(), TMMSounds.ITEM_REVOLVER_CLICK, SoundCategory.PLAYERS, 0.5f, 1f + player.getRandom().nextFloat() * .1f - .05f);
 
             // cancel if derringer has been shot
