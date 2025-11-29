@@ -140,5 +140,19 @@ public class TMMLangGen extends FabricLanguageProvider {
         builder.add("trainmurdermystery.midnightconfig.disableScreenShake", "Disable Screen Shake");
 
         builder.add("credits.trainmurdermystery.thank_you", "Thank you for playing The Last Voyage of the Harpy Express!\nMe and my team spent a lot of time working\non this mod and we hope you enjoy it.\nIf you do and wish to make a video or stream\nplease make sure to credit my channel,\nvideo and the mod page!\n - RAT / doctor4t");
+
+        builder.add(TMMItems.ZONE_WAND, "Zone Wand");
+        builder.add(TextUtils.getItemTranslationKey(TMMItems.ZONE_WAND) + ".tooltip", "Right-Click: Set Position A\nShift + Right-Click: Set Position B");
+
+
+        builder.add("commands.trainmurdermystery.forcereset.error.dimension", "Only works in Overworld!");
+        builder.add("commands.trainmurdermystery.forcereset.chunks_loading", "Chunks were unloaded. Loading them now... run this command again in a second!");
+        builder.add("commands.trainmurdermystery.forcereset.success", "Train successfully reset!");
+
+        builder.add("commands.trainmurdermystery.setzone.error.no_wand", "You must be holding the Zone Wand to perform this action.");
+        builder.add("commands.trainmurdermystery.setzone.error.no_positions", "Positions not set! Use Right-Click (A) and Shift-Right-Click (B) with the wand.");
+        builder.add("commands.trainmurdermystery.setzone.warning.y_locked", "Note: Locked minimum Y-level to 64.");
+        builder.add("commands.trainmurdermystery.setzone.success", "Updated %s successfully!");
+
     }
 }

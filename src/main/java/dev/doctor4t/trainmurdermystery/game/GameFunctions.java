@@ -505,7 +505,7 @@ public class GameFunctions {
             for (PlayerBodyEntity body : serverWorld.getEntitiesByType(TMMEntities.PLAYER_BODY, playerBodyEntity -> true)) {
                 body.discard();
             }
-            for (net.minecraft.entity.ItemEntity item : serverWorld.getEntitiesByType(net.minecraft.entity.EntityType.ITEM, playerBodyEntity -> true)) {
+            for (ItemEntity item : serverWorld.getEntitiesByType(net.minecraft.entity.EntityType.ITEM, playerBodyEntity -> true)) {
                 item.discard();
             }
             for (FirecrackerEntity entity : serverWorld.getEntitiesByType(TMMEntities.FIRECRACKER, entity -> true)) entity.discard();

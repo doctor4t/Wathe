@@ -7,12 +7,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ZoneWandItem extends Item {
     public ZoneWandItem(Settings settings) {
         super(settings);
+    }
+
+    @Override
+    public boolean hasGlint(ItemStack stack) {
+        return true;
     }
 
     @Override
@@ -23,6 +29,17 @@ public class ZoneWandItem extends Item {
         ItemStack stack = context.getStack();
 
         if (!world.isClient && player != null) {
+            // Check Y-Level < 64
+            if (pos.getY() < 64) {
+                String zoneName = player.isSneaking() ? "B" : "A";
+                player.sendMessage(
+                        Text.literal("Zone " + zoneName + " can't be set... Under Block Limit! [y=64]")
+                                .formatted(Formatting.RED),
+                        true
+                );
+                return ActionResult.FAIL;
+            }
+
             if (player.isSneaking()) {
                 // Shift + Right Click -> Set Pos B
                 stack.set(TMMDataComponentTypes.POS_B, pos);
