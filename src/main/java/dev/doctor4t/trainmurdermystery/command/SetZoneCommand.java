@@ -1,10 +1,14 @@
 package dev.doctor4t.trainmurdermystery.command;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import dev.doctor4t.trainmurdermystery.cca.AreasWorldComponent;
 import dev.doctor4t.trainmurdermystery.index.TMMDataComponentTypes;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
+import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
@@ -13,24 +17,50 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public class SetZoneCommand {
+
+    private static final SimpleCommandExceptionType INVALID_ZONE_TYPE = new SimpleCommandExceptionType(Text.literal("Invalid zone type"));
+
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("tmm:setzone")
                 .requires(source -> source.hasPermissionLevel(2))
-
-                .then(CommandManager.literal("playArea")
-                        .executes(ctx -> setZone(ctx, ZoneType.PLAY_AREA)))
-                .then(CommandManager.literal("readyArea")
-                        .executes(ctx -> setZone(ctx, ZoneType.READY_AREA)))
-                .then(CommandManager.literal("resetTemplateArea")
-                        .executes(ctx -> setZone(ctx, ZoneType.RESET_TEMPLATE)))
-                .then(CommandManager.literal("resetPasteArea")
-                        .executes(ctx -> setZone(ctx, ZoneType.RESET_PASTE)))
+                .then(CommandManager.argument("type", StringArgumentType.word())
+                        .suggests((context, builder) -> CommandSource.suggestMatching(
+                                Arrays.stream(ZoneType.values()).map(ZoneType::getName), builder
+                        ))
+                        .executes(ctx -> {
+                            String inputName = StringArgumentType.getString(ctx, "type");
+                            ZoneType type = ZoneType.byName(inputName)
+                                    .orElseThrow(INVALID_ZONE_TYPE::create);
+                            return setZone(ctx, type);
+                        }))
         );
     }
 
     private enum ZoneType {
-        PLAY_AREA, READY_AREA, RESET_TEMPLATE, RESET_PASTE
+        PLAY_AREA("playArea"),
+        READY_AREA("readyArea"),
+        RESET_TEMPLATE("resetTemplateArea"),
+        RESET_PASTE("resetPasteArea");
+
+        private final String name;
+
+        ZoneType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static Optional<ZoneType> byName(String name) {
+            return Arrays.stream(values())
+                    .filter(z -> z.name.equals(name))
+                    .findFirst();
+        }
     }
 
     private static int setZone(CommandContext<ServerCommandSource> context, ZoneType type) {
@@ -79,7 +109,7 @@ public class SetZoneCommand {
         }
 
         areas.sync();
-        source.sendFeedback(() -> Text.translatable("commands.trainmurdermystery.setzone.success", type.name()), true);
+        source.sendFeedback(() -> Text.translatable("commands.trainmurdermystery.setzone.success", type.getName()), true);
         return 1;
     }
 }
