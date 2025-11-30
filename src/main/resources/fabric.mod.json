@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
 	"id": "trainmurdermystery",
-	"version": "${version}",
+	"version": "${version}-levaltru",
 	"name": "The Last Voyage of the Harpy Express",
-	"description": "A train murder mystery social game.",
+	"description": "A train murder mystery social game. Early build of LevAlTru's pull requests.",
 	"authors": [
 		"doctor4t",
 		"AmyMialee",

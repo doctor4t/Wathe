@@ -4,6 +4,7 @@ import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
+import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -50,18 +51,24 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
     public void checkWeights(@NotNull ServerCommandSource source) {
         double killerTotal = 0d;
         double vigilanteTotal = 0d;
+        int killerMin = Integer.MAX_VALUE;
+        int vigilanteMin = Integer.MAX_VALUE;
         for (ServerPlayerEntity player : source.getWorld().getPlayers()) {
-            killerTotal += Math.exp(-this.killerRounds.getOrDefault(player.getUuid(), 0) * 4);
-            vigilanteTotal += Math.exp(-this.vigilanteRounds.getOrDefault(player.getUuid(), 0) * 4);
+            killerMin = Math.min(this.killerRounds.getOrDefault(player.getUuid(), 0), killerMin);
+            vigilanteMin = Math.min(this.vigilanteRounds.getOrDefault(player.getUuid(), 0), vigilanteMin);
+        }
+        for (ServerPlayerEntity player : source.getWorld().getPlayers()) {
+            killerTotal += GameFunctions.getPlayerWeight(this.killerRounds.getOrDefault(player.getUuid(), 0) - killerMin);
+            vigilanteTotal += GameFunctions.getPlayerWeight(this.vigilanteRounds.getOrDefault(player.getUuid(), 0) - vigilanteMin);
         }
         MutableText text = Text.literal("Role Weights:").formatted(Formatting.GRAY);
         for (ServerPlayerEntity player : source.getWorld().getPlayers()) {
             text = text.append("\n").append(player.getDisplayName());
             Integer killerRounds = this.killerRounds.getOrDefault(player.getUuid(), 0);
-            double killerWeight = Math.exp(-killerRounds * 4);
+            double killerWeight = GameFunctions.getPlayerWeight(killerRounds - killerMin);
             double killerPercent = killerWeight / killerTotal * 100;
             Integer vigilanteRounds = this.vigilanteRounds.getOrDefault(player.getUuid(), 0);
-            double vigilanteWeight = Math.exp(-vigilanteRounds * 4);
+            double vigilanteWeight = GameFunctions.getPlayerWeight(vigilanteRounds - vigilanteMin);
             double vigilantePercent = vigilanteWeight / vigilanteTotal * 100;
             text.append(
                     Text.literal("\n  Killer (").withColor(RoleAnnouncementTexts.KILLER.colour)
@@ -116,8 +123,13 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
         HashMap<ServerPlayerEntity, Float> map = new HashMap<>();
         float total = 0f;
         for (ServerPlayerEntity player : players) {
-            float weight = (float) Math.exp(-this.killerRounds.getOrDefault(player.getUuid(), 0) * 4);
+            float weight;
             if (!GameWorldComponent.KEY.get(world).areWeightsEnabled()) weight = 1;
+            else {
+                int min = Integer.MAX_VALUE;
+                for (Integer value : this.killerRounds.values()) min = Math.min(min, value);
+                weight = GameFunctions.getPlayerWeight(this.killerRounds.getOrDefault(player.getUuid(), 0) - min);
+            }
             map.put(player, weight);
             total += weight;
         }
@@ -168,7 +180,9 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
         float total = 0f;
         for (ServerPlayerEntity player : players) {
             if (gameComponent.isRole(player, TMMRoles.KILLER)) continue;
-            float weight = (float) Math.exp(-this.vigilanteRounds.getOrDefault(player.getUuid(), 0) * 4);
+            int min = Integer.MAX_VALUE;
+            for (Integer value : this.vigilanteRounds.values()) min = Math.min(min, value);
+            float weight = GameFunctions.getPlayerWeight(this.vigilanteRounds.getOrDefault(player.getUuid(), 0) - min);
             if (!GameWorldComponent.KEY.get(world).areWeightsEnabled()) weight = 1;
             map.put(player, weight);
             total += weight;

@@ -10,13 +10,13 @@ base {
 	archivesName = project.archives_base_name
 }
 
-chenille {
-	configurePublishing {
-		withLadysnakeMaven()
-		withGithubRelease()
-		withModrinthRelease()
-	}
-}
+//chenille {
+//	configurePublishing {
+//		withLadysnakeMaven()
+//		withGithubRelease()
+//		withModrinthRelease()
+//	}
+//}
 
 repositories {
 	mavenLocal()

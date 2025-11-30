@@ -3,7 +3,6 @@ package dev.doctor4t.trainmurdermystery.game;
 import com.google.common.collect.Lists;
 import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.api.GameMode;
-import dev.doctor4t.trainmurdermystery.api.TMMGameModes;
 import dev.doctor4t.trainmurdermystery.cca.*;
 import dev.doctor4t.trainmurdermystery.compat.TrainVoicePlugin;
 import dev.doctor4t.trainmurdermystery.entity.FirecrackerEntity;
@@ -498,6 +497,10 @@ public class GameFunctions {
         List<? extends PlayerEntity> players = world.getPlayers();
         AreasWorldComponent areas = AreasWorldComponent.KEY.get(world);
         return Math.toIntExact(players.stream().filter(p -> areas.getReadyArea().contains(p.getPos())).count());
+    }
+
+    public static float getPlayerWeight(int aboveMin) {
+        return (float) Math.exp((float) (aboveMin*aboveMin) / -3f);
     }
 
     public enum WinStatus {

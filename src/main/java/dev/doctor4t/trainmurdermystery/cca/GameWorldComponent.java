@@ -37,6 +37,15 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
     private boolean lockedToSupporters = false;
     private boolean enableWeights = false;
+    private double specialRoleCount = 0;
+
+    public void setSpecialRoleCount(double specialRoleCount) {
+        this.specialRoleCount = specialRoleCount;
+    }
+
+    public double getSpecialRoleCount() {
+        return specialRoleCount;
+    }
 
     public void setWeightsEnabled(boolean enabled) {
         this.enableWeights = enabled;
@@ -252,6 +261,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         } else {
             this.looseEndWinner = null;
         }
+        specialRoleCount = nbtCompound.getDouble("specialRoleCount");
     }
 
     private ArrayList<UUID> uuidListFromNbt(NbtCompound nbtCompound, String listName) {
@@ -280,6 +290,8 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         }
 
         if (this.looseEndWinner != null) nbtCompound.putUuid("LooseEndWinner", this.looseEndWinner);
+
+        nbtCompound.putDouble("specialRoleCount", specialRoleCount);
     }
 
     private NbtList nbtFromUuidList(List<UUID> list) {
