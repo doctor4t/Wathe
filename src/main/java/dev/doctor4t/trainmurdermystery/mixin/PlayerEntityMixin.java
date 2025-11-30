@@ -77,10 +77,10 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 } else {
                     sprintingTicks = Math.min(sprintingTicks + 0.25f, role.getMaxSprintTime());
                 }
-            }
 
-            if (sprintingTicks <= 0) {
-                this.setSprinting(false);
+                if (sprintingTicks <= 0) {
+                    this.setSprinting(false);
+                }
             }
         }
     }
