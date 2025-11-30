@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -28,6 +29,10 @@ public class MurderGameMode extends GameMode {
         // select roles
         ScoreboardRoleSelectorComponent roleSelector = ScoreboardRoleSelectorComponent.KEY.get(world.getScoreboard());
         int killerCount = (int) Math.floor(players.size() / 6f);
+        if (roleSelector.specialRoleCount > 0) {
+            killerCount = MathHelper.floor(roleSelector.specialRoleCount);
+            killerCount += (roleSelector.specialRoleCount % 1 < .01 && roleSelector.specialRoleCount % 1 > Math.random()) ? 1 : 0;
+        }
         int total = roleSelector.assignKillers(world, gameComponent, players, killerCount);
         roleSelector.assignVigilantes(world, gameComponent, players, killerCount);
         return total;

@@ -36,6 +36,7 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
     public final Map<UUID, Integer> vigilanteRounds = new HashMap<>();
     public final List<UUID> forcedKillers = new ArrayList<>();
     public final List<UUID> forcedVigilantes = new ArrayList<>();
+    public double specialRoleCount = 0;
 
     public ScoreboardRoleSelectorComponent(Scoreboard scoreboard, @Nullable MinecraftServer server) {
         this.scoreboard = scoreboard;
@@ -51,18 +52,24 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
     public void checkWeights(@NotNull ServerCommandSource source) {
         double killerTotal = 0d;
         double vigilanteTotal = 0d;
+        int killerMin = Integer.MAX_VALUE;
+        int vigilanteMin = Integer.MAX_VALUE;
         for (ServerPlayerEntity player : source.getWorld().getPlayers()) {
-            killerTotal += Math.exp(-this.killerRounds.getOrDefault(player.getUuid(), 0) * 4);
-            vigilanteTotal += Math.exp(-this.vigilanteRounds.getOrDefault(player.getUuid(), 0) * 4);
+            killerMin = Math.min(this.killerRounds.getOrDefault(player.getUuid(), 0), killerMin);
+            vigilanteMin = Math.min(this.vigilanteRounds.getOrDefault(player.getUuid(), 0), vigilanteMin);
+        }
+        for (ServerPlayerEntity player : source.getWorld().getPlayers()) {
+            killerTotal += GameFunctions.getPlayerWeight(this.killerRounds.getOrDefault(player.getUuid(), 0) - killerMin);
+            vigilanteTotal += GameFunctions.getPlayerWeight(this.vigilanteRounds.getOrDefault(player.getUuid(), 0) - vigilanteMin);
         }
         MutableText text = Text.literal("Role Weights:").formatted(Formatting.GRAY);
         for (ServerPlayerEntity player : source.getWorld().getPlayers()) {
             text = text.append("\n").append(player.getDisplayName());
             Integer killerRounds = this.killerRounds.getOrDefault(player.getUuid(), 0);
-            double killerWeight = Math.exp(-killerRounds * 4);
+            double killerWeight = GameFunctions.getPlayerWeight(killerRounds - killerMin);
             double killerPercent = killerWeight / killerTotal * 100;
             Integer vigilanteRounds = this.vigilanteRounds.getOrDefault(player.getUuid(), 0);
-            double vigilanteWeight = Math.exp(-vigilanteRounds * 4);
+            double vigilanteWeight = GameFunctions.getPlayerWeight(vigilanteRounds - vigilanteMin);
             double vigilantePercent = vigilanteWeight / vigilanteTotal * 100;
             text.append(
                     Text.literal("\n  Killer (").withColor(RoleAnnouncementTexts.KILLER.colour)
@@ -225,6 +232,7 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
             vigilanteRounds.add(compound);
         }
         tag.put("vigilanteRounds", vigilanteRounds);
+        tag.putDouble("specialRoleCount", specialRoleCount);
     }
 
     @Override
@@ -241,5 +249,6 @@ public class ScoreboardRoleSelectorComponent implements AutoSyncedComponent {
             if (!compound.contains("uuid") || !compound.contains("times")) continue;
             this.vigilanteRounds.put(compound.getUuid("uuid"), compound.getInt("times"));
         }
+        specialRoleCount = tag.getDouble("specialRoleCount");
     }
 }
