@@ -1,6 +1,7 @@
 package dev.doctor4t.trainmurdermystery.client.particle;
 
 import dev.doctor4t.trainmurdermystery.TMMConfig;
+import dev.doctor4t.trainmurdermystery.cca.AreasWorldComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -9,13 +10,10 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Quaternionf;
 
 public class SnowflakeParticle extends SpriteBillboardParticle {
-    private static final Box roughTrainCollider = new Box(-41.5, 126.0, -538.5, 169.5, 120, -532.5);
-
     private final float yRand;
     private final float zRand;
 
@@ -72,7 +70,7 @@ public class SnowflakeParticle extends SpriteBillboardParticle {
         this.angleY += angleRandY;
         this.angleZ += angleRandZ;
 
-        if (TMMConfig.snowOptLevel == TMMConfig.SnowModeConfig.STRONG_OPTIMIZATION && roughTrainCollider.contains(x, y, z))
+        if (TMMConfig.snowOptLevel == TMMConfig.SnowModeConfig.STRONG_OPTIMIZATION && AreasWorldComponent.KEY.get(world).getParticleColliderArea().contains(x, y, z))
             markDead();
         if (this.onGround || this.velocityX == 0) {
             this.markDead();

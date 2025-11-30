@@ -73,6 +73,7 @@ public class AreasWorldComponent implements AutoSyncedComponent {
     Box readyArea = new Box(-1017, -1, -363.5f, -813, 3, -357.5f);
     Vec3d playAreaOffset = new Vec3d(963, 121, -175);
     Box playArea = new Box(-140, 118, -535.5f - 15, 230, 200, -535.5f + 15);
+    Box particleColliderArea = new Box(-41.5, 126.0, -538.5, 169.5, 120, -532.5);
 
     Box resetTemplateArea = new Box(-57, 64, -531, 177, 74, -541);
     Box resetPasteArea = resetTemplateArea.offset(0, 55, 0);
@@ -117,6 +118,14 @@ public class AreasWorldComponent implements AutoSyncedComponent {
         this.playArea = playArea;
     }
 
+    public Box getParticleColliderArea() {
+        return particleColliderArea;
+    }
+
+    public void setParticleColliderArea(Box particleColliderArea) {
+        this.particleColliderArea = particleColliderArea;
+    }
+
     public Box getResetTemplateArea() {
         return resetTemplateArea;
     }
@@ -149,6 +158,10 @@ public class AreasWorldComponent implements AutoSyncedComponent {
         this.readyArea = getBoxFromNbt(tag, "readyArea");
         this.playAreaOffset = getVec3dFromNbt(tag, "playAreaOffset");
         this.playArea = getBoxFromNbt(tag, "playArea");
+        Box colliderArea = getBoxFromNbt(tag, "particleColliderArea");
+        // The original world file doesn't have colliderArea, so we need to make sure it won't be 0,0,0
+        if (!colliderArea.getMaxPos().equals(Vec3d.ZERO) || !colliderArea.getMinPos().equals(Vec3d.ZERO))
+            this.particleColliderArea = colliderArea;
 
         this.resetTemplateArea = getBoxFromNbt(tag, "resetTemplateArea");
         this.resetPasteArea = getBoxFromNbt(tag, "resetPasteArea");
@@ -162,6 +175,7 @@ public class AreasWorldComponent implements AutoSyncedComponent {
         writeBoxToNbt(tag, this.readyArea, "readyArea");
         writeVec3dToNbt(tag, this.playAreaOffset, "playAreaOffset");
         writeBoxToNbt(tag, this.playArea, "playArea");
+        writeBoxToNbt(tag, this.particleColliderArea, "particleColliderArea");
 
         writeBoxToNbt(tag, this.resetTemplateArea, "resetTemplateArea");
         writeBoxToNbt(tag, this.resetPasteArea, "resetPasteArea");

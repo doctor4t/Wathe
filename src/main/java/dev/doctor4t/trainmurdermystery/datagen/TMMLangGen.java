@@ -139,6 +139,12 @@ public class TMMLangGen extends FabricLanguageProvider {
         builder.add("trainmurdermystery.midnightconfig.ultraPerfMode.tooltip", "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2.");
         builder.add("trainmurdermystery.midnightconfig.disableScreenShake", "Disable Screen Shake");
 
+        builder.add("trainmurdermystery.midnightconfig.snowOptLevel", "Snow particles mode");
+        builder.add("trainmurdermystery.midnightconfig.snowOptLevel.tooltip", "'Optimized' may cause issues on custom maps.");
+        builder.add("trainmurdermystery.midnightconfig.enum.SnowModeConfig.NO_OPTIMIZATION", "Default");
+        builder.add("trainmurdermystery.midnightconfig.enum.SnowModeConfig.STRONG_OPTIMIZATION", "Optimized");
+        builder.add("trainmurdermystery.midnightconfig.enum.SnowModeConfig.TURN_OFF", "No particles");
+
         builder.add("credits.trainmurdermystery.thank_you", "Thank you for playing The Last Voyage of the Harpy Express!\nMe and my team spent a lot of time working\non this mod and we hope you enjoy it.\nIf you do and wish to make a video or stream\nplease make sure to credit my channel,\nvideo and the mod page!\n - RAT / doctor4t");
     }
 }
