@@ -33,6 +33,7 @@ public record KnifeStabPayload(int target) implements CustomPayload {
             ServerPlayerEntity player = context.player();
             ItemStack mainHandStack = player.getMainHandStack();
             if (!mainHandStack.isOf(TMMItems.KNIFE)) return;
+            if (player.getItemCooldownManager().isCoolingDown(mainHandStack.getItem())) return;
             if (!(player.getServerWorld().getEntityById(payload.target()) instanceof PlayerEntity target)) return;
             if (target.distanceTo(player) > 3.0) return;
             GameFunctions.killPlayer(target, true, player, GameConstants.DeathReasons.KNIFE);
