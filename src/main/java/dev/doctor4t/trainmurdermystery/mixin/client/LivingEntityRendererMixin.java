@@ -2,6 +2,7 @@ package dev.doctor4t.trainmurdermystery.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import dev.doctor4t.trainmurdermystery.cca.PlayerPoisonComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerPsychoComponent;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -16,6 +17,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntityRenderer.class)
 public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>, X extends Entity> extends EntityRenderer<T> {
@@ -38,5 +41,11 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
         if (!isPsycho || isItemRenderer) {
             original.call(instance, matrixStack, vertexConsumerProvider, i, t, limbAngle, limbDistance, tickDelta, animationProgress, headYaw, headPitch);
         }
+    }
+
+    @Inject(method = "isShaking", at = @At("HEAD"), cancellable = true)
+    public void tmm$shakeWhenPoisoned(T entity, CallbackInfoReturnable<Boolean> cir) {
+        if (entity instanceof PlayerEntity player && PlayerPoisonComponent.KEY.get(player).poisonTicks < 400)
+            cir.setReturnValue(true);
     }
 }

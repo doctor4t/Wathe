@@ -7,18 +7,14 @@ import dev.doctor4t.trainmurdermystery.util.ShopEntry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface GameConstants {
@@ -90,8 +86,8 @@ public interface GameConstants {
     });
     int MONEY_START = 100;
     Function<Long, Integer> PASSIVE_MONEY_TICKER = time -> {
-        if (time % getInTicks(0, 10) == 0) {
-            return 5;
+        if (time % getInTicks(0, 4) == 0) {
+            return 2;
         }
         return 0;
     };
@@ -101,8 +97,8 @@ public interface GameConstants {
     // Timers
     int PSYCHO_TIMER = getInTicks(0, 30);
     int FIRECRACKER_TIMER = getInTicks(0, 15);
-    int BLACKOUT_MIN_DURATION = getInTicks(0, 15);
-    int BLACKOUT_MAX_DURATION = getInTicks(0, 20);
+    int BLACKOUT_MIN_DURATION = getInTicks(0, 20);
+    int BLACKOUT_MAX_DURATION = getInTicks(0, 30);
     int TIME_ON_CIVILIAN_KILL = getInTicks(1, 0);
 
     static int getInTicks(int minutes, int seconds) {
