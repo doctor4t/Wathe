@@ -58,6 +58,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     private int fade = 0;
 
     private final HashMap<UUID, Role> roles = new HashMap<>();
+    private final HashMap<UUID, Role> previousRoundRoles = new HashMap<>();
 
     private int ticksUntilNextResetAttempt = -1;
 
@@ -198,6 +199,25 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         setPsychosActive(0);
     }
 
+    /**
+     * Checks if a player had a specific role in the previous round
+     * @param playerUuid The player's UUID
+     * @param role The role to check for
+     * @return true if the player had this role in the previous round
+     */
+    public boolean wasRoleLastRound(UUID playerUuid, Role role) {
+        return previousRoundRoles.get(playerUuid) == role;
+    }
+
+    /**
+     * Updates the previous round roles with the current round's roles
+     * Should be called at the end of each round
+     */
+    public void updatePreviousRoundRoles() {
+        previousRoundRoles.clear();
+        previousRoundRoles.putAll(roles);
+    }
+
     public void queueTrainReset() {
         ticksUntilNextResetAttempt = 10;
     }
@@ -269,6 +289,23 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
             this.setRoles(uuidListFromNbt(nbtCompound, role.identifier().toString()), role);
         }
 
+        // Load previous round roles
+        if (nbtCompound.contains("PreviousRoundRoles")) {
+            NbtCompound previousRolesNbt = nbtCompound.getCompound("PreviousRoundRoles");
+            previousRoundRoles.clear();
+            for (String key : previousRolesNbt.getKeys()) {
+                UUID playerUuid = UUID.fromString(key);
+                String roleName = previousRolesNbt.getString(key);
+                Role role = TMMRoles.ROLES.stream()
+                    .filter(r -> r.identifier().toString().equals(roleName))
+                    .findFirst()
+                    .orElse(null);
+                if (role != null) {
+                    previousRoundRoles.put(playerUuid, role);
+                }
+            }
+        }
+
         if (nbtCompound.contains("LooseEndWinner")) {
             this.looseEndWinner = nbtCompound.getUuid("LooseEndWinner");
         } else {
@@ -302,6 +339,13 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         for (Role role : TMMRoles.ROLES) {
             nbtCompound.put(role.identifier().toString(), nbtFromUuidList(getAllWithRole(role)));
         }
+
+        // Save previous round roles
+        NbtCompound previousRolesNbt = new NbtCompound();
+        for (HashMap.Entry<UUID, Role> entry : previousRoundRoles.entrySet()) {
+            previousRolesNbt.putString(entry.getKey().toString(), entry.getValue().identifier().toString());
+        }
+        nbtCompound.put("PreviousRoundRoles", previousRolesNbt);
 
         if (this.looseEndWinner != null) nbtCompound.putUuid("LooseEndWinner", this.looseEndWinner);
     }

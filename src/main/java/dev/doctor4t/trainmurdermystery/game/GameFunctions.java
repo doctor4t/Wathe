@@ -232,6 +232,9 @@ public class GameFunctions {
         GameWorldComponent gameComponent = GameWorldComponent.KEY.get(world);
         gameComponent.getGameMode().finalizeGame(world, gameComponent);
 
+        // Save current round roles as previous round roles before clearing
+        gameComponent.updatePreviousRoundRoles();
+
         WorldBlackoutComponent.KEY.get(world).reset();
         TrainWorldComponent trainComponent = TrainWorldComponent.KEY.get(world);
         trainComponent.setSpeed(0);
