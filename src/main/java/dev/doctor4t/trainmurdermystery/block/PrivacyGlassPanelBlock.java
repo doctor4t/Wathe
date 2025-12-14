@@ -17,6 +17,7 @@ public class PrivacyGlassPanelBlock extends GlassPanelBlock implements PrivacyBl
     public PrivacyGlassPanelBlock(Settings settings) {
         super(settings);
         this.setDefaultState(super.getDefaultState()
+                .with(ACTIVE, true)
                 .with(OPAQUE, false)
                 .with(INTERACTION_COOLDOWN, false));
     }
@@ -39,7 +40,7 @@ public class PrivacyGlassPanelBlock extends GlassPanelBlock implements PrivacyBl
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(OPAQUE, INTERACTION_COOLDOWN);
+        builder.add(OPAQUE, INTERACTION_COOLDOWN, ACTIVE);
         super.appendProperties(builder);
     }
 }

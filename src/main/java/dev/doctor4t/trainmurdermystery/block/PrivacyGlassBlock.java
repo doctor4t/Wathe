@@ -19,6 +19,7 @@ public class PrivacyGlassBlock extends TransparentBlock implements PrivacyBlock 
     public PrivacyGlassBlock(Settings settings) {
         super(settings);
         this.setDefaultState(super.getDefaultState()
+                .with(ACTIVE, true)
                 .with(OPAQUE, false)
                 .with(INTERACTION_COOLDOWN, false));
     }
@@ -42,7 +43,7 @@ public class PrivacyGlassBlock extends TransparentBlock implements PrivacyBlock 
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(OPAQUE, INTERACTION_COOLDOWN);
+        builder.add(OPAQUE, INTERACTION_COOLDOWN, ACTIVE);
     }
 
     @Override

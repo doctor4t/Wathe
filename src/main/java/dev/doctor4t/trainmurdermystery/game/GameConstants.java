@@ -9,12 +9,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 public interface GameConstants {
@@ -97,13 +95,15 @@ public interface GameConstants {
     // Timers
     int PSYCHO_TIMER = getInTicks(0, 30);
     int FIRECRACKER_TIMER = getInTicks(0, 15);
-    int BLACKOUT_MIN_DURATION = getInTicks(0, 15);
-    int BLACKOUT_MAX_DURATION = getInTicks(0, 20);
+    int BLACKOUT_MIN_DURATION = getInTicks(0, 16);
+    int BLACKOUT_MAX_DURATION = getInTicks(0, 25);
     int TIME_ON_CIVILIAN_KILL = getInTicks(1, 0);
 
     static int getInTicks(int minutes, int seconds) {
         return (minutes * 60 + seconds) * 20;
     }
+
+    static int getRandomBlackfownDuration(Random random) { return GameConstants.BLACKOUT_MIN_DURATION + random.nextInt(GameConstants.BLACKOUT_MAX_DURATION - GameConstants.BLACKOUT_MIN_DURATION); }
 
     interface DeathReasons {
         Identifier GENERIC = TMM.id("generic");

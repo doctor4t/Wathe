@@ -1,6 +1,7 @@
 package dev.doctor4t.trainmurdermystery.cca;
 
 import dev.doctor4t.trainmurdermystery.TMM;
+import dev.doctor4t.trainmurdermystery.block.PrivacyBlock;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.index.TMMProperties;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
@@ -70,10 +71,12 @@ public class WorldBlackoutComponent implements AutoSyncedComponent, ServerTickin
                 for (int z = (int) area.minZ; z <= (int) area.maxZ; z++) {
                     BlockPos pos = new BlockPos(x, y, z);
                     BlockState state = this.world.getBlockState(pos);
-                    if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) continue;
-                    int duration = GameConstants.BLACKOUT_MIN_DURATION + this.world.random.nextInt(GameConstants.BLACKOUT_MAX_DURATION - GameConstants.BLACKOUT_MIN_DURATION);
+                    boolean isPrivateBlock = state.getBlock() instanceof PrivacyBlock;
+                    if (!isPrivateBlock)
+                        if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) continue;
+                    int duration = GameConstants.getRandomBlackfownDuration(world.random);
                     if (duration > this.ticks) this.ticks = duration;
-                    BlackoutDetails detail = new BlackoutDetails(pos, duration, state.get(Properties.LIT));
+                    BlackoutDetails detail = new BlackoutDetails(pos, duration, state.get(isPrivateBlock ? TMMProperties.OPAQUE : Properties.LIT));
                     detail.init(this.world);
                     this.blackouts.add(detail);
                 }
@@ -121,32 +124,38 @@ public class WorldBlackoutComponent implements AutoSyncedComponent, ServerTickin
 
         public void init(@NotNull World world) {
             BlockState state = world.getBlockState(this.pos);
-            if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
-            world.setBlockState(this.pos, state.with(Properties.LIT, false).with(TMMProperties.ACTIVE, false));
-            world.playSound(null, this.pos, TMMSounds.BLOCK_LIGHT_TOGGLE, SoundCategory.BLOCKS, 0.5f, 1f);
+            boolean isPrivateBlock = state.getBlock() instanceof PrivacyBlock;
+            if (!isPrivateBlock)
+                if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
+            world.setBlockState(this.pos, state.with(isPrivateBlock ? TMMProperties.OPAQUE : Properties.LIT, isPrivateBlock).with(TMMProperties.ACTIVE, false));
+            world.playSound(null, this.pos, isPrivateBlock ? TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE : TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.5f, 1f);
         }
 
         public void end(@NotNull World world) {
             BlockState state = world.getBlockState(this.pos);
-            if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
-            world.setBlockState(this.pos, state.with(Properties.LIT, this.original).with(TMMProperties.ACTIVE, true));
-            world.playSound(null, this.pos, TMMSounds.BLOCK_LIGHT_TOGGLE, SoundCategory.BLOCKS, 0.5f, 0.5f);
+            boolean isPrivateBlock = state.getBlock() instanceof PrivacyBlock;
+            if (!isPrivateBlock)
+                if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
+            world.setBlockState(this.pos, state.with(isPrivateBlock ? TMMProperties.OPAQUE : Properties.LIT, this.original).with(TMMProperties.ACTIVE, true));
+            world.playSound(null, this.pos, isPrivateBlock ? TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE : TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.5f, 0.5f);
         }
 
         public void tick(World world) {
             if (this.time > 0) this.time--;
             if (this.time > 4) return;
             BlockState state = world.getBlockState(this.pos);
-            if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
+            boolean isPrivateBlock = state.getBlock() instanceof PrivacyBlock;
+            if (!isPrivateBlock)
+                if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
             switch (this.time) {
                 case 0 -> this.end(world);
-                case 1, 3 -> {
-                    world.setBlockState(this.pos, state.with(Properties.LIT, false));
-                    world.playSound(null, this.pos, TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.1f, 1f);
+                case 1, 3, 8, 20 -> {
+                    world.setBlockState(this.pos, state.with(isPrivateBlock ? TMMProperties.OPAQUE : Properties.LIT, !isPrivateBlock));
+                    world.playSound(null, this.pos, isPrivateBlock ? TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE : TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.1f, 1f);
                 }
-                case 2, 5 -> {
-                    world.setBlockState(this.pos, state.with(Properties.LIT, true));
-                    world.playSound(null, this.pos, TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.1f, 1f);
+                case 2, 5, 13, 22 -> {
+                    world.setBlockState(this.pos, state.with(isPrivateBlock ? TMMProperties.OPAQUE : Properties.LIT, isPrivateBlock));
+                    world.playSound(null, this.pos, isPrivateBlock ? TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE : TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.1f, 1f);
                 }
             }
         }

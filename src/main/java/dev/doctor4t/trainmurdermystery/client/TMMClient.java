@@ -4,11 +4,8 @@ import com.google.common.collect.Maps;
 import dev.doctor4t.ratatouille.client.util.OptionLocker;
 import dev.doctor4t.ratatouille.client.util.ambience.AmbienceUtil;
 import dev.doctor4t.ratatouille.client.util.ambience.BackgroundAmbience;
-import dev.doctor4t.ratatouille.client.util.ambience.BlockEntityAmbience;
 import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.TMMConfig;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
-import dev.doctor4t.trainmurdermystery.block_entity.SprinklerBlockEntity;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerMoodComponent;
 import dev.doctor4t.trainmurdermystery.cca.TrainWorldComponent;
@@ -44,6 +41,7 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.option.CloudRenderMode;
+import net.minecraft.client.option.GraphicsMode;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -228,6 +226,7 @@ public class TMMClient implements ClientModInitializer {
         OptionLocker.overrideSoundCategoryVolume("player", 1.0);
         OptionLocker.overrideSoundCategoryVolume("ambient", 1.0);
         OptionLocker.overrideSoundCategoryVolume("voice", 1.0);
+        OptionLocker.overrideOption("graphics", GraphicsMode.FABULOUS);
 
 
         // Item tooltips
@@ -408,6 +407,6 @@ public class TMMClient implements ClientModInitializer {
     }
 
     public static int getLockedRenderDistance(boolean ultraPerfMode) {
-        return ultraPerfMode ? 2 : 32;
+        return ultraPerfMode ? 5 : 32;
     }
 }
