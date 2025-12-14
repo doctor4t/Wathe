@@ -82,10 +82,6 @@ public class TMM implements ModInitializer {
         // server lock to supporters
         ServerPlayerEvents.JOIN.register(player -> {
             DataSyncAPI.refreshAllPlayerData(player.getUuid()).thenRunAsync(() -> {
-                // check if player is supporter now, if not kick
-                if (GameWorldComponent.KEY.get(player.getWorld()).isLockedToSupporters() && !TMM.isSupporter(player)) {
-                    player.networkHandler.disconnect(Text.literal("Server is reserved to doctor4t supporters."));
-                }
             }, player.getWorld().getServer());
         });
 
@@ -139,17 +135,7 @@ public class TMM implements ModInitializer {
         ServerPlayerEntity player = source.getPlayer();
         if (player == null || !player.getClass().equals(ServerPlayerEntity.class)) return 0;
 
-        if (isSupporter(player)) {
-            runnable.run();
-            return 1;
-        } else {
-            player.sendMessage(Text.translatable("commands.supporter_only"));
-            return 0;
-        }
-    }
-
-    public static @NotNull Boolean isSupporter(PlayerEntity player) {
-        Optional<Entitlements> entitlements = Entitlements.token().get(player.getUuid());
-        return entitlements.map(value -> value.keys().stream().anyMatch(identifier -> identifier.equals(COMMAND_ACCESS))).orElse(false);
+        runnable.run();
+        return 1;
     }
 }
