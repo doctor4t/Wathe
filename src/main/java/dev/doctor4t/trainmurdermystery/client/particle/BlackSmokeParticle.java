@@ -15,7 +15,7 @@ public class BlackSmokeParticle extends SpriteBillboardParticle {
         this.maxAge = 100;
 
         this.gravityStrength = 3.0E-6F;
-        this.velocityY = .5f;
+        this.velocityY = 1.25f;
         this.velocityX = 0;
 
         float col = world.random.nextBetween(30, 60) / 255f;
@@ -30,8 +30,11 @@ public class BlackSmokeParticle extends SpriteBillboardParticle {
         this.prevPosY = this.y;
         this.prevPosZ = this.z;
         if (this.age++ < this.maxAge && !(this.alpha <= 0.0F)) {
-            this.velocityY *= .95f;
-            this.velocityX = MathHelper.clamp(this.velocityX + .1f, 0, 1);
+            this.velocityY *= .9;
+            this.velocityX = MathHelper.clamp(this.velocityX + .20f, 0, 2);
+            this.velocityX += (random.nextDouble() - .5) * .2;
+            this.velocityY += (random.nextDouble() - .5) * .1;
+            this.velocityZ += (random.nextDouble() - .5) * .1;
             this.move(this.velocityX, this.velocityY, this.velocityZ);
 
             if (this.age >= this.maxAge - 60 && this.alpha > 0.01F) {

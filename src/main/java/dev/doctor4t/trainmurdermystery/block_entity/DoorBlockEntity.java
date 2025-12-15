@@ -2,6 +2,7 @@ package dev.doctor4t.trainmurdermystery.block_entity;
 
 import dev.doctor4t.trainmurdermystery.block.DoorPartBlock;
 import dev.doctor4t.trainmurdermystery.block.SmallDoorBlock;
+import dev.doctor4t.trainmurdermystery.cca.WorldBlackoutComponent;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import net.minecraft.block.BlockState;
@@ -40,7 +41,7 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
     }
 
     public static <T extends DoorBlockEntity> void serverTick(World world, BlockPos pos, BlockState state, T entity) {
-        if (state.get(DoorPartBlock.OPEN) && !entity.isBlasted()) {
+        if (state.get(DoorPartBlock.OPEN) && !entity.isBlasted() && !WorldBlackoutComponent.KEY.get(world).isBlackoutActive()) {
             entity.setCloseCountdown(entity.getCloseCountdown() - 1);
             if (entity.getCloseCountdown() <= 0) {
                 SmallDoorBlock.toggleDoor(state, world, (SmallDoorBlockEntity) entity, pos);

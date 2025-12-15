@@ -1,6 +1,9 @@
 package dev.doctor4t.trainmurdermystery.block;
 
+import dev.doctor4t.trainmurdermystery.cca.WorldBlackoutComponent;
+import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
+import dev.doctor4t.trainmurdermystery.util.BlackoutBlockFunctions;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,9 +14,11 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class ToggleableFacingLightBlock extends FacingLightBlock {
+public abstract class ToggleableFacingLightBlock extends FacingLightBlock implements BlackoutBlock {
     public static final BooleanProperty LIT = Properties.LIT;
 
     public ToggleableFacingLightBlock(Settings settings) {
@@ -40,5 +45,25 @@ public abstract class ToggleableFacingLightBlock extends FacingLightBlock {
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(LIT);
         super.appendProperties(builder);
+    }
+
+    @Override
+    public int getDuration(Random random) {
+        return GameConstants.getRandomBlackoutDuration(random);
+    }
+
+    @Override
+    public void init(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
+        BlackoutBlockFunctions.Lights.init(world, detail);
+    }
+
+    @Override
+    public void end(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
+        BlackoutBlockFunctions.Lights.end(world, detail);
+    }
+
+    @Override
+    public void tick(World world, WorldBlackoutComponent.BlackoutDetails detail) {
+        BlackoutBlockFunctions.Lights.tick(world, detail);
     }
 }
