@@ -149,11 +149,11 @@ public class WorldBlackoutComponent implements AutoSyncedComponent, ServerTickin
                 if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
             switch (this.time) {
                 case 0 -> this.end(world);
-                case 1, 3, 8, 20 -> {
+                case 1, 3, 8, 18 -> {
                     world.setBlockState(this.pos, state.with(isPrivateBlock ? TMMProperties.OPAQUE : Properties.LIT, !isPrivateBlock));
                     world.playSound(null, this.pos, isPrivateBlock ? TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE : TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.1f, 1f);
                 }
-                case 2, 5, 13, 22 -> {
+                case 2, 5, 13 -> {
                     world.setBlockState(this.pos, state.with(isPrivateBlock ? TMMProperties.OPAQUE : Properties.LIT, isPrivateBlock));
                     world.playSound(null, this.pos, isPrivateBlock ? TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE : TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.1f, 1f);
                 }

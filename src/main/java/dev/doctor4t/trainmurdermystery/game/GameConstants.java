@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,9 +34,9 @@ public interface GameConstants {
         ITEM_COOLDOWNS.put(TMMItems.GRENADE, getInTicks(5, 0));
         ITEM_COOLDOWNS.put(TMMItems.LOCKPICK, getInTicks(3, 0));
         ITEM_COOLDOWNS.put(TMMItems.CROWBAR, getInTicks(0, 10));
-        ITEM_COOLDOWNS.put(TMMItems.BODY_BAG, getInTicks(5, 0));
+        ITEM_COOLDOWNS.put(TMMItems.BODY_BAG, getInTicks(3, 0));
         ITEM_COOLDOWNS.put(TMMItems.PSYCHO_MODE, getInTicks(5, 0));
-        ITEM_COOLDOWNS.put(TMMItems.BLACKOUT, getInTicks(3, 0));
+        ITEM_COOLDOWNS.put(TMMItems.BLACKOUT, getInTicks(2, 0));
     }
 
     int JAMMED_DOOR_TIME = getInTicks(1, 0);
@@ -45,15 +46,15 @@ public interface GameConstants {
     int DECOMPOSING_TIME = getInTicks(4, 0);
 
     // Task Variables
-    float MOOD_GAIN = 0.5f;
-    float MOOD_DRAIN = 1f / getInTicks(4, 0);
+    float MOOD_GAIN = 0.2f;
+    float MOOD_DRAIN = 1f / getInTicks(5, 0);
     int TIME_TO_FIRST_TASK = getInTicks(0, 30);
     int MIN_TASK_COOLDOWN = getInTicks(0, 30);
     int MAX_TASK_COOLDOWN = getInTicks(1, 0);
     int SLEEP_TASK_DURATION = getInTicks(0, 8);
     int OUTSIDE_TASK_DURATION = getInTicks(0, 8);
-    float MID_MOOD_THRESHOLD = 0.55f;
-    float DEPRESSIVE_MOOD_THRESHOLD = 0.2f;
+    float MID_MOOD_THRESHOLD = 0.65f;
+    float DEPRESSIVE_MOOD_THRESHOLD = 0.35f;
     float ITEM_PSYCHOSIS_CHANCE = .5f; // in percent
     int ITEM_PSYCHOSIS_REROLL_TIME = 200;
 
@@ -68,7 +69,7 @@ public interface GameConstants {
                 return PlayerShopComponent.usePsychoMode(player);
             }
         });
-        entries.add(new ShopEntry(TMMItems.POISON_VIAL.getDefaultStack(), 100, ShopEntry.Type.POISON));
+        entries.add(new ShopEntry(TMMItems.POISON_VIAL.getDefaultStack(), 75, ShopEntry.Type.POISON));
         entries.add(new ShopEntry(TMMItems.SCORPION.getDefaultStack(), 50, ShopEntry.Type.POISON));
         entries.add(new ShopEntry(TMMItems.FIRECRACKER.getDefaultStack(), 10, ShopEntry.Type.TOOL));
         entries.add(new ShopEntry(TMMItems.LOCKPICK.getDefaultStack(), 50, ShopEntry.Type.TOOL));
@@ -95,15 +96,18 @@ public interface GameConstants {
     // Timers
     int PSYCHO_TIMER = getInTicks(0, 30);
     int FIRECRACKER_TIMER = getInTicks(0, 15);
-    int BLACKOUT_MIN_DURATION = getInTicks(0, 16);
-    int BLACKOUT_MAX_DURATION = getInTicks(0, 25);
+    int BLACKOUT_MIN_DURATION = getInTicks(0, 12);
+    int BLACKOUT_MAX_DURATION = getInTicks(0, 20);
     int TIME_ON_CIVILIAN_KILL = getInTicks(1, 0);
 
     static int getInTicks(int minutes, int seconds) {
         return (minutes * 60 + seconds) * 20;
     }
 
-    static int getRandomBlackfownDuration(Random random) { return GameConstants.BLACKOUT_MIN_DURATION + random.nextInt(GameConstants.BLACKOUT_MAX_DURATION - GameConstants.BLACKOUT_MIN_DURATION); }
+    static int getRandomBlackfownDuration(Random random) {
+        int v = Math.round(Math.min(Math.min(random.nextFloat(), random.nextFloat()), random.nextFloat()) * (GameConstants.BLACKOUT_MAX_DURATION - GameConstants.BLACKOUT_MIN_DURATION));
+        return GameConstants.BLACKOUT_MIN_DURATION + v;
+    }
 
     interface DeathReasons {
         Identifier GENERIC = TMM.id("generic");
