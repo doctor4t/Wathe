@@ -92,6 +92,9 @@ dependencies {
 	modImplementation "maven.modrinth:iris:${iris_version}-fabric"
 	modRuntimeOnly("org.anarres:jcpp:${jcpp_version}")
 	modImplementation("io.github.douira:glsl-transformer:${glslTransformer_version}")
+
+    // MixinExtras
+    include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixinextras_version}")))
 }
 
 processResources {
