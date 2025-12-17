@@ -7,6 +7,7 @@ import dev.doctor4t.trainmurdermystery.command.*;
 import dev.doctor4t.trainmurdermystery.command.argument.GameModeArgumentType;
 import dev.doctor4t.trainmurdermystery.command.argument.TimeOfDayArgumentType;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
+import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.*;
 import dev.doctor4t.trainmurdermystery.util.*;
 import dev.upcraft.datasync.api.DataSyncAPI;
@@ -17,9 +18,11 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -75,6 +78,29 @@ public class TMM implements ModInitializer {
             LockToSupportersCommand.register(dispatcher);
             SetBackfireChanceCommand.register(dispatcher);
         }));
+
+        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> {
+            MinecraftServer server = sender.getServer();
+            int range = 20;
+
+            server.getPlayerManager().broadcast(
+                    message.getContent(),
+                    player -> {
+                        boolean bypass = GameFunctions.isPlayerSpectatingOrCreative(sender) || GameFunctions.isPlayerSpectatingOrCreative(player);
+
+                        if (bypass || isWithinRange(sender, player, range)) {
+                            return Text.translatable(
+                                    "chat.type.text",
+                                    sender.getDisplayName(),
+                                    message.getContent()
+                            );
+                        }
+                        return null;
+                    },
+                    false
+            );
+            return false;
+        });
 
         // server lock to supporters
         ServerPlayerEvents.JOIN.register(player -> {
@@ -148,5 +174,14 @@ public class TMM implements ModInitializer {
     public static @NotNull Boolean isSupporter(PlayerEntity player) {
         Optional<Entitlements> entitlements = Entitlements.token().get(player.getUuid());
         return entitlements.map(value -> value.keys().stream().anyMatch(identifier -> identifier.equals(COMMAND_ACCESS))).orElse(false);
+    }
+
+
+    public static boolean isWithinRange(ServerPlayerEntity a, ServerPlayerEntity b, int range) {
+        double dx = a.getX() - b.getX();
+        double dy = a.getY() - b.getY();
+        double dz = a.getZ() - b.getZ();
+
+        return (dx * dx + dy + dz * dz) < (range * range);
     }
 }
