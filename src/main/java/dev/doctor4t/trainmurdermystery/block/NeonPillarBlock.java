@@ -22,7 +22,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.NotNull;
 
 public class NeonPillarBlock extends PillarBlock implements BlackoutBlock {
@@ -69,14 +68,14 @@ public class NeonPillarBlock extends PillarBlock implements BlackoutBlock {
         return ActionResult.success(world.isClient);
     }
 
-    @Override
-    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        Direction.Axis axis = state.get(AXIS);
-        if (direction.getAxis() == axis && neighborState.isOf(this) && neighborState.get(AXIS) == axis) {
-            return state.with(ACTIVE, neighborState.get(ACTIVE));
-        }
-        return state;
-    }
+//    @Override
+//    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+//        Direction.Axis axis = state.get(AXIS);
+//        if (direction.getAxis() == axis && neighborState.isOf(this) && neighborState.get(AXIS) == axis) {
+//            return state.with(ACTIVE, neighborState.get(ACTIVE));
+//        }
+//        return state;
+//    }
 
     private boolean toggle(World world, BlockPos pos, Direction.Axis axis, boolean lit) {
         BlockState state = world.getBlockState(pos);

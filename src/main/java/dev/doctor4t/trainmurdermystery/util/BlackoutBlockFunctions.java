@@ -31,7 +31,7 @@ public interface BlackoutBlockFunctions {
             if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
 //            world.setBlockState(detail.pos, state.with(Properties.LIT, (detail.data & -128) == -128).with(TMMProperties.ACTIVE, true));
             world.setBlockState(detail.pos, state.with(Properties.LIT, true).with(TMMProperties.ACTIVE, true));
-            playsound(detail, world, TMMSounds.BLOCK_LIGHT_TOGGLE, 0.5f, 0.5f);
+            playsound(detail, world, TMMSounds.BLOCK_LIGHT_TOGGLE, 0.5f, 0.8f);
         }
 
         static void tick(World world, WorldBlackoutComponent.BlackoutDetails detail) {
@@ -43,8 +43,8 @@ public interface BlackoutBlockFunctions {
 //                    detail.end(world);
 //                    return;
 //                }
-                case 3, 8 -> blinkBlock(world, detail, state, false);
-                case 5, 13 -> blinkBlock(world, detail, state, true);
+                case 3 -> blinkBlock(world, detail, state, false);
+                case 7 -> blinkBlock(world, detail, state, true);
             }
             if (detail.getTime() > 20 && detail.getTime() < GameConstants.BLACKOUT_MIN_DURATION / 2) {
                 int i = detail.data & 0x7F;

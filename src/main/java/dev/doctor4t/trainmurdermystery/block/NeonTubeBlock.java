@@ -24,7 +24,6 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.NotNull;
 
 public class NeonTubeBlock extends BarBlock implements  BlackoutBlock {
@@ -49,18 +48,18 @@ public class NeonTubeBlock extends BarBlock implements  BlackoutBlock {
         };
     }
 
-    @Override
-    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        BlockState updatedState = super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
-        if (updatedState == null) {
-            return null;
-        }
-        Direction.Axis axis = state.get(AXIS);
-        if (direction.getAxis() == axis && neighborState.isOf(this) && neighborState.get(AXIS) == axis) {
-            return updatedState.with(ACTIVE, neighborState.get(ACTIVE));
-        }
-        return updatedState;
-    }
+//    @Override
+//    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+//        BlockState updatedState = super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+//        if (updatedState == null) {
+//            return null;
+//        }
+//        Direction.Axis axis = state.get(AXIS);
+//        if (direction.getAxis() == axis && neighborState.isOf(this) && neighborState.get(AXIS) == axis) {
+//            return updatedState.with(ACTIVE, neighborState.get(ACTIVE));
+//        }
+//        return updatedState;
+//    }
 
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {

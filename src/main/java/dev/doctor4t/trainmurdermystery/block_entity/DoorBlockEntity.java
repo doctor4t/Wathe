@@ -2,7 +2,6 @@ package dev.doctor4t.trainmurdermystery.block_entity;
 
 import dev.doctor4t.trainmurdermystery.block.DoorPartBlock;
 import dev.doctor4t.trainmurdermystery.block.SmallDoorBlock;
-import dev.doctor4t.trainmurdermystery.cca.WorldBlackoutComponent;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import net.minecraft.block.BlockState;
@@ -25,9 +24,11 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
 
     private String keyName = "";
 
+    private int blackoutCooldown = 0;
     private int closeCountdown = 0;
     private int jammedTime = 0;
     private boolean blasted = false;
+    private boolean blackoutUnlocking = false;
 
     public DoorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -41,7 +42,10 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
     }
 
     public static <T extends DoorBlockEntity> void serverTick(World world, BlockPos pos, BlockState state, T entity) {
-        if (state.get(DoorPartBlock.OPEN) && !entity.isBlasted() && !WorldBlackoutComponent.KEY.get(world).isBlackoutActive()) {
+        if (entity.getBlackoutCooldown() > 0) {
+            entity.setBlackoutCooldown(entity.getBlackoutCooldown() - 1);
+            entity.setCloseCountdown(0);
+        } else if (state.get(DoorPartBlock.OPEN) && !entity.isBlasted()) {
             entity.setCloseCountdown(entity.getCloseCountdown() - 1);
             if (entity.getCloseCountdown() <= 0) {
                 SmallDoorBlock.toggleDoor(state, world, (SmallDoorBlockEntity) entity, pos);
@@ -70,9 +74,19 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
         if (this.world != null) {
             this.lastUpdate = this.world.getTime();
             this.open = !this.open;
-            this.world.addSyncedBlockEvent(this.pos, this.getCachedState().getBlock(), 1, this.open ? 1 : 0);
+            this.world.addSyncedBlockEvent(this.pos, this.getCachedState().getBlock(), 1, (this.open ? 1 : 0));
             this.closeCountdown = this.open ? GameConstants.DOOR_AUTOCLOSE_TIME : 0;
         }
+    }
+
+    @Override
+    public boolean onSyncedBlockEvent(int type, int data) {
+        if (this.world != null && type == 1) {
+            this.state.start(this.age);
+            this.open = (data & 1) == 1;
+            return true;
+        }
+        return super.onSyncedBlockEvent(type, data);
     }
 
     protected void playToggleSound() {
@@ -105,20 +119,12 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
     }
 
     @Override
-    public boolean onSyncedBlockEvent(int type, int data) {
-        if (this.world != null && type == 1) {
-            this.state.start(this.age);
-            this.open = data != 0;
-            return true;
-        }
-        return super.onSyncedBlockEvent(type, data);
-    }
-
-    @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
         nbt.putBoolean("open", this.isOpen());
         nbt.putBoolean("blasted", this.isBlasted());
+        nbt.putBoolean("blackoutUnlocking", this.isBlackoutUnlocking());
+        nbt.putInt("blackoutCooldown", this.getBlackoutCooldown());
         nbt.putInt("closeCountdown", this.getCloseCountdown());
         nbt.putInt("jammedTime", this.getJammedTime());
         nbt.putString("keyName", this.getKeyName());
@@ -129,6 +135,8 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
         super.readNbt(nbt, registryLookup);
         this.setOpen(nbt.getBoolean("open"));
         this.setBlasted(nbt.getBoolean("blasted"));
+        this.setBlackoutUnlocking(nbt.getBoolean("blackoutUnlocking"));
+        this.setBlackoutCooldown(nbt.getInt("blackoutCooldown"));
         this.setCloseCountdown(nbt.getInt("closeCountdown"));
         this.setJammed(nbt.getInt("jammedTime"));
         this.setKeyName(nbt.getString("keyName"));
@@ -182,5 +190,21 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
 
     public void setBlasted(boolean blasted) {
         this.blasted = blasted;
+    }
+
+    public boolean isBlackoutUnlocking() {
+        return blackoutUnlocking;
+    }
+
+    public int getBlackoutCooldown() {
+        return blackoutCooldown;
+    }
+
+    public void setBlackoutCooldown(int blackoutCooldown) {
+        this.blackoutCooldown = blackoutCooldown;
+    }
+
+    public void setBlackoutUnlocking(boolean blackoutUnlocking) {
+        this.blackoutUnlocking = blackoutUnlocking;
     }
 }

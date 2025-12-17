@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
@@ -51,7 +52,10 @@ public class WorldBlackoutComponent implements AutoSyncedComponent, ServerTickin
                 i--;
             }
         }
-        if (this.ticks > 0) this.ticks--;
+        if (this.ticks > 0) {
+            this.ticks--;
+            sync();
+        }
     }
 
     public boolean isBlackoutActive() {
@@ -61,7 +65,10 @@ public class WorldBlackoutComponent implements AutoSyncedComponent, ServerTickin
     public boolean triggerBlackout() {
         AreasWorldComponent areas = AreasWorldComponent.KEY.get(world);
 
-        Box area = areas.playArea;
+        return triggerBlackout(areas.playArea);
+    }
+
+    public boolean triggerBlackout(Box area) {
         if (this.ticks > 0) return false;
         for (int x = (int) area.minX; x <= (int) area.maxX; x++) {
             for (int y = (int) area.minY; y <= (int) area.maxY; y++) {
@@ -83,11 +90,16 @@ public class WorldBlackoutComponent implements AutoSyncedComponent, ServerTickin
         return true;
     }
 
+    private void sync() {
+        KEY.sync(this.world);
+    }
+
     @Override
     public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         NbtList list = new NbtList();
         for (BlackoutDetails detail : this.blackouts) list.add(detail.writeToNbt());
         tag.put("blackouts", list);
+        tag.putInt("ticks", this.ticks);
     }
 
     @Override
@@ -98,6 +110,17 @@ public class WorldBlackoutComponent implements AutoSyncedComponent, ServerTickin
             detail.init(this.world);
             this.blackouts.add(detail);
         }
+        this.ticks = tag.getInt("ticks");
+    }
+
+    @Override
+    public void writeSyncPacket(RegistryByteBuf buf, ServerPlayerEntity recipient) {
+        buf.writeInt(ticks);
+    }
+
+    @Override
+    public void applySyncPacket(RegistryByteBuf buf) {
+        this.ticks = buf.readInt();
     }
 
     public static class BlackoutDetails {

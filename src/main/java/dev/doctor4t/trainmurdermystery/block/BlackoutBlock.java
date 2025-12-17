@@ -8,9 +8,12 @@ import org.jetbrains.annotations.NotNull;
 public interface BlackoutBlock {
     int getDuration(Random random);
 
-    void init(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail);
+    default void init(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
+    }
 
-    void end(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail);
+    default void end(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
+    }
 
-    void tick(World world, WorldBlackoutComponent.BlackoutDetails detail);
+    default void tick(World world, WorldBlackoutComponent.BlackoutDetails detail) {
+    }
 }

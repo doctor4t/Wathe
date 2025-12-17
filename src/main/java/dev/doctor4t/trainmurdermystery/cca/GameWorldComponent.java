@@ -53,7 +53,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     }
 
     public int getMaxRoomKey() {
-        return maxRoomKey;
+        return maxRoomKey <= 0 ? 7 : maxRoomKey;
     }
 
     public void setWeightsEnabled(boolean enabled) {

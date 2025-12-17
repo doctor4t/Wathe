@@ -1,48 +1,84 @@
 package dev.doctor4t.trainmurdermystery.command;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.cca.AreasWorldComponent;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
-import dev.doctor4t.trainmurdermystery.cca.TrainWorldComponent;
-import dev.doctor4t.trainmurdermystery.command.argument.TimeOfDayArgumentType;
+
+import net.minecraft.command.argument.BlockPosArgumentType;
+import net.minecraft.command.argument.RotationArgumentType;
+import net.minecraft.command.argument.Vec3ArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class SetConfigCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(CommandManager.literal("tmm:setVisual")
+        dispatcher.register(CommandManager.literal("tmm:setConfig")
                 .requires(source -> source.hasPermissionLevel(2))
+                .then(CommandManager.literal("readyArea")
+                        .executes(context -> printArea(context.getSource(), AreasWorldComponent::getReadyArea))
+                        .then(CommandManager.argument("1", Vec3ArgumentType.vec3())
+                                .then(CommandManager.argument("2", Vec3ArgumentType.vec3())
+                                        .executes(context -> executeArea(context.getSource(), AreasWorldComponent::setReadyArea, Vec3ArgumentType.getVec3(context, "1"), Vec3ArgumentType.getVec3(context, "2"))))))
                 .then(CommandManager.literal("playArea")
-                        .executes(context -> print(context.getSource(), AreasWorldComponent.KEY.get(context.getSource().getWorld()).getPlayArea()))
-                        .then(CommandManager.argument("bool", BoolArgumentType.bool())
-                                .executes(context -> execute(context.getSource(), AreasWorldComponent::setPlayArea, BoolArgumentType.getBool(context, "enabled")))))
-                .then(CommandManager.literal("fog")
-                        .then(CommandManager.argument("enabled", BoolArgumentType.bool())
-                                .executes(context -> execute(context.getSource(), TrainWorldComponent::setFog, BoolArgumentType.getBool(context, "enabled")))))
-                .then(CommandManager.literal("hud")
-                        .then(CommandManager.argument("enabled", BoolArgumentType.bool())
-                                .executes(context -> execute(context.getSource(), TrainWorldComponent::setHud, BoolArgumentType.getBool(context, "enabled")))))
-                .then(CommandManager.literal("trainSpeed")
-                        .then(CommandManager.argument("speed", IntegerArgumentType.integer(0))
-                                .executes(context -> execute(context.getSource(), TrainWorldComponent::setSpeed, IntegerArgumentType.getInteger(context, "speed")))))
-                .then(CommandManager.literal("time")
-                        .then(CommandManager.argument("timeOfDay", TimeOfDayArgumentType.timeofday())
-                                .executes(context -> execute(context.getSource(), TrainWorldComponent::setTimeOfDay, TimeOfDayArgumentType.getTimeofday(context, "timeOfDay")))))
-                .then(CommandManager.literal("reset")
-                        .executes(context -> reset(context.getSource())))
+                        .executes(context -> printArea(context.getSource(), AreasWorldComponent::getPlayArea))
+                        .then(CommandManager.argument("1", Vec3ArgumentType.vec3())
+                                .then(CommandManager.argument("2", Vec3ArgumentType.vec3())
+                                        .executes(context -> executeArea(context.getSource(), AreasWorldComponent::setPlayArea, Vec3ArgumentType.getVec3(context, "1"), Vec3ArgumentType.getVec3(context, "2"))))))
+                .then(CommandManager.literal("particleColliderArea")
+                        .executes(context -> printArea(context.getSource(), AreasWorldComponent::getParticleColliderArea))
+                        .then(CommandManager.argument("1", Vec3ArgumentType.vec3())
+                                .then(CommandManager.argument("2", Vec3ArgumentType.vec3())
+                                        .executes(context -> executeArea(context.getSource(), AreasWorldComponent::setParticleColliderArea, Vec3ArgumentType.getVec3(context, "1"), Vec3ArgumentType.getVec3(context, "2"))))))
+                .then(CommandManager.literal("resetTemplateArea")
+                        .executes(context -> printArea(context.getSource(), AreasWorldComponent::getResetTemplateArea))
+                        .then(CommandManager.argument("1", BlockPosArgumentType.blockPos())
+                                .then(CommandManager.argument("2", Vec3ArgumentType.vec3())
+                                        .executes(context -> executeArea(context.getSource(), AreasWorldComponent::setResetTemplateArea, Vec3d.of(BlockPosArgumentType.getBlockPos(context, "1")), Vec3d.of(BlockPosArgumentType.getBlockPos(context, "2")))))))
+                .then(CommandManager.literal("resetPasteArea")
+                        .executes(context -> printArea(context.getSource(), AreasWorldComponent::getResetPasteArea))
+                        .then(CommandManager.argument("1", BlockPosArgumentType.blockPos())
+                                .then(CommandManager.argument("2", BlockPosArgumentType.blockPos())
+                                        .executes(context -> executeArea(context.getSource(), AreasWorldComponent::setResetPasteArea, Vec3d.of(BlockPosArgumentType.getBlockPos(context, "1")), Vec3d.of(BlockPosArgumentType.getBlockPos(context, "2")))))))
+                .then(CommandManager.literal("playAreaOffset")
+                        .executes(context -> printArea(context.getSource(), AreasWorldComponent::getPlayAreaOffset))
+                        .then(CommandManager.argument("1", Vec3ArgumentType.vec3())
+                                .executes(context -> executeArea(context.getSource(), AreasWorldComponent::setPlayAreaOffset, Vec3ArgumentType.getVec3(context, "1")))))
+                .then(CommandManager.literal("lobbySpawnPos")
+                        .executes(context -> printArea(context.getSource(), AreasWorldComponent::getSpawnPos))
+                        .then(CommandManager.argument("pos", Vec3ArgumentType.vec3())
+                                .then(CommandManager.argument("rotation", RotationArgumentType.rotation())
+                                        .executes(context -> {
+                                            Vec2f rotation = RotationArgumentType.getRotation(context, "rotation").toAbsoluteRotation(context.getSource());
+                                            return executeArea(context.getSource(), AreasWorldComponent::setSpawnPos, new AreasWorldComponent.PosWithOrientation(Vec3ArgumentType.getVec3(context, "pos"), rotation.x, rotation.y));
+                                        }))))
+                .then(CommandManager.literal("spectatorSpawnPos")
+                        .executes(context -> printArea(context.getSource(), AreasWorldComponent::getSpawnPos))
+                        .then(CommandManager.argument("pos", Vec3ArgumentType.vec3())
+                                .then(CommandManager.argument("rotation", RotationArgumentType.rotation())
+                                        .executes(context -> {
+                                            Vec2f rotation = RotationArgumentType.getRotation(context, "rotation").toAbsoluteRotation(context.getSource());
+                                            return executeArea(context.getSource(), AreasWorldComponent::setSpectatorSpawnPos, new AreasWorldComponent.PosWithOrientation(Vec3ArgumentType.getVec3(context, "pos"), rotation.x, rotation.y));
+                                        }))))
+                .then(CommandManager.literal("maxRoomKeys")
+                        .executes(ctx -> {
+                            ctx.getSource().sendMessage(Text.of("There is " + GameWorldComponent.KEY.get(ctx.getSource().getWorld()).getMaxRoomKey() + " unique room keys"));
+                            return 1;
+                        })
+                        .then(CommandManager.argument("maxKeys", IntegerArgumentType.integer(1))
+                                .executes(ctx -> execute(ctx.getSource(), GameWorldComponent::setMaxRoomKey, IntegerArgumentType.getInteger(ctx, "maxKeys")))))
         );
     }
 
-    private static int reset(ServerCommandSource source) {
-        TrainWorldComponent trainWorldComponent = TrainWorldComponent.KEY.get(source.getWorld());
-        trainWorldComponent.reset();
+    private static int executeArea(ServerCommandSource source, BiConsumer<AreasWorldComponent, Box> consumer, Vec3d first, Vec3d second) {
+        consumer.accept(AreasWorldComponent.KEY.get(source.getWorld()), new Box(first, second));
         return 1;
     }
 
@@ -56,8 +92,8 @@ public class SetConfigCommand {
         return 1;
     }
 
-    private static <T> int print(ServerCommandSource source, T value) {
-        source.sendMessage(Text.literal(value.toString()));
+    private static <T> int printArea(ServerCommandSource source, Function<AreasWorldComponent, T> func) {
+        source.sendMessage(Text.literal(func.apply(AreasWorldComponent.KEY.get(source.getWorld())).toString()));
         return 1;
     }
 }

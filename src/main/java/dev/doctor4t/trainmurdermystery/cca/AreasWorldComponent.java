@@ -20,7 +20,7 @@ public class AreasWorldComponent implements AutoSyncedComponent {
         public final float yaw;
         public final float pitch;
 
-        PosWithOrientation(Vec3d pos, float yaw, float pitch) {
+        public PosWithOrientation(Vec3d pos, float yaw, float pitch) {
             this.pos = pos;
             this.yaw = yaw;
             this.pitch = pitch;
@@ -30,6 +30,10 @@ public class AreasWorldComponent implements AutoSyncedComponent {
             this(new Vec3d(x, y, z), yaw, pitch);
         }
 
+        @Override
+        public String toString() {
+            return "%s, %f, %f".formatted(pos.toString(), yaw, pitch);
+        }
     }
     public static Vec3d getVec3dFromNbt(NbtCompound tag, String name) {
         return new Vec3d(tag.getDouble(name + "X"), tag.getFloat(name + "Y"), tag.getDouble(name + "Z"));
@@ -84,6 +88,7 @@ public class AreasWorldComponent implements AutoSyncedComponent {
 
     public void setSpawnPos(PosWithOrientation spawnPos) {
         this.spawnPos = spawnPos;
+        sync();
     }
 
     public PosWithOrientation getSpectatorSpawnPos() {
@@ -92,6 +97,7 @@ public class AreasWorldComponent implements AutoSyncedComponent {
 
     public void setSpectatorSpawnPos(PosWithOrientation spectatorSpawnPos) {
         this.spectatorSpawnPos = spectatorSpawnPos;
+        sync();
     }
 
     public Box getReadyArea() {
@@ -100,6 +106,7 @@ public class AreasWorldComponent implements AutoSyncedComponent {
 
     public void setReadyArea(Box readyArea) {
         this.readyArea = readyArea;
+        sync();
     }
 
     public Vec3d getPlayAreaOffset() {
@@ -108,6 +115,7 @@ public class AreasWorldComponent implements AutoSyncedComponent {
 
     public void setPlayAreaOffset(Vec3d playAreaOffset) {
         this.playAreaOffset = playAreaOffset;
+        sync();
     }
 
     public Box getPlayArea() {
@@ -116,6 +124,7 @@ public class AreasWorldComponent implements AutoSyncedComponent {
 
     public void setPlayArea(Box playArea) {
         this.playArea = playArea;
+        sync();
     }
 
     public Box getParticleColliderArea() {
@@ -124,6 +133,7 @@ public class AreasWorldComponent implements AutoSyncedComponent {
 
     public void setParticleColliderArea(Box particleColliderArea) {
         this.particleColliderArea = particleColliderArea;
+        sync();
     }
 
     public Box getResetTemplateArea() {
@@ -132,6 +142,7 @@ public class AreasWorldComponent implements AutoSyncedComponent {
 
     public void setResetTemplateArea(Box resetTemplateArea) {
         this.resetTemplateArea = resetTemplateArea;
+        sync();
     }
 
     public Box getResetPasteArea() {
@@ -140,6 +151,7 @@ public class AreasWorldComponent implements AutoSyncedComponent {
 
     public void setResetPasteArea(Box resetPasteArea) {
         this.resetPasteArea = resetPasteArea;
+        sync();
     }
 
     public AreasWorldComponent(World world) {
