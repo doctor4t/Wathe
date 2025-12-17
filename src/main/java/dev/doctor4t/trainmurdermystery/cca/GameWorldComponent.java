@@ -38,6 +38,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     private boolean lockedToSupporters = false;
     private boolean enableWeights = false;
     private double specialRoleCount = 0;
+    private int maxRoomKey = 7;
 
     public void setSpecialRoleCount(double specialRoleCount) {
         this.specialRoleCount = specialRoleCount;
@@ -45,6 +46,14 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
     public double getSpecialRoleCount() {
         return specialRoleCount;
+    }
+
+    public void setMaxRoomKey(int maxRoomKey) {
+        this.maxRoomKey = maxRoomKey;
+    }
+
+    public int getMaxRoomKey() {
+        return maxRoomKey;
     }
 
     public void setWeightsEnabled(boolean enabled) {
@@ -262,6 +271,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
             this.looseEndWinner = null;
         }
         specialRoleCount = nbtCompound.getDouble("specialRoleCount");
+        maxRoomKey = nbtCompound.getInt("maxRoomKey");
     }
 
     private ArrayList<UUID> uuidListFromNbt(NbtCompound nbtCompound, String listName) {
@@ -292,6 +302,8 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         if (this.looseEndWinner != null) nbtCompound.putUuid("LooseEndWinner", this.looseEndWinner);
 
         nbtCompound.putDouble("specialRoleCount", specialRoleCount);
+        if (nbtCompound.contains("maxRoomKey"))
+            nbtCompound.putInt("maxRoomKey", maxRoomKey);
     }
 
     private NbtList nbtFromUuidList(List<UUID> list) {

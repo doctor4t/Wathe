@@ -179,7 +179,7 @@ public class GameFunctions {
         int roomNumber = 0;
         for (ServerPlayerEntity serverPlayerEntity : players) {
             ItemStack itemStack = new ItemStack(TMMItems.KEY);
-            roomNumber = roomNumber % 7 + 1;
+            roomNumber = roomNumber % GameWorldComponent.KEY.get(serverWorld).getMaxRoomKey() + 1;
             int finalRoomNumber = roomNumber;
             itemStack.apply(DataComponentTypes.LORE, LoreComponent.DEFAULT, component -> new LoreComponent(Text.literal("Room " + finalRoomNumber).getWithStyle(Style.EMPTY.withItalic(false).withColor(0xFF8C00))));
             serverPlayerEntity.giveItemStack(itemStack);

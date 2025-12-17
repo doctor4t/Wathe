@@ -131,6 +131,7 @@ public class MoodRenderer {
         context.getMatrices().push();
         context.getMatrices().translate(0, 10 * moodOffset, 0);
         context.getMatrices().translate(26, 8 + textRenderer.fontHeight, 0);
+        context.fill(0, 0, 1, 1, MathHelper.hsvToRgb(moodRender / 3.0F + .5f, 1.0F, 0.2F) | ((int) (moodAlpha * 255) << 24));
         context.getMatrices().scale((moodTextWidth - 8) * moodRender, 1, 1);
         context.fill(0, 0, 1, 1, MathHelper.hsvToRgb(moodRender / 3.0F, 1.0F, 1.0F) | ((int) (moodAlpha * 255) << 24));
         context.getMatrices().pop();
