@@ -3,14 +3,14 @@ package dev.doctor4t.trainmurdermystery.game;
 import com.google.common.collect.Lists;
 import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.api.GameMode;
-import dev.doctor4t.trainmurdermystery.api.TMMGameModes;
+import dev.doctor4t.trainmurdermystery.api.event.GameEvents;
 import dev.doctor4t.trainmurdermystery.cca.*;
 import dev.doctor4t.trainmurdermystery.compat.TrainVoicePlugin;
 import dev.doctor4t.trainmurdermystery.entity.FirecrackerEntity;
 import dev.doctor4t.trainmurdermystery.entity.NoteEntity;
 import dev.doctor4t.trainmurdermystery.entity.PlayerBodyEntity;
-import dev.doctor4t.trainmurdermystery.event.AllowPlayerDeath;
-import dev.doctor4t.trainmurdermystery.event.ShouldDropOnDeath;
+import dev.doctor4t.trainmurdermystery.api.event.AllowPlayerDeath;
+import dev.doctor4t.trainmurdermystery.api.event.ShouldDropOnDeath;
 import dev.doctor4t.trainmurdermystery.index.TMMDataComponentTypes;
 import dev.doctor4t.trainmurdermystery.index.TMMEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMItems;
@@ -89,7 +89,7 @@ public class GameFunctions {
 
     public static void startGame(ServerWorld world, GameMode gameMode, int time) {
         GameWorldComponent game = GameWorldComponent.KEY.get(world);
-        AreasWorldComponent areas = AreasWorldComponent.KEY.get(world);
+        MapVariablesWorldComponent areas = MapVariablesWorldComponent.KEY.get(world);
         int playerCount = Math.toIntExact(world.getPlayers().stream().filter(serverPlayerEntity -> (areas.getReadyArea().contains(serverPlayerEntity.getPos()))).count());
         game.setGameMode(gameMode);
         GameTimeComponent.KEY.get(world).setResetTime(time);
@@ -112,16 +112,21 @@ public class GameFunctions {
         GameWorldComponent gameComponent = GameWorldComponent.KEY.get(serverWorld);
         List<ServerPlayerEntity> readyPlayerList = getReadyPlayerList(serverWorld);
 
+        GameEvents.ON_GAME_START.invoker().onGameStart(gameComponent.getGameMode());
         baseInitialize(serverWorld, gameComponent, readyPlayerList);
         gameComponent.getGameMode().initializeGame(serverWorld, gameComponent, readyPlayerList);
 
         gameComponent.sync();
+
+        GameEvents.ON_FINISH_INITIALIZE.invoker().onFinishInitialize(serverWorld, gameComponent);
     }
 
     private static void baseInitialize(ServerWorld serverWorld, GameWorldComponent gameComponent, List<ServerPlayerEntity> players) {
-        AreasWorldComponent areas = AreasWorldComponent.KEY.get(serverWorld);
+        MapVariablesWorldComponent areas = MapVariablesWorldComponent.KEY.get(serverWorld);
 
-        TrainWorldComponent.KEY.get(serverWorld).reset();
+        if (MapVariablesWorldComponent.KEY.get(serverWorld).isTrain()) {
+            TrainWorldComponent.KEY.get(serverWorld).reset();
+        }
         WorldBlackoutComponent.KEY.get(serverWorld).reset();
 
         serverWorld.getGameRules().get(GameRules.KEEP_INVENTORY).set(true, serverWorld.getServer());
@@ -142,7 +147,7 @@ public class GameFunctions {
         // teleport players to play area
         for (ServerPlayerEntity player : players) {
             player.changeGameMode(net.minecraft.world.GameMode.ADVENTURE);
-            Vec3d pos = player.getPos().add(areas.getPlayAreaOffset());
+            Vec3d pos = player.getPos().add(Vec3d.of(areas.getPlayAreaOffset()));
             player.requestTeleport(pos.getX(), pos.getY() + 1, pos.getZ());
         }
 
@@ -150,7 +155,7 @@ public class GameFunctions {
         for (ServerPlayerEntity player : serverWorld.getPlayers(serverPlayerEntity -> !players.contains(serverPlayerEntity))) {
             player.changeGameMode(net.minecraft.world.GameMode.SPECTATOR);
 
-            AreasWorldComponent.PosWithOrientation spectatorSpawnPos = areas.getSpectatorSpawnPos();
+            MapVariablesWorldComponent.PosWithOrientation spectatorSpawnPos = areas.getSpectatorSpawnPos();
             player.teleport(serverWorld, spectatorSpawnPos.pos.getX(), spectatorSpawnPos.pos.getY(), spectatorSpawnPos.pos.getZ(), spectatorSpawnPos.yaw, spectatorSpawnPos.pitch);
         }
 
@@ -173,7 +178,7 @@ public class GameFunctions {
         GameTimeComponent.KEY.get(serverWorld).reset();
 
         // reset train
-        gameComponent.queueTrainReset();
+        gameComponent.queueMapReset();
 
         // select rooms
         Collections.shuffle(players);
@@ -223,13 +228,14 @@ public class GameFunctions {
     }
 
     private static List<ServerPlayerEntity> getReadyPlayerList(ServerWorld serverWorld) {
-        AreasWorldComponent areas =AreasWorldComponent.KEY.get(serverWorld);
+        MapVariablesWorldComponent areas = MapVariablesWorldComponent.KEY.get(serverWorld);
         List<ServerPlayerEntity> players = serverWorld.getPlayers(serverPlayerEntity -> areas.getReadyArea().contains(serverPlayerEntity.getPos()));
         return players;
     }
 
     public static void finalizeGame(ServerWorld world) {
         GameWorldComponent gameComponent = GameWorldComponent.KEY.get(world);
+        GameEvents.ON_GAME_STOP.invoker().onGameStop(gameComponent.getGameMode());
         gameComponent.getGameMode().finalizeGame(world, gameComponent);
 
         WorldBlackoutComponent.KEY.get(world).reset();
@@ -253,6 +259,8 @@ public class GameFunctions {
         gameComponent.setGameStatus(GameWorldComponent.GameStatus.INACTIVE);
         trainComponent.setTime(0);
         gameComponent.sync();
+
+        GameEvents.ON_FINISH_FINALIZE.invoker().onFinishFinalize(world, gameComponent);
     }
 
     public static void resetPlayer(ServerPlayerEntity player) {
@@ -268,7 +276,7 @@ public class GameFunctions {
 
         player.changeGameMode(net.minecraft.world.GameMode.ADVENTURE);
         player.wakeUp();
-        AreasWorldComponent.PosWithOrientation spawnPos = AreasWorldComponent.KEY.get(player.getWorld()).getSpawnPos();
+        MapVariablesWorldComponent.PosWithOrientation spawnPos = MapVariablesWorldComponent.KEY.get(player.getWorld()).getSpawnPos();
         TeleportTarget teleportTarget = new TeleportTarget(player.getServerWorld(), spawnPos.pos, Vec3d.ZERO, spawnPos.yaw, spawnPos.pitch, TeleportTarget.NO_OP);
         player.teleportTo(teleportTarget);
     }
@@ -285,7 +293,7 @@ public class GameFunctions {
     public static void killPlayer(PlayerEntity victim, boolean spawnBody, @Nullable PlayerEntity killer, Identifier deathReason) {
         PlayerPsychoComponent component = PlayerPsychoComponent.KEY.get(victim);
 
-        if (!AllowPlayerDeath.EVENT.invoker().allowDeath(victim, deathReason)) return;
+        if (!AllowPlayerDeath.EVENT.invoker().allowDeath(victim, killer, deathReason)) return;
         if (component.getPsychoTicks() > 0) {
             if (component.getArmour() > 0) {
                 component.setArmour(component.getArmour() - 1);
@@ -303,8 +311,10 @@ public class GameFunctions {
             return;
         }
 
-        if (killer != null && GameWorldComponent.KEY.get(killer.getWorld()).canUseKillerFeatures(killer)) {
-            PlayerShopComponent.KEY.get(killer).addToBalance(GameConstants.MONEY_PER_KILL);
+        if (killer != null) {
+            if (GameWorldComponent.KEY.get(killer.getWorld()).canUseKillerFeatures(killer)) {
+                PlayerShopComponent.KEY.get(killer).addToBalance(GameConstants.MONEY_PER_KILL);
+            }
 
             // replenish derringer
             for (List<ItemStack> list : killer.getInventory().combinedInventory) {
@@ -335,7 +345,7 @@ public class GameFunctions {
         for (List<ItemStack> list : victim.getInventory().combinedInventory) {
             for (int i = 0; i < list.size(); i++) {
                 ItemStack stack = list.get(i);
-                if (shouldDropOnDeath(stack)) {
+                if (shouldDropOnDeath(stack, victim)) {
                     victim.dropItem(stack, true, false);
                     list.set(i, ItemStack.EMPTY);
                 }
@@ -350,8 +360,8 @@ public class GameFunctions {
         TrainVoicePlugin.addPlayer(victim.getUuid());
     }
 
-    public static boolean shouldDropOnDeath(@NotNull ItemStack stack) {
-        return !stack.isEmpty() && (stack.isOf(TMMItems.REVOLVER) || ShouldDropOnDeath.EVENT.invoker().shouldDrop(stack));
+    public static boolean shouldDropOnDeath(@NotNull ItemStack stack, PlayerEntity victim) {
+        return !stack.isEmpty() && (stack.isOf(TMMItems.REVOLVER) || ShouldDropOnDeath.EVENT.invoker().shouldDrop(stack, victim));
     }
 
     public static boolean isPlayerAliveAndSurvival(PlayerEntity player) {
@@ -387,11 +397,11 @@ public class GameFunctions {
     // returns whether another reset should be attempted
     public static boolean tryResetTrain(ServerWorld serverWorld) {
         if (serverWorld.getServer().getOverworld().equals(serverWorld)) {
-            AreasWorldComponent areas = AreasWorldComponent.KEY.get(serverWorld);
+            MapVariablesWorldComponent areas = MapVariablesWorldComponent.KEY.get(serverWorld);
             BlockPos backupMinPos = BlockPos.ofFloored(areas.getResetTemplateArea().getMinPos());
             BlockPos backupMaxPos = BlockPos.ofFloored(areas.getResetTemplateArea().getMaxPos());
             BlockBox backupTrainBox = BlockBox.create(backupMinPos, backupMaxPos);
-            BlockPos trainMinPos = BlockPos.ofFloored(areas.getResetPasteArea().getMinPos());
+            BlockPos trainMinPos = BlockPos.ofFloored(areas.getResetTemplateArea().offset(Vec3d.of(areas.getResetPasteOffset())).getMinPos());
             BlockPos trainMaxPos = trainMinPos.add(backupTrainBox.getDimensions());
             BlockBox trainBox = BlockBox.create(trainMinPos, trainMaxPos);
 
@@ -496,7 +506,7 @@ public class GameFunctions {
 
     public static int getReadyPlayerCount(World world) {
         List<? extends PlayerEntity> players = world.getPlayers();
-        AreasWorldComponent areas = AreasWorldComponent.KEY.get(world);
+        MapVariablesWorldComponent areas = MapVariablesWorldComponent.KEY.get(world);
         return Math.toIntExact(players.stream().filter(p -> areas.getReadyArea().contains(p.getPos())).count());
     }
 

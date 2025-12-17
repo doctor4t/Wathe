@@ -1,8 +1,8 @@
 package dev.doctor4t.trainmurdermystery.mixin.client.self;
 
-import dev.doctor4t.trainmurdermystery.block_entity.BeveragePlateBlockEntity;
-import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.api.event.CanSeePoison;
+import dev.doctor4t.trainmurdermystery.block_entity.TrimmedBedBlockEntity;
+import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.index.TMMParticles;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -16,29 +16,21 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * @author SkyNotTheLimit
- */
 @Environment(EnvType.CLIENT)
-@Mixin(BeveragePlateBlockEntity.class)
-public class BeveragePlateBlockEntityMixin {
+@Mixin(TrimmedBedBlockEntity.class)
+public class TrimmedBedBlockEntityMixin {
 
-    // haha I love writing extremely cursed mixins
     @Inject(method = "clientTick", at = @At("HEAD"))
-    private static void tickWithoutFearOfCrashing(World world, BlockPos pos, BlockState state, BlockEntity blockEntity, CallbackInfo ci) {
-        if (!(blockEntity instanceof BeveragePlateBlockEntity tray)) {
-            return;
-        }
-        if ((!TMMClient.isKiller() && !CanSeePoison.EVENT.invoker().visible(MinecraftClient.getInstance().player)) || tray.getPoisoner() == null) {
-            return;
-        }
-        if (world.getRandom().nextBetween(0, 20) < 17) {
-            return;
-        }
+    private static void tickOnClientSide(World world, BlockPos pos, BlockState state, BlockEntity t, CallbackInfo ci) {
+        TrimmedBedBlockEntity entity = (TrimmedBedBlockEntity) t;
+        if (!TMMClient.isKiller() && !CanSeePoison.EVENT.invoker().visible(MinecraftClient.getInstance().player)) return;
+        if (!entity.hasScorpion()) return;
+        if (world.getRandom().nextBetween(0, 20) < 17) return;
+
         world.addParticle(
                 TMMParticles.POISON,
                 pos.getX() + 0.5f,
-                pos.getY(),
+                pos.getY() + 0.5f,
                 pos.getZ() + 0.5f,
                 0f, 0.05f, 0f
         );

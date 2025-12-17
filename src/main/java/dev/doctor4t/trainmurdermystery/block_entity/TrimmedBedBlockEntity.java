@@ -1,11 +1,15 @@
 package dev.doctor4t.trainmurdermystery.block_entity;
 
+import dev.doctor4t.trainmurdermystery.api.event.CanSeePoison;
 import dev.doctor4t.trainmurdermystery.client.TMMClient;
 import dev.doctor4t.trainmurdermystery.index.TMMBlockEntities;
 import dev.doctor4t.trainmurdermystery.index.TMMParticles;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -50,19 +54,9 @@ public class TrimmedBedBlockEntity extends BlockEntity {
         }
     }
 
+    @SuppressWarnings("unused")
     public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T t) {
-        TrimmedBedBlockEntity entity = (TrimmedBedBlockEntity) t;
-        if (!TMMClient.isKiller()) return;
-        if (!entity.hasScorpion()) return;
-        if (world.getRandom().nextBetween(0, 20) < 17) return;
 
-        world.addParticle(
-                TMMParticles.POISON,
-                pos.getX() + 0.5f,
-                pos.getY() + 0.5f,
-                pos.getZ() + 0.5f,
-                0f, 0.05f, 0f
-        );
     }
 
     @Override

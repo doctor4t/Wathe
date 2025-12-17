@@ -1,7 +1,8 @@
-package dev.doctor4t.trainmurdermystery.event;
+package dev.doctor4t.trainmurdermystery.api.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 
 import static net.fabricmc.fabric.api.event.EventFactory.createArrayBacked;
 
@@ -19,5 +20,5 @@ public interface CanSeePoison {
         return false;
     });
 
-    boolean visible(Entity player);
+    boolean visible(PlayerEntity player);
 }

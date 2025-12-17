@@ -5,11 +5,10 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.datafixers.util.Either;
 import dev.doctor4t.trainmurdermystery.api.Role;
+import dev.doctor4t.trainmurdermystery.api.event.AllowPlayerPunching;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerMoodComponent;
 import dev.doctor4t.trainmurdermystery.cca.PlayerPoisonComponent;
-import dev.doctor4t.trainmurdermystery.event.AllowPlayerPunching;
-import dev.doctor4t.trainmurdermystery.event.IsPlayerPunchable;
 import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.game.GameFunctions;
 import dev.doctor4t.trainmurdermystery.index.TMMDataComponentTypes;
@@ -99,7 +98,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         }
 
         if (!GameFunctions.isPlayerAliveAndSurvival(self) || this.getMainHandStack().isOf(TMMItems.KNIFE)
-                || IsPlayerPunchable.EVENT.invoker().gotPunchable(target) || AllowPlayerPunching.EVENT.invoker().allowPunching(self)) {
+                || (target instanceof PlayerEntity playerTarget && AllowPlayerPunching.EVENT.invoker().allowPunching(self, playerTarget))) {
             original.call(target);
         }
     }
