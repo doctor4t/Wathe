@@ -115,7 +115,7 @@ public class GlassPanelBlock extends FacingBlock {
     }
 
     @Override
-    protected int getOpacity(BlockState state, BlockView world, BlockPos pos) {
-        return 15;
+    protected boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
+        return true;
     }
 }
