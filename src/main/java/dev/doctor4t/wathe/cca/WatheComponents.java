@@ -1,13 +1,10 @@
 package dev.doctor4t.wathe.cca;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.TridentItem;
 import org.jetbrains.annotations.NotNull;
 import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;
 import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
-import org.ladysnake.cca.api.v3.item.ItemComponentInitializer;
-import org.ladysnake.cca.api.v3.item.ItemComponentMigrationRegistry;
 import org.ladysnake.cca.api.v3.scoreboard.ScoreboardComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.scoreboard.ScoreboardComponentInitializer;
 import org.ladysnake.cca.api.v3.world.WorldComponentFactoryRegistry;
