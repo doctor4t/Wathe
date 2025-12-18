@@ -39,9 +39,9 @@
 	"accessWidener" : "trainmurdermystery.accesswidener",
 	"custom": {
 		"cardinal-components": [
+			"trainmurdermystery:mapVariables",
 			"trainmurdermystery:train",
 			"trainmurdermystery:game",
-			"trainmurdermystery:areas",
 			"trainmurdermystery:role",
 			"trainmurdermystery:mood",
 			"trainmurdermystery:shop",

@@ -340,6 +340,7 @@
   "tip.letter.tooltip1": "%s for your trip on the 1st of January 1923.",
   "tip.letter.tooltip2": "La Sirène wishes you a pleasant and safe voyage.",
   "tmm.gui.reset": "Clear",
+  "tmm.help.map_variables": "train: Whether the map is a train and should enable train visuals (like movement, snow, fog...) on game start.\nspawnPos: The spawn position and orientation players will be reset to once the game ends.\nspectatorSpawnPos: The spawn position and orientation players will be set to when set as spectators at the start of a game.\nreadyArea: The lobby area which players need to be in to be selected for a game.\nplayAreaOffset: The offset between the play area and the game area.\nplayArea: The play area outside of which players will be eliminated.\nresetTemplateArea: The template that will be copied over the play area in order to reset the map.\nresetPasteOffset: The offset at which the template should be pasted.\n",
   "trainmurdermystery.midnightconfig.disableScreenShake": "Disable Screen Shake",
   "trainmurdermystery.midnightconfig.title": "The Last Voyage of the Harpy Express - Config",
   "trainmurdermystery.midnightconfig.ultraPerfMode": "Ultra Performance Mode",

@@ -131,6 +131,16 @@ public class TMMLangGen extends FabricLanguageProvider {
         builder.add("game.start_error.game_running", "Game cannot start: a game is already running. Please try again from the lobby.");
 
         builder.add("tmm.gui.reset", "Clear");
+        builder.add("tmm.help.map_variables", """
+                    train: Whether the map is a train and should enable train visuals (like movement, snow, fog...) on game start.
+                    spawnPos: The spawn position and orientation players will be reset to once the game ends.
+                    spectatorSpawnPos: The spawn position and orientation players will be set to when set as spectators at the start of a game.
+                    readyArea: The lobby area which players need to be in to be selected for a game.
+                    playAreaOffset: The offset between the play area and the game area.
+                    playArea: The play area outside of which players will be eliminated.
+                    resetTemplateArea: The template that will be copied over the play area in order to reset the map.
+                    resetPasteOffset: The offset at which the template should be pasted.
+                """);
 
         builder.add("commands.supporter_only", "Super silly supporter commands are reserved for Ko-Fi and YouTube members; if you wanna try them out, please consider supporting! <3");
 

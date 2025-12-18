@@ -178,7 +178,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         setPsychosActive(0);
     }
 
-    public void queueTrainReset() {
+    public void queueMapReset() {
         ticksUntilNextResetAttempt = 10;
     }
 
@@ -308,12 +308,12 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
             return;
         }
 
-        AreasWorldComponent areas = AreasWorldComponent.KEY.get(serverWorld);
+        MapVariablesWorldComponent areas = MapVariablesWorldComponent.KEY.get(serverWorld);
 
         // attempt to reset the play area
         if (--ticksUntilNextResetAttempt == 0) {
             if (GameFunctions.tryResetTrain(serverWorld)) {
-                queueTrainReset();
+                queueMapReset();
             } else {
                 ticksUntilNextResetAttempt = -1;
             }
@@ -368,6 +368,10 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     }
 
     private void tickCommon() {
+        if (gameMode == null) {
+            gameMode = TMMGameModes.MURDER;
+        }
+
         // fade and start / stop game
         if (this.getGameStatus() == GameStatus.STARTING || this.getGameStatus() == GameStatus.STOPPING) {
             this.setFade(fade + 1);
