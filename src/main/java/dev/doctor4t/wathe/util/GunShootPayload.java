@@ -9,6 +9,7 @@ import dev.doctor4t.wathe.index.WatheDataComponentTypes;
 import dev.doctor4t.wathe.index.WatheItems;
 import dev.doctor4t.wathe.index.WatheSounds;
 import dev.doctor4t.wathe.index.tag.WatheItemTags;
+import dev.doctor4t.wathe.item.RevolverItem;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.ItemEntity;
@@ -22,6 +23,8 @@ import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Predicate;
 
 public record GunShootPayload(int target) implements CustomPayload {
     public static final Id<GunShootPayload> ID = new Id<>(Wathe.id("gunshoot"));
@@ -56,7 +59,14 @@ public record GunShootPayload(int target) implements CustomPayload {
                 if (!player.isCreative()) mainHandStack.set(WatheDataComponentTypes.USED, true);
             }
 
-            if (player.getServerWorld().getEntityById(payload.target()) instanceof PlayerEntity target && target.distanceTo(player) < 65.0) {
+            Predicate<PlayerEntity> distancePredicate;
+            if (mainHandStack.getItem() instanceof RevolverItem gun) {
+                distancePredicate = target -> player.distanceTo(target) < gun.getRange(player, mainHandStack) + 1.5;
+            } else {
+                distancePredicate = target -> player.distanceTo(target) < 65;
+            }
+
+            if (player.getServerWorld().getEntityById(payload.target()) instanceof PlayerEntity target && player.canSee(target) && distancePredicate.test(target)) {
                 GameWorldComponent game = GameWorldComponent.KEY.get(player.getWorld());
                 Item revolver = WatheItems.REVOLVER;
 
