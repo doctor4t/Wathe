@@ -221,7 +221,7 @@ public class GameFunctions {
     }
 
     public static void resetPlayer(ServerPlayerEntity player) {
-        ServerPlayNetworking.send(player, new AnnounceEndingPayload());
+        ServerPlayNetworking.send(player, AnnounceEndingPayload.INSTANCE);
         player.dismountVehicle();
         player.getInventory().clear();
         PlayerMoodComponent.KEY.get(player).reset();

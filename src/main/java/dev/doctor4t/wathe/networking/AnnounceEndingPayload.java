@@ -8,9 +8,14 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 import org.jetbrains.annotations.NotNull;
 
-public record AnnounceEndingPayload() implements CustomPayload {
+public final class AnnounceEndingPayload implements CustomPayload {
+    public static final AnnounceEndingPayload INSTANCE = new AnnounceEndingPayload();
+
     public static final Id<AnnounceEndingPayload> ID = new Id<>(Wathe.id("announceending"));
-    public static final PacketCodec<PacketByteBuf, AnnounceEndingPayload> CODEC = PacketCodec.unit(new AnnounceEndingPayload());
+    public static final PacketCodec<PacketByteBuf, AnnounceEndingPayload> CODEC = PacketCodec.unit(AnnounceEndingPayload.INSTANCE);
+
+    private AnnounceEndingPayload() {
+    }
 
     @Override
     public Id<? extends CustomPayload> getId() {

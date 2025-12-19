@@ -10,9 +10,14 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 import org.jetbrains.annotations.NotNull;
 
-public record GunDropPayload() implements CustomPayload {
+public final class GunDropPayload implements CustomPayload {
+    public static final GunDropPayload INSTANCE = new GunDropPayload();
+
     public static final Id<GunDropPayload> ID = new Id<>(Wathe.id("gundrop"));
-    public static final PacketCodec<PacketByteBuf, GunDropPayload> CODEC = PacketCodec.unit(new GunDropPayload());
+    public static final PacketCodec<PacketByteBuf, GunDropPayload> CODEC = PacketCodec.unit(INSTANCE);
+
+    private GunDropPayload() {
+    }
 
     @Override
     public Id<? extends CustomPayload> getId() {

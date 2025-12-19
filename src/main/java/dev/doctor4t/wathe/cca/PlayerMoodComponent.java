@@ -130,7 +130,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
                 removals.add(task.getType());
                 this.setMood(this.mood + GameConstants.MOOD_GAIN);
                 if (this.player instanceof ServerPlayerEntity tempPlayer)
-                    ServerPlayNetworking.send(tempPlayer, new TaskCompletePayload());
+                    ServerPlayNetworking.send(tempPlayer, TaskCompletePayload.INSTANCE);
                 shouldSync = true;
             }
         }
