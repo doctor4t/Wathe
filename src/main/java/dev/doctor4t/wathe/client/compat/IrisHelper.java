@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/client/compat/IrisHelper.java
-package dev.doctor4t.trainmurdermystery.client.compat;
-========
-package dev.doctor4t.wathe.compat;
->>>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/compat/IrisHelper.java
+package dev.doctor4t.wathe.client.compat;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

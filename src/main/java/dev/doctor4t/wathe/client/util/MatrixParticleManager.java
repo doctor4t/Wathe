@@ -1,14 +1,8 @@
-<<<<<<<< HEAD:src/main/java/dev/doctor4t/wathe/client/util/MatrixParticleManager.java
-package dev.doctor4t.trainmurdermystery.client.util;
-
-import dev.doctor4t.trainmurdermystery.client.TMMClient;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-========
-package dev.doctor4t.wathe.util;
+package dev.doctor4t.wathe.client.util;
 
 import dev.doctor4t.wathe.client.WatheClient;
->>>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/util/MatrixParticleManager.java
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 

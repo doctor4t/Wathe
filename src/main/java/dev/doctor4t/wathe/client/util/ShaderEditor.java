@@ -1,11 +1,7 @@
-<<<<<<<< HEAD:src/main/java/dev/doctor4t/wathe/client/util/ShaderEditor.java
-package dev.doctor4t.trainmurdermystery.client.util;
+package dev.doctor4t.wathe.client.util;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-========
-package dev.doctor4t.wathe.util;
->>>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/util/ShaderEditor.java
 
 import java.util.ArrayList;
 import java.util.Arrays;

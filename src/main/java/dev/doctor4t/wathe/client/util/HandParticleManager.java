@@ -1,14 +1,8 @@
-<<<<<<<< HEAD:src/main/java/dev/doctor4t/wathe/client/util/HandParticleManager.java
-package dev.doctor4t.trainmurdermystery.client.util;
-
-import dev.doctor4t.trainmurdermystery.client.particle.HandParticle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-========
-package dev.doctor4t.wathe.util;
+package dev.doctor4t.wathe.client.util;
 
 import dev.doctor4t.wathe.client.particle.HandParticle;
->>>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/util/HandParticleManager.java
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
