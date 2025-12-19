@@ -5,7 +5,7 @@ import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.WatheCosmetics;
 import dev.doctor4t.wathe.index.WatheSounds;
-import dev.doctor4t.wathe.util.KnifeStabPayload;
+import dev.doctor4t.wathe.networking.KnifeStabPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

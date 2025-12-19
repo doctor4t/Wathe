@@ -1,18 +1,12 @@
 package dev.doctor4t.wathe.game.gamemode;
 
-<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/game/MurderGameMode.java
-import dev.doctor4t.trainmurdermystery.api.GameMode;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
-import dev.doctor4t.trainmurdermystery.cca.*;
-import dev.doctor4t.trainmurdermystery.client.gui.RoleAnnouncementTexts;
-import dev.doctor4t.trainmurdermystery.networking.AnnounceWelcomeS2CPayload;
-=======
+import dev.doctor4t.wathe.api.GameMode;
 import dev.doctor4t.wathe.api.WatheRoles;
 import dev.doctor4t.wathe.cca.*;
+import dev.doctor4t.wathe.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.networking.AnnounceWelcomePayload;
->>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/game/gamemode/MurderGameMode.java
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -45,11 +39,7 @@ public class MurderGameMode extends GameMode {
         int killerCount = assignRolesAndGetKillerCount(serverWorld, players, gameWorldComponent);
 
         for (ServerPlayerEntity player : players) {
-<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/game/MurderGameMode.java
-            ServerPlayNetworking.send(player, new AnnounceWelcomeS2CPayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(gameWorldComponent.isRole(player, TMMRoles.KILLER) ? RoleAnnouncementTexts.KILLER : gameWorldComponent.isRole(player, TMMRoles.VIGILANTE) ? RoleAnnouncementTexts.VIGILANTE : RoleAnnouncementTexts.CIVILIAN), killerCount, players.size() - killerCount));
-=======
             ServerPlayNetworking.send(player, new AnnounceWelcomePayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(gameWorldComponent.isRole(player, WatheRoles.KILLER) ? RoleAnnouncementTexts.KILLER : gameWorldComponent.isRole(player, WatheRoles.VIGILANTE) ? RoleAnnouncementTexts.VIGILANTE : RoleAnnouncementTexts.CIVILIAN), killerCount, players.size() - killerCount));
->>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/game/gamemode/MurderGameMode.java
         }
     }
 

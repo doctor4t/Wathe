@@ -52,6 +52,9 @@ repositories {
 
 loom {
 	accessWidenerPath = file("src/main/resources/wathe.accesswidener")
+    runConfigs.configureEach {
+        it.ideConfigGenerated(true)
+    }
 }
 
 fabricApi {

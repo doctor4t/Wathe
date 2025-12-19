@@ -1,19 +1,12 @@
 package dev.doctor4t.wathe.cca;
 
-<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/cca/PlayerMoodComponent.java
-import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.api.Role;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
-import dev.doctor4t.trainmurdermystery.client.TMMClient;
-import dev.doctor4t.trainmurdermystery.game.GameConstants;
-import dev.doctor4t.trainmurdermystery.game.GameFunctions;
-import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
-import dev.doctor4t.trainmurdermystery.networking.TaskCompleteS2CPayload;
-=======
 import dev.doctor4t.wathe.Wathe;
+import dev.doctor4t.wathe.api.Role;
 import dev.doctor4t.wathe.client.WatheClient;
+import dev.doctor4t.wathe.game.GameConstants;
+import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.tag.WatheItemTags;
->>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/cca/PlayerMoodComponent.java
+import dev.doctor4t.wathe.networking.TaskCompletePayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -137,7 +130,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
                 removals.add(task.getType());
                 this.setMood(this.mood + GameConstants.MOOD_GAIN);
                 if (this.player instanceof ServerPlayerEntity tempPlayer)
-                    ServerPlayNetworking.send(tempPlayer, TaskCompleteS2CPayload.INSTANCE);
+                    ServerPlayNetworking.send(tempPlayer, new TaskCompletePayload());
                 shouldSync = true;
             }
         }

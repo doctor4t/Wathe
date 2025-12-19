@@ -4,42 +4,6 @@ import com.google.common.collect.Maps;
 import dev.doctor4t.ratatouille.client.util.OptionLocker;
 import dev.doctor4t.ratatouille.client.util.ambience.AmbienceUtil;
 import dev.doctor4t.ratatouille.client.util.ambience.BackgroundAmbience;
-<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/client/TMMClient.java
-import dev.doctor4t.ratatouille.client.util.ambience.BlockEntityAmbience;
-import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.TMMConfig;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
-import dev.doctor4t.trainmurdermystery.block_entity.SprinklerBlockEntity;
-import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
-import dev.doctor4t.trainmurdermystery.cca.PlayerMoodComponent;
-import dev.doctor4t.trainmurdermystery.cca.TrainWorldComponent;
-import dev.doctor4t.trainmurdermystery.client.gui.MoodRenderer;
-import dev.doctor4t.trainmurdermystery.client.gui.RoleAnnouncementTexts;
-import dev.doctor4t.trainmurdermystery.client.gui.RoundTextRenderer;
-import dev.doctor4t.trainmurdermystery.client.gui.StoreRenderer;
-import dev.doctor4t.trainmurdermystery.client.gui.TimeRenderer;
-import dev.doctor4t.trainmurdermystery.client.model.TMMModelLayers;
-import dev.doctor4t.trainmurdermystery.client.render.block_entity.PlateBlockEntityRenderer;
-import dev.doctor4t.trainmurdermystery.client.render.block_entity.SmallDoorBlockEntityRenderer;
-import dev.doctor4t.trainmurdermystery.client.render.block_entity.WheelBlockEntityRenderer;
-import dev.doctor4t.trainmurdermystery.client.render.entity.FirecrackerEntityRenderer;
-import dev.doctor4t.trainmurdermystery.client.render.entity.HornBlockEntityRenderer;
-import dev.doctor4t.trainmurdermystery.client.render.entity.NoteEntityRenderer;
-import dev.doctor4t.trainmurdermystery.client.util.TMMItemTooltips;
-import dev.doctor4t.trainmurdermystery.entity.FirecrackerEntity;
-import dev.doctor4t.trainmurdermystery.entity.NoteEntity;
-import dev.doctor4t.trainmurdermystery.game.GameConstants;
-import dev.doctor4t.trainmurdermystery.game.GameFunctions;
-import dev.doctor4t.trainmurdermystery.index.*;
-import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
-import dev.doctor4t.trainmurdermystery.networking.AnnounceEndingS2CPayload;
-import dev.doctor4t.trainmurdermystery.networking.AnnounceWelcomeS2CPayload;
-import dev.doctor4t.trainmurdermystery.networking.GunDropS2CPayload;
-import dev.doctor4t.trainmurdermystery.networking.PoisonOverlayS2CPayload;
-import dev.doctor4t.trainmurdermystery.networking.ShootMuzzleS2CPayload;
-import dev.doctor4t.trainmurdermystery.networking.TaskCompleteS2CPayload;
-import dev.doctor4t.trainmurdermystery.util.*;
-=======
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.WatheConfig;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
@@ -62,8 +26,8 @@ import dev.doctor4t.wathe.entity.NoteEntity;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.*;
+import dev.doctor4t.wathe.networking.*;
 import dev.doctor4t.wathe.util.*;
->>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/client/WatheClient.java
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -80,7 +44,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.option.CloudRenderMode;
 import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.option.Perspective;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.entity.EmptyEntityRenderer;
@@ -91,10 +54,8 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -317,7 +278,12 @@ public class WatheClient implements ClientModInitializer {
             RoundTextRenderer.tick();
         });
 
-        registerClientPayloadHandlers();
+        ClientPlayNetworking.registerGlobalReceiver(ShootMuzzleS2CPayload.ID, new ShootMuzzleS2CPayload.Receiver());
+        ClientPlayNetworking.registerGlobalReceiver(PoisonOverlayPayload.ID, new PoisonOverlayPayload.Receiver());
+        ClientPlayNetworking.registerGlobalReceiver(GunDropPayload.ID, new GunDropPayload.Receiver());
+        ClientPlayNetworking.registerGlobalReceiver(AnnounceWelcomePayload.ID, new AnnounceWelcomePayload.Receiver());
+        ClientPlayNetworking.registerGlobalReceiver(AnnounceEndingPayload.ID, new AnnounceEndingPayload.Receiver());
+        ClientPlayNetworking.registerGlobalReceiver(TaskCompletePayload.ID, new TaskCompletePayload.Receiver());
 
         // Instinct keybind
         instinctKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -326,42 +292,6 @@ public class WatheClient implements ClientModInitializer {
                 GLFW.GLFW_KEY_LEFT_ALT,
                 "category." + Wathe.MOD_ID + ".keybinds"
         ));
-    }
-
-    private static void registerClientPayloadHandlers() {
-        ClientPlayNetworking.registerGlobalReceiver(ShootMuzzleS2CPayload.ID, (payload, context) -> {
-            MinecraftClient client = MinecraftClient.getInstance();
-            client.execute(() -> {
-                if (client.world == null || client.player == null) return;
-                PlayerEntity shooter = client.world.getPlayerByUuid(payload.shooterUuid());
-                if (shooter == null || shooter.getUuid() == client.player.getUuid() && client.options.getPerspective() == Perspective.FIRST_PERSON)
-                    return;
-                Vec3d muzzlePos = MatrixParticleManager.getMuzzlePosForPlayer(shooter);
-                if (muzzlePos != null)
-                    client.world.addParticle(TMMParticles.GUNSHOT, muzzlePos.x, muzzlePos.y, muzzlePos.z, 0, 0, 0);
-            });
-        });
-
-        ClientPlayNetworking.registerGlobalReceiver(PoisonOverlayS2CPayload.ID, (payload, context) -> {
-            MinecraftClient client = context.client();
-            client.execute(() -> client.inGameHud.setOverlayMessage(Text.translatable(payload.translationKey()), false));
-        });
-
-        ClientPlayNetworking.registerGlobalReceiver(GunDropS2CPayload.ID, (payload, context) -> {
-            PlayerInventory inventory = context.player().getInventory();
-            inventory.remove((s) -> s.isIn(TMMItemTags.GUNS), 1, inventory);
-        });
-
-        ClientPlayNetworking.registerGlobalReceiver(AnnounceWelcomeS2CPayload.ID, (payload, context) -> {
-            if (payload.role() < 0 || payload.role() >= RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.size()) {
-                return;
-            }
-            RoundTextRenderer.startWelcome(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.get(payload.role()), payload.killers(), payload.targets());
-        });
-
-        ClientPlayNetworking.registerGlobalReceiver(AnnounceEndingS2CPayload.ID, (payload, context) -> RoundTextRenderer.startEnd());
-
-        ClientPlayNetworking.registerGlobalReceiver(TaskCompleteS2CPayload.ID, (payload, context) -> MoodRenderer.arrowProgress = 1f);
     }
 
     public static TrainWorldComponent getTrainComponent() {

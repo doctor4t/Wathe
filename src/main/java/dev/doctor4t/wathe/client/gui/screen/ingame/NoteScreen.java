@@ -1,12 +1,8 @@
 package dev.doctor4t.wathe.client.gui.screen.ingame;
 
-<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/client/gui/screen/ingame/NoteScreen.java
-import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.cca.PlayerNoteComponent;
-import dev.doctor4t.trainmurdermystery.networking.NoteEditC2SPayload;
-=======
 import dev.doctor4t.wathe.Wathe;
->>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/client/gui/screen/ingame/NoteScreen.java
+import dev.doctor4t.wathe.cca.PlayerNoteComponent;
+import dev.doctor4t.wathe.networking.NoteEditPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -95,7 +91,7 @@ public class NoteScreen extends Screen {
 
     @Override
     public void removed() {
-        ClientPlayNetworking.send(new NoteEditC2SPayload(this.text[0], this.text[1], this.text[2], this.text[3]));
+        ClientPlayNetworking.send(new NoteEditPayload(this.text[0], this.text[1], this.text[2], this.text[3]));
     }
 
     @Override

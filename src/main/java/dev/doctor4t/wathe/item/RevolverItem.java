@@ -1,20 +1,11 @@
 package dev.doctor4t.wathe.item;
 
-<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/item/RevolverItem.java
-import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.client.TMMClient;
-import dev.doctor4t.trainmurdermystery.client.particle.HandParticle;
-import dev.doctor4t.trainmurdermystery.client.render.TMMRenderLayers;
-import dev.doctor4t.trainmurdermystery.game.GameFunctions;
-import dev.doctor4t.trainmurdermystery.networking.GunShootC2SPayload;
-=======
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.client.particle.HandParticle;
 import dev.doctor4t.wathe.client.render.WatheRenderLayers;
 import dev.doctor4t.wathe.game.GameFunctions;
-import dev.doctor4t.wathe.util.GunShootPayload;
->>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/item/RevolverItem.java
+import dev.doctor4t.wathe.networking.GunShootPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,9 +30,9 @@ public class RevolverItem extends Item {
             HitResult collision = getGunTarget(user);
             if (collision instanceof EntityHitResult entityHitResult) {
                 Entity target = entityHitResult.getEntity();
-                ClientPlayNetworking.send(new GunShootC2SPayload(target.getId()));
+                ClientPlayNetworking.send(new GunShootPayload(target.getId()));
             } else {
-                ClientPlayNetworking.send(new GunShootC2SPayload(-1));
+                ClientPlayNetworking.send(new GunShootPayload(-1));
             }
             user.setPitch(user.getPitch() - 4);
             spawnHandParticle();

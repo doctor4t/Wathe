@@ -1,21 +1,15 @@
 package dev.doctor4t.wathe.game.gamemode;
 
-<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/game/LooseEndsGameMode.java
-import dev.doctor4t.trainmurdermystery.api.GameMode;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
-import dev.doctor4t.trainmurdermystery.cca.GameRoundEndComponent;
-import dev.doctor4t.trainmurdermystery.cca.GameTimeComponent;
-import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
-import dev.doctor4t.trainmurdermystery.cca.TrainWorldComponent;
-import dev.doctor4t.trainmurdermystery.client.gui.RoleAnnouncementTexts;
-import dev.doctor4t.trainmurdermystery.index.TMMItems;
-import dev.doctor4t.trainmurdermystery.networking.AnnounceWelcomeS2CPayload;
-=======
+import dev.doctor4t.wathe.api.GameMode;
 import dev.doctor4t.wathe.api.WatheRoles;
+import dev.doctor4t.wathe.cca.GameRoundEndComponent;
+import dev.doctor4t.wathe.cca.GameTimeComponent;
+import dev.doctor4t.wathe.cca.GameWorldComponent;
+import dev.doctor4t.wathe.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.WatheItems;
->>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/game/gamemode/LooseEndsGameMode.java
+import dev.doctor4t.wathe.networking.AnnounceWelcomePayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,7 +44,7 @@ public class LooseEndsGameMode extends GameMode {
 
             gameWorldComponent.addRole(player, WatheRoles.LOOSE_END);
 
-            ServerPlayNetworking.send(player, new AnnounceWelcomeS2CPayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(RoleAnnouncementTexts.LOOSE_END), -1, -1));
+            ServerPlayNetworking.send(player, new AnnounceWelcomePayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(RoleAnnouncementTexts.LOOSE_END), -1, -1));
         }
     }
 

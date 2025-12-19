@@ -1,21 +1,11 @@
 package dev.doctor4t.wathe.client.gui.screen.ingame;
 
-<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/client/gui/screen/ingame/LimitedInventoryScreen.java
-import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.api.TMMRoles;
-import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
-import dev.doctor4t.trainmurdermystery.client.gui.StoreRenderer;
-import dev.doctor4t.trainmurdermystery.game.GameConstants;
-import dev.doctor4t.trainmurdermystery.util.ShopEntry;
-import dev.doctor4t.trainmurdermystery.networking.StoreBuyC2SPayload;
-=======
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.client.gui.StoreRenderer;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.util.ShopEntry;
-import dev.doctor4t.wathe.util.StoreBuyPayload;
->>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/client/gui/screen/ingame/LimitedInventoryScreen.java
+import dev.doctor4t.wathe.networking.StoreBuyPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -81,7 +71,7 @@ public class LimitedInventoryScreen extends LimitedHandledScreen<PlayerScreenHan
         public final ShopEntry entry;
 
         public StoreItemWidget(LimitedInventoryScreen screen, int x, int y, @NotNull ShopEntry entry, int index) {
-            super(x, y, 16, 16, entry.stack().getName(), (a) -> ClientPlayNetworking.send(new StoreBuyC2SPayload(index)), DEFAULT_NARRATION_SUPPLIER);
+            super(x, y, 16, 16, entry.stack().getName(), (a) -> ClientPlayNetworking.send(new StoreBuyPayload(index)), DEFAULT_NARRATION_SUPPLIER);
             this.screen = screen;
             this.entry = entry;
         }
