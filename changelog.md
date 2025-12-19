@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Wathe 1.3.1 - 1.21.1
+------------------------------------------------------
+- Fixed map effect not initializing when being manually changed with the mapVariables command
+
+------------------------------------------------------
 Wathe 1.3 - 1.21.1
 ------------------------------------------------------
 - Changed the mod identifier from "trainmurdermystery" to "wathe" and renamed it to avoid confusion with the Harpy Express modpack and reflect the mod now allowing maps other than trains
