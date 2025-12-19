@@ -9,16 +9,16 @@ import net.minecraft.client.option.Perspective;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.util.Uuids;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public record ShootMuzzleS2CPayload(String shooterId) implements CustomPayload {
+public record ShootMuzzleS2CPayload(UUID shooterUuid) implements CustomPayload {
     public static final Id<ShootMuzzleS2CPayload> ID = new Id<>(Wathe.id("shoot_muzzle_s2c"));
-    public static final PacketCodec<PacketByteBuf, ShootMuzzleS2CPayload> CODEC = PacketCodec.tuple(PacketCodecs.STRING, ShootMuzzleS2CPayload::shooterId, ShootMuzzleS2CPayload::new);
+    public static final PacketCodec<PacketByteBuf, ShootMuzzleS2CPayload> CODEC = PacketCodec.tuple(Uuids.PACKET_CODEC, ShootMuzzleS2CPayload::shooterUuid, ShootMuzzleS2CPayload::new);
 
     @Override
     public Id<? extends CustomPayload> getId() {
@@ -31,7 +31,7 @@ public record ShootMuzzleS2CPayload(String shooterId) implements CustomPayload {
             MinecraftClient client = MinecraftClient.getInstance();
             client.execute(() -> {
                 if (client.world == null || client.player == null) return;
-                PlayerEntity shooter = client.world.getPlayerByUuid(UUID.fromString(payload.shooterId()));
+                PlayerEntity shooter = client.world.getPlayerByUuid(payload.shooterUuid);
                 if (shooter == null || shooter.getUuid() == client.player.getUuid() && client.options.getPerspective() == Perspective.FIRST_PERSON)
                     return;
                 Vec3d muzzlePos = MatrixParticleManager.getMuzzlePosForPlayer(shooter);
