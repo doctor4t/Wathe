@@ -13,6 +13,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
@@ -37,9 +38,8 @@ public class CrosshairRenderer {
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();
         ItemStack mainHandStack = player.getMainHandStack();
-        if (mainHandStack.isOf(WatheItems.REVOLVER) && !player.getItemCooldownManager().isCoolingDown(mainHandStack.getItem()) && RevolverItem.getGunTarget(player) instanceof EntityHitResult) {
-            target = true;
-        } else if (mainHandStack.isOf(WatheItems.DERRINGER) && !player.getItemCooldownManager().isCoolingDown(mainHandStack.getItem()) && DerringerItem.getGunTarget(player) instanceof EntityHitResult) {
+        Item item = mainHandStack.getItem();
+        if (item instanceof RevolverItem gun && !player.getItemCooldownManager().isCoolingDown(gun) && gun.getGunTarget(player, mainHandStack) instanceof EntityHitResult) {
             target = true;
         } else if (mainHandStack.isOf(WatheItems.KNIFE)) {
             ItemCooldownManager manager = player.getItemCooldownManager();
