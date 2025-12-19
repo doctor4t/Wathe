@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/ladder",
-  "textures": {
-    "particle": "trainmurdermystery:block/stainless_steel_ladder",
-    "texture": "trainmurdermystery:block/stainless_steel_ladder"
-  }
-}

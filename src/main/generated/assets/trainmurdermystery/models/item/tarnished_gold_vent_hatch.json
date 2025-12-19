@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "trainmurdermystery:block/tarnished_gold_vent_hatch"
-  }
-}

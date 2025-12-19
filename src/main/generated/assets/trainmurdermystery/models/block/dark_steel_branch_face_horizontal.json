@@ -1,6 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_branch_face_horizontal",
-  "textures": {
-    "side": "trainmurdermystery:block/dark_steel"
-  }
-}

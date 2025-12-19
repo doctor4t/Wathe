@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "wathe:block/panel_stripes",
+      "y": 90
+    },
+    "axis=z": {
+      "model": "wathe:block/panel_stripes"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "wathe:block/template_branch_face",
+  "textures": {
+    "side": "minecraft:block/crimson_stem"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "wathe:block/template_cargo_box_open",
+  "textures": {
+    "bottom": "wathe:block/cargo_box_bottom",
+    "side": "wathe:block/cargo_box_side",
+    "top": "wathe:block/cargo_box_top_open"
+  }
+}

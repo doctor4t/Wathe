@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "wathe:block/horn",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "wathe:block/horn"
+    },
+    "facing=south": {
+      "model": "wathe:block/horn",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wathe:block/horn",
+      "y": 270
+    }
+  }
+}

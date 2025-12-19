@@ -1,0 +1,7 @@
+{
+  "parent": "wathe:block/template_branch_back",
+  "textures": {
+    "side": "minecraft:block/stripped_dark_oak_log",
+    "top": "wathe:block/stripped_dark_oak_branch_top"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "wathe:block/ebony_herringbone",
+    "side": "wathe:block/ebony_herringbone",
+    "top": "wathe:block/ebony_herringbone"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "wathe:block/template_trimmed_stairs",
+  "textures": {
+    "texture": "wathe:block/trimmed_ebony_stairs_right"
+  }
+}

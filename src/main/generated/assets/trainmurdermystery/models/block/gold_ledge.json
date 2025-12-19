@@ -1,6 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_ledge",
-  "textures": {
-    "texture": "trainmurdermystery:block/gold_bar"
-  }
-}

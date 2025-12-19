@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/ladder",
+  "textures": {
+    "particle": "wathe:block/stainless_steel_ladder",
+    "texture": "wathe:block/stainless_steel_ladder"
+  }
+}

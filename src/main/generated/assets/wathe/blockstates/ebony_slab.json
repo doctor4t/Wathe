@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "wathe:block/ebony_slab"
+    },
+    "type=double": {
+      "model": "wathe:block/ebony_planks"
+    },
+    "type=top": {
+      "model": "wathe:block/ebony_slab_top"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "wathe:block/bubinga_planks",
+    "side": "wathe:block/bubinga_bookshelf_alt"
+  }
+}
