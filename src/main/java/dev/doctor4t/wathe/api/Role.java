@@ -1,6 +1,6 @@
 package dev.doctor4t.wathe.api;
 
-import dev.doctor4t.trainmurdermystery.game.GameConstants;
+import dev.doctor4t.wathe.game.GameConstants;
 import net.minecraft.util.Identifier;
 
 public final class Role {
@@ -139,7 +139,7 @@ public final class Role {
         }
 
         public Role buildAndRegister(Identifier id) {
-            return TMMRoles.registerRole(this.build(id));
+            return WatheRoles.registerRole(this.build(id));
         }
     }
 }
