@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "wathe:block/black_hull_sheet_slab"
+    },
+    "type=double": {
+      "model": "wathe:block/black_hull_sheets"
+    },
+    "type=top": {
+      "model": "wathe:block/black_hull_sheet_slab_top"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_left",
+  "textures": {
+    "bottom": "wathe:block/metal_sheet_door_bottom",
+    "top": "wathe:block/metal_sheet_door_top"
+  }
+}

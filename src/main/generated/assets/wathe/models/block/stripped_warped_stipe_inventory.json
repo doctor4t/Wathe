@@ -1,0 +1,7 @@
+{
+  "parent": "wathe:block/template_branch_inventory",
+  "textures": {
+    "side": "minecraft:block/stripped_warped_stem",
+    "top": "wathe:block/stripped_warped_stipe_top"
+  }
+}

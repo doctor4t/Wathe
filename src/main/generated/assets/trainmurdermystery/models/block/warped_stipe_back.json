@@ -1,7 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_branch_back",
-  "textures": {
-    "side": "minecraft:block/warped_stem",
-    "top": "trainmurdermystery:block/warped_stipe_top"
-  }
-}

@@ -1,0 +1,44 @@
+{
+	"credit": "Made by Farcr",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"0": "wathe:block/ceiling_light",
+		"particle": "wathe:block/ceiling_light"
+	},
+	"elements": [
+		{
+			"from": [6, 9, 0],
+			"to": [10, 13, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"east": {"uv": [16, 4, 0, 8], "texture": "#0"},
+				"south": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"west": {"uv": [0, 4, 16, 8], "texture": "#0"},
+				"up": {"uv": [0, 8, 16, 12], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [16, 12, 0, 16], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"from": [7, 13, 3],
+			"to": [9, 16, 5],
+			"faces": {
+				"north": {"uv": [14, 0, 16, 3], "texture": "#0"},
+				"east": {"uv": [14, 0, 16, 3], "texture": "#0"},
+				"south": {"uv": [14, 0, 16, 3], "texture": "#0"},
+				"west": {"uv": [14, 0, 16, 3], "texture": "#0"},
+				"up": {"uv": [11, 0, 13, 2], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7, 13, 11],
+			"to": [9, 16, 13],
+			"faces": {
+				"north": {"uv": [14, 0, 16, 3], "texture": "#0"},
+				"east": {"uv": [14, 0, 16, 3], "texture": "#0"},
+				"south": {"uv": [14, 0, 16, 3], "texture": "#0"},
+				"west": {"uv": [14, 0, 16, 3], "texture": "#0"},
+				"up": {"uv": [11, 0, 13, 2], "texture": "#0"}
+			}
+		}
+	]
+}

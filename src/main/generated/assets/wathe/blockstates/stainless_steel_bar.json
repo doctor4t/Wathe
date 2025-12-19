@@ -1,0 +1,88 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "wathe:block/stainless_steel_bar",
+        "y": 270
+      },
+      "when": {
+        "axis": "x"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stainless_steel_bar_top",
+        "y": 270
+      },
+      "when": {
+        "axis": "x",
+        "top": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stainless_steel_bar_bottom",
+        "y": 270
+      },
+      "when": {
+        "axis": "x",
+        "bottom": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stainless_steel_bar",
+        "x": 90
+      },
+      "when": {
+        "axis": "y"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stainless_steel_bar_top",
+        "x": 90
+      },
+      "when": {
+        "axis": "y",
+        "top": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stainless_steel_bar_bottom",
+        "x": 90
+      },
+      "when": {
+        "axis": "y",
+        "bottom": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stainless_steel_bar"
+      },
+      "when": {
+        "axis": "z"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stainless_steel_bar_top"
+      },
+      "when": {
+        "axis": "z",
+        "top": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stainless_steel_bar_bottom"
+      },
+      "when": {
+        "axis": "z",
+        "bottom": "true"
+      }
+    }
+  ]
+}

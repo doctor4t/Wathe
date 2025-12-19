@@ -1,8 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_vent_shaft_inventory",
-  "textures": {
-    "end": "trainmurdermystery:block/dark_steel_vent_shaft_opening",
-    "inside": "trainmurdermystery:block/dark_steel_vent_shaft_inside",
-    "side": "trainmurdermystery:block/dark_steel_vent_shaft_side"
-  }
-}

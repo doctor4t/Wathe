@@ -1,8 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_cargo_box",
-  "textures": {
-    "bottom": "trainmurdermystery:block/cargo_box_bottom",
-    "side": "trainmurdermystery:block/cargo_box_side",
-    "top": "trainmurdermystery:block/cargo_box_top"
-  }
-}

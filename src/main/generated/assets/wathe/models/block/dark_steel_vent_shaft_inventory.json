@@ -1,0 +1,8 @@
+{
+  "parent": "wathe:block/template_vent_shaft_inventory",
+  "textures": {
+    "end": "wathe:block/dark_steel_vent_shaft_opening",
+    "inside": "wathe:block/dark_steel_vent_shaft_inside",
+    "side": "wathe:block/dark_steel_vent_shaft_side"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "wathe:block/stainless_steel_slab"
+    },
+    "type=double": {
+      "model": "wathe:block/stainless_steel"
+    },
+    "type=top": {
+      "model": "wathe:block/stainless_steel_slab_top"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "wathe:block/smooth_navy_steel_slab"
+    },
+    "type=double": {
+      "model": "wathe:block/smooth_navy_steel"
+    },
+    "type=top": {
+      "model": "wathe:block/smooth_navy_steel_slab_top"
+    }
+  }
+}

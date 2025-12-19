@@ -1,0 +1,7 @@
+{
+  "parent": "wathe:block/template_branch_inventory",
+  "textures": {
+    "side": "minecraft:block/bamboo_block",
+    "top": "minecraft:block/bamboo_block_top"
+  }
+}

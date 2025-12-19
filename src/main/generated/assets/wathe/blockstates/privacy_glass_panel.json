@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,opaque=false": {
+      "model": "wathe:block/privacy_glass_panel",
+      "x": 270
+    },
+    "facing=down,opaque=true": {
+      "model": "wathe:block/privacy_glass_panel_opaque",
+      "x": 270
+    },
+    "facing=east,opaque=false": {
+      "model": "wathe:block/privacy_glass_panel",
+      "y": 270
+    },
+    "facing=east,opaque=true": {
+      "model": "wathe:block/privacy_glass_panel_opaque",
+      "y": 270
+    },
+    "facing=north,opaque=false": {
+      "model": "wathe:block/privacy_glass_panel",
+      "y": 180
+    },
+    "facing=north,opaque=true": {
+      "model": "wathe:block/privacy_glass_panel_opaque",
+      "y": 180
+    },
+    "facing=south,opaque=false": {
+      "model": "wathe:block/privacy_glass_panel"
+    },
+    "facing=south,opaque=true": {
+      "model": "wathe:block/privacy_glass_panel_opaque"
+    },
+    "facing=up,opaque=false": {
+      "model": "wathe:block/privacy_glass_panel",
+      "x": 90
+    },
+    "facing=up,opaque=true": {
+      "model": "wathe:block/privacy_glass_panel_opaque",
+      "x": 90
+    },
+    "facing=west,opaque=false": {
+      "model": "wathe:block/privacy_glass_panel",
+      "y": 90
+    },
+    "facing=west,opaque=true": {
+      "model": "wathe:block/privacy_glass_panel_opaque",
+      "y": 90
+    }
+  }
+}
