@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "trainmurdermystery:block/smooth_bubinga",
-    "side": "trainmurdermystery:block/smooth_bubinga",
-    "top": "trainmurdermystery:block/smooth_bubinga"
-  }
-}

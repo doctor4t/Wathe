@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=bottom": {
+      "model": "wathe:block/stainless_steel_walkway_bottom_bottom"
+    },
+    "half=top": {
+      "model": "wathe:block/stainless_steel_walkway_top_top"
+    }
+  }
+}

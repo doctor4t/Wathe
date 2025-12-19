@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "wathe:block/mahogany_bookshelf"
+      },
+      {
+        "model": "wathe:block/mahogany_bookshelf_alt"
+      }
+    ]
+  }
+}

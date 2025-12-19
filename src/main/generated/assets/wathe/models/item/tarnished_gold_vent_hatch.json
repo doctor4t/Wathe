@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "wathe:block/tarnished_gold_vent_hatch"
+  }
+}

@@ -1,7 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_branch_front",
-  "textures": {
-    "side": "minecraft:block/cherry_log",
-    "top": "trainmurdermystery:block/cherry_branch_top"
-  }
-}

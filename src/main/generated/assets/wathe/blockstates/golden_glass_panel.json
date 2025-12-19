@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "wathe:block/golden_glass_panel",
+      "x": 270
+    },
+    "facing=east": {
+      "model": "wathe:block/golden_glass_panel",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "wathe:block/golden_glass_panel",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "wathe:block/golden_glass_panel"
+    },
+    "facing=up": {
+      "model": "wathe:block/golden_glass_panel",
+      "x": 90
+    },
+    "facing=west": {
+      "model": "wathe:block/golden_glass_panel",
+      "y": 90
+    }
+  }
+}

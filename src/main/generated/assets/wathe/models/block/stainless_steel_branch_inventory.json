@@ -1,0 +1,7 @@
+{
+  "parent": "wathe:block/template_branch_inventory",
+  "textures": {
+    "side": "wathe:block/stainless_steel",
+    "top": "wathe:block/stainless_steel_branch_top"
+  }
+}

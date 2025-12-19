@@ -1,0 +1,7 @@
+{
+  "parent": "wathe:block/template_branch_front",
+  "textures": {
+    "side": "wathe:block/dark_steel",
+    "top": "wathe:block/dark_steel_branch_top"
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "trainmurdermystery:block/smooth_ebony",
-    "side": "trainmurdermystery:block/smooth_ebony",
-    "top": "trainmurdermystery:block/smooth_ebony"
-  }
-}
