@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "wathe:block/drink_tray",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "wathe:block/drink_tray"
+    },
+    "facing=south": {
+      "model": "wathe:block/drink_tray",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wathe:block/drink_tray",
+      "y": 270
+    }
+  }
+}

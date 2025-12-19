@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "wathe:block/mahogany_slab"
+    },
+    "type=double": {
+      "model": "wathe:block/mahogany_planks"
+    },
+    "type=top": {
+      "model": "wathe:block/mahogany_slab_top"
+    }
+  }
+}

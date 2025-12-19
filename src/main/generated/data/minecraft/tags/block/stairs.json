@@ -1,21 +1,21 @@
 {
   "values": [
-    "trainmurdermystery:tarnished_gold_stairs",
-    "trainmurdermystery:gold_stairs",
-    "trainmurdermystery:pristine_gold_stairs",
-    "trainmurdermystery:metal_sheet_stairs",
-    "trainmurdermystery:stainless_steel_stairs",
-    "trainmurdermystery:marble_stairs",
-    "trainmurdermystery:marble_tile_stairs",
-    "trainmurdermystery:dark_marble_stairs",
-    "trainmurdermystery:white_hull_stairs",
-    "trainmurdermystery:black_hull_stairs",
-    "trainmurdermystery:black_hull_sheet_stairs",
-    "trainmurdermystery:mahogany_herringbone_stairs",
-    "trainmurdermystery:smooth_mahogany_stairs",
-    "trainmurdermystery:bubinga_herringbone_stairs",
-    "trainmurdermystery:smooth_bubinga_stairs",
-    "trainmurdermystery:ebony_herringbone_stairs",
-    "trainmurdermystery:smooth_ebony_stairs"
+    "wathe:tarnished_gold_stairs",
+    "wathe:gold_stairs",
+    "wathe:pristine_gold_stairs",
+    "wathe:metal_sheet_stairs",
+    "wathe:stainless_steel_stairs",
+    "wathe:marble_stairs",
+    "wathe:marble_tile_stairs",
+    "wathe:dark_marble_stairs",
+    "wathe:white_hull_stairs",
+    "wathe:black_hull_stairs",
+    "wathe:black_hull_sheet_stairs",
+    "wathe:mahogany_herringbone_stairs",
+    "wathe:smooth_mahogany_stairs",
+    "wathe:bubinga_herringbone_stairs",
+    "wathe:smooth_bubinga_stairs",
+    "wathe:ebony_herringbone_stairs",
+    "wathe:smooth_ebony_stairs"
   ]
 }

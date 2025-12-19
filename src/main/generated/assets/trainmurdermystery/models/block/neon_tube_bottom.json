@@ -1,6 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_thick_bar_bottom",
-  "textures": {
-    "texture": "trainmurdermystery:block/neon_tube_lit"
-  }
-}

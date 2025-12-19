@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "wathe:block/ebony_planks",
+    "side": "wathe:block/ebony_bookshelf_alt"
+  }
+}

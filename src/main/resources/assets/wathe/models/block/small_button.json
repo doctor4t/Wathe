@@ -1,0 +1,29 @@
+{
+	"credit": "Made by Farcr",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"0": "wathe:block/small_button",
+		"particle": "wathe:block/small_button"
+	},
+	"elements": [
+		{
+			"from": [6, 6, 14],
+			"to": [10, 10, 16],
+			"faces": {
+				"north": {"uv": [2, 2, 6, 6], "texture": "#0"},
+				"east": {"uv": [0, 2, 2, 6], "texture": "#0"},
+				"west": {"uv": [2, 2, 0, 6], "texture": "#0"},
+				"up": {"uv": [2, 2, 6, 0], "texture": "#0"},
+				"down": {"uv": [2, 8, 6, 6], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 3, 15.99],
+			"to": [12, 13, 15.99],
+			"faces": {
+				"north": {"uv": [8, 0, 16, 10], "texture": "#0"},
+				"south": {"uv": [8, 0, 16, 10], "texture": "#0"}
+			}
+		}
+	]
+}

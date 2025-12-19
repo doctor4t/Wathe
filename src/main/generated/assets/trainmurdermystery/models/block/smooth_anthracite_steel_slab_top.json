@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "trainmurdermystery:block/smooth_anthracite_steel",
-    "side": "trainmurdermystery:block/smooth_anthracite_steel",
-    "top": "trainmurdermystery:block/smooth_anthracite_steel"
-  }
-}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "opaque=false": {
+      "model": "wathe:block/hull_glass"
+    },
+    "opaque=true": {
+      "model": "wathe:block/hull_glass_opaque"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "wathe:block/template_cabinet_open",
+  "textures": {
+    "front": "wathe:block/bubinga_cabinet_front_open",
+    "shelf": "wathe:block/bubinga_cabinet_front_open_shelf",
+    "side": "wathe:block/bubinga_cabinet_side",
+    "wall": "wathe:block/bubinga_cabinet_wall"
+  }
+}

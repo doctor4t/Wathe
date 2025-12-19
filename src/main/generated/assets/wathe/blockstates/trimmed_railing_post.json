@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "wathe:block/trimmed_railing_post",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "wathe:block/trimmed_railing_post"
+    },
+    "facing=south": {
+      "model": "wathe:block/trimmed_railing_post",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wathe:block/trimmed_railing_post",
+      "y": 270
+    }
+  }
+}

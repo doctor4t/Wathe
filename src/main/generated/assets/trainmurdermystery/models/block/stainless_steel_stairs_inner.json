@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "trainmurdermystery:block/stainless_steel",
-    "side": "trainmurdermystery:block/stainless_steel",
-    "top": "trainmurdermystery:block/stainless_steel"
-  }
-}

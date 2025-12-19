@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "wathe:block/white_ottoman",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "wathe:block/white_ottoman"
+    },
+    "facing=south": {
+      "model": "wathe:block/white_ottoman",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wathe:block/white_ottoman",
+      "y": 270
+    }
+  }
+}

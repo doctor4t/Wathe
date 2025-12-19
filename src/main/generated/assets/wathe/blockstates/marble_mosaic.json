@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "wathe:block/marble_mosaic",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "wathe:block/marble_mosaic",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "wathe:block/marble_mosaic"
+    },
+    "facing=west": {
+      "model": "wathe:block/marble_mosaic",
+      "y": 90
+    }
+  }
+}

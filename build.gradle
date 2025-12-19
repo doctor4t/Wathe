@@ -51,12 +51,12 @@ repositories {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/trainmurdermystery.accesswidener")
+	accessWidenerPath = file("src/main/resources/wathe.accesswidener")
 }
 
 fabricApi {
 	configureDataGeneration() {
-		modId = "trainmurdermystery"
+		modId = "wathe"
 		client = true
 	}
 }

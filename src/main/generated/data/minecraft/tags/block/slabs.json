@@ -1,21 +1,21 @@
 {
   "values": [
-    "trainmurdermystery:tarnished_gold_slab",
-    "trainmurdermystery:gold_slab",
-    "trainmurdermystery:pristine_gold_slab",
-    "trainmurdermystery:metal_sheet_slab",
-    "trainmurdermystery:stainless_steel_slab",
-    "trainmurdermystery:marble_slab",
-    "trainmurdermystery:marble_tile_slab",
-    "trainmurdermystery:dark_marble_slab",
-    "trainmurdermystery:white_hull_slab",
-    "trainmurdermystery:black_hull_slab",
-    "trainmurdermystery:black_hull_sheet_slab",
-    "trainmurdermystery:mahogany_herringbone_slab",
-    "trainmurdermystery:smooth_mahogany_slab",
-    "trainmurdermystery:bubinga_herringbone_slab",
-    "trainmurdermystery:smooth_bubinga_slab",
-    "trainmurdermystery:ebony_herringbone_slab",
-    "trainmurdermystery:smooth_ebony_slab"
+    "wathe:tarnished_gold_slab",
+    "wathe:gold_slab",
+    "wathe:pristine_gold_slab",
+    "wathe:metal_sheet_slab",
+    "wathe:stainless_steel_slab",
+    "wathe:marble_slab",
+    "wathe:marble_tile_slab",
+    "wathe:dark_marble_slab",
+    "wathe:white_hull_slab",
+    "wathe:black_hull_slab",
+    "wathe:black_hull_sheet_slab",
+    "wathe:mahogany_herringbone_slab",
+    "wathe:smooth_mahogany_slab",
+    "wathe:bubinga_herringbone_slab",
+    "wathe:smooth_bubinga_slab",
+    "wathe:ebony_herringbone_slab",
+    "wathe:smooth_ebony_slab"
   ]
 }

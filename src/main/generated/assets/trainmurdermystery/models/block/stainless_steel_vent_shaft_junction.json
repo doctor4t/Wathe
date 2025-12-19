@@ -1,7 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_vent_shaft_side",
-  "textures": {
-    "inside": "trainmurdermystery:block/stainless_steel_vent_shaft_junction_inside",
-    "side": "trainmurdermystery:block/stainless_steel_vent_shaft_junction"
-  }
-}
