@@ -65,7 +65,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
@@ -309,25 +308,25 @@ public class WatheClient implements ClientModInitializer {
                     client.world.addParticle(WatheParticles.GUNSHOT, muzzlePos.x, muzzlePos.y, muzzlePos.z, 0, 0, 0);
             });
         });
-        
-        ClientPlayNetworking.registerGlobalReceiver(PoisonOverlayPayload.ID, (payload, context) -> {
+
+        ClientPlayNetworking.registerGlobalReceiver(PoisonOverlayS2CPayload.ID, (payload, context) -> {
             MinecraftClient client = MinecraftClient.getInstance();
             client.execute(() -> client.inGameHud.setOverlayMessage(Text.translatable(payload.translationKey()), false));
         });
 
-        ClientPlayNetworking.registerGlobalReceiver(GunDropPayload.ID, (payload, context) -> {
+        ClientPlayNetworking.registerGlobalReceiver(GunDropS2CPayload.ID, (payload, context) -> {
             PlayerInventory inventory = context.player().getInventory();
             inventory.remove((s) -> s.isIn(WatheItemTags.GUNS), 1, inventory);
         });
 
-        ClientPlayNetworking.registerGlobalReceiver(AnnounceWelcomePayload.ID, (payload, context) -> {
+        ClientPlayNetworking.registerGlobalReceiver(AnnounceWelcomeS2CPayload.ID, (payload, context) -> {
             if (payload.role() < 0 || payload.role() >= RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.size()) return;
             RoundTextRenderer.startWelcome(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.get(payload.role()), payload.killers(), payload.targets());
         });
 
-        ClientPlayNetworking.registerGlobalReceiver(AnnounceEndingPayload.ID, (payload, context) -> RoundTextRenderer.startEnd());
+        ClientPlayNetworking.registerGlobalReceiver(AnnounceEndingS2CPayload.ID, (payload, context) -> RoundTextRenderer.startEnd());
 
-        ClientPlayNetworking.registerGlobalReceiver(TaskCompletePayload.ID, (payload, context) -> MoodRenderer.arrowProgress = 1f);
+        ClientPlayNetworking.registerGlobalReceiver(TaskCompleteS2CPayload.ID, (payload, context) -> MoodRenderer.arrowProgress = 1f);
     }
 
     public static TrainWorldComponent getTrainComponent() {

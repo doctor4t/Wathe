@@ -5,7 +5,7 @@ import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.client.gui.StoreRenderer;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.util.ShopEntry;
-import dev.doctor4t.wathe.networking.StoreBuyPayload;
+import dev.doctor4t.wathe.networking.StoreBuyC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -71,7 +71,7 @@ public class LimitedInventoryScreen extends LimitedHandledScreen<PlayerScreenHan
         public final ShopEntry entry;
 
         public StoreItemWidget(LimitedInventoryScreen screen, int x, int y, @NotNull ShopEntry entry, int index) {
-            super(x, y, 16, 16, entry.stack().getName(), (a) -> ClientPlayNetworking.send(new StoreBuyPayload(index)), DEFAULT_NARRATION_SUPPLIER);
+            super(x, y, 16, 16, entry.stack().getName(), (a) -> ClientPlayNetworking.send(new StoreBuyC2SPayload(index)), DEFAULT_NARRATION_SUPPLIER);
             this.screen = screen;
             this.entry = entry;
         }

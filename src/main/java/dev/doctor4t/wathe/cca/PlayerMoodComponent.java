@@ -6,7 +6,7 @@ import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.tag.WatheItemTags;
-import dev.doctor4t.wathe.networking.TaskCompletePayload;
+import dev.doctor4t.wathe.networking.TaskCompleteS2CPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -130,7 +130,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
                 removals.add(task.getType());
                 this.setMood(this.mood + GameConstants.MOOD_GAIN);
                 if (this.player instanceof ServerPlayerEntity tempPlayer)
-                    ServerPlayNetworking.send(tempPlayer, TaskCompletePayload.INSTANCE);
+                    ServerPlayNetworking.send(tempPlayer, TaskCompleteS2CPayload.INSTANCE);
                 shouldSync = true;
             }
         }

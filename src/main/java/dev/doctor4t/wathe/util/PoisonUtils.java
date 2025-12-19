@@ -2,7 +2,7 @@ package dev.doctor4t.wathe.util;
 
 import dev.doctor4t.wathe.block_entity.TrimmedBedBlockEntity;
 import dev.doctor4t.wathe.cca.PlayerPoisonComponent;
-import dev.doctor4t.wathe.networking.PoisonOverlayPayload;
+import dev.doctor4t.wathe.networking.PoisonOverlayS2CPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.BlockState;
@@ -77,7 +77,7 @@ public class PoisonUtils {
             }
 
             ServerPlayNetworking.send(
-                    player, new PoisonOverlayPayload("game.player.stung")
+                    player, new PoisonOverlayS2CPayload("game.player.stung")
             );
         }
     }

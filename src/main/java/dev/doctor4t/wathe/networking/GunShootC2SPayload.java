@@ -24,18 +24,18 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import org.jetbrains.annotations.NotNull;
 
-public record GunShootPayload(int target) implements CustomPayload {
-    public static final Id<GunShootPayload> ID = new Id<>(Wathe.id("gunshoot"));
-    public static final PacketCodec<PacketByteBuf, GunShootPayload> CODEC = PacketCodec.tuple(PacketCodecs.INTEGER, GunShootPayload::target, GunShootPayload::new);
+public record GunShootC2SPayload(int target) implements CustomPayload {
+    public static final Id<GunShootC2SPayload> ID = new Id<>(Wathe.id("gunshoot"));
+    public static final PacketCodec<PacketByteBuf, GunShootC2SPayload> CODEC = PacketCodec.tuple(PacketCodecs.INTEGER, GunShootC2SPayload::target, GunShootC2SPayload::new);
 
     @Override
     public Id<? extends CustomPayload> getId() {
         return ID;
     }
 
-    public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<GunShootPayload> {
+    public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<GunShootC2SPayload> {
         @Override
-        public void receive(@NotNull GunShootPayload payload, ServerPlayNetworking.@NotNull Context context) {
+        public void receive(@NotNull GunShootC2SPayload payload, ServerPlayNetworking.@NotNull Context context) {
             ServerPlayerEntity player = context.player();
             ItemStack mainHandStack = player.getMainHandStack();
             if (!mainHandStack.isIn(WatheItemTags.GUNS)) return;
@@ -77,7 +77,7 @@ public record GunShootPayload(int target) implements CustomPayload {
                                 item.setPickupDelay(10);
                                 item.setThrower(player);
                             }
-                            ServerPlayNetworking.send(player, GunDropPayload.INSTANCE);
+                            ServerPlayNetworking.send(player, GunDropS2CPayload.INSTANCE);
                             PlayerMoodComponent.KEY.get(player).setMood(0);
                         }, 4);
                     }

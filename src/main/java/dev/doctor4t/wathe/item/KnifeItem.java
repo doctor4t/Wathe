@@ -5,7 +5,7 @@ import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.WatheCosmetics;
 import dev.doctor4t.wathe.index.WatheSounds;
-import dev.doctor4t.wathe.networking.KnifeStabPayload;
+import dev.doctor4t.wathe.networking.KnifeStabC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -16,7 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.EntityHitResult;
@@ -85,7 +84,7 @@ public class KnifeItem extends Item implements ItemWithSkin {
         HitResult collision = getKnifeTarget(attacker);
         if (collision instanceof EntityHitResult entityHitResult) {
             Entity target = entityHitResult.getEntity();
-            ClientPlayNetworking.send(new KnifeStabPayload(target.getId()));
+            ClientPlayNetworking.send(new KnifeStabC2SPayload(target.getId()));
         }
     }
 
