@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "wathe:block/smooth_bubinga",
+    "side": "wathe:block/smooth_bubinga",
+    "top": "wathe:block/smooth_bubinga"
+  }
+}

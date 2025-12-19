@@ -1,0 +1,6 @@
+{
+  "parent": "wathe:block/template_lounge_couch_no_arms",
+  "textures": {
+    "texture": "wathe:block/blue_lounge_couch"
+  }
+}

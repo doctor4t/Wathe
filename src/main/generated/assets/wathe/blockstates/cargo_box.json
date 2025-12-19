@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,open=false": {
+      "model": "wathe:block/cargo_box",
+      "x": 90
+    },
+    "facing=down,open=true": {
+      "model": "wathe:block/cargo_box_open",
+      "x": 90
+    },
+    "facing=east,open=false": {
+      "model": "wathe:block/cargo_box",
+      "y": 90
+    },
+    "facing=east,open=true": {
+      "model": "wathe:block/cargo_box_open",
+      "y": 90
+    },
+    "facing=north,open=false": {
+      "model": "wathe:block/cargo_box"
+    },
+    "facing=north,open=true": {
+      "model": "wathe:block/cargo_box_open"
+    },
+    "facing=south,open=false": {
+      "model": "wathe:block/cargo_box",
+      "y": 180
+    },
+    "facing=south,open=true": {
+      "model": "wathe:block/cargo_box_open",
+      "y": 180
+    },
+    "facing=up,open=false": {
+      "model": "wathe:block/cargo_box",
+      "x": 270
+    },
+    "facing=up,open=true": {
+      "model": "wathe:block/cargo_box_open",
+      "x": 270
+    },
+    "facing=west,open=false": {
+      "model": "wathe:block/cargo_box",
+      "y": 270
+    },
+    "facing=west,open=true": {
+      "model": "wathe:block/cargo_box_open",
+      "y": 270
+    }
+  }
+}

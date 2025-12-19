@@ -1,7 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_walkway_top",
-  "textures": {
-    "side": "trainmurdermystery:block/dark_steel_walkway_side",
-    "top": "trainmurdermystery:block/dark_steel_walkway"
-  }
-}

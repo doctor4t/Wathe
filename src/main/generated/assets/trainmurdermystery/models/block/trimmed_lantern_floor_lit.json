@@ -1,8 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_trimmed_lantern_floor",
-  "textures": {
-    "bottom": "trainmurdermystery:block/trimmed_lantern_bottom_lit",
-    "side": "trainmurdermystery:block/trimmed_lantern_side_lit",
-    "top": "trainmurdermystery:block/trimmed_lantern_top"
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_bottom_left",
-  "textures": {
-    "bottom": "trainmurdermystery:block/cockpit_door_bottom",
-    "top": "trainmurdermystery:block/cockpit_door_top"
-  }
-}

@@ -1,0 +1,242 @@
+{
+	"block.cargo_box.close": {
+		"sounds": [
+			"wathe:block/cargo_box/close"
+		],
+		"subtitle": "subtitles.block.cargo_box.close"
+	},
+	"block.cargo_box.open": {
+		"sounds": [
+			"wathe:block/cargo_box/open1"
+		],
+		"subtitle": "subtitles.block.cargo_box.open"
+	},
+	"block.light.toggle": {
+		"sounds": [
+			"wathe:block/light_toggle"
+		],
+		"subtitle": "subtitles.block.light.toggle"
+	},
+	"block.privacy_panel.toggle": {
+		"sounds": [
+			"wathe:block/privacy_panel_toggle"
+		],
+		"subtitle": "subtitles.block.privacy_panel.toggle"
+	},
+	"block.space_button.toggle": {
+		"sounds": [
+			"wathe:block/space_button_toggle"
+		],
+		"subtitle": "subtitles.block.space_button.toggle"
+	},
+	"block.door.toggle": {
+		"sounds": [
+			"wathe:block/toggle_door"
+		],
+		"subtitle": "subtitles.block.door.toggle"
+	},
+	"block.sprinkler.run": {
+		"sounds": [
+			"wathe:block/sprinkler_run"
+		],
+		"subtitle": "subtitles.block.sprinkler.run"
+	},
+	"block.vent_shaft.break": {
+		"sounds": [
+			"wathe:block/vent_shaft/break1",
+			"wathe:block/vent_shaft/break2",
+			"wathe:block/vent_shaft/break3",
+			"wathe:block/vent_shaft/break4"
+		],
+		"subtitle": "subtitles.block.generic.break"
+	},
+	"block.vent_shaft.fall": {
+		"sounds": [
+			"wathe:block/vent_shaft/step1",
+			"wathe:block/vent_shaft/step2",
+			"wathe:block/vent_shaft/step3"
+		],
+		"subtitle": "subtitles.block.generic.fall"
+	},
+	"block.vent_shaft.hit": {
+		"sounds": [
+			"wathe:block/vent_shaft/step1",
+			"wathe:block/vent_shaft/step2",
+			"wathe:block/vent_shaft/step3"
+		],
+		"subtitle": "subtitles.block.generic.hit"
+	},
+	"block.vent_shaft.place": {
+		"sounds": [
+			"wathe:block/vent_shaft/break1",
+			"wathe:block/vent_shaft/break2",
+			"wathe:block/vent_shaft/break3",
+			"wathe:block/vent_shaft/break4"
+		],
+		"subtitle": "subtitles.block.generic.place"
+	},
+	"block.vent_shaft.step": {
+		"sounds": [
+			"wathe:block/vent_shaft/step1",
+			"wathe:block/vent_shaft/step2",
+			"wathe:block/vent_shaft/step3"
+		],
+		"subtitle": "subtitles.block.generic.footsteps"
+	},
+	"block.door.locked": {
+		"sounds": [
+			"wathe:block/door_locked"
+		],
+		"subtitle": "subtitles.block.door.locked"
+	},
+
+	"item.key.door": {
+		"sounds": [
+			"wathe:item/key_door"
+		],
+		"subtitle": "subtitles.item.key.door"
+	},
+	"item.lockpick.door": {
+		"sounds": [
+			"wathe:item/lockpick_door"
+		],
+		"subtitle": "subtitles.item.lockpick.door"
+	},
+	"item.knife.prepare": {
+		"sounds": [
+			"wathe:item/knife_prepare"
+		],
+		"subtitle": "subtitles.item.knife.prepare"
+	},
+	"item.knife.stab": {
+		"sounds": [
+			"wathe:item/knife_stab"
+		],
+		"subtitle": "subtitles.item.knife.stab"
+	},
+	"item.revolver.click": {
+		"sounds": [
+			"wathe:item/revolver_click"
+		],
+		"subtitle": "subtitles.item.revolver.click"
+	},
+	"item.revolver.shoot": {
+		"sounds": [
+			"wathe:item/revolver_shoot"
+		],
+		"subtitle": "subtitles.item.revolver.shoot"
+	},
+	"item.derringer.reload": {
+		"sounds": [
+			"wathe:item/derringer_reload"
+		],
+		"subtitle": "subtitles.item.derringer.reload"
+	},
+	"item.bat.hit": {
+		"sounds": [
+			"wathe:item/bat_hit_1",
+			"wathe:item/bat_hit_2",
+			"wathe:item/bat_hit_3",
+			"wathe:item/bat_hit_4"
+		],
+		"subtitle": "subtitles.item.bat.hit"
+	},
+	"item.crowbar.pry": {
+		"sounds": [
+			"wathe:item/crowbar_pry"
+		],
+		"subtitle": "subtitles.item.crowbar.pry"
+	},
+	"item.grenade.throw": {
+		"sounds": [
+			"wathe:item/grenade_throw"
+		],
+		"subtitle": "subtitles.item.grenade.throw"
+	},
+	"item.grenade.explode": {
+		"sounds": [
+			"wathe:item/grenade_explode"
+		],
+		"subtitle": "subtitles.item.grenade.explode"
+	},
+	"item.psycho.armour": {
+		"sounds": [
+			"wathe:item/psycho_armour"
+		],
+		"subtitle": "subtitles.item.psycho.armour"
+	},
+
+	"ambient.train.inside": {
+		"sounds": [
+			"wathe:ambient/train_inside"
+		],
+		"subtitle": "subtitles.ambient.train.inside"
+	},
+	"ambient.train.outside": {
+		"sounds": [
+			"wathe:ambient/train_outside"
+		],
+		"subtitle": "subtitles.ambient.train.outside"
+	},
+	"ambient.psycho_drone": {
+		"sounds": [
+			"wathe:ambient/psycho_drone"
+		],
+		"subtitle": "subtitles.ambient.psycho_drone"
+	},
+	"ambient.blackout": {
+		"sounds": [
+			"wathe:ambient/blackout"
+		],
+		"subtitle": "subtitles.ambient.blackout"
+	},
+	"ambient.train.horn": {
+		"sounds": [
+			"wathe:ambient/train_horn"
+		],
+		"subtitle": "subtitles.ambient.train.horn"
+	},
+
+	"ui.shop.buy": {
+		"sounds": [
+			"wathe:ui/shop_buy"
+		],
+		"subtitle": "subtitles.ui.shop.buy"
+	},
+	"ui.shop.buy_fail": {
+		"sounds": [
+			"wathe:ui/shop_buy_fail"
+		],
+		"subtitle": "subtitles.ui.shop.buy_fail"
+	},
+	"ui.piano": {
+		"sounds": [
+			"wathe:ui/piano"
+		],
+		"subtitle": "subtitles.ui.piano"
+	},
+	"ui.piano_win": {
+		"sounds": [
+			"wathe:ui/piano_win"
+		],
+		"subtitle": "subtitles.ui.piano_win"
+	},
+	"ui.piano_lose": {
+		"sounds": [
+			"wathe:ui/piano_lose"
+		],
+		"subtitle": "subtitles.ui.piano_lose"
+	},
+	"ui.piano_stinger": {
+		"sounds": [
+			"wathe:ui/piano_stinger"
+		],
+		"subtitle": "subtitles.ui.piano_stinger"
+	},
+	"ui.riser": {
+		"sounds": [
+			"wathe:ui/riser"
+		],
+		"subtitle": "subtitles.ui.riser"
+	}
+}

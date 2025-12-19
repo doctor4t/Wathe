@@ -1,6 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_trimmed_stair_support",
-  "textures": {
-    "texture": "trainmurdermystery:block/trimmed_ebony_stairs_support"
-  }
-}

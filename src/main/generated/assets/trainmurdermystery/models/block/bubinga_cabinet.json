@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "trainmurdermystery:block/bubinga_cabinet_front",
-    "side": "trainmurdermystery:block/bubinga_cabinet_side",
-    "top": "trainmurdermystery:block/bubinga_cabinet_side"
-  }
-}

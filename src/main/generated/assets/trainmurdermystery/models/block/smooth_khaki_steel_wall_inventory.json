@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/wall_inventory",
-  "textures": {
-    "wall": "trainmurdermystery:block/smooth_khaki_steel"
-  }
-}

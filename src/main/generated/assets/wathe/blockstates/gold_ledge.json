@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "wathe:block/gold_ledge",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "wathe:block/gold_ledge"
+    },
+    "facing=south": {
+      "model": "wathe:block/gold_ledge",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wathe:block/gold_ledge",
+      "y": 270
+    }
+  }
+}

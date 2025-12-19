@@ -1,0 +1,15 @@
+{
+	"textures": {
+		"0": "wathe:block/culling_glass",
+		"particle": "wathe:block/culling_glass"
+	},
+	"elements": [
+		{
+			"from": [1, 1, 1],
+			"to": [15, 15, 1],
+			"faces": {
+				"south": {"uv": [1, 1, 15, 15], "texture": "#0"}
+			}
+		}
+	]
+}
