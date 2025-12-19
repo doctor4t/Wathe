@@ -19,21 +19,12 @@ import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import dev.doctor4t.trainmurdermystery.networking.AnnounceEndingS2CPayload;
 =======
 import dev.doctor4t.wathe.Wathe;
-import dev.doctor4t.wathe.api.GameMode;
 import dev.doctor4t.wathe.api.MapEffect;
-import dev.doctor4t.wathe.api.event.AllowPlayerDeath;
-import dev.doctor4t.wathe.api.event.GameEvents;
-import dev.doctor4t.wathe.api.event.ShouldDropOnDeath;
 import dev.doctor4t.wathe.cca.*;
-import dev.doctor4t.wathe.compat.TrainVoicePlugin;
-import dev.doctor4t.wathe.entity.FirecrackerEntity;
-import dev.doctor4t.wathe.entity.NoteEntity;
-import dev.doctor4t.wathe.entity.PlayerBodyEntity;
 import dev.doctor4t.wathe.index.WatheDataComponentTypes;
 import dev.doctor4t.wathe.index.WatheEntities;
 import dev.doctor4t.wathe.index.WatheItems;
 import dev.doctor4t.wathe.index.WatheSounds;
-import dev.doctor4t.wathe.util.AnnounceEndingPayload;
 >>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/game/GameFunctions.java
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;

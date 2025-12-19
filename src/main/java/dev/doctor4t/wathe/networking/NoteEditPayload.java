@@ -1,4 +1,4 @@
-package dev.doctor4t.wathe.util;
+package dev.doctor4t.wathe.networking;
 
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.cca.PlayerNoteComponent;

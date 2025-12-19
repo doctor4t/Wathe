@@ -1,7 +1,8 @@
-package dev.doctor4t.wathe.util;
+package dev.doctor4t.wathe.networking;
 
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.index.WatheParticles;
+import dev.doctor4t.wathe.util.MatrixParticleManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.Perspective;

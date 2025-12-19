@@ -1,7 +1,6 @@
 package dev.doctor4t.wathe.cca;
 
 <<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/cca/PlayerMoodComponent.java
-import com.mojang.datafixers.types.templates.Named;
 import dev.doctor4t.trainmurdermystery.TMM;
 import dev.doctor4t.trainmurdermystery.api.Role;
 import dev.doctor4t.trainmurdermystery.api.TMMRoles;
@@ -12,12 +11,8 @@ import dev.doctor4t.trainmurdermystery.index.tag.TMMItemTags;
 import dev.doctor4t.trainmurdermystery.networking.TaskCompleteS2CPayload;
 =======
 import dev.doctor4t.wathe.Wathe;
-import dev.doctor4t.wathe.api.Role;
 import dev.doctor4t.wathe.client.WatheClient;
-import dev.doctor4t.wathe.game.GameConstants;
-import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.tag.WatheItemTags;
-import dev.doctor4t.wathe.util.TaskCompletePayload;
 >>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/cca/PlayerMoodComponent.java
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;

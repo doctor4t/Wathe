@@ -6,8 +6,6 @@ import dev.doctor4t.trainmurdermystery.cca.PlayerNoteComponent;
 import dev.doctor4t.trainmurdermystery.networking.NoteEditC2SPayload;
 =======
 import dev.doctor4t.wathe.Wathe;
-import dev.doctor4t.wathe.cca.PlayerNoteComponent;
-import dev.doctor4t.wathe.util.NoteEditPayload;
 >>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/client/gui/screen/ingame/NoteScreen.java
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;

@@ -1,15 +1,8 @@
 package dev.doctor4t.wathe.util;
 
-<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/util/PoisonUtils.java
-import dev.doctor4t.trainmurdermystery.block_entity.TrimmedBedBlockEntity;
-import dev.doctor4t.trainmurdermystery.cca.PlayerPoisonComponent;
-import dev.doctor4t.trainmurdermystery.networking.PoisonOverlayS2CPayload;
-=======
-import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.block_entity.TrimmedBedBlockEntity;
 import dev.doctor4t.wathe.cca.PlayerPoisonComponent;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
->>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/util/PoisonUtils.java
+import dev.doctor4t.wathe.networking.PoisonOverlayPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.BlockState;
@@ -84,7 +77,7 @@ public class PoisonUtils {
             }
 
             ServerPlayNetworking.send(
-                    player, new PoisonOverlayS2CPayload("game.player.stung")
+                    player, new PoisonOverlayPayload("game.player.stung")
             );
         }
     }
@@ -202,37 +195,4 @@ public class PoisonUtils {
 
         return null;
     }
-<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/util/PoisonUtils.java
-=======
-
-
-    public record PoisonOverlayPayload(String translationKey) implements CustomPayload {
-        public static final Id<PoisonOverlayPayload> ID =
-                new Id<>(Wathe.id("poisoned_text"));
-
-        public static final PacketCodec<RegistryByteBuf, PoisonOverlayPayload> CODEC =
-                PacketCodec.of(PoisonOverlayPayload::write, PoisonOverlayPayload::read);
-
-        private void write(RegistryByteBuf buf) {
-            buf.writeString(translationKey);
-        }
-
-        private static PoisonOverlayPayload read(RegistryByteBuf buf) {
-            return new PoisonOverlayPayload(buf.readString());
-        }
-
-        @Override
-        public Id<? extends CustomPayload> getId() {
-            return ID;
-        }
-
-        public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<PoisonOverlayPayload> {
-            @Override
-            public void receive(@NotNull PoisonOverlayPayload payload, ClientPlayNetworking.@NotNull Context context) {
-                MinecraftClient client = MinecraftClient.getInstance();
-                client.execute(() -> client.inGameHud.setOverlayMessage(Text.translatable(payload.translationKey()), false));
-            }
-        }
-    }
->>>>>>> upstream/main:src/main/java/dev/doctor4t/wathe/util/PoisonUtils.java
 }
