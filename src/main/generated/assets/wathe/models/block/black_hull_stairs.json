@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "wathe:block/black_hull",
+    "side": "wathe:block/black_hull",
+    "top": "wathe:block/black_hull"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "wathe:block/template_branch_back",
+  "textures": {
+    "side": "minecraft:block/acacia_log",
+    "top": "wathe:block/acacia_branch_top"
+  }
+}

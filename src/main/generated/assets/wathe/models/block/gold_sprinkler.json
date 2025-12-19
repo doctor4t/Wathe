@@ -1,0 +1,7 @@
+{
+  "parent": "wathe:block/template_sprinkler",
+  "textures": {
+    "particle": "wathe:block/gold",
+    "texture": "wathe:block/gold_sprinkler"
+  }
+}

@@ -1,9 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_cabinet_open",
-  "textures": {
-    "front": "trainmurdermystery:block/mahogany_cabinet_front_open",
-    "shelf": "trainmurdermystery:block/mahogany_cabinet_front_open_shelf",
-    "side": "trainmurdermystery:block/mahogany_cabinet_side",
-    "wall": "trainmurdermystery:block/mahogany_cabinet_wall"
-  }
-}

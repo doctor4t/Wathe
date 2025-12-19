@@ -1,0 +1,215 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_middle"
+      },
+      "when": {
+        "facing": "north",
+        "left": "false",
+        "right": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_left"
+      },
+      "when": {
+        "facing": "north",
+        "left": "true",
+        "right": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_right"
+      },
+      "when": {
+        "facing": "north",
+        "left": "false",
+        "right": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_single"
+      },
+      "when": {
+        "facing": "north",
+        "left": "true",
+        "right": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_support"
+      },
+      "when": {
+        "facing": "north",
+        "support": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_middle",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "left": "false",
+        "right": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_left",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "left": "true",
+        "right": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_right",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "left": "false",
+        "right": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_single",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "left": "true",
+        "right": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_support",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "support": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_middle",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "left": "false",
+        "right": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_left",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "left": "true",
+        "right": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_right",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "left": "false",
+        "right": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_single",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "left": "true",
+        "right": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_support",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "support": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_middle",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "left": "false",
+        "right": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_left",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "left": "true",
+        "right": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_right",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "left": "false",
+        "right": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_single",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "left": "true",
+        "right": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/trimmed_ebony_stairs_support",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "support": "true"
+      }
+    }
+  ]
+}

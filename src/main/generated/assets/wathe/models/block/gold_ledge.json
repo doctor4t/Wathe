@@ -1,0 +1,6 @@
+{
+  "parent": "wathe:block/template_ledge",
+  "textures": {
+    "texture": "wathe:block/gold_bar"
+  }
+}

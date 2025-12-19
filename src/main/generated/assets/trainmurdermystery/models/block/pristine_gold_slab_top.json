@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "trainmurdermystery:block/pristine_gold",
-    "side": "trainmurdermystery:block/pristine_gold",
-    "top": "trainmurdermystery:block/pristine_gold"
-  }
-}

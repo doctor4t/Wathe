@@ -1,6 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_panel",
-  "textures": {
-    "all": "trainmurdermystery:block/muntz_steel"
-  }
-}

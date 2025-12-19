@@ -1,0 +1,6 @@
+{
+  "parent": "wathe:item/small_item",
+  "textures": {
+    "layer0": "wathe:item/scorpion"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "wathe:block/dark_steel_vent_hatch"
+  }
+}

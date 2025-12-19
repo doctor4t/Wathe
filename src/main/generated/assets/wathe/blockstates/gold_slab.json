@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "wathe:block/gold_slab"
+    },
+    "type=double": {
+      "model": "wathe:block/gold"
+    },
+    "type=top": {
+      "model": "wathe:block/gold_slab_top"
+    }
+  }
+}

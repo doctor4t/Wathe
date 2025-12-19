@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "wathe:block/neon_pillar_top_unlit",
+    "side": "wathe:block/neon_pillar_unlit"
+  }
+}

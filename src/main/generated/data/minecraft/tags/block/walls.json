@@ -1,15 +1,15 @@
 {
   "values": [
-    "trainmurdermystery:tarnished_gold_wall",
-    "trainmurdermystery:gold_wall",
-    "trainmurdermystery:pristine_gold_wall",
-    "trainmurdermystery:metal_sheet_wall",
-    "trainmurdermystery:stainless_steel_wall",
-    "trainmurdermystery:marble_wall",
-    "trainmurdermystery:marble_tile_wall",
-    "trainmurdermystery:dark_marble_wall",
-    "trainmurdermystery:white_hull_wall",
-    "trainmurdermystery:black_hull_wall",
-    "trainmurdermystery:black_hull_sheet_wall"
+    "wathe:tarnished_gold_wall",
+    "wathe:gold_wall",
+    "wathe:pristine_gold_wall",
+    "wathe:metal_sheet_wall",
+    "wathe:stainless_steel_wall",
+    "wathe:marble_wall",
+    "wathe:marble_tile_wall",
+    "wathe:dark_marble_wall",
+    "wathe:white_hull_wall",
+    "wathe:black_hull_wall",
+    "wathe:black_hull_sheet_wall"
   ]
 }

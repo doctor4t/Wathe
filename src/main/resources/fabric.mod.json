@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
-	"id": "trainmurdermystery",
+	"id": "wathe",
 	"version": "${version}",
-	"name": "The Last Voyage of the Harpy Express",
-	"description": "A train murder mystery social game.",
+	"name": "Wathe",
+	"description": "A murder mystery social game.",
 	"authors": [
 		"doctor4t",
 		"AmyMialee",
@@ -14,48 +14,48 @@
 		"Arathain"
 	],
 	"license": "ARR",
-	"icon": "assets/trainmurdermystery/icon.png",
+	"icon": "assets/wathe/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-          "dev.doctor4t.trainmurdermystery.TMM"
+			"dev.doctor4t.wathe.Wathe"
 		],
 		"client": [
-			"dev.doctor4t.trainmurdermystery.client.TMMClient"
+			"dev.doctor4t.wathe.client.WatheClient"
 		],
 		"fabric-datagen": [
-          "dev.doctor4t.trainmurdermystery.datagen.TMMDatagen"
+			"dev.doctor4t.wathe.datagen.WatheDatagen"
 		],
 		"cardinal-components": [
-			"dev.doctor4t.trainmurdermystery.cca.TMMComponents"
+			"dev.doctor4t.wathe.cca.WatheComponents"
 		],
 		"voicechat": [
-			"dev.doctor4t.trainmurdermystery.compat.TrainVoicePlugin"
+			"dev.doctor4t.wathe.compat.TrainVoicePlugin"
 		]
 	},
 	"mixins": [
-		"trainmurdermystery.mixins.json"
+		"wathe.mixins.json"
 	],
-	"accessWidener" : "trainmurdermystery.accesswidener",
+	"accessWidener" : "wathe.accesswidener",
 	"custom": {
 		"cardinal-components": [
-			"trainmurdermystery:mapVariables",
-			"trainmurdermystery:train",
-			"trainmurdermystery:game",
-			"trainmurdermystery:role",
-			"trainmurdermystery:mood",
-			"trainmurdermystery:shop",
-			"trainmurdermystery:poison",
-			"trainmurdermystery:psycho",
-			"trainmurdermystery:blackout",
-			"trainmurdermystery:rolecounter",
-			"trainmurdermystery:note",
-			"trainmurdermystery:time",
-			"trainmurdermystery:autostart",
-			"trainmurdermystery:roundend"
+			"wathe:train",
+			"wathe:game",
+			"wathe:mapvariables",
+			"wathe:blackout",
+			"wathe:time",
+			"wathe:autostart",
+			"wathe:roundend",
+			"wathe:role",
+			"wathe:mood",
+			"wathe:shop",
+			"wathe:poison",
+			"wathe:psycho",
+			"wathe:rolecounter",
+			"wathe:note"
 		],
 		"loom:injected_interfaces": {
-			"net/minecraft/class_5483/class_5496" : ["dev/doctor4t/trainmurdermystery/util/BlockSettingsAdditions"]
+			"net/minecraft/class_5483/class_5496" : ["dev/doctor4t/wathe/util/BlockSettingsAdditions"]
 		}
 	},
 	"depends": {

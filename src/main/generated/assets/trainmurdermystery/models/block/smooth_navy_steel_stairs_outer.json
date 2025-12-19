@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "bottom": "trainmurdermystery:block/smooth_navy_steel",
-    "side": "trainmurdermystery:block/smooth_navy_steel",
-    "top": "trainmurdermystery:block/smooth_navy_steel"
-  }
-}

@@ -1,0 +1,876 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side_opening",
+        "x": 90
+      },
+      "when": {
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side",
+        "x": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "down": "true"
+          },
+          {
+            "AND": [
+              {
+                "east": "false"
+              },
+              {
+                "west": "false"
+              }
+            ]
+          },
+          {
+            "AND": [
+              {
+                "north": "true"
+              },
+              {
+                "south": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side_vertical",
+        "x": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "down": "true"
+          },
+          {
+            "AND": [
+              {
+                "north": "false"
+              },
+              {
+                "south": "false"
+              }
+            ]
+          },
+          {
+            "AND": [
+              {
+                "east": "true"
+              },
+              {
+                "west": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_junction",
+        "x": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "down": "true"
+          },
+          {
+            "OR": [
+              {
+                "east": "false",
+                "north": "true",
+                "south": "false",
+                "west": "false"
+              },
+              {
+                "east": "false",
+                "north": "false",
+                "south": "true",
+                "west": "false"
+              },
+              {
+                "east": "true",
+                "north": "false",
+                "south": "false",
+                "west": "false"
+              },
+              {
+                "east": "false",
+                "north": "false",
+                "south": "false",
+                "west": "true"
+              },
+              {
+                "east": "false",
+                "north": "false",
+                "south": "false",
+                "west": "false"
+              },
+              {
+                "AND": [
+                  {
+                    "OR": [
+                      {
+                        "north": "true"
+                      },
+                      {
+                        "south": "true"
+                      }
+                    ]
+                  },
+                  {
+                    "OR": [
+                      {
+                        "east": "true"
+                      },
+                      {
+                        "west": "true"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side_opening",
+        "x": 270
+      },
+      "when": {
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side",
+        "x": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "up": "true"
+          },
+          {
+            "AND": [
+              {
+                "east": "false"
+              },
+              {
+                "west": "false"
+              }
+            ]
+          },
+          {
+            "AND": [
+              {
+                "south": "true"
+              },
+              {
+                "north": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side_vertical",
+        "x": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "up": "true"
+          },
+          {
+            "AND": [
+              {
+                "south": "false"
+              },
+              {
+                "north": "false"
+              }
+            ]
+          },
+          {
+            "AND": [
+              {
+                "east": "true"
+              },
+              {
+                "west": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_junction",
+        "x": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "up": "true"
+          },
+          {
+            "OR": [
+              {
+                "east": "false",
+                "north": "false",
+                "south": "true",
+                "west": "false"
+              },
+              {
+                "east": "false",
+                "north": "true",
+                "south": "false",
+                "west": "false"
+              },
+              {
+                "east": "true",
+                "north": "false",
+                "south": "false",
+                "west": "false"
+              },
+              {
+                "east": "false",
+                "north": "false",
+                "south": "false",
+                "west": "true"
+              },
+              {
+                "east": "false",
+                "north": "false",
+                "south": "false",
+                "west": "false"
+              },
+              {
+                "AND": [
+                  {
+                    "OR": [
+                      {
+                        "south": "true"
+                      },
+                      {
+                        "north": "true"
+                      }
+                    ]
+                  },
+                  {
+                    "OR": [
+                      {
+                        "east": "true"
+                      },
+                      {
+                        "west": "true"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side_opening"
+      },
+      "when": {
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side"
+      },
+      "when": {
+        "AND": [
+          {
+            "north": "true"
+          },
+          {
+            "AND": [
+              {
+                "east": "false"
+              },
+              {
+                "west": "false"
+              }
+            ]
+          },
+          {
+            "AND": [
+              {
+                "up": "true"
+              },
+              {
+                "down": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side_vertical"
+      },
+      "when": {
+        "AND": [
+          {
+            "north": "true"
+          },
+          {
+            "AND": [
+              {
+                "up": "false"
+              },
+              {
+                "down": "false"
+              }
+            ]
+          },
+          {
+            "AND": [
+              {
+                "east": "true"
+              },
+              {
+                "west": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_junction"
+      },
+      "when": {
+        "AND": [
+          {
+            "north": "true"
+          },
+          {
+            "OR": [
+              {
+                "down": "false",
+                "east": "false",
+                "up": "true",
+                "west": "false"
+              },
+              {
+                "down": "true",
+                "east": "false",
+                "up": "false",
+                "west": "false"
+              },
+              {
+                "down": "false",
+                "east": "true",
+                "up": "false",
+                "west": "false"
+              },
+              {
+                "down": "false",
+                "east": "false",
+                "up": "false",
+                "west": "true"
+              },
+              {
+                "down": "false",
+                "east": "false",
+                "up": "false",
+                "west": "false"
+              },
+              {
+                "AND": [
+                  {
+                    "OR": [
+                      {
+                        "up": "true"
+                      },
+                      {
+                        "down": "true"
+                      }
+                    ]
+                  },
+                  {
+                    "OR": [
+                      {
+                        "east": "true"
+                      },
+                      {
+                        "west": "true"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side_opening",
+        "y": 180
+      },
+      "when": {
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "south": "true"
+          },
+          {
+            "AND": [
+              {
+                "west": "false"
+              },
+              {
+                "east": "false"
+              }
+            ]
+          },
+          {
+            "AND": [
+              {
+                "up": "true"
+              },
+              {
+                "down": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side_vertical",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "south": "true"
+          },
+          {
+            "AND": [
+              {
+                "up": "false"
+              },
+              {
+                "down": "false"
+              }
+            ]
+          },
+          {
+            "AND": [
+              {
+                "west": "true"
+              },
+              {
+                "east": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_junction",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "south": "true"
+          },
+          {
+            "OR": [
+              {
+                "down": "false",
+                "east": "false",
+                "up": "true",
+                "west": "false"
+              },
+              {
+                "down": "true",
+                "east": "false",
+                "up": "false",
+                "west": "false"
+              },
+              {
+                "down": "false",
+                "east": "false",
+                "up": "false",
+                "west": "true"
+              },
+              {
+                "down": "false",
+                "east": "true",
+                "up": "false",
+                "west": "false"
+              },
+              {
+                "down": "false",
+                "east": "false",
+                "up": "false",
+                "west": "false"
+              },
+              {
+                "AND": [
+                  {
+                    "OR": [
+                      {
+                        "up": "true"
+                      },
+                      {
+                        "down": "true"
+                      }
+                    ]
+                  },
+                  {
+                    "OR": [
+                      {
+                        "west": "true"
+                      },
+                      {
+                        "east": "true"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side_opening",
+        "y": 270
+      },
+      "when": {
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "west": "true"
+          },
+          {
+            "AND": [
+              {
+                "north": "false"
+              },
+              {
+                "south": "false"
+              }
+            ]
+          },
+          {
+            "AND": [
+              {
+                "up": "true"
+              },
+              {
+                "down": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side_vertical",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "west": "true"
+          },
+          {
+            "AND": [
+              {
+                "up": "false"
+              },
+              {
+                "down": "false"
+              }
+            ]
+          },
+          {
+            "AND": [
+              {
+                "north": "true"
+              },
+              {
+                "south": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_junction",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "west": "true"
+          },
+          {
+            "OR": [
+              {
+                "down": "false",
+                "north": "false",
+                "south": "false",
+                "up": "true"
+              },
+              {
+                "down": "true",
+                "north": "false",
+                "south": "false",
+                "up": "false"
+              },
+              {
+                "down": "false",
+                "north": "true",
+                "south": "false",
+                "up": "false"
+              },
+              {
+                "down": "false",
+                "north": "false",
+                "south": "true",
+                "up": "false"
+              },
+              {
+                "down": "false",
+                "north": "false",
+                "south": "false",
+                "up": "false"
+              },
+              {
+                "AND": [
+                  {
+                    "OR": [
+                      {
+                        "up": "true"
+                      },
+                      {
+                        "down": "true"
+                      }
+                    ]
+                  },
+                  {
+                    "OR": [
+                      {
+                        "north": "true"
+                      },
+                      {
+                        "south": "true"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side_opening",
+        "y": 90
+      },
+      "when": {
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "east": "true"
+          },
+          {
+            "AND": [
+              {
+                "south": "false"
+              },
+              {
+                "north": "false"
+              }
+            ]
+          },
+          {
+            "AND": [
+              {
+                "up": "true"
+              },
+              {
+                "down": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_side_vertical",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "east": "true"
+          },
+          {
+            "AND": [
+              {
+                "up": "false"
+              },
+              {
+                "down": "false"
+              }
+            ]
+          },
+          {
+            "AND": [
+              {
+                "south": "true"
+              },
+              {
+                "north": "true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/dark_steel_vent_shaft_junction",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "east": "true"
+          },
+          {
+            "OR": [
+              {
+                "down": "false",
+                "north": "false",
+                "south": "false",
+                "up": "true"
+              },
+              {
+                "down": "true",
+                "north": "false",
+                "south": "false",
+                "up": "false"
+              },
+              {
+                "down": "false",
+                "north": "false",
+                "south": "true",
+                "up": "false"
+              },
+              {
+                "down": "false",
+                "north": "true",
+                "south": "false",
+                "up": "false"
+              },
+              {
+                "down": "false",
+                "north": "false",
+                "south": "false",
+                "up": "false"
+              },
+              {
+                "AND": [
+                  {
+                    "OR": [
+                      {
+                        "up": "true"
+                      },
+                      {
+                        "down": "true"
+                      }
+                    ]
+                  },
+                  {
+                    "OR": [
+                      {
+                        "south": "true"
+                      },
+                      {
+                        "north": "true"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

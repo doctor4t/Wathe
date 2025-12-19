@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "wathe:block/tarnished_gold_slab"
+    },
+    "type=double": {
+      "model": "wathe:block/tarnished_gold"
+    },
+    "type=top": {
+      "model": "wathe:block/tarnished_gold_slab_top"
+    }
+  }
+}

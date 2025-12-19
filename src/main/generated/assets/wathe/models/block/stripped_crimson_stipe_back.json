@@ -1,0 +1,7 @@
+{
+  "parent": "wathe:block/template_branch_back",
+  "textures": {
+    "side": "minecraft:block/stripped_crimson_stem",
+    "top": "wathe:block/stripped_crimson_stipe_top"
+  }
+}
