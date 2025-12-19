@@ -1,18 +1,10 @@
 package dev.doctor4t.wathe.networking;
 
 import dev.doctor4t.wathe.Wathe;
-import dev.doctor4t.wathe.index.WatheParticles;
-import dev.doctor4t.wathe.util.MatrixParticleManager;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.Perspective;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Uuids;
-import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -23,21 +15,5 @@ public record ShootMuzzleS2CPayload(UUID shooterUuid) implements CustomPayload {
     @Override
     public Id<? extends CustomPayload> getId() {
         return ID;
-    }
-
-    public static class Receiver implements ClientPlayNetworking.PlayPayloadHandler<ShootMuzzleS2CPayload> {
-        @Override
-        public void receive(@NotNull ShootMuzzleS2CPayload payload, ClientPlayNetworking.@NotNull Context context) {
-            MinecraftClient client = MinecraftClient.getInstance();
-            client.execute(() -> {
-                if (client.world == null || client.player == null) return;
-                PlayerEntity shooter = client.world.getPlayerByUuid(payload.shooterUuid);
-                if (shooter == null || shooter.getUuid() == client.player.getUuid() && client.options.getPerspective() == Perspective.FIRST_PERSON)
-                    return;
-                Vec3d muzzlePos = MatrixParticleManager.getMuzzlePosForPlayer(shooter);
-                if (muzzlePos != null)
-                    client.world.addParticle(WatheParticles.GUNSHOT, muzzlePos.x, muzzlePos.y, muzzlePos.z, 0, 0, 0);
-            });
-        }
     }
 }

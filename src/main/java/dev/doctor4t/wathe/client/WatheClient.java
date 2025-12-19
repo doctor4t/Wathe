@@ -9,6 +9,8 @@ import dev.doctor4t.wathe.WatheConfig;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.cca.PlayerMoodComponent;
 import dev.doctor4t.wathe.cca.TrainWorldComponent;
+import dev.doctor4t.wathe.client.gui.MoodRenderer;
+import dev.doctor4t.wathe.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.wathe.client.gui.RoundTextRenderer;
 import dev.doctor4t.wathe.client.gui.StoreRenderer;
 import dev.doctor4t.wathe.client.gui.TimeRenderer;
@@ -26,6 +28,7 @@ import dev.doctor4t.wathe.entity.NoteEntity;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.*;
+import dev.doctor4t.wathe.index.tag.WatheItemTags;
 import dev.doctor4t.wathe.networking.*;
 import dev.doctor4t.wathe.util.*;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -44,6 +47,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.option.CloudRenderMode;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.option.Perspective;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.entity.EmptyEntityRenderer;
@@ -54,11 +58,14 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
@@ -278,12 +285,7 @@ public class WatheClient implements ClientModInitializer {
             RoundTextRenderer.tick();
         });
 
-        ClientPlayNetworking.registerGlobalReceiver(ShootMuzzleS2CPayload.ID, new ShootMuzzleS2CPayload.Receiver());
-        ClientPlayNetworking.registerGlobalReceiver(PoisonOverlayPayload.ID, new PoisonOverlayPayload.Receiver());
-        ClientPlayNetworking.registerGlobalReceiver(GunDropPayload.ID, new GunDropPayload.Receiver());
-        ClientPlayNetworking.registerGlobalReceiver(AnnounceWelcomePayload.ID, new AnnounceWelcomePayload.Receiver());
-        ClientPlayNetworking.registerGlobalReceiver(AnnounceEndingPayload.ID, new AnnounceEndingPayload.Receiver());
-        ClientPlayNetworking.registerGlobalReceiver(TaskCompletePayload.ID, new TaskCompletePayload.Receiver());
+        registerClientPayloadHandlers();
 
         // Instinct keybind
         instinctKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -292,6 +294,40 @@ public class WatheClient implements ClientModInitializer {
                 GLFW.GLFW_KEY_LEFT_ALT,
                 "category." + Wathe.MOD_ID + ".keybinds"
         ));
+    }
+
+    private static void registerClientPayloadHandlers() {
+        ClientPlayNetworking.registerGlobalReceiver(ShootMuzzleS2CPayload.ID, (payload, context) -> {
+            MinecraftClient client = context.client();
+            client.execute(() -> {
+                if (client.world == null || client.player == null) return;
+                PlayerEntity shooter = client.world.getPlayerByUuid(payload.shooterUuid());
+                if (shooter == null || shooter.getUuid() == client.player.getUuid() && client.options.getPerspective() == Perspective.FIRST_PERSON)
+                    return;
+                Vec3d muzzlePos = MatrixParticleManager.getMuzzlePosForPlayer(shooter);
+                if (muzzlePos != null)
+                    client.world.addParticle(WatheParticles.GUNSHOT, muzzlePos.x, muzzlePos.y, muzzlePos.z, 0, 0, 0);
+            });
+        });
+        
+        ClientPlayNetworking.registerGlobalReceiver(PoisonOverlayPayload.ID, (payload, context) -> {
+            MinecraftClient client = MinecraftClient.getInstance();
+            client.execute(() -> client.inGameHud.setOverlayMessage(Text.translatable(payload.translationKey()), false));
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(GunDropPayload.ID, (payload, context) -> {
+            PlayerInventory inventory = context.player().getInventory();
+            inventory.remove((s) -> s.isIn(WatheItemTags.GUNS), 1, inventory);
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(AnnounceWelcomePayload.ID, (payload, context) -> {
+            if (payload.role() < 0 || payload.role() >= RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.size()) return;
+            RoundTextRenderer.startWelcome(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.get(payload.role()), payload.killers(), payload.targets());
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(AnnounceEndingPayload.ID, (payload, context) -> RoundTextRenderer.startEnd());
+
+        ClientPlayNetworking.registerGlobalReceiver(TaskCompletePayload.ID, (payload, context) -> MoodRenderer.arrowProgress = 1f);
     }
 
     public static TrainWorldComponent getTrainComponent() {
