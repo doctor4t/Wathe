@@ -31,19 +31,19 @@ public abstract class KeyBindingMixin {
     }
 
     @ModifyReturnValue(method = "wasPressed", at = @At("RETURN"))
-    private boolean tmm$restrainWasPressedKeys(boolean original) {
+    private boolean wathe$restrainWasPressedKeys(boolean original) {
         if (this.shouldSuppressKey()) return false;
         else return original;
     }
 
     @ModifyReturnValue(method = "isPressed", at = @At("RETURN"))
-    private boolean tmm$restrainIsPressedKeys(boolean original) {
+    private boolean wathe$restrainIsPressedKeys(boolean original) {
         if (this.shouldSuppressKey()) return false;
         else return original;
     }
 
     @ModifyReturnValue(method = "matchesKey", at = @At("RETURN"))
-    private boolean tmm$restrainMatchesKey(boolean original) {
+    private boolean wathe$restrainMatchesKey(boolean original) {
         if (this.shouldSuppressKey()) return false;
         else return original;
     }

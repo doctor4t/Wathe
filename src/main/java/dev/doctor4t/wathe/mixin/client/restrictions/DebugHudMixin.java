@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(DebugHud.class)
 public class DebugHudMixin {
     @ModifyReturnValue(method = "shouldShowDebugHud", at = @At("RETURN"))
-    public boolean shouldShowDebugHud(boolean original) {
+    public boolean wathe$shouldShowDebugHud(boolean original) {
         return !WatheClient.isPlayerAliveAndInSurvival() && original;
     }
 }
