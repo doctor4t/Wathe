@@ -94,7 +94,7 @@ public interface WatheBlocks {
     Block SMOOTH_ANTHRACITE_STEEL_SLAB = registrar.createWithItem("smooth_anthracite_steel_slab", new SlabBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block SMOOTH_ANTHRACITE_STEEL_PANEL = registrar.createWithItem("smooth_anthracite_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block SMOOTH_ANTHRACITE_STEEL_WALL = registrar.createWithItem("smooth_anthracite_steel_wall", new WallBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).solid()), WatheItems.BUILDING_GROUP);
-    Block ANTHRACITE_STEEL_DOOR = registrar.createWithItem("anthracite_steel_door", new TrainDoorBlock(() -> WatheBlockEntities.ANTHRACITE_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), WatheItems.DECORATION_GROUP);
+    Block ANTHRACITE_STEEL_DOOR = registrar.createWithItem("anthracite_steel_door", new SmallDoorBlock(() -> WatheBlockEntities.ANTHRACITE_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), WatheItems.DECORATION_GROUP);
     Block KHAKI_STEEL = registrar.createWithItem("khaki_steel", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block KHAKI_STEEL_PANEL = registrar.createWithItem("khaki_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block KHAKI_STEEL_TILES = registrar.createWithItem("khaki_steel_tiles", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
@@ -104,7 +104,7 @@ public interface WatheBlocks {
     Block SMOOTH_KHAKI_STEEL_SLAB = registrar.createWithItem("smooth_khaki_steel_slab", new SlabBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block SMOOTH_KHAKI_STEEL_PANEL = registrar.createWithItem("smooth_khaki_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block SMOOTH_KHAKI_STEEL_WALL = registrar.createWithItem("smooth_khaki_steel_wall", new WallBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).solid()), WatheItems.BUILDING_GROUP);
-    Block KHAKI_STEEL_DOOR = registrar.createWithItem("khaki_steel_door", new TrainDoorBlock(() -> WatheBlockEntities.KHAKI_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), WatheItems.DECORATION_GROUP);
+    Block KHAKI_STEEL_DOOR = registrar.createWithItem("khaki_steel_door", new SmallDoorBlock(() -> WatheBlockEntities.KHAKI_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), WatheItems.DECORATION_GROUP);
     Block MAROON_STEEL = registrar.createWithItem("maroon_steel", new Block(AbstractBlock.Settings.copy(DARK_STEEL)), WatheItems.BUILDING_GROUP);
     Block MAROON_STEEL_PANEL = registrar.createWithItem("maroon_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block MAROON_STEEL_TILES = registrar.createWithItem("maroon_steel_tiles", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
@@ -114,7 +114,7 @@ public interface WatheBlocks {
     Block SMOOTH_MAROON_STEEL_SLAB = registrar.createWithItem("smooth_maroon_steel_slab", new SlabBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block SMOOTH_MAROON_STEEL_PANEL = registrar.createWithItem("smooth_maroon_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block SMOOTH_MAROON_STEEL_WALL = registrar.createWithItem("smooth_maroon_steel_wall", new WallBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).solid()), WatheItems.BUILDING_GROUP);
-    Block MAROON_STEEL_DOOR = registrar.createWithItem("maroon_steel_door", new TrainDoorBlock(() -> WatheBlockEntities.MAROON_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), WatheItems.DECORATION_GROUP);
+    Block MAROON_STEEL_DOOR = registrar.createWithItem("maroon_steel_door", new SmallDoorBlock(() -> WatheBlockEntities.MAROON_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), WatheItems.DECORATION_GROUP);
     Block MUNTZ_STEEL = registrar.createWithItem("muntz_steel", new Block(AbstractBlock.Settings.copy(DARK_STEEL)), WatheItems.BUILDING_GROUP);
     Block MUNTZ_STEEL_PANEL = registrar.createWithItem("muntz_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block MUNTZ_STEEL_TILES = registrar.createWithItem("muntz_steel_tiles", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
@@ -124,7 +124,7 @@ public interface WatheBlocks {
     Block SMOOTH_MUNTZ_STEEL_SLAB = registrar.createWithItem("smooth_muntz_steel_slab", new SlabBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block SMOOTH_MUNTZ_STEEL_PANEL = registrar.createWithItem("smooth_muntz_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block SMOOTH_MUNTZ_STEEL_WALL = registrar.createWithItem("smooth_muntz_steel_wall", new WallBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).solid()), WatheItems.BUILDING_GROUP);
-    Block MUNTZ_STEEL_DOOR = registrar.createWithItem("muntz_steel_door", new TrainDoorBlock(() -> WatheBlockEntities.MUNTZ_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), WatheItems.DECORATION_GROUP);
+    Block MUNTZ_STEEL_DOOR = registrar.createWithItem("muntz_steel_door", new SmallDoorBlock(() -> WatheBlockEntities.MUNTZ_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), WatheItems.DECORATION_GROUP);
     Block NAVY_STEEL = registrar.createWithItem("navy_steel", new Block(AbstractBlock.Settings.copy(DARK_STEEL)), WatheItems.BUILDING_GROUP);
     Block NAVY_STEEL_PANEL = registrar.createWithItem("navy_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block NAVY_STEEL_TILES = registrar.createWithItem("navy_steel_tiles", new Block(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
@@ -134,7 +134,7 @@ public interface WatheBlocks {
     Block SMOOTH_NAVY_STEEL_SLAB = registrar.createWithItem("smooth_navy_steel_slab", new SlabBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block SMOOTH_NAVY_STEEL_PANEL = registrar.createWithItem("smooth_navy_steel_panel", new PanelBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL)), WatheItems.BUILDING_GROUP);
     Block SMOOTH_NAVY_STEEL_WALL = registrar.createWithItem("smooth_navy_steel_wall", new WallBlock(AbstractBlock.Settings.copy(STAINLESS_STEEL).solid()), WatheItems.BUILDING_GROUP);
-    Block NAVY_STEEL_DOOR = registrar.createWithItem("navy_steel_door", new TrainDoorBlock(() -> WatheBlockEntities.NAVY_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), WatheItems.DECORATION_GROUP);
+    Block NAVY_STEEL_DOOR = registrar.createWithItem("navy_steel_door", new SmallDoorBlock(() -> WatheBlockEntities.NAVY_STEEL_DOOR, AbstractBlock.Settings.copy(SMALL_GLASS_DOOR).sounds(BlockSoundGroup.COPPER)), WatheItems.DECORATION_GROUP);
 
     // Glass
     Block HULL_GLASS = registrar.createWithItem("hull_glass", new PrivacyGlassBlock(AbstractBlock.Settings.copy(Blocks.BLACK_STAINED_GLASS).strength(-1.0f, 3600000.0f)), WatheItems.BUILDING_GROUP);
