@@ -1,10 +1,13 @@
 package dev.doctor4t.trainmurdermystery.command;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
 import dev.doctor4t.trainmurdermystery.cca.AreasWorldComponent;
 import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
-
+import dev.doctor4t.trainmurdermystery.cca.PlayerMoodComponent;
 import net.minecraft.command.argument.BlockPosArgumentType;
 import net.minecraft.command.argument.RotationArgumentType;
 import net.minecraft.command.argument.Vec3ArgumentType;
@@ -15,8 +18,11 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class SetConfigCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
@@ -67,14 +73,41 @@ public class SetConfigCommand {
                                             Vec2f rotation = RotationArgumentType.getRotation(context, "rotation").toAbsoluteRotation(context.getSource());
                                             return executeArea(context.getSource(), AreasWorldComponent::setSpectatorSpawnPos, new AreasWorldComponent.PosWithOrientation(Vec3ArgumentType.getVec3(context, "pos"), rotation.x, rotation.y));
                                         }))))
+                .then(CommandManager.literal("sync"))
+                .executes(ctx -> {
+                    GameWorldComponent.KEY.get(ctx.getSource().getWorld()).sync();
+                    AreasWorldComponent.KEY.get(ctx.getSource().getWorld()).sync();
+                    return 1;
+                })
                 .then(CommandManager.literal("maxRoomKeys")
-                        .executes(ctx -> {
-                            ctx.getSource().sendMessage(Text.of("There is " + GameWorldComponent.KEY.get(ctx.getSource().getWorld()).getMaxRoomKey() + " unique room keys"));
-                            return 1;
-                        })
+                        .executes(ctx -> print(ctx, "There is " + GameWorldComponent.KEY.get(ctx.getSource().getWorld()).getMaxRoomKey() + " unique room keys"))
                         .then(CommandManager.argument("maxKeys", IntegerArgumentType.integer(1))
                                 .executes(ctx -> execute(ctx.getSource(), GameWorldComponent::setMaxRoomKey, IntegerArgumentType.getInteger(ctx, "maxKeys")))))
+                .then(CommandManager.literal("ambientBrightness")
+                        .executes(ctx -> print(ctx, "Brightness is " + GameWorldComponent.KEY.get(ctx.getSource().getWorld()).getAmbientBrightness()))
+                        .then(CommandManager.argument("bright", FloatArgumentType.floatArg(0))
+                                .executes(ctx -> execute(ctx.getSource(), GameWorldComponent::setAmbientBrightness, FloatArgumentType.getFloat(ctx, "bright")))))
+                .then(CommandManager.literal("tasks")
+                        .executes(ctx -> print(ctx, Arrays.stream(PlayerMoodComponent.Task.values()).map(it -> it.toString() + (GameWorldComponent.KEY.get(ctx.getSource().getWorld()).offTasks.contains(it) ? ":off" : "")).collect(Collectors.joining(", "))))
+                        .then(CommandManager.argument("task", StringArgumentType.string())
+                                .executes(ctx -> {
+                                    try {
+                                        PlayerMoodComponent.Task task = PlayerMoodComponent.Task.valueOf(StringArgumentType.getString(ctx, "task"));
+                                        ArrayList<PlayerMoodComponent.Task> offTasks = GameWorldComponent.KEY.get(ctx.getSource().getWorld()).offTasks;
+                                        if (!offTasks.remove(task))
+                                            offTasks.add(task);
+                                    } catch (Exception e) {
+                                        ctx.getSource().sendError(Text.literal("Enum name incorrect. Nothing changed"));
+                                        return 0;
+                                    }
+                                    return 1;
+                                })))
         );
+    }
+
+    private static int print(CommandContext<ServerCommandSource> ctx, String string) {
+        ctx.getSource().sendMessage(Text.of(string));
+        return 1;
     }
 
     private static int executeArea(ServerCommandSource source, BiConsumer<AreasWorldComponent, Box> consumer, Vec3d first, Vec3d second) {

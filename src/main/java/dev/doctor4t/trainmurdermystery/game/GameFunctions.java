@@ -162,6 +162,7 @@ public class GameFunctions {
             PlayerPsychoComponent.KEY.get(serverPlayerEntity).reset();
             PlayerNoteComponent.KEY.get(serverPlayerEntity).reset();
             PlayerShopComponent.KEY.get(serverPlayerEntity).reset();
+            PlayerWetComponent.KEY.get(serverPlayerEntity).reset();
             TrainVoicePlugin.resetPlayer(serverPlayerEntity.getUuid());
 
             // remove item cooldowns

@@ -23,6 +23,8 @@ public interface GameConstants {
 
     // Blocks
     int DOOR_AUTOCLOSE_TIME = getInTicks(0, 5);
+    int SPRINKLER_POWERED_TIMER = getInTicks(0, 12); // +- the length of the sound
+    int SPRINKLER_GIVE_WET = getInTicks(0, 10);
 
     // Items
     Map<Item, Integer> ITEM_COOLDOWNS = new HashMap<>();
@@ -53,6 +55,8 @@ public interface GameConstants {
     int MAX_TASK_COOLDOWN = getInTicks(1, 0);
     int SLEEP_TASK_DURATION = getInTicks(0, 8);
     int OUTSIDE_TASK_DURATION = getInTicks(0, 8);
+    int SHOWER_TASK_DURATION = getInTicks(0, 8);
+    int PLANT_TASK_DURATION = getInTicks(0, 12);
     float MID_MOOD_THRESHOLD = 0.65f;
     float DEPRESSIVE_MOOD_THRESHOLD = 0.35f;
     float ITEM_PSYCHOSIS_CHANCE = .5f; // in percent
@@ -72,8 +76,8 @@ public interface GameConstants {
         entries.add(new ShopEntry(TMMItems.POISON_VIAL.getDefaultStack(), 75, ShopEntry.Type.POISON));
         entries.add(new ShopEntry(TMMItems.SCORPION.getDefaultStack(), 50, ShopEntry.Type.POISON));
         entries.add(new ShopEntry(TMMItems.FIRECRACKER.getDefaultStack(), 10, ShopEntry.Type.TOOL));
-        entries.add(new ShopEntry(TMMItems.LOCKPICK.getDefaultStack(), 50, ShopEntry.Type.TOOL));
-        entries.add(new ShopEntry(TMMItems.CROWBAR.getDefaultStack(), 25, ShopEntry.Type.TOOL));
+        entries.add(new ShopEntry(TMMItems.LOCKPICK.getDefaultStack(), 250, ShopEntry.Type.TOOL));
+        entries.add(new ShopEntry(TMMItems.CROWBAR.getDefaultStack(), 50, ShopEntry.Type.TOOL));
         entries.add(new ShopEntry(TMMItems.BODY_BAG.getDefaultStack(), 200, ShopEntry.Type.TOOL));
         entries.add(new ShopEntry(TMMItems.BLACKOUT.getDefaultStack(), 200, ShopEntry.Type.TOOL) {
             @Override

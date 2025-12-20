@@ -147,28 +147,25 @@ public class SmallDoorBlock extends DoorPartBlock {
                 return ActionResult.PASS;
             }
 
+            boolean jammed = entity.isJammed();
             if (
                     player.isCreative() ||
                             AllowPlayerOpenLockedDoor.EVENT.invoker().allowOpen(player) ||
                             entity.isOpen() ||
-                            (entity.isBlackoutUnlocking() && entity.getBlackoutCooldown() > 0)
+                            ((entity.isBlackoutUnlocking() && entity.getBlackoutCooldown() > 0) && !jammed)
             ) {
                 return open(state, world, entity, lowerPos);
             } else {
                 boolean requiresKey = !entity.getKeyName().isEmpty();
                 boolean hasLockpick = player.getMainHandStack().isOf(TMMItems.LOCKPICK);
-                boolean jammed = entity.isJammed();
 
                 if (requiresKey && !jammed) {
                     if (player.getMainHandStack().isOf(TMMItems.CROWBAR)) return ActionResult.FAIL;
                     if (player.getMainHandStack().isOf(TMMItems.KEY) || hasLockpick) {
                         LoreComponent lore = player.getMainHandStack().get(DataComponentTypes.LORE);
                         boolean isRightKey = lore != null && !lore.lines().isEmpty() && lore.lines().getFirst().getString().equals(entity.getKeyName());
-                        if (isRightKey || hasLockpick) {
-                            if (isRightKey)
-                                world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.ITEM_KEY_DOOR, SoundCategory.BLOCKS, 1f, 1f);
-                            if (hasLockpick)
-                                world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.ITEM_LOCKPICK_DOOR, SoundCategory.BLOCKS, 1f, 1f);
+                        if (isRightKey || (hasLockpick && entity.isLockPickable())) {
+                            world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, isRightKey ? TMMSounds.ITEM_KEY_DOOR : TMMSounds.ITEM_LOCKPICK_DOOR, SoundCategory.BLOCKS, 1f, 1f);
                             return open(state, world, entity, lowerPos);
                         } else {
                             if (!world.isClient) {

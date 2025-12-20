@@ -1,24 +1,46 @@
 package dev.doctor4t.trainmurdermystery.block_entity;
 
 import dev.doctor4t.trainmurdermystery.block.SprinklerBlock;
+import dev.doctor4t.trainmurdermystery.cca.PlayerWetComponent;
+import dev.doctor4t.trainmurdermystery.game.GameConstants;
 import dev.doctor4t.trainmurdermystery.index.TMMBlockEntities;
+import dev.doctor4t.trainmurdermystery.index.TMMSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class SprinklerBlockEntity extends SyncingBlockEntity {
 
-    private boolean powered;
+    private int poweredTime;
 
     public SprinklerBlockEntity(BlockPos pos, BlockState state) {
         super(TMMBlockEntities.SPRINKLER, pos, state);
-        this.setPowered(state.get(SprinklerBlock.POWERED));
+        this.setPoweredTime(state.get(SprinklerBlock.POWERED) ? 20 : 0);
+    }
+
+    public static <T extends BlockEntity> void serverTick(World world, BlockPos pos, BlockState state, T t) {
+        SprinklerBlockEntity entity = (SprinklerBlockEntity) t;
+        if (!entity.isPowered()) return;
+        if (entity.poweredTime == 1) world.scheduleBlockTick(pos, state.getBlock(), 0);
+        entity.poweredTime--;
+        Direction direction = SprinklerBlock.getDirection(state);
+        if (direction == Direction.DOWN) {
+            Box box = new Box(pos.add(0, direction.getOffsetY() * 2, 0)).expand(-.2, .8, -.2);
+            for (PlayerEntity player : world.getPlayers()) {
+                if (player.getBoundingBox().intersects(box)) {
+                    PlayerWetComponent.get(player).makeWet();
+                }
+            }
+        }
     }
 
     public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T t) {
@@ -47,21 +69,30 @@ public class SprinklerBlockEntity extends SyncingBlockEntity {
         }
     }
 
-    public boolean isPowered() {
-        return this.powered;
+    public void power() {
+        this.poweredTime = GameConstants.SPRINKLER_POWERED_TIMER;
+        world.playSound(null, this.pos.getX() + .5, this.pos.getY() + .5, this.pos.getZ() + .5, TMMSounds.BLOCK_SPRINKLER_RUN, SoundCategory.BLOCKS, 1f, 1f);
     }
 
-    public void setPowered(boolean powered) {
-        this.powered = powered;
+    public boolean isPowered() {
+        return this.poweredTime > 0;
+    }
+
+    public int getPoweredTime() {
+        return this.poweredTime;
+    }
+
+    public void setPoweredTime(int poweredTime) {
+        this.poweredTime = poweredTime;
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        nbt.putBoolean("powered", this.isPowered());
+        nbt.putInt("poweredTime", this.getPoweredTime());
     }
 
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        this.setPowered(nbt.getBoolean("powered"));
+        this.setPoweredTime(nbt.getInt("poweredTime"));
     }
 }

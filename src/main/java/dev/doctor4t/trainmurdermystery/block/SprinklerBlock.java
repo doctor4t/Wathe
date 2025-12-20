@@ -93,7 +93,7 @@ public class SprinklerBlock extends WallMountedBlock implements BlockEntityProvi
         BlockState cycle = state.cycle(POWERED);
         world.setBlockState(pos, cycle, Block.NOTIFY_LISTENERS);
         world.getBlockEntity(pos, TMMBlockEntities.SPRINKLER).ifPresent(entity -> {
-            entity.setPowered(cycle.get(POWERED));
+            if (cycle.get(POWERED)) entity.power();
             entity.sync();
         });
     }
@@ -110,9 +110,9 @@ public class SprinklerBlock extends WallMountedBlock implements BlockEntityProvi
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        if (!world.isClient || !type.equals(TMMBlockEntities.SPRINKLER)) {
+        if (!type.equals(TMMBlockEntities.SPRINKLER)) {
             return null;
         }
-        return SprinklerBlockEntity::clientTick;
+        return world.isClient ? SprinklerBlockEntity::clientTick : SprinklerBlockEntity::serverTick;
     }
 }

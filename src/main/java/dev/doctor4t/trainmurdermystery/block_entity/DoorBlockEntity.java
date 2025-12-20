@@ -29,6 +29,7 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
     private int jammedTime = 0;
     private boolean blasted = false;
     private boolean blackoutUnlocking = false;
+    private boolean lockPickable = true;
 
     public DoorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -74,7 +75,10 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
         if (this.world != null) {
             this.lastUpdate = this.world.getTime();
             this.open = !this.open;
-            this.world.addSyncedBlockEvent(this.pos, this.getCachedState().getBlock(), 1, (this.open ? 1 : 0));
+            this.world.addSyncedBlockEvent(this.pos, this.getCachedState().getBlock(), 1,
+                    (this.open ? 1 : 0) |
+                            (this.blackoutUnlocking ? 2 : 0) |
+                            (this.isLockPickable() ? 4 : 0));
             this.closeCountdown = this.open ? GameConstants.DOOR_AUTOCLOSE_TIME : 0;
         }
     }
@@ -84,6 +88,8 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
         if (this.world != null && type == 1) {
             this.state.start(this.age);
             this.open = (data & 1) == 1;
+            this.blackoutUnlocking = (data & 2) == 2;
+            this.lockPickable = (data & 4) == 4;
             return true;
         }
         return super.onSyncedBlockEvent(type, data);
@@ -125,6 +131,7 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
         nbt.putBoolean("blasted", this.isBlasted());
         nbt.putBoolean("blackoutUnlocking", this.isBlackoutUnlocking());
         nbt.putInt("blackoutCooldown", this.getBlackoutCooldown());
+        nbt.putBoolean("lockPickable", this.isLockPickable());
         nbt.putInt("closeCountdown", this.getCloseCountdown());
         nbt.putInt("jammedTime", this.getJammedTime());
         nbt.putString("keyName", this.getKeyName());
@@ -137,6 +144,7 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
         this.setBlasted(nbt.getBoolean("blasted"));
         this.setBlackoutUnlocking(nbt.getBoolean("blackoutUnlocking"));
         this.setBlackoutCooldown(nbt.getInt("blackoutCooldown"));
+        this.setLockPickable(nbt.getBoolean("lockPickable"));
         this.setCloseCountdown(nbt.getInt("closeCountdown"));
         this.setJammed(nbt.getInt("jammedTime"));
         this.setKeyName(nbt.getString("keyName"));
@@ -198,6 +206,14 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
 
     public int getBlackoutCooldown() {
         return blackoutCooldown;
+    }
+
+    public boolean isLockPickable() {
+        return lockPickable;
+    }
+
+    public void setLockPickable(boolean lockPickable) {
+        this.lockPickable = lockPickable;
     }
 
     public void setBlackoutCooldown(int blackoutCooldown) {

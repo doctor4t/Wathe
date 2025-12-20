@@ -26,10 +26,7 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class GameWorldComponent implements AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
     public static final ComponentKey<GameWorldComponent> KEY = ComponentRegistry.getOrCreate(TMM.id("game"), GameWorldComponent.class);
@@ -39,6 +36,8 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     private boolean enableWeights = false;
     private double specialRoleCount = 0;
     private int maxRoomKey = 7;
+    private float ambientBrightness = 1f;
+    public ArrayList<PlayerMoodComponent.Task> offTasks = new ArrayList<>();
 
     public void setSpecialRoleCount(double specialRoleCount) {
         this.specialRoleCount = specialRoleCount;
@@ -62,6 +61,14 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
     public boolean areWeightsEnabled() {
         return enableWeights;
+    }
+
+    public float getAmbientBrightness() {
+        return ambientBrightness;
+    }
+
+    public void setAmbientBrightness(float ambientBrightness) {
+        this.ambientBrightness = ambientBrightness;
     }
 
     public enum GameStatus {
@@ -165,6 +172,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
         return ret;
     }
+
     public List<UUID> getAllWithRole(Role role) {
         List<UUID> ret = new ArrayList<>();
         roles.forEach((uuid, playerRole) -> {
@@ -187,6 +195,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     public boolean canUseKillerFeatures(@NotNull PlayerEntity player) {
         return getRole(player) != null && getRole(player).canUseKiller();
     }
+
     public boolean isInnocent(@NotNull PlayerEntity player) {
         return getRole(player) != null && getRole(player).isInnocent();
     }
@@ -271,7 +280,17 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
             this.looseEndWinner = null;
         }
         specialRoleCount = nbtCompound.getDouble("specialRoleCount");
-        maxRoomKey = nbtCompound.getInt("maxRoomKey");
+        if (nbtCompound.contains("maxRoomKey"))
+            maxRoomKey = nbtCompound.getInt("maxRoomKey");
+        if (nbtCompound.contains("ambientBrightness"))
+            ambientBrightness = nbtCompound.getFloat("ambientBrightness");
+        if (nbtCompound.contains("offTasks")) {
+            int[] taskOrdinals = nbtCompound.getIntArray("offTasks");
+            for (int ord : taskOrdinals) {
+                if (ord < PlayerMoodComponent.Task.values().length)
+                    offTasks.add(PlayerMoodComponent.Task.values()[ord]);
+            }
+        }
     }
 
     private ArrayList<UUID> uuidListFromNbt(NbtCompound nbtCompound, String listName) {
@@ -302,8 +321,9 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         if (this.looseEndWinner != null) nbtCompound.putUuid("LooseEndWinner", this.looseEndWinner);
 
         nbtCompound.putDouble("specialRoleCount", specialRoleCount);
-        if (nbtCompound.contains("maxRoomKey"))
-            nbtCompound.putInt("maxRoomKey", maxRoomKey);
+        nbtCompound.putInt("maxRoomKey", maxRoomKey);
+        nbtCompound.putFloat("ambientBrightness", ambientBrightness);
+        nbtCompound.putIntArray("offTasks", offTasks.stream().map(Enum::ordinal).toList());
     }
 
     private NbtList nbtFromUuidList(List<UUID> list) {

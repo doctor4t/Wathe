@@ -13,6 +13,7 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 public class LockpickItem extends Item implements AdventureUsable {
@@ -29,14 +30,19 @@ public class LockpickItem extends Item implements AdventureUsable {
 
         if (state.getBlock() instanceof SmallDoorBlock) {
             BlockPos lowerPos = state.get(SmallDoorBlock.HALF) == DoubleBlockHalf.LOWER ? pos : pos.down();
-            if (world.getBlockEntity(lowerPos) instanceof SmallDoorBlockEntity entity) {
+            if (world.getBlockEntity(lowerPos) instanceof SmallDoorBlockEntity) {
                 if (player.isSneaking()) {
-                    entity.jam();
-
-                    if (!player.isCreative()) {
+                    for (Vec3i neighborOffset : new Vec3i[]{
+                            new Vec3i(0, 0, 0),
+                            new Vec3i(1, 0, 0),
+                            new Vec3i(-1, 0, 0),
+                            new Vec3i(0, 0, 1),
+                            new Vec3i(0, 0, -1)
+                    })
+                        if (world.getBlockEntity(lowerPos.add(neighborOffset)) instanceof SmallDoorBlockEntity neighborBlock)
+                            neighborBlock.jam();
+                    if (!player.isCreative())
                         player.getItemCooldownManager().set(this, GameConstants.ITEM_COOLDOWNS.get(this));
-                    }
-
                     if (!world.isClient)
                         world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, TMMSounds.ITEM_LOCKPICK_DOOR, SoundCategory.BLOCKS, 1f, 1f);
                     return ActionResult.SUCCESS;
