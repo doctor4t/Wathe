@@ -3,6 +3,8 @@ package dev.doctor4t.wathe.block;
 import dev.doctor4t.wathe.api.event.AllowPlayerOpenLockedDoor;
 import dev.doctor4t.wathe.block_entity.DoorBlockEntity;
 import dev.doctor4t.wathe.block_entity.SmallDoorBlockEntity;
+import dev.doctor4t.wathe.cca.WorldBlackoutComponent;
+import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.index.WatheItems;
 import dev.doctor4t.wathe.index.WatheSounds;
 import net.minecraft.block.Block;
@@ -165,7 +167,7 @@ public class SmallDoorBlock extends DoorPartBlock {
                         LoreComponent lore = player.getMainHandStack().get(DataComponentTypes.LORE);
                         boolean isRightKey = lore != null && !lore.lines().isEmpty() && lore.lines().getFirst().getString().equals(entity.getKeyName());
                         if (isRightKey || (hasLockpick && entity.isLockPickable())) {
-                            world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, isRightKey ? TMMSounds.ITEM_KEY_DOOR : TMMSounds.ITEM_LOCKPICK_DOOR, SoundCategory.BLOCKS, 1f, 1f);
+                            world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, isRightKey ? WatheSounds.ITEM_KEY_DOOR : WatheSounds.ITEM_LOCKPICK_DOOR, SoundCategory.BLOCKS, 1f, 1f);
                             return open(state, world, entity, lowerPos);
                         } else {
                             if (!world.isClient) {

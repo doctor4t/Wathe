@@ -1,9 +1,9 @@
-package dev.doctor4t.trainmurdermystery.mixin.client.scenery;
+package dev.doctor4t.wathe.mixin.client.scenery;
 
-import dev.doctor4t.trainmurdermystery.TMMConfig;
-import dev.doctor4t.trainmurdermystery.client.TMMClient;
-import dev.doctor4t.trainmurdermystery.index.TMMBlocks;
-import dev.doctor4t.trainmurdermystery.index.TMMParticles;
+import dev.doctor4t.wathe.WatheConfig;
+import dev.doctor4t.wathe.client.WatheClient;
+import dev.doctor4t.wathe.index.WatheBlocks;
+import dev.doctor4t.wathe.index.WatheParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -55,15 +55,15 @@ public abstract class ClientWorldMixin extends World {
     @Inject(method = "<init>", at = @At("TAIL"))
     public void tmm$addCustomBlockMarkers(ClientPlayNetworkHandler networkHandler, ClientWorld.Properties properties, RegistryKey registryRef, RegistryEntry dimensionTypeEntry, int loadDistance, int simulationDistance, Supplier profiler, WorldRenderer worldRenderer, boolean debugWorld, long seed, CallbackInfo ci) {
         BLOCK_MARKER_ITEMS = new HashSet<>(BLOCK_MARKER_ITEMS);
-        BLOCK_MARKER_ITEMS.add(TMMBlocks.BARRIER_PANEL.asItem());
-        BLOCK_MARKER_ITEMS.add(TMMBlocks.LIGHT_BARRIER.asItem());
+        BLOCK_MARKER_ITEMS.add(WatheBlocks.BARRIER_PANEL.asItem());
+        BLOCK_MARKER_ITEMS.add(WatheBlocks.LIGHT_BARRIER.asItem());
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void tmm$addSnowflakes(BooleanSupplier shouldKeepTicking, CallbackInfo ci) {
-        if (TMMConfig.snowOptLevel != TMMConfig.SnowModeConfig.TURN_OFF &&
-                TMMClient.isTrainMoving() &&
-                TMMClient.getTrainComponent().isSnowing()
+        if (WatheConfig.snowOptLevel != WatheConfig.SnowModeConfig.TURN_OFF &&
+                WatheClient.isTrainMoving() &&
+                WatheClient.getTrainComponent().isSnowing()
         ) {
             ClientPlayerEntity player = client.player;
             Random random = player.getRandom();
@@ -71,7 +71,7 @@ public abstract class ClientWorldMixin extends World {
                 Vec3d playerVel = player.getMovement();
                 Vec3d pos = new Vec3d(player.getX() - 20f + random.nextFloat() + playerVel.getX(), player.getY() + (random.nextFloat() * 2 - 1) * 10f + playerVel.getY(), player.getZ() + (random.nextFloat() * 2 - 1) * 10f + playerVel.getZ());
                 if (this.client.world.isSkyVisible(BlockPos.ofFloored(pos))) {
-                    this.addParticle(TMMParticles.SNOWFLAKE, pos.getX(), pos.getY(), pos.getZ(), 2 + playerVel.getX(), playerVel.getY(), playerVel.getZ());
+                    this.addParticle(WatheParticles.SNOWFLAKE, pos.getX(), pos.getY(), pos.getZ(), 2 + playerVel.getX(), playerVel.getY(), playerVel.getZ());
                 }
             }
         }

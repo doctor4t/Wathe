@@ -1,7 +1,7 @@
-package dev.doctor4t.trainmurdermystery.mixin.client.restrictions;
+package dev.doctor4t.wathe.mixin.client.restrictions;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import dev.doctor4t.trainmurdermystery.client.TMMClient;
+import dev.doctor4t.wathe.client.WatheClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,7 +16,7 @@ public abstract class KeyBindingMixin {
 
     @Unique
     private boolean shouldSuppressKey() {
-        if (TMMClient.isPlayerAliveAndInSurvival()) {
+        if (WatheClient.isPlayerAliveAndInSurvival()) {
             if (this.equals(MinecraftClient.getInstance().options.swapHandsKey) ||
                     this.equals(MinecraftClient.getInstance().options.chatKey) ||
                     this.equals(MinecraftClient.getInstance().options.commandKey) ||
@@ -24,7 +24,7 @@ public abstract class KeyBindingMixin {
                     this.equals(MinecraftClient.getInstance().options.dropKey) ||
                     this.equals(MinecraftClient.getInstance().options.advancementsKey))
                 return true;
-            if (TMMClient.gameComponent != null && TMMClient.gameComponent.isRunning())
+            if (WatheClient.gameComponent != null && WatheClient.gameComponent.isRunning())
                 return this.equals(MinecraftClient.getInstance().options.togglePerspectiveKey);
         }
         return false;

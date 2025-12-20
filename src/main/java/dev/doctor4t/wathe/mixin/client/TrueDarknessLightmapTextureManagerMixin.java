@@ -2,7 +2,8 @@ package dev.doctor4t.wathe.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
+import dev.doctor4t.wathe.cca.GameWorldComponent;
+import dev.doctor4t.wathe.cca.MapVariablesWorldComponent;
 import dev.doctor4t.wathe.client.WatheClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.LightmapTextureManager;
@@ -46,8 +47,8 @@ public abstract class TrueDarknessLightmapTextureManagerMixin {
     private Vector3f tmm$ambientBrightnessInjection(Vector3f instance, Vector3fc v, Operation<Vector3f> original) {
         ClientWorld world = MinecraftClient.getInstance().world;
         if (world == null) return original.call(instance, v);
-        float bright = GameWorldComponent.KEY.get(world).getAmbientBrightness();
-        return original.call(instance, new Vector3f(v.x() , v.y(), v.z()).mul(bright));
+        float bright = MapVariablesWorldComponent.KEY.get(world).getAmbientBrightness();
+        return original.call(instance, new Vector3f(v.x(), v.y(), v.z()).mul(bright));
     }
 
     @ModifyVariable(method = "update", at = @At(value = "STORE"), ordinal = 2)

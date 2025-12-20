@@ -1,9 +1,9 @@
 package dev.doctor4t.wathe.block;
 
-import dev.doctor4t.trainmurdermystery.cca.WorldBlackoutComponent;
-import dev.doctor4t.trainmurdermystery.game.GameConstants;
+import dev.doctor4t.wathe.cca.WorldBlackoutComponent;
+import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.index.WatheSounds;
-import dev.doctor4t.trainmurdermystery.util.BlackoutBlockFunctions;
+import dev.doctor4t.wathe.util.BlackoutBlockFunctions;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;

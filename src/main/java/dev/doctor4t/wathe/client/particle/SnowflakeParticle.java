@@ -1,7 +1,5 @@
 package dev.doctor4t.wathe.client.particle;
 
-import dev.doctor4t.trainmurdermystery.TMMConfig;
-import dev.doctor4t.trainmurdermystery.cca.AreasWorldComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -29,8 +27,6 @@ public class SnowflakeParticle extends SpriteBillboardParticle {
 
     public SnowflakeParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
         super(world, x, y, z, velocityX, velocityY, velocityZ);
-
-        if (TMMConfig.snowOptLevel == TMMConfig.SnowModeConfig.STRONG_OPTIMIZATION) collidesWithWorld = false;
 
         this.velocityX = velocityX;
         this.velocityY = velocityY;
@@ -70,8 +66,6 @@ public class SnowflakeParticle extends SpriteBillboardParticle {
         this.angleY += angleRandY;
         this.angleZ += angleRandZ;
 
-        if (TMMConfig.snowOptLevel == TMMConfig.SnowModeConfig.STRONG_OPTIMIZATION && AreasWorldComponent.KEY.get(world).getParticleColliderArea().contains(x, y, z))
-            markDead();
         if (this.onGround || this.velocityX == 0) {
             this.markDead();
         }

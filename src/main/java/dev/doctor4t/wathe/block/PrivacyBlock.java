@@ -17,6 +17,7 @@ import java.util.Set;
 
 public interface PrivacyBlock {
 
+    BooleanProperty ACTIVE = WatheProperties.ACTIVE;
     BooleanProperty OPAQUE = WatheProperties.OPAQUE;
     BooleanProperty INTERACTION_COOLDOWN = WatheProperties.INTERACTION_COOLDOWN;
     Direction[][] DIAGONALS = new Direction[][]{

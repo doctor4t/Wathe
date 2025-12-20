@@ -1,8 +1,7 @@
 package dev.doctor4t.wathe.cca;
 
 import dev.doctor4t.wathe.Wathe;
-import dev.doctor4t.wathe.game.GameConstants;
-import dev.doctor4t.wathe.index.WatheProperties;
+import dev.doctor4t.wathe.block.BlackoutBlock;
 import dev.doctor4t.wathe.index.WatheSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;

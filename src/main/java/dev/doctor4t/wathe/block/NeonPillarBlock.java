@@ -1,7 +1,10 @@
 package dev.doctor4t.wathe.block;
 
+import dev.doctor4t.wathe.cca.WorldBlackoutComponent;
+import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.index.WatheProperties;
 import dev.doctor4t.wathe.index.WatheSounds;
+import dev.doctor4t.wathe.util.BlackoutBlockFunctions;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
@@ -20,6 +23,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import org.jetbrains.annotations.NotNull;
 
 public class NeonPillarBlock extends PillarBlock implements BlackoutBlock {
     public static final BooleanProperty LIT = Properties.LIT;

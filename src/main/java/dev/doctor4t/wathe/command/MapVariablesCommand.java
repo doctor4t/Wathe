@@ -1,6 +1,9 @@
 package dev.doctor4t.wathe.command;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.FloatArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.api.GameMode;
@@ -9,6 +12,7 @@ import dev.doctor4t.wathe.api.WatheGameModes;
 import dev.doctor4t.wathe.api.WatheMapEffects;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.cca.MapVariablesWorldComponent;
+import dev.doctor4t.wathe.cca.PlayerMoodComponent;
 import dev.doctor4t.wathe.command.argument.GameModeArgumentType;
 import dev.doctor4t.wathe.command.argument.MapEffectArgumentType;
 import net.minecraft.command.argument.PosArgument;
@@ -23,7 +27,11 @@ import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class MapVariablesCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
@@ -143,7 +151,43 @@ public class MapVariablesCommand {
                                         )
                                 )
                         )
+                        .then(CommandManager.literal("tasks")
+                                .executes(ctx -> print(ctx, Arrays.stream(PlayerMoodComponent.Task.values()).map(it -> it.toString() + (getMapVarsComponent(ctx).offTasks.contains(it) ? ":off" : "")).collect(Collectors.joining(", "))))
+                                .then(CommandManager.argument("task", StringArgumentType.string())
+                                        .executes(ctx -> {
+                                                    try {
+                                                        PlayerMoodComponent.Task task = PlayerMoodComponent.Task.valueOf(StringArgumentType.getString(ctx, "task"));
+                                                        ArrayList<PlayerMoodComponent.Task> offTasks = getMapVarsComponent(ctx).offTasks;
+                                                        if (!offTasks.remove(task))
+                                                            offTasks.add(task);
+                                                    } catch (Exception e) {
+                                                        ctx.getSource().sendError(Text.literal("Enum name incorrect. Nothing changed"));
+                                                        return 0;
+                                                    }
+                                                    return 1;
+                                                }
+                                        )
+                                )
+                        )
+                        .then(CommandManager.literal("maxRoomKeys")
+                                .executes(ctx -> print(ctx, "There is " + MapVariablesWorldComponent.KEY.get(ctx.getSource().getWorld()).getMaxRoomKey() + " unique room keys"))
+                                .then(CommandManager.argument("maxKeys", IntegerArgumentType.integer(1))
+                                        .executes(ctx -> execute(ctx.getSource(), MapVariablesWorldComponent::setMaxRoomKey, IntegerArgumentType.getInteger(ctx, "maxKeys")))))
+                        .then(CommandManager.literal("ambientBrightness")
+                                .executes(ctx -> print(ctx, "Brightness is " + MapVariablesWorldComponent.KEY.get(ctx.getSource().getWorld()).getAmbientBrightness()))
+                                .then(CommandManager.argument("bright", FloatArgumentType.floatArg(0))
+                                        .executes(ctx -> execute(ctx.getSource(), MapVariablesWorldComponent::setAmbientBrightness, FloatArgumentType.getFloat(ctx, "bright")))))
         );
+    }
+
+    private static int print(CommandContext<ServerCommandSource> ctx, String string) {
+        ctx.getSource().sendMessage(Text.of(string));
+        return 1;
+    }
+
+    private static <T> int execute(ServerCommandSource source, BiConsumer<MapVariablesWorldComponent, T> consumer, T value) {
+        consumer.accept(MapVariablesWorldComponent.KEY.get(source.getWorld()), value);
+        return 1;
     }
 
     private static @NotNull MapVariablesWorldComponent getMapVarsComponent(CommandContext<ServerCommandSource> context) {
@@ -169,7 +213,7 @@ public class MapVariablesCommand {
         }
     }
 
-    private static void setGameModeAndMapEffect(ServerCommandSource source,GameMode gameMode, MapEffect mapEffect, GameWorldComponent gameWorldComponent) {
+    private static void setGameModeAndMapEffect(ServerCommandSource source, GameMode gameMode, MapEffect mapEffect, GameWorldComponent gameWorldComponent) {
         gameWorldComponent.setGameMode(gameMode);
         gameWorldComponent.setMapEffect(mapEffect);
         mapEffect.initializeMapEffects(source.getWorld(), source.getWorld().getPlayers());

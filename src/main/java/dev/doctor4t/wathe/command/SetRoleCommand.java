@@ -1,10 +1,10 @@
-package dev.doctor4t.trainmurdermystery.command;
+package dev.doctor4t.wathe.command;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
-import dev.doctor4t.trainmurdermystery.api.Role;
-import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
-import dev.doctor4t.trainmurdermystery.command.argument.RoleArgumentType;
+import dev.doctor4t.wathe.api.Role;
+import dev.doctor4t.wathe.cca.GameWorldComponent;
+import dev.doctor4t.wathe.command.argument.RoleArgumentType;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.command.CommandManager;
@@ -15,7 +15,7 @@ import java.util.Collection;
 public class SetRoleCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(
-                CommandManager.literal("tmm:setRole")
+                CommandManager.literal("wathe:setRole")
                         .requires(source -> source.hasPermissionLevel(2))
                         .then(
                                 CommandManager.argument("role", RoleArgumentType.role())

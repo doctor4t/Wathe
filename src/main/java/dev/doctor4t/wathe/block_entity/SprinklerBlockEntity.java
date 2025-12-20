@@ -1,10 +1,10 @@
 package dev.doctor4t.wathe.block_entity;
 
 import dev.doctor4t.wathe.block.SprinklerBlock;
-import dev.doctor4t.trainmurdermystery.cca.PlayerWetComponent;
-import dev.doctor4t.trainmurdermystery.game.GameConstants;
+import dev.doctor4t.wathe.cca.PlayerWetComponent;
+import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.index.WatheBlockEntities;
-import dev.doctor4t.trainmurdermystery.index.TMMSounds;
+import dev.doctor4t.wathe.index.WatheSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -71,7 +71,7 @@ public class SprinklerBlockEntity extends SyncingBlockEntity {
 
     public void power() {
         this.poweredTime = GameConstants.SPRINKLER_POWERED_TIMER;
-        world.playSound(null, this.pos.getX() + .5, this.pos.getY() + .5, this.pos.getZ() + .5, TMMSounds.BLOCK_SPRINKLER_RUN, SoundCategory.BLOCKS, 1f, 1f);
+        world.playSound(null, this.pos.getX() + .5, this.pos.getY() + .5, this.pos.getZ() + .5, WatheSounds.BLOCK_SPRINKLER_RUN, SoundCategory.BLOCKS, 1f, 1f);
     }
 
     public boolean isPowered() {

@@ -23,13 +23,11 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Util;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockStateRaycastContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
@@ -156,7 +154,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         HashMap<Task, Float> map = new HashMap<>();
         float total = 0f;
         for (Task task : Task.values()) {
-            if (GameWorldComponent.KEY.get(player.getWorld()).offTasks.contains(task)) continue;
+            if (MapVariablesWorldComponent.KEY.get(player.getWorld()).offTasks.contains(task)) continue;
             if (this.tasks.containsKey(task)) continue;
             float weight = 1f / this.timesGotten.getOrDefault(task, 1);
             map.put(task, weight);
@@ -183,7 +181,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(this.player.getWorld());
 
         Role role = gameWorldComponent.getRole(player);
-        if (gameWorldComponent.isRunning() && role != null && role.getMoodType() == Role.MoodType.REAL) {
+        if (gameWorldComponent.isRunning() && role != null && role.moodType() == Role.MoodType.REAL) {
             return this.mood;
         } else return 1;
     }
@@ -191,7 +189,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
     public void setMood(float mood) {
         Role role = GameWorldComponent.KEY.get(this.player.getWorld()).getRole(player);
 
-        if (role != null && role.getMoodType() == Role.MoodType.REAL) {
+        if (role != null && role.moodType() == Role.MoodType.REAL) {
             this.mood = Math.clamp(mood, 0, 1);
         } else {
             this.mood = 1;
@@ -419,21 +417,37 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         }
 
         private boolean isMakingPlantActivities(PlayerEntity player) {
+            if (!(player.getWorld() instanceof ServerWorld world)) return false;
             Vec3d center = player.getBoundingBox().getCenter();
             Random rand = player.getRandom();
-            for (int i = 0; i < 100; i++) {
-                Vec3d random = new Vec3d(rand.nextDouble() - .5, rand.nextDouble() - .5, rand.nextDouble() - .5).multiply(5);
-                BlockHitResult raycast = player.getWorld().raycast(new BlockStateRaycastContext(center, center.add(random), blockState -> !blockState.isOpaque()));
-                if (raycast.getType() == HitResult.Type.BLOCK) {
-                    BlockState blockState = player.getWorld().getBlockState(raycast.getBlockPos());
-                    if (
-                            blockState.isOf(Blocks.MOSS_BLOCK) ||
-                                    blockState.isOf(Blocks.AZALEA_LEAVES) ||
-                                    blockState.isOf(Blocks.FLOWERING_AZALEA) ||
-                                    blockState.isOf(Blocks.CHERRY_LEAVES)
-                    ) return true;
-                }
-            }
+//            for (int i = 0; i < 100; i++) {
+//                Vec3d random = new Vec3d(rand.nextDouble() - .5, rand.nextDouble() - .5, rand.nextDouble() - .5).multiply(5);
+//                BlockHitResult raycast = world.raycastBlock(new BlockStateRaycastContext(center, center.add(random), it -> !it.isAir()));
+//                BlockPos p = raycast.getBlockPos();
+//                world.spawnParticles(ParticleTypes.FIREWORK, p.getX(), p.getY(), p.getZ(), 1, 0, 0, 0, 0);
+//                if (raycast.getType() == HitResult.Type.BLOCK) {
+//                    world.spawnParticles(ParticleTypes.END_ROD, p.getX(), p.getY(), p.getZ(), 1, 0, 0, 0, 0);
+//                    BlockState blockState = player.getWorld().getBlockState(raycast.getBlockPos());
+//                    if (
+//                            blockState.isOf(Blocks.MOSS_BLOCK) ||
+//                                    blockState.isOf(Blocks.AZALEA_LEAVES) ||
+//                                    blockState.isOf(Blocks.FLOWERING_AZALEA) ||
+//                                    blockState.isOf(Blocks.CHERRY_LEAVES)
+//                    ) return true;
+//                }
+//            }
+            BlockPos pos = BlockPos.ofFloored(center);
+            for (int x = -1; x <= 1; x++)
+                for (int z = -1; z <= 1; z++)
+                    for (int y = -3; y <= 5; y++) {
+                        BlockState blockState = world.getBlockState(pos.add(x, y, z));
+                        if (
+                                blockState.isOf(Blocks.MOSS_BLOCK) ||
+                                        blockState.isOf(Blocks.AZALEA_LEAVES) ||
+                                        blockState.isOf(Blocks.FLOWERING_AZALEA) ||
+                                        blockState.isOf(Blocks.CHERRY_LEAVES)
+                        ) return true;
+                    }
             return false;
         }
     }

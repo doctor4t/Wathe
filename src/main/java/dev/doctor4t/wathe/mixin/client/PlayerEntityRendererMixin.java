@@ -20,7 +20,7 @@ import java.util.UUID;
 public class PlayerEntityRendererMixin {
     @Inject(method = "getArmPose", at = @At("TAIL"), cancellable = true)
     private static void wathe$customArmPose(AbstractClientPlayerEntity player,
-                                          Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> cir) {
+                                            Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> cir) {
         if (player.getStackInHand(hand).isOf(WatheItems.BAT))
             cir.setReturnValue(BipedEntityModel.ArmPose.CROSSBOW_CHARGE);
     }

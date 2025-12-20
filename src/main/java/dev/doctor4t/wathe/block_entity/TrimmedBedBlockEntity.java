@@ -1,6 +1,8 @@
 package dev.doctor4t.wathe.block_entity;
 
+import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.index.WatheBlockEntities;
+import dev.doctor4t.wathe.index.WatheParticles;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -51,12 +53,12 @@ public class TrimmedBedBlockEntity extends BlockEntity {
     @SuppressWarnings("unused")
     public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T t) {
         TrimmedBedBlockEntity entity = (TrimmedBedBlockEntity) t;
-        if (!TMMClient.isKiller() && !TMMClient.isPlayerSpectatingOrCreative()) return;
+        if (!WatheClient.isKiller() && !WatheClient.isPlayerSpectatingOrCreative()) return;
         if (!entity.hasScorpion()) return;
         if (world.getRandom().nextBetween(0, 20) < 17) return;
 
         world.addParticle(
-                TMMParticles.POISON,
+                WatheParticles.POISON,
                 pos.getX() + 0.5f,
                 pos.getY() + 0.5f,
                 pos.getZ() + 0.5f,

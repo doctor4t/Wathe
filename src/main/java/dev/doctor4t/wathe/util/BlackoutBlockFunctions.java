@@ -1,9 +1,9 @@
-package dev.doctor4t.trainmurdermystery.util;
+package dev.doctor4t.wathe.util;
 
-import dev.doctor4t.trainmurdermystery.cca.WorldBlackoutComponent;
-import dev.doctor4t.trainmurdermystery.game.GameConstants;
-import dev.doctor4t.trainmurdermystery.index.TMMProperties;
-import dev.doctor4t.trainmurdermystery.index.TMMSounds;
+import dev.doctor4t.wathe.cca.WorldBlackoutComponent;
+import dev.doctor4t.wathe.game.GameConstants;
+import dev.doctor4t.wathe.index.WatheProperties;
+import dev.doctor4t.wathe.index.WatheSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.registry.Registries;
@@ -20,24 +20,24 @@ public interface BlackoutBlockFunctions {
     interface Lights {
         static void init(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
             BlockState state = world.getBlockState(detail.pos);
-            if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
+            if (!state.contains(Properties.LIT) || !state.contains(WatheProperties.ACTIVE)) return;
             detail.data = (byte) (state.get(Properties.LIT) ? -128 : 0);
-            world.setBlockState(detail.pos, state.with(Properties.LIT, false).with(TMMProperties.ACTIVE, false));
+            world.setBlockState(detail.pos, state.with(Properties.LIT, false).with(WatheProperties.ACTIVE, false));
 //            playsound(detail, world, TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, 0.5f, 1f);
         }
 
         static void end(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
             BlockState state = world.getBlockState(detail.pos);
-            if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
-//            world.setBlockState(detail.pos, state.with(Properties.LIT, (detail.data & -128) == -128).with(TMMProperties.ACTIVE, true));
-            world.setBlockState(detail.pos, state.with(Properties.LIT, true).with(TMMProperties.ACTIVE, true));
-            playsound(detail, world, TMMSounds.BLOCK_LIGHT_TOGGLE, 0.5f, 0.8f);
+            if (!state.contains(Properties.LIT) || !state.contains(WatheProperties.ACTIVE)) return;
+//            world.setBlockState(detail.pos, state.with(Properties.LIT, (detail.data & -128) == -128).with(WatheProperties.ACTIVE, true));
+            world.setBlockState(detail.pos, state.with(Properties.LIT, true).with(WatheProperties.ACTIVE, true));
+            playsound(detail, world, WatheSounds.BLOCK_LIGHT_TOGGLE, 0.5f, 0.8f);
         }
 
         static void tick(World world, WorldBlackoutComponent.BlackoutDetails detail) {
 //            if (detail.getTime() > 50) return;
             BlockState state = world.getBlockState(detail.pos);
-            if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
+            if (!state.contains(Properties.LIT) || !state.contains(WatheProperties.ACTIVE)) return;
             switch (detail.getTime()) {
 //                case 0 -> {
 //                    detail.end(world);
@@ -58,8 +58,8 @@ public interface BlackoutBlockFunctions {
         }
 
         private static void blinkBlock(World world, WorldBlackoutComponent.BlackoutDetails detail, BlockState state, boolean b) {
-            world.setBlockState(detail.pos, state.with(Properties.LIT, b).with(TMMProperties.ACTIVE, b));
-            playsound(detail, world, TMMSounds.BLOCK_LIGHT_TOGGLE, 0.1f, 1f);
+            world.setBlockState(detail.pos, state.with(Properties.LIT, b).with(WatheProperties.ACTIVE, b));
+            playsound(detail, world, WatheSounds.BLOCK_LIGHT_TOGGLE, 0.1f, 1f);
         }
     }
 
@@ -70,17 +70,17 @@ public interface BlackoutBlockFunctions {
 
         static void init(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
             BlockState state = world.getBlockState(detail.pos);
-            if (!state.contains(TMMProperties.OPAQUE) || !state.contains(TMMProperties.ACTIVE)) return;
-            detail.data = (byte) (state.get(TMMProperties.OPAQUE) ? 1 : 0);
-            world.setBlockState(detail.pos, state.with(TMMProperties.OPAQUE, true).with(TMMProperties.ACTIVE, false));
+            if (!state.contains(WatheProperties.OPAQUE) || !state.contains(WatheProperties.ACTIVE)) return;
+            detail.data = (byte) (state.get(WatheProperties.OPAQUE) ? 1 : 0);
+            world.setBlockState(detail.pos, state.with(WatheProperties.OPAQUE, true).with(WatheProperties.ACTIVE, false));
 //            playsound(detail, world, TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE, 0.5f, 1f);
         }
 
         static void end(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
             BlockState state = world.getBlockState(detail.pos);
-            if (!state.contains(TMMProperties.OPAQUE) || !state.contains(TMMProperties.ACTIVE)) return;
-            world.setBlockState(detail.pos, state.with(TMMProperties.OPAQUE, (detail.data & 1) == 1).with(TMMProperties.ACTIVE, true));
-            playsound(detail, world, TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE, 0.1f, 0.8f);
+            if (!state.contains(WatheProperties.OPAQUE) || !state.contains(WatheProperties.ACTIVE)) return;
+            world.setBlockState(detail.pos, state.with(WatheProperties.OPAQUE, (detail.data & 1) == 1).with(WatheProperties.ACTIVE, true));
+            playsound(detail, world, WatheSounds.BLOCK_PRIVACY_PANEL_TOGGLE, 0.1f, 0.8f);
         }
 
         static void tick(World world, WorldBlackoutComponent.BlackoutDetails detail) {

@@ -1,9 +1,9 @@
-package dev.doctor4t.trainmurdermystery.mixin.client.self;
+package dev.doctor4t.wathe.mixin.client.self;
 
-import dev.doctor4t.trainmurdermystery.block_entity.BeveragePlateBlockEntity;
-import dev.doctor4t.trainmurdermystery.client.TMMClient;
-import dev.doctor4t.trainmurdermystery.event.CanSeePoison;
-import dev.doctor4t.trainmurdermystery.index.TMMParticles;
+import dev.doctor4t.wathe.api.event.CanSeePoison;
+import dev.doctor4t.wathe.block_entity.BeveragePlateBlockEntity;
+import dev.doctor4t.wathe.client.WatheClient;
+import dev.doctor4t.wathe.index.WatheParticles;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -30,8 +30,8 @@ public class BeveragePlateBlockEntityMixin {
             return;
         }
         if (
-                (!TMMClient.isKiller() &&
-                        !TMMClient.isPlayerSpectatingOrCreative() &&
+                (!WatheClient.isKiller() &&
+                        !WatheClient.isPlayerSpectatingOrCreative() &&
                         !CanSeePoison.EVENT.invoker().visible(MinecraftClient.getInstance().player)
                 ) || tray.getPoisoner() == null) {
             return;
@@ -40,7 +40,7 @@ public class BeveragePlateBlockEntityMixin {
             return;
         }
         world.addParticle(
-                TMMParticles.POISON,
+                WatheParticles.POISON,
                 pos.getX() + 0.5f,
                 pos.getY(),
                 pos.getZ() + 0.5f,

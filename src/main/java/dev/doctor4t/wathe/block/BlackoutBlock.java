@@ -1,6 +1,6 @@
-package dev.doctor4t.trainmurdermystery.block;
+package dev.doctor4t.wathe.block;
 
-import dev.doctor4t.trainmurdermystery.cca.WorldBlackoutComponent;
+import dev.doctor4t.wathe.cca.WorldBlackoutComponent;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;

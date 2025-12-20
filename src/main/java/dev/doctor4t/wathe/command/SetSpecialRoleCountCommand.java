@@ -1,8 +1,8 @@
-package dev.doctor4t.trainmurdermystery.command;
+package dev.doctor4t.wathe.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
-import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
+import dev.doctor4t.wathe.cca.GameWorldComponent;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 public class SetSpecialRoleCountCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(
-                CommandManager.literal("tmm:setSpecialRoleCount")
+                CommandManager.literal("wathe:setSpecialRoleCount")
                         .requires(source -> source.hasPermissionLevel(2))
                         .then(
                                 CommandManager.argument("count", DoubleArgumentType.doubleArg(0))

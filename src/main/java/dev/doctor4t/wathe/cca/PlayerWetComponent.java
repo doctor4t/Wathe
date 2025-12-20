@@ -1,7 +1,8 @@
-package dev.doctor4t.trainmurdermystery.cca;
+package dev.doctor4t.wathe.cca;
 
-import dev.doctor4t.trainmurdermystery.TMM;
-import dev.doctor4t.trainmurdermystery.game.GameConstants;
+import dev.doctor4t.wathe.Wathe;
+import dev.doctor4t.wathe.game.GameConstants;
+import dev.doctor4t.wathe.game.GameFunctions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -16,7 +17,7 @@ import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 public class PlayerWetComponent implements AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
-    public static final ComponentKey<PlayerWetComponent> KEY = ComponentRegistry.getOrCreate(TMM.id("wet"), PlayerWetComponent.class);
+    public static final ComponentKey<PlayerWetComponent> KEY = ComponentRegistry.getOrCreate(Wathe.id("wet"), PlayerWetComponent.class);
     private final PlayerEntity player;
 
     public int wetTicks = -1;
@@ -59,7 +60,8 @@ public class PlayerWetComponent implements AutoSyncedComponent, ServerTickingCom
     }
 
     public void makeWet() {
-        this.wetTicks = GameConstants.SPRINKLER_GIVE_WET;
+        if (GameFunctions.isPlayerAliveAndSurvival(this.player))
+            this.wetTicks = GameConstants.SPRINKLER_GIVE_WET;
     }
 
     public boolean isUnderShower() {
