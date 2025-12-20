@@ -10,6 +10,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.enums.BedPart;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
@@ -18,8 +19,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -66,27 +69,29 @@ public class PoisonUtils {
         if (blockEntity == null) return;
 
         if (!world.isClient) {
-            blockEntity.setHasScorpion(false, null);
-            int poisonTicks = PlayerPoisonComponent.KEY.get(player).poisonTicks;
-
             UUID poisoner = blockEntity.getPoisoner();
 
-            if (poisonTicks == -1) {
-                PlayerPoisonComponent.KEY.get(player).setPoisonTicks(
-                        world.getRandom().nextBetween(PlayerPoisonComponent.clampTime.getLeft(), PlayerPoisonComponent.clampTime.getRight()),
-                        poisoner
-                );
-            } else {
-                PlayerPoisonComponent.KEY.get(player).setPoisonTicks(
-                        MathHelper.clamp(poisonTicks - world.getRandom().nextBetween(100, 300), 0, PlayerPoisonComponent.clampTime.getRight()),
-                        poisoner
-                );
-            }
+            blockEntity.setHasScorpion(false, null);
+
+            updatePoisonTicks(player, poisoner, world.getRandom());
 
             ServerPlayNetworking.send(
                     player, new PoisonOverlayPayload("game.player.stung")
             );
         }
+    }
+
+    public static void updatePoisonTicks(PlayerEntity player, @Nullable UUID poisoner, Random random) {
+        int poisonTicks = PlayerPoisonComponent.KEY.get(player).poisonTicks;
+
+        int updated;
+        if (poisonTicks == -1) {
+            updated = random.nextBetween(PlayerPoisonComponent.clampTime.getLeft(), PlayerPoisonComponent.clampTime.getRight());
+        } else {
+            updated = MathHelper.clamp(poisonTicks - random.nextBetween(100, 300), 0, PlayerPoisonComponent.clampTime.getRight());
+        }
+
+        PlayerPoisonComponent.KEY.get(player).setPoisonTicks(updated, poisoner);
     }
 
     private static TrimmedBedBlockEntity findHeadInBoxWithObstacles(World world, BlockPos centerPos) {
