@@ -1,17 +1,6 @@
 package dev.doctor4t.wathe;
 
 import com.google.common.reflect.Reflection;
-<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/TMM.java
-import dev.doctor4t.trainmurdermystery.block.DoorPartBlock;
-import dev.doctor4t.trainmurdermystery.cca.GameWorldComponent;
-import dev.doctor4t.trainmurdermystery.command.*;
-import dev.doctor4t.trainmurdermystery.command.argument.GameModeArgumentType;
-import dev.doctor4t.trainmurdermystery.command.argument.TimeOfDayArgumentType;
-import dev.doctor4t.trainmurdermystery.game.GameConstants;
-import dev.doctor4t.trainmurdermystery.game.GameFunctions;
-import dev.doctor4t.trainmurdermystery.index.*;
-import dev.doctor4t.trainmurdermystery.util.*;
-=======
 import dev.doctor4t.wathe.block.DoorPartBlock;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.command.*;
@@ -21,7 +10,6 @@ import dev.doctor4t.wathe.command.argument.TimeOfDayArgumentType;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.index.*;
 import dev.doctor4t.wathe.util.*;
->>>>>>> 02470be3bfe42c064a25f33b9d17cf971ae36bbe:src/main/java/dev/doctor4t/wathe/Wathe.java
 import dev.upcraft.datasync.api.DataSyncAPI;
 import dev.upcraft.datasync.api.util.Entitlements;
 import net.fabricmc.api.ModInitializer;
@@ -30,11 +18,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-<<<<<<< HEAD:src/main/java/dev/doctor4t/trainmurdermystery/TMM.java
-import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
-=======
 import net.fabricmc.loader.api.FabricLoader;
->>>>>>> 02470be3bfe42c064a25f33b9d17cf971ae36bbe:src/main/java/dev/doctor4t/wathe/Wathe.java
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
