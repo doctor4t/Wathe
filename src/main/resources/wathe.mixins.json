@@ -28,7 +28,6 @@
   "client": [
     "client.AbstractClientPlayerEntityMixin",
     "client.EntityRendererDispatchMixin",
-    "client.glasspanefix.ChunkLightProviderMixin",
     "client.GameRendererMixin",
     "client.MinecraftClientMixin",
     "client.PlayerEntityRendererMixin",
