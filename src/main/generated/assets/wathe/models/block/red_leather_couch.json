@@ -1,0 +1,6 @@
+{
+  "parent": "wathe:block/template_leather_couch",
+  "textures": {
+    "texture": "wathe:block/red_leather_couch"
+  }
+}

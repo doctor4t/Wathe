@@ -1,6 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_branch_face",
-  "textures": {
-    "side": "minecraft:block/stripped_mangrove_log"
-  }
-}

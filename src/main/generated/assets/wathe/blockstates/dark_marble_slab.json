@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "wathe:block/dark_marble_slab"
+    },
+    "type=double": {
+      "model": "wathe:block/dark_marble"
+    },
+    "type=top": {
+      "model": "wathe:block/dark_marble_slab_top"
+    }
+  }
+}

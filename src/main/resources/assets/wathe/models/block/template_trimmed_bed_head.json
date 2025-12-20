@@ -1,0 +1,23 @@
+{
+	"credit": "Model by Luxintrus",
+	"texture_size": [64, 64],
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "wathe:block/bubinga_planks"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 8, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4, 8]},
+			"faces": {
+				"north": {"uv": [12, 4, 16, 6], "texture": "#texture"},
+				"east": {"uv": [8, 4, 12, 6], "texture": "#texture"},
+				"south": {"uv": [4, 4, 8, 6], "texture": "#texture"},
+				"west": {"uv": [0, 4, 4, 6], "texture": "#texture"},
+				"up": {"uv": [8, 4, 4, 0], "rotation": 180, "texture": "#texture"},
+				"down": {"uv": [12, 0, 8, 4], "rotation": 180, "texture": "#texture"}
+			}
+		}
+	]
+}

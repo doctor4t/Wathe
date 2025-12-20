@@ -1,7 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_branch_front",
-  "textures": {
-    "side": "minecraft:block/dark_oak_log",
-    "top": "trainmurdermystery:block/dark_oak_branch_top"
-  }
-}

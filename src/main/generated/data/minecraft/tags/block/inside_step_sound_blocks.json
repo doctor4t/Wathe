@@ -1,9 +1,9 @@
 {
   "values": [
-    "#trainmurdermystery:walkways",
-    "trainmurdermystery:mahogany_panel",
-    "trainmurdermystery:bubinga_panel",
-    "trainmurdermystery:ebony_panel",
-    "#trainmurdermystery:vent_shafts"
+    "#wathe:walkways",
+    "wathe:mahogany_panel",
+    "wathe:bubinga_panel",
+    "wathe:ebony_panel",
+    "#wathe:vent_shafts"
   ]
 }

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "trainmurdermystery:block/dark_marble",
-    "side": "trainmurdermystery:block/dark_marble",
-    "top": "trainmurdermystery:block/dark_marble"
-  }
-}

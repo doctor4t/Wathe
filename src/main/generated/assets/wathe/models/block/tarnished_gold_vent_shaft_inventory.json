@@ -1,0 +1,8 @@
+{
+  "parent": "wathe:block/template_vent_shaft_inventory",
+  "textures": {
+    "end": "wathe:block/tarnished_gold_vent_shaft_opening",
+    "inside": "wathe:block/tarnished_gold_vent_shaft_inside",
+    "side": "wathe:block/tarnished_gold_vent_shaft_side"
+  }
+}

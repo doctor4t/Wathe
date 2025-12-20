@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "wathe:block/bubinga_planks",
+    "side": "wathe:block/bubinga_planks",
+    "top": "wathe:block/bubinga_planks"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "wathe:block/template_branch_back",
+  "textures": {
+    "side": "minecraft:block/mangrove_log",
+    "top": "wathe:block/mangrove_branch_top"
+  }
+}

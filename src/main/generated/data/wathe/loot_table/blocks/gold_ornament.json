@@ -1,0 +1,260 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:survives_explosion"
+            }
+          ],
+          "functions": [
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "left"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "right"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "top"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "bottom"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "center"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "left_right"
+                  }
+                }
+              ],
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "left_right_center"
+                  }
+                }
+              ],
+              "count": 3.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "left_top"
+                  }
+                }
+              ],
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "left_bottom"
+                  }
+                }
+              ],
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "right_top"
+                  }
+                }
+              ],
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "right_bottom"
+                  }
+                }
+              ],
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "top_bottom"
+                  }
+                }
+              ],
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "left_right_top"
+                  }
+                }
+              ],
+              "count": 3.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "left_right_bottom"
+                  }
+                }
+              ],
+              "count": 3.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "left_top_bottom"
+                  }
+                }
+              ],
+              "count": 3.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "right_top_bottom"
+                  }
+                }
+              ],
+              "count": 3.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "wathe:gold_ornament",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "shape": "all"
+                  }
+                }
+              ],
+              "count": 4.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "wathe:gold_ornament"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

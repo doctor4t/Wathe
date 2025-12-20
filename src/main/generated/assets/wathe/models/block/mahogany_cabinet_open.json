@@ -1,0 +1,9 @@
+{
+  "parent": "wathe:block/template_cabinet_open",
+  "textures": {
+    "front": "wathe:block/mahogany_cabinet_front_open",
+    "shelf": "wathe:block/mahogany_cabinet_front_open_shelf",
+    "side": "wathe:block/mahogany_cabinet_side",
+    "wall": "wathe:block/mahogany_cabinet_wall"
+  }
+}
