@@ -20,10 +20,10 @@ public class TrainWorldComponent implements AutoSyncedComponent, ServerTickingCo
     private final World world;
     private int speed = 0; // im km/h
     private int time = 0;
-    private boolean snow = true;
-    private boolean fog = true;
-    private boolean hud = true;
-    private TimeOfDay timeOfDay = TimeOfDay.NIGHT;
+    private boolean snow = false;
+    private boolean fog = false;
+    private boolean hud = false;
+    private TimeOfDay timeOfDay = TimeOfDay.DAY;
 
     public TrainWorldComponent(World world) {
         this.world = world;
@@ -125,7 +125,9 @@ public class TrainWorldComponent implements AutoSyncedComponent, ServerTickingCo
         tickTime();
 
         ServerWorld serverWorld = (ServerWorld) world;
-        serverWorld.setTimeOfDay(timeOfDay.time);
+        if (GameWorldComponent.KEY.get(serverWorld).getMapEffect() instanceof HarpyExpressTrainMapEffect) {
+            serverWorld.setTimeOfDay(timeOfDay.time);
+        }
     }
 
     public enum TimeOfDay implements StringIdentifiable {

@@ -28,7 +28,7 @@ public class MapVariablesWorldComponent implements AutoSyncedComponent {
     PosWithOrientation spawnPos = new PosWithOrientation(-872.5f, 0f, -323f, 90f, 0f);
     PosWithOrientation spectatorSpawnPos = new PosWithOrientation(-68f, 133f, -535.5f, -90f, 15f);
 
-    Box readyArea = new Box(-1017, -1, -363.75f, -813, 3, -357.35f);
+    Box readyArea = new Box(-1017, -1, -363.75f, -813, 3, -357.25f);
     Vec3i playAreaOffset = new Vec3i(963, 121, -175);
     Box playArea = new Box(-140, 118, -535.5f - 15, 230, 200, -535.5f + 15);
 

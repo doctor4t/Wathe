@@ -5,8 +5,10 @@ import dev.doctor4t.wathe.api.Role;
 import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
+import dev.doctor4t.wathe.index.WatheDataComponentTypes;
 import dev.doctor4t.wathe.index.tag.WatheItemTags;
-import dev.doctor4t.wathe.networking.TaskCompleteS2CPayload;
+import dev.doctor4t.wathe.item.ItemWithSkin;
+import dev.doctor4t.wathe.util.TaskCompletePayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -97,6 +99,9 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
                     }
 
                     //this.psychosisItems.put(playerEntity.getUuid(), playerEntity.getRandom().nextFloat() < GameConstants.ITEM_PSYCHOSIS_CHANCE ? PSYCHOSIS_ITEM_POOL[playerEntity.getRandom().nextInt(PSYCHOSIS_ITEM_POOL.length)].getDefaultStack() : playerEntity.getMainHandStack());
+                    if (psychosisStack.getItem() instanceof ItemWithSkin) {
+                        psychosisStack.set(WatheDataComponentTypes.OWNER, playerEntity.getUuidAsString());
+                    }
                     this.psychosisItems.put(playerEntity.getUuid(), psychosisStack);
                 }
             }
@@ -130,7 +135,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
                 removals.add(task.getType());
                 this.setMood(this.mood + GameConstants.MOOD_GAIN);
                 if (this.player instanceof ServerPlayerEntity tempPlayer)
-                    ServerPlayNetworking.send(tempPlayer, TaskCompleteS2CPayload.INSTANCE);
+                    ServerPlayNetworking.send(tempPlayer, new TaskCompletePayload());
                 shouldSync = true;
             }
         }

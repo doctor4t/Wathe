@@ -48,7 +48,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     }
 
     private GameMode gameMode = WatheGameModes.MURDER;
-    private MapEffect mapEffect = WatheMapEffects.HARPY_EXPRESS_NIGHT;
+    private MapEffect mapEffect = WatheMapEffects.GENERIC;
 
     private boolean bound = true;
 

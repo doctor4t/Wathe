@@ -162,21 +162,22 @@ public class MapVariablesCommand {
             return -1;
         }
         if (gameMode == WatheGameModes.LOOSE_ENDS || gameMode == WatheGameModes.DISCOVERY || mapEffect == WatheMapEffects.HARPY_EXPRESS_SUNDOWN || mapEffect == WatheMapEffects.HARPY_EXPRESS_DAY) {
-            return Wathe.executeSupporterCommand(source, () -> setGameModeAndMapEffect(gameMode, mapEffect, gameWorldComponent));
+            return Wathe.executeSupporterCommand(source, () -> setGameModeAndMapEffect(source, gameMode, mapEffect, gameWorldComponent));
         } else {
-            setGameModeAndMapEffect(gameMode, mapEffect, gameWorldComponent);
+            setGameModeAndMapEffect(source, gameMode, mapEffect, gameWorldComponent);
             return 1;
         }
     }
 
-    private static void setGameModeAndMapEffect(GameMode gameMode, MapEffect mapEffect, GameWorldComponent gameWorldComponent) {
+    private static void setGameModeAndMapEffect(ServerCommandSource source,GameMode gameMode, MapEffect mapEffect, GameWorldComponent gameWorldComponent) {
         gameWorldComponent.setGameMode(gameMode);
         gameWorldComponent.setMapEffect(mapEffect);
+        mapEffect.initializeMapEffects(source.getWorld(), source.getWorld().getPlayers());
     }
 
     private static <T> int setValue(ServerCommandSource source, String valueName, T value, Consumer<T> consumer) {
         consumer.accept(value);
-        source.sendMessage(Text.translatable("wathe.map_variables.set", valueName, value));
+        source.sendMessage(Text.translatable("wathe.map_variables.set", valueName, value.toString()));
         return 1;
     }
 

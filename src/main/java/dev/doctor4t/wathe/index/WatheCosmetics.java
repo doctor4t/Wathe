@@ -4,7 +4,7 @@ import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.util.WeaponSkinsSupporterData;
 import dev.upcraft.datasync.api.DataSyncAPI;
 import dev.upcraft.datasync.api.SyncToken;
-import dev.upcraft.datasync.api.util.Entitlements;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
@@ -34,25 +34,28 @@ public interface WatheCosmetics {
         return "default";
     }
 
-    static void setSkin(UUID playerUuid, ItemStack itemStack, String skinName) {
-        StringBuilder serializedBuilder = new StringBuilder();
-        Optional<WeaponSkinsSupporterData> optional = WEAPON_SKINS_DATA.get(playerUuid);
-        String itemName = itemStack.getItem().getName().getString().toLowerCase(Locale.ROOT);
+    static void setSkin(PlayerEntity player, ItemStack itemStack, String skinName) {
+        // only upload data on the client, servers can't datasync
+        if (player.getWorld().isClient()) {
+            StringBuilder serializedBuilder = new StringBuilder();
+            Optional<WeaponSkinsSupporterData> optional = WEAPON_SKINS_DATA.get(player.getUuid());
+            String itemName = itemStack.getItem().getName().getString().toLowerCase(Locale.ROOT);
 
-        String[] namesAndSkins = new String[]{};
-        if (optional.isPresent()) {
-            namesAndSkins = optional.get().serialized().split(";");
-        }
-
-        for (String nameAndSkin : namesAndSkins) {
-            if (!nameAndSkin.matches(itemName + ":.+")) {
-                serializedBuilder.append(nameAndSkin).append(";");
+            String[] namesAndSkins = new String[]{};
+            if (optional.isPresent()) {
+                namesAndSkins = optional.get().serialized().split(";");
             }
-        }
 
-        serializedBuilder.append(itemName).append(":").append(skinName);
-        String string = serializedBuilder.toString();
-        WeaponSkinsSupporterData newData = new WeaponSkinsSupporterData(string);
-        WEAPON_SKINS_DATA.setData(newData); // upload to server
+            for (String nameAndSkin : namesAndSkins) {
+                if (!nameAndSkin.matches(itemName + ":.+")) {
+                    serializedBuilder.append(nameAndSkin).append(";");
+                }
+            }
+
+            serializedBuilder.append(itemName).append(":").append(skinName);
+            String string = serializedBuilder.toString();
+            WeaponSkinsSupporterData newData = new WeaponSkinsSupporterData(string);
+            WEAPON_SKINS_DATA.setData(newData); // upload to server
+        }
     }
 }

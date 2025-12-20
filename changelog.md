@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Wathe 1.3.1 - 1.21.1
+------------------------------------------------------
+- Fixed map effect not initializing when being manually changed with the mapVariables command
+- Fixed time of day not properly changing with map effects other than the default Harpy Express ones
+- Changed the default map effect to the generic one
+
+------------------------------------------------------
 Wathe 1.3 - 1.21.1
 ------------------------------------------------------
 - Changed the mod identifier from "trainmurdermystery" to "wathe" and renamed it to avoid confusion with the Harpy Express modpack and reflect the mod now allowing maps other than trains
@@ -33,6 +40,7 @@ Wathe 1.3 - 1.21.1
 - Fixed Derringers not replenishing on kill
 - Fixed Revolvers being able to be double fired
 - Fixed the ready area being slightly too small
+- Limited knife max use to 5 seconds to prevent "cheesing and waiting around a corner with a knife ready" really long strat
 - Tweaked the API to allow more modability (PunIsIntendeds)
 - Updated French translation (PadjokeJ)
 - Updated German translation (Lukas0094)
