@@ -426,10 +426,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
                                     blockState.isOf(Blocks.AZALEA_LEAVES) ||
                                     blockState.isOf(Blocks.FLOWERING_AZALEA) ||
                                     blockState.isOf(Blocks.CHERRY_LEAVES)
-                    ) {
-                        player.sendMessage(Text.literal(timer + ""), true);
-                        return true;
-                    }
+                    ) return true;
                 }
             }
             return false;
