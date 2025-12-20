@@ -139,6 +139,7 @@ public class WatheLangGen extends FabricLanguageProvider {
                     spawnPos: The spawn position and orientation players will be reset to once the game ends.
                     spectatorSpawnPos: The spawn position and orientation players will be set to when set as spectators at the start of a game.
                     readyArea: The lobby area which players need to be in to be selected for a game.
+                    snowflakeCollider: A box that removes snow particles for players playing on \'Snow particles mode: Box Collider\'.
                     playAreaOffset: The offset players will be teleported by from the ready area into the play area.
                     playArea: The play area outside which players will be eliminated.
                     resetTemplateArea: The template that will be copied over the play area in order to reset the map.
@@ -160,6 +161,11 @@ public class WatheLangGen extends FabricLanguageProvider {
         builder.add("wathe.midnightconfig.ultraPerfMode", "Ultra Performance Mode");
         builder.add("wathe.midnightconfig.ultraPerfMode.tooltip", "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2.");
         builder.add("wathe.midnightconfig.disableScreenShake", "Disable Screen Shake");
+        builder.add("wathe.midnightconfig.snowOptLevel", "Snow particles mode");
+        builder.add("wathe.midnightconfig.snowOptLevel.tooltip", "How snow particle collisions will be processed.\n\n'Box Collider' may not work on all maps.");
+        builder.add("wathe.midnightconfig.enum.SnowModeConfig.NO_OPTIMIZATION", "Default");
+        builder.add("wathe.midnightconfig.enum.SnowModeConfig.BOX_COLLIDER", "Box Collider");
+        builder.add("wathe.midnightconfig.enum.SnowModeConfig.TURN_OFF", "No particles");
 
         builder.add("wathe.argument.game_mode.invalid", "Game mode could not be found");
         builder.add("wathe.argument.map_effect.invalid", "Map effect could not be found");

@@ -346,5 +346,10 @@
   "wathe.midnightconfig.ultraPerfMode.tooltip": "Отключает визуальные эффекты сцены для лучшей производительности. Понижает дальность прорисовки до 2-ух.",
   "modmenu.nameTranslation.wathe": "Последний рейс Harpy Express",
   "modmenu.summaryTranslation.wathe": "Социальная игра-детектив по расследованию убийств в поезде.",
-  "modmenu.descriptionTranslation.wathe": "Социальная игра-детектив по расследованию убийств в поезде."
+  "modmenu.descriptionTranslation.wathe": "Социальная игра-детектив по расследованию убийств в поезде.",
+  "wathe.midnightconfig.enum.SnowModeConfig.BOX_COLLIDER": "Упрощенный",
+  "wathe.midnightconfig.enum.SnowModeConfig.NO_OPTIMIZATION": "Стандартный",
+  "wathe.midnightconfig.enum.SnowModeConfig.TURN_OFF": "Выключить",
+  "wathe.midnightconfig.snowOptLevel": "Режим частиц снега",
+  "wathe.midnightconfig.snowOptLevel.tooltip": "Режим обработки частиц снега.\n\n'Упрощенный' может не работать на всех картах."
 }
