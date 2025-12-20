@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "trainmurdermystery:block/bubinga_herringbone",
-    "side": "trainmurdermystery:block/bubinga_herringbone",
-    "top": "trainmurdermystery:block/bubinga_herringbone"
-  }
-}

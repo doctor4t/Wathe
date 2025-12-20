@@ -1,0 +1,7 @@
+{
+  "parent": "wathe:block/template_branch_inventory",
+  "textures": {
+    "side": "minecraft:block/cherry_log",
+    "top": "wathe:block/cherry_branch_top"
+  }
+}

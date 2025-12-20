@@ -1,7 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_sprinkler",
-  "textures": {
-    "particle": "trainmurdermystery:block/stainless_steel",
-    "texture": "trainmurdermystery:block/stainless_steel_sprinkler"
-  }
-}

@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "wathe:block/rail_beam",
+      "y": 90
+    },
+    "axis=z": {
+      "model": "wathe:block/rail_beam"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "wathe:block/template_walkway_bottom",
+  "textures": {
+    "side": "wathe:block/dark_steel_walkway_side",
+    "top": "wathe:block/dark_steel_walkway"
+  }
+}

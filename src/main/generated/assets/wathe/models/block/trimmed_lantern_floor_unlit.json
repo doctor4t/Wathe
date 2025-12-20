@@ -1,0 +1,8 @@
+{
+  "parent": "wathe:block/template_trimmed_lantern_floor",
+  "textures": {
+    "bottom": "wathe:block/trimmed_lantern_bottom_unlit",
+    "side": "wathe:block/trimmed_lantern_side_unlit",
+    "top": "wathe:block/trimmed_lantern_top"
+  }
+}

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "trainmurdermystery:block/tarnished_gold_pillar_top",
-    "side": "trainmurdermystery:block/tarnished_gold_pillar"
-  }
-}

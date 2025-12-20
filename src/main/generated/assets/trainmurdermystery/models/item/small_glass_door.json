@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "trainmurdermystery:item/small_glass_door"
-  }
-}

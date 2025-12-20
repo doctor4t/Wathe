@@ -1,6 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_leather_couch_middle",
-  "textures": {
-    "texture": "trainmurdermystery:block/beige_leather_couch"
-  }
-}

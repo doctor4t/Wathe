@@ -1,6 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_vent_hatch_open",
-  "textures": {
-    "texture": "trainmurdermystery:block/tarnished_gold_vent_hatch"
-  }
-}

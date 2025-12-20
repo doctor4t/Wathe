@@ -1,0 +1,6 @@
+{
+  "parent": "wathe:block/template_bar_top",
+  "textures": {
+    "texture": "wathe:block/stainless_steel_bar"
+  }
+}

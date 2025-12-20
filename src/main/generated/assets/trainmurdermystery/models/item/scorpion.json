@@ -1,6 +1,0 @@
-{
-  "parent": "trainmurdermystery:item/small_item",
-  "textures": {
-    "layer0": "trainmurdermystery:item/scorpion"
-  }
-}

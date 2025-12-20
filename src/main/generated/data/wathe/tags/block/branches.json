@@ -1,0 +1,28 @@
+{
+  "values": [
+    "wathe:stainless_steel_branch",
+    "wathe:dark_steel_branch",
+    "wathe:oak_branch",
+    "wathe:spruce_branch",
+    "wathe:birch_branch",
+    "wathe:jungle_branch",
+    "wathe:acacia_branch",
+    "wathe:dark_oak_branch",
+    "wathe:mangrove_branch",
+    "wathe:cherry_branch",
+    "wathe:bamboo_pole",
+    "wathe:crimson_stipe",
+    "wathe:warped_stipe",
+    "wathe:stripped_oak_branch",
+    "wathe:stripped_spruce_branch",
+    "wathe:stripped_birch_branch",
+    "wathe:stripped_jungle_branch",
+    "wathe:stripped_acacia_branch",
+    "wathe:stripped_dark_oak_branch",
+    "wathe:stripped_mangrove_branch",
+    "wathe:stripped_cherry_branch",
+    "wathe:stripped_bamboo_pole",
+    "wathe:stripped_crimson_stipe",
+    "wathe:stripped_warped_stipe"
+  ]
+}

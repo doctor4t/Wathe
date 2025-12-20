@@ -1,0 +1,110 @@
+{
+  "variants": {
+    "face=ceiling,facing=east,open=false": {
+      "model": "wathe:block/tarnished_gold_vent_hatch",
+      "x": 90,
+      "y": 270
+    },
+    "face=ceiling,facing=east,open=true": {
+      "model": "wathe:block/tarnished_gold_vent_hatch_open",
+      "x": 90,
+      "y": 270
+    },
+    "face=ceiling,facing=north,open=false": {
+      "model": "wathe:block/tarnished_gold_vent_hatch",
+      "x": 90,
+      "y": 180
+    },
+    "face=ceiling,facing=north,open=true": {
+      "model": "wathe:block/tarnished_gold_vent_hatch_open",
+      "x": 90,
+      "y": 180
+    },
+    "face=ceiling,facing=south,open=false": {
+      "model": "wathe:block/tarnished_gold_vent_hatch",
+      "x": 90
+    },
+    "face=ceiling,facing=south,open=true": {
+      "model": "wathe:block/tarnished_gold_vent_hatch_open",
+      "x": 90
+    },
+    "face=ceiling,facing=west,open=false": {
+      "model": "wathe:block/tarnished_gold_vent_hatch",
+      "x": 90,
+      "y": 90
+    },
+    "face=ceiling,facing=west,open=true": {
+      "model": "wathe:block/tarnished_gold_vent_hatch_open",
+      "x": 90,
+      "y": 90
+    },
+    "face=floor,facing=east,open=false": {
+      "model": "wathe:block/tarnished_gold_vent_hatch",
+      "x": 270,
+      "y": 270
+    },
+    "face=floor,facing=east,open=true": {
+      "model": "wathe:block/tarnished_gold_vent_hatch_open",
+      "x": 270,
+      "y": 270
+    },
+    "face=floor,facing=north,open=false": {
+      "model": "wathe:block/tarnished_gold_vent_hatch",
+      "x": 270,
+      "y": 180
+    },
+    "face=floor,facing=north,open=true": {
+      "model": "wathe:block/tarnished_gold_vent_hatch_open",
+      "x": 270,
+      "y": 180
+    },
+    "face=floor,facing=south,open=false": {
+      "model": "wathe:block/tarnished_gold_vent_hatch",
+      "x": 270
+    },
+    "face=floor,facing=south,open=true": {
+      "model": "wathe:block/tarnished_gold_vent_hatch_open",
+      "x": 270
+    },
+    "face=floor,facing=west,open=false": {
+      "model": "wathe:block/tarnished_gold_vent_hatch",
+      "x": 270,
+      "y": 90
+    },
+    "face=floor,facing=west,open=true": {
+      "model": "wathe:block/tarnished_gold_vent_hatch_open",
+      "x": 270,
+      "y": 90
+    },
+    "face=wall,facing=east,open=false": {
+      "model": "wathe:block/tarnished_gold_vent_hatch",
+      "y": 90
+    },
+    "face=wall,facing=east,open=true": {
+      "model": "wathe:block/tarnished_gold_vent_hatch_open",
+      "y": 90
+    },
+    "face=wall,facing=north,open=false": {
+      "model": "wathe:block/tarnished_gold_vent_hatch"
+    },
+    "face=wall,facing=north,open=true": {
+      "model": "wathe:block/tarnished_gold_vent_hatch_open"
+    },
+    "face=wall,facing=south,open=false": {
+      "model": "wathe:block/tarnished_gold_vent_hatch",
+      "y": 180
+    },
+    "face=wall,facing=south,open=true": {
+      "model": "wathe:block/tarnished_gold_vent_hatch_open",
+      "y": 180
+    },
+    "face=wall,facing=west,open=false": {
+      "model": "wathe:block/tarnished_gold_vent_hatch",
+      "y": 270
+    },
+    "face=wall,facing=west,open=true": {
+      "model": "wathe:block/tarnished_gold_vent_hatch_open",
+      "y": 270
+    }
+  }
+}

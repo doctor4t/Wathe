@@ -1,0 +1,6 @@
+{
+  "parent": "wathe:block/template_ornament_r0",
+  "textures": {
+    "texture": "wathe:block/gold_ornament_side"
+  }
+}

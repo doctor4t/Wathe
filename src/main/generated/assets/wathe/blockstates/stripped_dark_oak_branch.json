@@ -1,0 +1,316 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_back",
+        "x": 270
+      },
+      "when": {
+        "down": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "x": 90
+      },
+      "when": {
+        "down": "false",
+        "east": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "x": 90
+      },
+      "when": {
+        "down": "false",
+        "east": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "x": 90
+      },
+      "when": {
+        "down": "false",
+        "east": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face_horizontal",
+        "x": 90
+      },
+      "when": {
+        "down": "false",
+        "east": "true",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_front",
+        "x": 270
+      },
+      "when": {
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "x": 270
+      },
+      "when": {
+        "east": "false",
+        "up": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "x": 270
+      },
+      "when": {
+        "east": "true",
+        "up": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "x": 270
+      },
+      "when": {
+        "east": "false",
+        "up": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face_horizontal",
+        "x": 270
+      },
+      "when": {
+        "east": "true",
+        "up": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_front"
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face"
+      },
+      "when": {
+        "east": "false",
+        "north": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face"
+      },
+      "when": {
+        "east": "true",
+        "north": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face"
+      },
+      "when": {
+        "east": "false",
+        "north": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face_horizontal"
+      },
+      "when": {
+        "east": "true",
+        "north": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_back"
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "y": 180
+      },
+      "when": {
+        "east": "false",
+        "south": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "y": 180
+      },
+      "when": {
+        "east": "false",
+        "south": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "y": 180
+      },
+      "when": {
+        "east": "true",
+        "south": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face_horizontal",
+        "y": 180
+      },
+      "when": {
+        "east": "true",
+        "south": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_back",
+        "y": 90
+      },
+      "when": {
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "y": 270
+      },
+      "when": {
+        "north": "false",
+        "south": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "y": 270
+      },
+      "when": {
+        "north": "true",
+        "south": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "y": 270
+      },
+      "when": {
+        "north": "false",
+        "south": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face_horizontal",
+        "y": 270
+      },
+      "when": {
+        "north": "true",
+        "south": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_front",
+        "y": 90
+      },
+      "when": {
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "y": 90
+      },
+      "when": {
+        "east": "false",
+        "north": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "y": 90
+      },
+      "when": {
+        "east": "false",
+        "north": "false",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face",
+        "y": 90
+      },
+      "when": {
+        "east": "false",
+        "north": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "wathe:block/stripped_dark_oak_branch_face_horizontal",
+        "y": 90
+      },
+      "when": {
+        "east": "false",
+        "north": "true",
+        "south": "true"
+      }
+    }
+  ]
+}

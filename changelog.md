@@ -1,4 +1,58 @@
 ------------------------------------------------------
+Wathe 1.3.2 - 1.21.1
+------------------------------------------------------
+- Fixed the horn not starting the murder mystery game mode at night how intended
+
+------------------------------------------------------
+Wathe 1.3.1 - 1.21.1
+------------------------------------------------------
+- Fixed map effect not initializing when being manually changed with the mapVariables command
+- Fixed time of day not properly changing with map effects other than the default Harpy Express ones
+- Changed the default map effect to the generic one
+
+------------------------------------------------------
+Wathe 1.3 - 1.21.1
+------------------------------------------------------
+- Changed the mod identifier from "trainmurdermystery" to "wathe" and renamed it to avoid confusion with the Harpy Express modpack and reflect the mod now allowing maps other than trains
+  - Previous maps should still be compatible, as block, item and entity aliases were added to transition mod identifiers
+- Added a new Map Effect API class
+  - Stored on the Game Component, this new class allows modders to make custom effects for maps, with custom initialize
+    and finalize logic independent of the game mode
+  - Using the Last Voyage of the Harpy Express as an example, the wathe:harpy_express map effects (excluding the lobby
+    one) give the players the keys to their room and their letters, as well as setting the time of day and all other
+    ambient effects for the train
+  - /wathe:start now requires a map effect identifier to start the game
+  - For instance, /wathe:start wathe:murder wathe:harpy_express_day allows you to play the murder mystery game mode
+    during the day
+  - Added a generic simple map effect that can be used by custom non-train maps
+- Added a /wathe:mapVariables command that allows changing variables for custom maps:
+  - gameModeAndMapEffect: The default game mode and map effect the map will use (with auto-start or when using the train horn).
+  - spawnPos: The spawn position and orientation players will be reset to once the game ends.
+  - spectatorSpawnPos: The spawn position and orientation players will be set to when set as spectators at the start of a game.
+  - readyArea: The lobby area which players need to be in to be selected for a game.
+  - playAreaOffset: The offset players will be teleported by from the ready area into the play area.
+  - playArea: The play area outside which players will be eliminated.
+  - resetTemplateArea: The template that will be copied over the play area in order to reset the map.
+  - resetPasteOffset: The offset at which the template should be pasted.
+- Added knife skins for Patreon and YouTube supporters
+  - Can be changed by right-clicking a knife in the inventory
+  - Skins added: Ceremonial Dagger and Ice Pick
+- Moved weights, bounds, auto-start and backfire commands to a new /wathe:gameSettings command
+- Added a new role dividend setting to /wathe:gameSettings that allows setting custom killer and vigilante counts
+- Lowered the default dividend for both killers and vigilantes to 5 instead of 6
+- Players can now sleep at any time of the day
+- Fixed double doors not jamming together
+- Fixed Derringers not replenishing on kill
+- Fixed Revolvers being able to be double fired
+- Fixed the ready area being slightly too small
+- Limited knife max use to 5 seconds to prevent "cheesing and waiting around a corner with a knife ready" really long strat
+- Tweaked the API to allow more modability (PunIsIntendeds)
+- Updated French translation (PadjokeJ)
+- Updated German translation (Lukas0094)
+- Updated Chinese translation (ZeroIcceBear)
+- Added Vietnamese translation (Vuyn)
+
+------------------------------------------------------
 The Last Voyage of the Harpy Express 1.2.6 - 1.21.1
 ------------------------------------------------------
 - Fixed psycho ambience not going away
@@ -117,7 +171,7 @@ The Last Voyage of the Harpy Express 1.1.2.1 - 1.21.1
 The Last Voyage of the Harpy Express 1.1.2 - 1.21.1
 ------------------------------------------------------
 - Added a client config option to disable screen shake
-  - Removed the /tmm:setVisual screenshake option as a result
+  - Removed the /wathe:setVisual screenshake option as a result
 - Disabled inventory while the game is fading in or out
 - Added a collection of new events designed to make it easier for addons to implement custom role abilities, and to help prevent conflicts when multiple addons are installed, thanks to PunIsIntendeds 🐀❤️
 - Added Portuguese language support, thanks to GabrielFl4 🐀❤️

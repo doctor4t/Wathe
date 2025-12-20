@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "trainmurdermystery:block/neon_pillar_top_unlit",
-    "side": "trainmurdermystery:block/neon_pillar_unlit"
-  }
-}

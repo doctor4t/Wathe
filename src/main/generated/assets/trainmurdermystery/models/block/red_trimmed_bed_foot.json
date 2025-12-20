@@ -1,6 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_trimmed_bed_foot",
-  "textures": {
-    "texture": "trainmurdermystery:block/red_trimmed_bed"
-  }
-}

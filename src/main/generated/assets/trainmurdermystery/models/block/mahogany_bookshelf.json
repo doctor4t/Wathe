@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "trainmurdermystery:block/mahogany_planks",
-    "side": "trainmurdermystery:block/mahogany_bookshelf"
-  }
-}

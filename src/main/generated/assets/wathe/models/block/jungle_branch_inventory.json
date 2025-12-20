@@ -1,0 +1,7 @@
+{
+  "parent": "wathe:block/template_branch_inventory",
+  "textures": {
+    "side": "minecraft:block/jungle_log",
+    "top": "wathe:block/jungle_branch_top"
+  }
+}

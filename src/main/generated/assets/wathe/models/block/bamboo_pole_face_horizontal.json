@@ -1,0 +1,6 @@
+{
+  "parent": "wathe:block/template_branch_face_horizontal",
+  "textures": {
+    "side": "minecraft:block/bamboo_block"
+  }
+}
