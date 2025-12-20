@@ -8,6 +8,7 @@ import dev.doctor4t.wathe.command.argument.GameModeArgumentType;
 import dev.doctor4t.wathe.command.argument.MapEffectArgumentType;
 import dev.doctor4t.wathe.command.argument.TimeOfDayArgumentType;
 import dev.doctor4t.wathe.game.GameConstants;
+import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.*;
 import dev.doctor4t.wathe.util.*;
 import dev.upcraft.datasync.api.DataSyncAPI;
@@ -16,12 +17,14 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -74,6 +77,34 @@ public class Wathe implements ModInitializer {
             SetMoneyCommand.register(dispatcher);
             LockToSupportersCommand.register(dispatcher);
         }));
+
+        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> {
+            MinecraftServer server = sender.getServer();
+            int range = 20;
+
+            server.getPlayerManager().broadcast(
+                    message.getContent(),
+                    player -> {
+                        boolean senderSpectatorOrCreative = GameFunctions.isPlayerSpectatingOrCreative(sender);
+                        boolean receiverSpectatorOrCreative = GameFunctions.isPlayerSpectatingOrCreative(player);
+
+                        if (senderSpectatorOrCreative && !receiverSpectatorOrCreative) {
+                            return null;
+                        }
+
+                        if (receiverSpectatorOrCreative || isWithinRange(sender, player, range)) {
+                            return Text.translatable(
+                                    "chat.type.text",
+                                    sender.getDisplayName(),
+                                    message.getContent()
+                            );
+                        }
+                        return null;
+                    },
+                    false
+            );
+            return false;
+        });
 
         // server lock to supporters
         ServerPlayerEvents.JOIN.register(player -> {
@@ -147,5 +178,14 @@ public class Wathe implements ModInitializer {
     public static @NotNull Boolean isSupporter(PlayerEntity player) {
         Optional<Entitlements> entitlements = Entitlements.token().get(player.getUuid());
         return entitlements.map(value -> value.keys().stream().anyMatch(identifier -> identifier.equals(COMMAND_ACCESS))).orElse(false);
+    }
+
+
+    public static boolean isWithinRange(ServerPlayerEntity a, ServerPlayerEntity b, int range) {
+        double dx = a.getX() - b.getX();
+        double dy = a.getY() - b.getY();
+        double dz = a.getZ() - b.getZ();
+
+        return (dx * dx + dy + dz * dz) < (range * range);
     }
 }

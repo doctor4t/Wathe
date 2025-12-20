@@ -17,7 +17,11 @@
     "PlayerInventoryMixin",
     "ServerPlayerEntityMixin",
     "ServerPlayNetworkHandlerMixin",
-    "client.LivingEntityRendererMixin"
+    "client.LivingEntityRendererMixin",
+    "PlayerManagerMixin",
+    "ChatCommandsMixins$MeCommandMixin",
+    "ChatCommandsMixins$MessageCommandMixin",
+    "ChatCommandsMixins$SayCommandMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -35,7 +39,6 @@
     "client.items.ClientPlayerEntityMixin",
     "client.items.HeldItemFeatureRendererMixin",
     "client.items.HeldItemRendererMixin",
-    "client.restrictions.ChatHudMixin",
     "client.restrictions.CreativeInventoryScreenMixin",
     "client.restrictions.DebugHudMixin",
     "client.restrictions.EntityRendererMixin",
