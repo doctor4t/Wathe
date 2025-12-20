@@ -3,6 +3,8 @@ package dev.doctor4t.wathe.block;
 import dev.doctor4t.wathe.api.event.AllowPlayerOpenLockedDoor;
 import dev.doctor4t.wathe.block_entity.DoorBlockEntity;
 import dev.doctor4t.wathe.block_entity.SmallDoorBlockEntity;
+import dev.doctor4t.wathe.cca.WorldBlackoutComponent;
+import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.index.WatheItems;
 import dev.doctor4t.wathe.index.WatheSounds;
 import net.minecraft.block.Block;
@@ -29,6 +31,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -144,12 +147,17 @@ public class SmallDoorBlock extends DoorPartBlock {
                 return ActionResult.PASS;
             }
 
-            if (player.isCreative() || AllowPlayerOpenLockedDoor.EVENT.invoker().allowOpen(player)) {
+            boolean jammed = entity.isJammed();
+            if (
+                    player.isCreative() ||
+                            AllowPlayerOpenLockedDoor.EVENT.invoker().allowOpen(player) ||
+                            entity.isOpen() ||
+                            ((entity.isBlackoutUnlocking() && entity.getBlackoutCooldown() > 0) && !jammed)
+            ) {
                 return open(state, world, entity, lowerPos);
             } else {
                 boolean requiresKey = !entity.getKeyName().isEmpty();
                 boolean hasLockpick = player.getMainHandStack().isOf(WatheItems.LOCKPICK);
-                boolean jammed = entity.isJammed();
 
                 if (entity.isOpen()) {
                     return open(state, world, entity, lowerPos);
@@ -158,11 +166,8 @@ public class SmallDoorBlock extends DoorPartBlock {
                     if (player.getMainHandStack().isOf(WatheItems.KEY) || hasLockpick) {
                         LoreComponent lore = player.getMainHandStack().get(DataComponentTypes.LORE);
                         boolean isRightKey = lore != null && !lore.lines().isEmpty() && lore.lines().getFirst().getString().equals(entity.getKeyName());
-                        if (isRightKey || hasLockpick) {
-                            if (isRightKey)
-                                world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, WatheSounds.ITEM_KEY_DOOR, SoundCategory.BLOCKS, 1f, 1f);
-                            if (hasLockpick)
-                                world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, WatheSounds.ITEM_LOCKPICK_DOOR, SoundCategory.BLOCKS, 1f, 1f);
+                        if (isRightKey || (hasLockpick && entity.isLockPickable())) {
+                            world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, isRightKey ? WatheSounds.ITEM_KEY_DOOR : WatheSounds.ITEM_LOCKPICK_DOOR, SoundCategory.BLOCKS, 1f, 1f);
                             return open(state, world, entity, lowerPos);
                         } else {
                             if (!world.isClient) {
@@ -219,5 +224,19 @@ public class SmallDoorBlock extends DoorPartBlock {
             return neighborEntity;
         }
         return null;
+    }
+
+
+    @Override
+    public int getDuration(Random random) {
+        return (random.nextInt(GameConstants.BLACKOUT_MAX_DURATION - GameConstants.BLACKOUT_MIN_DURATION) / 3) + (GameConstants.BLACKOUT_MIN_DURATION * 4 / 5);
+    }
+
+    @Override
+    public void init(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
+        BlockPos lowerPos = world.getBlockState(detail.pos).get(HALF) == DoubleBlockHalf.LOWER ? detail.pos : detail.pos.down();
+        if (world.getBlockEntity(lowerPos) instanceof SmallDoorBlockEntity entity) {
+            entity.setBlackoutCooldown(detail.getTime());
+        }
     }
 }

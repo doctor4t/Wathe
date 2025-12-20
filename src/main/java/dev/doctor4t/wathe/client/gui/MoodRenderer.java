@@ -92,9 +92,9 @@ public class MoodRenderer {
         }
         Role role = gameWorldComponent.getRole(player);
         if (role != null) {
-            if (role.getMoodType() == Role.MoodType.FAKE) {
+            if (role.moodType() == Role.MoodType.FAKE) {
                 renderKiller(textRenderer, context);
-            } else if (role.getMoodType() == Role.MoodType.REAL) {
+            } else if (role.moodType() == Role.MoodType.REAL) {
                 renderCivilian(textRenderer, context, oldMood);
             }
         }
@@ -131,7 +131,9 @@ public class MoodRenderer {
         context.getMatrices().push();
         context.getMatrices().translate(0, 10 * moodOffset, 0);
         context.getMatrices().translate(26, 8 + textRenderer.fontHeight, 0);
-        context.getMatrices().scale((moodTextWidth - 8) * moodRender, 1, 1);
+        context.getMatrices().scale(moodTextWidth - 8, 1, 1);
+        context.fill(0, 0, 1, 1, MathHelper.hsvToRgb(moodRender / 3.0F + .1f, 0.5F, 0.4F) | ((int) (moodAlpha * 255) << 24));
+        context.getMatrices().scale(moodRender, 1, 1);
         context.fill(0, 0, 1, 1, MathHelper.hsvToRgb(moodRender / 3.0F, 1.0F, 1.0F) | ((int) (moodAlpha * 255) << 24));
         context.getMatrices().pop();
     }

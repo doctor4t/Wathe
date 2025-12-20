@@ -14,6 +14,10 @@ public class ChimneyBlockEntity extends SyncingBlockEntity {
     }
 
     public static <T extends BlockEntity> void clientTick(World world, BlockPos pos, BlockState state, T t) {
-        world.addParticle(WatheParticles.BLACK_SMOKE, pos.getX() + .5f, pos.getY(), pos.getZ() + .5f, 0, 0, 0);
+        for (int i = 0; i < 2; i++) {
+            double x = world.random.nextDouble() * .5 + .25;
+            double z = world.random.nextDouble() * .5 + .25;
+            world.addParticle(WatheParticles.BLACK_SMOKE, pos.getX() + x, pos.getY(), pos.getZ() + z, 0, 0, 0);
+        }
     }
 }

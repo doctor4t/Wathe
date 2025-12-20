@@ -17,6 +17,7 @@ import java.util.Set;
 
 public interface PrivacyBlock {
 
+    BooleanProperty ACTIVE = WatheProperties.ACTIVE;
     BooleanProperty OPAQUE = WatheProperties.OPAQUE;
     BooleanProperty INTERACTION_COOLDOWN = WatheProperties.INTERACTION_COOLDOWN;
     Direction[][] DIAGONALS = new Direction[][]{
@@ -38,6 +39,7 @@ public interface PrivacyBlock {
     int COOLDOWN = 20;
 
     default void toggle(BlockState state, World world, BlockPos pos) {
+        if (!canToggle(state)) return;
         boolean opaque = !state.get(OPAQUE);
         if (state.get(INTERACTION_COOLDOWN)) {
             world.setBlockState(pos, state.with(INTERACTION_COOLDOWN, false));
@@ -91,7 +93,7 @@ public interface PrivacyBlock {
     }
 
     default boolean canToggle(BlockState state) {
-        return state.getBlock() instanceof PrivacyBlock;
+        return state.getBlock() instanceof PrivacyBlock && state.get(ACTIVE);
     }
 
 

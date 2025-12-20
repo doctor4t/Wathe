@@ -28,7 +28,7 @@ public class KnifeModelLoadingPlugin implements ModelLoadingPlugin {
 
         pluginContext.modifyModelOnLoad().register((unbakedModel, context) -> {
             // replace the original knife model with our custom one
-            if(KNIFE_MODEL_ID.equals(context.topLevelId())) {
+            if (KNIFE_MODEL_ID.equals(context.topLevelId())) {
                 return new KnifeModel(unbakedModel);
             }
 

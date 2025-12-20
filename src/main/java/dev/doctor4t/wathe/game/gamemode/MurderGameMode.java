@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -29,8 +30,16 @@ public class MurderGameMode extends GameMode {
 
         // select roles
         ScoreboardRoleSelectorComponent roleSelector = ScoreboardRoleSelectorComponent.KEY.get(world.getScoreboard());
-        int total = roleSelector.assignKillers(world, gameComponent, players, (int) Math.floor((double) players.size() / gameComponent.getKillerDividend()));
-        roleSelector.assignVigilantes(world, gameComponent, players,  (int) Math.floor((double) players.size() / gameComponent.getVigilanteDividend()));
+//        int total = roleSelector.assignKillers(world, gameComponent, players, (int) Math.floor((double) players.size() / gameComponent.getKillerDividend()));
+//        roleSelector.assignVigilantes(world, gameComponent, players, (int) Math.floor((double) players.size() / gameComponent.getVigilanteDividend()));
+        int killerCount = (int) Math.floor((double) players.size() / gameComponent.getVigilanteDividend());
+        double src = GameWorldComponent.KEY.get(world).getSpecialRoleCount();
+        if (src > 0) {
+            killerCount = MathHelper.floor(src);
+            killerCount += (src % 1 > .01 && src % 1 > Math.random()) ? 1 : 0;
+        }
+        int total = roleSelector.assignKillers(world, gameComponent, players, killerCount);
+        roleSelector.assignVigilantes(world, gameComponent, players, killerCount);
         return total;
     }
 

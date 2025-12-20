@@ -53,7 +53,7 @@ public abstract class ClientWorldMixin extends World {
     private static Set<Item> BLOCK_MARKER_ITEMS;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    public void wathe$addCustomBlockMarkers(ClientPlayNetworkHandler networkHandler, ClientWorld.Properties properties, RegistryKey registryRef, RegistryEntry dimensionTypeEntry, int loadDistance, int simulationDistance, Supplier profiler, WorldRenderer worldRenderer, boolean debugWorld, long seed, CallbackInfo ci) {
+    public void tmm$addCustomBlockMarkers(ClientPlayNetworkHandler networkHandler, ClientWorld.Properties properties, RegistryKey registryRef, RegistryEntry dimensionTypeEntry, int loadDistance, int simulationDistance, Supplier profiler, WorldRenderer worldRenderer, boolean debugWorld, long seed, CallbackInfo ci) {
         BLOCK_MARKER_ITEMS = new HashSet<>(BLOCK_MARKER_ITEMS);
         BLOCK_MARKER_ITEMS.add(WatheBlocks.BARRIER_PANEL.asItem());
         BLOCK_MARKER_ITEMS.add(WatheBlocks.LIGHT_BARRIER.asItem());

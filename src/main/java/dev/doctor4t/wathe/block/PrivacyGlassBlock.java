@@ -1,5 +1,7 @@
 package dev.doctor4t.wathe.block;
 
+import dev.doctor4t.wathe.cca.WorldBlackoutComponent;
+import dev.doctor4t.wathe.util.BlackoutBlockFunctions;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TransparentBlock;
@@ -13,12 +15,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
-public class PrivacyGlassBlock extends TransparentBlock implements PrivacyBlock {
+public class PrivacyGlassBlock extends TransparentBlock implements PrivacyBlock, BlackoutBlock {
 
     public PrivacyGlassBlock(Settings settings) {
         super(settings);
         this.setDefaultState(super.getDefaultState()
+                .with(ACTIVE, true)
                 .with(OPAQUE, false)
                 .with(INTERACTION_COOLDOWN, false));
     }
@@ -42,7 +46,7 @@ public class PrivacyGlassBlock extends TransparentBlock implements PrivacyBlock 
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(OPAQUE, INTERACTION_COOLDOWN);
+        builder.add(OPAQUE, INTERACTION_COOLDOWN, ACTIVE);
     }
 
     @Override
@@ -53,5 +57,25 @@ public class PrivacyGlassBlock extends TransparentBlock implements PrivacyBlock 
     @Override
     public int getOpacity(BlockState state, BlockView world, BlockPos pos) {
         return world.getMaxLightLevel();
+    }
+
+    @Override
+    public int getDuration(Random random) {
+        return BlackoutBlockFunctions.PrivacyGlasses.getDuration(random);
+    }
+
+    @Override
+    public void init(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
+        BlackoutBlockFunctions.PrivacyGlasses.init(world, detail);
+    }
+
+    @Override
+    public void end(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
+        BlackoutBlockFunctions.PrivacyGlasses.end(world, detail);
+    }
+
+    @Override
+    public void tick(World world, WorldBlackoutComponent.BlackoutDetails detail) {
+        BlackoutBlockFunctions.PrivacyGlasses.tick(world, detail);
     }
 }

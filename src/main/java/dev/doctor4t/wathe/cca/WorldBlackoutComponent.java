@@ -1,20 +1,19 @@
 package dev.doctor4t.wathe.cca;
 
 import dev.doctor4t.wathe.Wathe;
-import dev.doctor4t.wathe.game.GameConstants;
-import dev.doctor4t.wathe.index.WatheProperties;
+import dev.doctor4t.wathe.block.BlackoutBlock;
 import dev.doctor4t.wathe.index.WatheSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -53,7 +52,10 @@ public class WorldBlackoutComponent implements AutoSyncedComponent, ServerTickin
                 i--;
             }
         }
-        if (this.ticks > 0) this.ticks--;
+        if (this.ticks > 0) {
+            this.ticks--;
+            sync();
+        }
     }
 
     public boolean isBlackoutActive() {
@@ -63,17 +65,20 @@ public class WorldBlackoutComponent implements AutoSyncedComponent, ServerTickin
     public boolean triggerBlackout() {
         MapVariablesWorldComponent areas = MapVariablesWorldComponent.KEY.get(world);
 
-        Box area = areas.playArea;
+        return triggerBlackout(areas.playArea);
+    }
+
+    public boolean triggerBlackout(Box area) {
         if (this.ticks > 0) return false;
         for (int x = (int) area.minX; x <= (int) area.maxX; x++) {
             for (int y = (int) area.minY; y <= (int) area.maxY; y++) {
                 for (int z = (int) area.minZ; z <= (int) area.maxZ; z++) {
                     BlockPos pos = new BlockPos(x, y, z);
                     BlockState state = this.world.getBlockState(pos);
-                    if (!state.contains(Properties.LIT) || !state.contains(WatheProperties.ACTIVE)) continue;
-                    int duration = GameConstants.BLACKOUT_MIN_DURATION + this.world.random.nextInt(GameConstants.BLACKOUT_MAX_DURATION - GameConstants.BLACKOUT_MIN_DURATION);
+                    if (!(state.getBlock() instanceof BlackoutBlock block)) continue;
+                    int duration = block.getDuration(world.random);
                     if (duration > this.ticks) this.ticks = duration;
-                    BlackoutDetails detail = new BlackoutDetails(pos, duration, state.get(Properties.LIT));
+                    BlackoutDetails detail = new BlackoutDetails(pos, duration);
                     detail.init(this.world);
                     this.blackouts.add(detail);
                 }
@@ -85,11 +90,16 @@ public class WorldBlackoutComponent implements AutoSyncedComponent, ServerTickin
         return true;
     }
 
+    private void sync() {
+        KEY.sync(this.world);
+    }
+
     @Override
     public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         NbtList list = new NbtList();
         for (BlackoutDetails detail : this.blackouts) list.add(detail.writeToNbt());
         tag.put("blackouts", list);
+        tag.putInt("ticks", this.ticks);
     }
 
     @Override
@@ -100,55 +110,83 @@ public class WorldBlackoutComponent implements AutoSyncedComponent, ServerTickin
             detail.init(this.world);
             this.blackouts.add(detail);
         }
+        this.ticks = tag.getInt("ticks");
+    }
+
+    @Override
+    public void writeSyncPacket(RegistryByteBuf buf, ServerPlayerEntity recipient) {
+        buf.writeInt(ticks);
+    }
+
+    @Override
+    public void applySyncPacket(RegistryByteBuf buf) {
+        this.ticks = buf.readInt();
     }
 
     public static class BlackoutDetails {
-        private final BlockPos pos;
-        private final boolean original;
+        public final BlockPos pos;
+        public byte data;
         private int time;
 
-        public BlackoutDetails(BlockPos pos, int time, boolean original) {
+        public int getTime() {
+            return time;
+        }
+
+        public BlackoutDetails(BlockPos pos, int time) {
             this.pos = pos;
             this.time = time;
-            this.original = original;
+            this.data = 0;
         }
 
         public BlackoutDetails(@NotNull NbtCompound tag) {
             this.pos = new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
             this.time = tag.getInt("time");
-            this.original = tag.getBoolean("original");
+            this.data = tag.getByte("data");
         }
 
         public void init(@NotNull World world) {
             BlockState state = world.getBlockState(this.pos);
-            if (!state.contains(Properties.LIT) || !state.contains(WatheProperties.ACTIVE)) return;
-            world.setBlockState(this.pos, state.with(Properties.LIT, false).with(WatheProperties.ACTIVE, false));
-            world.playSound(null, this.pos, WatheSounds.BLOCK_LIGHT_TOGGLE, SoundCategory.BLOCKS, 0.5f, 1f);
+            if (state.getBlock() instanceof BlackoutBlock block)
+                block.init(world, this);
+//            boolean isPrivateBlock = state.getBlock() instanceof PrivacyBlock;
+//            if (!isPrivateBlock)
+//                if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
+//            world.setBlockState(this.pos, state.with(isPrivateBlock ? TMMProperties.OPAQUE : Properties.LIT, isPrivateBlock).with(TMMProperties.ACTIVE, false));
+//            world.playSound(null, this.pos, isPrivateBlock ? TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE : TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.5f, 1f);
         }
 
         public void end(@NotNull World world) {
             BlockState state = world.getBlockState(this.pos);
-            if (!state.contains(Properties.LIT) || !state.contains(WatheProperties.ACTIVE)) return;
-            world.setBlockState(this.pos, state.with(Properties.LIT, this.original).with(WatheProperties.ACTIVE, true));
-            world.playSound(null, this.pos, WatheSounds.BLOCK_LIGHT_TOGGLE, SoundCategory.BLOCKS, 0.5f, 0.5f);
+            if (state.getBlock() instanceof BlackoutBlock block)
+                block.end(world, this);
+//            boolean isPrivateBlock = state.getBlock() instanceof PrivacyBlock;
+//            if (!isPrivateBlock)
+//                if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
+//            world.setBlockState(this.pos, state.with(isPrivateBlock ? TMMProperties.OPAQUE : Properties.LIT, this.original).with(TMMProperties.ACTIVE, true));
+//            world.playSound(null, this.pos, TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.5f, 0.5f);
         }
 
         public void tick(World world) {
             if (this.time > 0) this.time--;
-            if (this.time > 4) return;
             BlockState state = world.getBlockState(this.pos);
-            if (!state.contains(Properties.LIT) || !state.contains(WatheProperties.ACTIVE)) return;
-            switch (this.time) {
-                case 0 -> this.end(world);
-                case 1, 3 -> {
-                    world.setBlockState(this.pos, state.with(Properties.LIT, false));
-                    world.playSound(null, this.pos, WatheSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.1f, 1f);
-                }
-                case 2, 5 -> {
-                    world.setBlockState(this.pos, state.with(Properties.LIT, true));
-                    world.playSound(null, this.pos, WatheSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.1f, 1f);
-                }
-            }
+            if (state.getBlock() instanceof BlackoutBlock block)
+                block.tick(world, this);
+//            if (this.time > 4) return;
+//            BlockState state = world.getBlockState(this.pos);
+//            boolean isPrivateBlock = state.getBlock() instanceof PrivacyBlock;
+//            if (!isPrivateBlock)
+//                if (!state.contains(Properties.LIT) || !state.contains(TMMProperties.ACTIVE)) return;
+//            switch (this.time) {
+//                case 0 -> this.end(world);
+//                case 1, 3, 8, 18 -> {
+//                    world.setBlockState(this.pos, state.with(isPrivateBlock ? TMMProperties.OPAQUE : Properties.LIT, !isPrivateBlock));
+//                    world.playSound(null, this.pos, isPrivateBlock ? TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE : TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.1f, 1f);
+//                }
+//                case 2, 5, 13 -> {
+//                    world.setBlockState(this.pos, state.with(isPrivateBlock ? TMMProperties.OPAQUE : Properties.LIT, isPrivateBlock));
+//                    world.playSound(null, this.pos, isPrivateBlock ? TMMSounds.BLOCK_PRIVACY_PANEL_TOGGLE : TMMSounds.BLOCK_BUTTON_TOGGLE_NO_POWER, SoundCategory.BLOCKS, 0.1f, 1f);
+//                }
+//            }
         }
 
         public NbtCompound writeToNbt() {
@@ -157,7 +195,7 @@ public class WorldBlackoutComponent implements AutoSyncedComponent, ServerTickin
             tag.putInt("y", this.pos.getY());
             tag.putInt("z", this.pos.getZ());
             tag.putInt("time", this.time);
-            tag.putBoolean("original", this.original);
+            tag.putByte("data", this.data);
             return tag;
         }
     }

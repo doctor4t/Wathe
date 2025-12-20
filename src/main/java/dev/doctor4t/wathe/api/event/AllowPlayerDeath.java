@@ -13,6 +13,7 @@ public interface AllowPlayerDeath {
      * The game currently has the following death type names defined:
      * 'fell_out_of_train', 'poison', 'grenade', 'bat_hit', 'gun_shot', 'knife_stab'.
      * Any other death type not explicitly defined will default to 'generic'.
+     *
      * @see dev.doctor4t.wathe.game.GameConstants.DeathReasons
      */
     Event<AllowPlayerDeath> EVENT = createArrayBacked(AllowPlayerDeath.class, listeners -> (victim, killer, deathReason) -> {

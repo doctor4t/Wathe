@@ -23,36 +23,36 @@ public class TrainDoorBlock extends SmallDoorBlock {
         super(typeSupplier, settings);
     }
 
-    @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        BlockPos lowerPos = state.get(HALF) == DoubleBlockHalf.LOWER ? pos : pos.down();
-        if (world.getBlockEntity(lowerPos) instanceof SmallDoorBlockEntity entity) {
-            if (entity.isBlasted()) {
-                return ActionResult.PASS;
-            }
-
-            if (player.isCreative() || TrainWorldComponent.KEY.get(world).getSpeed() == 0  || AllowPlayerOpenLockedDoor.EVENT.invoker().allowOpen(player)) {
-                return open(state, world, entity, lowerPos);
-            } else {
-                boolean hasLockpick = player.getMainHandStack().isOf(WatheItems.LOCKPICK);
-
-                if (entity.isOpen()) {
-                    return open(state, world, entity, lowerPos);
-                } else {
-                    if (hasLockpick) {
-                        world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, WatheSounds.ITEM_LOCKPICK_DOOR, SoundCategory.BLOCKS, 1f, 1f);
-                        return open(state, world, entity, lowerPos);
-                    } else {
-                        if (!world.isClient) {
-                            world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, WatheSounds.BLOCK_DOOR_LOCKED, SoundCategory.BLOCKS, 1f, 1f);
-                            player.sendMessage(Text.translatable("tip.door.locked"), true);
-                        }
-                        return ActionResult.FAIL;
-                    }
-                }
-            }
-        }
-
-        return ActionResult.PASS;
-    }
+//    @Override
+//    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+//        BlockPos lowerPos = state.get(HALF) == DoubleBlockHalf.LOWER ? pos : pos.down();
+//        if (world.getBlockEntity(lowerPos) instanceof SmallDoorBlockEntity entity) {
+//            if (entity.isBlasted()) {
+//                return ActionResult.PASS;
+//            }
+//
+//            if (player.isCreative() || TrainWorldComponent.KEY.get(world).getSpeed() == 0 || AllowPlayerOpenLockedDoor.EVENT.invoker().allowOpen(player)) {
+//                return open(state, world, entity, lowerPos);
+//            } else {
+//                boolean hasLockpick = player.getMainHandStack().isOf(WatheItems.LOCKPICK);
+//
+//                if (entity.isOpen()) {
+//                    return open(state, world, entity, lowerPos);
+//                } else {
+//                    if (hasLockpick) {
+//                        world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, WatheSounds.ITEM_LOCKPICK_DOOR, SoundCategory.BLOCKS, 1f, 1f);
+//                        return open(state, world, entity, lowerPos);
+//                    } else {
+//                        if (!world.isClient) {
+//                            world.playSound(null, lowerPos.getX() + .5f, lowerPos.getY() + 1, lowerPos.getZ() + .5f, WatheSounds.BLOCK_DOOR_LOCKED, SoundCategory.BLOCKS, 1f, 1f);
+//                            player.sendMessage(Text.translatable("tip.door.locked"), true);
+//                        }
+//                        return ActionResult.FAIL;
+//                    }
+//                }
+//            }
+//        }
+//
+//        return ActionResult.PASS;
+//    }
 }

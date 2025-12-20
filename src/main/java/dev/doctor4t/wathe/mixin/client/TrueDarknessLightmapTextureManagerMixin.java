@@ -2,6 +2,8 @@ package dev.doctor4t.wathe.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import dev.doctor4t.wathe.cca.GameWorldComponent;
+import dev.doctor4t.wathe.cca.MapVariablesWorldComponent;
 import dev.doctor4t.wathe.client.WatheClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.LightmapTextureManager;
@@ -9,12 +11,18 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(LightmapTextureManager.class)
 public abstract class TrueDarknessLightmapTextureManagerMixin {
+    @Shadow
+    @Final
+    private MinecraftClient client;
+
     @WrapOperation(method = "update", at = @At(value = "INVOKE", target = "Lorg/joml/Vector3f;lerp(Lorg/joml/Vector3fc;F)Lorg/joml/Vector3f;", ordinal = 0))
     private Vector3f wathe$fuckYourBlueAssHueMojang(Vector3f instance, Vector3fc other, float t, Operation<Vector3f> original) {
         MinecraftClient client = MinecraftClient.getInstance();
@@ -33,6 +41,14 @@ public abstract class TrueDarknessLightmapTextureManagerMixin {
         }
 
         return original.call(instance, other, t);
+    }
+
+    @WrapOperation(method = "update", at = @At(value = "INVOKE", target = "Lorg/joml/Vector3f;add(Lorg/joml/Vector3fc;)Lorg/joml/Vector3f;", ordinal = 0))
+    private Vector3f tmm$ambientBrightnessInjection(Vector3f instance, Vector3fc v, Operation<Vector3f> original) {
+        ClientWorld world = MinecraftClient.getInstance().world;
+        if (world == null) return original.call(instance, v);
+        float bright = MapVariablesWorldComponent.KEY.get(world).getAmbientBrightness();
+        return original.call(instance, new Vector3f(v.x(), v.y(), v.z()).mul(bright));
     }
 
     @ModifyVariable(method = "update", at = @At(value = "STORE"), ordinal = 2)

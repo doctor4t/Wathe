@@ -47,7 +47,9 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.List;
 
 public class GameFunctions {
 
@@ -151,7 +153,7 @@ public class GameFunctions {
             player.changeGameMode(net.minecraft.world.GameMode.SPECTATOR);
 
             MapVariablesWorldComponent.PosWithOrientation spectatorSpawnPos = areas.getSpectatorSpawnPos();
-            player.teleport(serverWorld, spectatorSpawnPos.pos.getX(), spectatorSpawnPos.pos.getY(), spectatorSpawnPos.pos.getZ(), spectatorSpawnPos.yaw, spectatorSpawnPos.pitch);
+            player.teleport(serverWorld, spectatorSpawnPos.pos().getX(), spectatorSpawnPos.pos().getY(), spectatorSpawnPos.pos().getZ(), spectatorSpawnPos.yaw(), spectatorSpawnPos.pitch());
         }
 
         // clear items, clear previous game data
@@ -234,7 +236,7 @@ public class GameFunctions {
         player.changeGameMode(net.minecraft.world.GameMode.ADVENTURE);
         player.wakeUp();
         MapVariablesWorldComponent.PosWithOrientation spawnPos = MapVariablesWorldComponent.KEY.get(player.getWorld()).getSpawnPos();
-        TeleportTarget teleportTarget = new TeleportTarget(player.getServerWorld(), spawnPos.pos, Vec3d.ZERO, spawnPos.yaw, spawnPos.pitch, TeleportTarget.NO_OP);
+        TeleportTarget teleportTarget = new TeleportTarget(player.getServerWorld(), spawnPos.pos(), Vec3d.ZERO, spawnPos.yaw(), spawnPos.pitch(), TeleportTarget.NO_OP);
         player.teleportTo(teleportTarget);
     }
 
@@ -461,6 +463,10 @@ public class GameFunctions {
             return false;
         }
         return false;
+    }
+
+    public static float getPlayerWeight(float i) {
+        return 1f / ((3f / 4f) * i * i);
     }
 
     public static int getReadyPlayerCount(World world) {

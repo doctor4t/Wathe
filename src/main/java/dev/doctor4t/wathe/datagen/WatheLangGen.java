@@ -123,6 +123,8 @@ public class WatheLangGen extends FabricLanguageProvider {
         builder.add("task.sleep", "getting some sleep.");
         builder.add("task.outside", "getting some fresh air.");
         builder.add("task.drink", "getting a drink.");
+        builder.add("task.plants", "enjoying the company of plants.");
+        builder.add("task.shower", "taking a shower.");
         builder.add("task.eat", "getting a snack.");
         builder.add("game.player.stung", "You feel something stinging you in your sleep.");
         builder.add("game.psycho_mode.time", "Psycho Mode: %s");

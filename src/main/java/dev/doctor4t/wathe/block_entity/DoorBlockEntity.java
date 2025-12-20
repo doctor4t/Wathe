@@ -24,9 +24,12 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
 
     private String keyName = "";
 
+    private int blackoutCooldown = 0;
     private int closeCountdown = 0;
     private int jammedTime = 0;
     private boolean blasted = false;
+    private boolean blackoutUnlocking = false;
+    private boolean lockPickable = true;
 
     public DoorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -40,7 +43,10 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
     }
 
     public static <T extends DoorBlockEntity> void serverTick(World world, BlockPos pos, BlockState state, T entity) {
-        if (state.get(DoorPartBlock.OPEN) && !entity.isBlasted()) {
+        if (entity.getBlackoutCooldown() > 0) {
+            entity.setBlackoutCooldown(entity.getBlackoutCooldown() - 1);
+            entity.setCloseCountdown(0);
+        } else if (state.get(DoorPartBlock.OPEN) && !entity.isBlasted()) {
             entity.setCloseCountdown(entity.getCloseCountdown() - 1);
             if (entity.getCloseCountdown() <= 0) {
                 SmallDoorBlock.toggleDoor(state, world, (SmallDoorBlockEntity) entity, pos);
@@ -69,9 +75,24 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
         if (this.world != null) {
             this.lastUpdate = this.world.getTime();
             this.open = !this.open;
-            this.world.addSyncedBlockEvent(this.pos, this.getCachedState().getBlock(), 1, this.open ? 1 : 0);
+            this.world.addSyncedBlockEvent(this.pos, this.getCachedState().getBlock(), 1,
+                    (this.open ? 1 : 0) |
+                            (this.blackoutUnlocking ? 2 : 0) |
+                            (this.isLockPickable() ? 4 : 0));
             this.closeCountdown = this.open ? GameConstants.DOOR_AUTOCLOSE_TIME : 0;
         }
+    }
+
+    @Override
+    public boolean onSyncedBlockEvent(int type, int data) {
+        if (this.world != null && type == 1) {
+            this.state.start(this.age);
+            this.open = (data & 1) == 1;
+            this.blackoutUnlocking = (data & 2) == 2;
+            this.lockPickable = (data & 4) == 4;
+            return true;
+        }
+        return super.onSyncedBlockEvent(type, data);
     }
 
     protected void playToggleSound() {
@@ -104,20 +125,13 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
     }
 
     @Override
-    public boolean onSyncedBlockEvent(int type, int data) {
-        if (this.world != null && type == 1) {
-            this.state.start(this.age);
-            this.open = data != 0;
-            return true;
-        }
-        return super.onSyncedBlockEvent(type, data);
-    }
-
-    @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
         nbt.putBoolean("open", this.isOpen());
         nbt.putBoolean("blasted", this.isBlasted());
+        nbt.putBoolean("blackoutUnlocking", this.isBlackoutUnlocking());
+        nbt.putInt("blackoutCooldown", this.getBlackoutCooldown());
+        nbt.putBoolean("notLockPickable", !this.isLockPickable());
         nbt.putInt("closeCountdown", this.getCloseCountdown());
         nbt.putInt("jammedTime", this.getJammedTime());
         nbt.putString("keyName", this.getKeyName());
@@ -128,6 +142,9 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
         super.readNbt(nbt, registryLookup);
         this.setOpen(nbt.getBoolean("open"));
         this.setBlasted(nbt.getBoolean("blasted"));
+        this.setBlackoutUnlocking(nbt.getBoolean("blackoutUnlocking"));
+        this.setBlackoutCooldown(nbt.getInt("blackoutCooldown"));
+        this.setLockPickable(!nbt.getBoolean("notLockPickable"));
         this.setCloseCountdown(nbt.getInt("closeCountdown"));
         this.setJammed(nbt.getInt("jammedTime"));
         this.setKeyName(nbt.getString("keyName"));
@@ -181,5 +198,29 @@ public abstract class DoorBlockEntity extends SyncingBlockEntity {
 
     public void setBlasted(boolean blasted) {
         this.blasted = blasted;
+    }
+
+    public boolean isBlackoutUnlocking() {
+        return blackoutUnlocking;
+    }
+
+    public int getBlackoutCooldown() {
+        return blackoutCooldown;
+    }
+
+    public boolean isLockPickable() {
+        return lockPickable;
+    }
+
+    public void setLockPickable(boolean lockPickable) {
+        this.lockPickable = lockPickable;
+    }
+
+    public void setBlackoutCooldown(int blackoutCooldown) {
+        this.blackoutCooldown = blackoutCooldown;
+    }
+
+    public void setBlackoutUnlocking(boolean blackoutUnlocking) {
+        this.blackoutUnlocking = blackoutUnlocking;
     }
 }

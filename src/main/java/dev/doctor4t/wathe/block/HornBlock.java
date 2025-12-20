@@ -2,8 +2,6 @@ package dev.doctor4t.wathe.block;
 
 import com.mojang.serialization.MapCodec;
 import dev.doctor4t.wathe.api.GameMode;
-import dev.doctor4t.wathe.api.WatheGameModes;
-import dev.doctor4t.wathe.api.WatheMapEffects;
 import dev.doctor4t.wathe.block.entity.HornBlockEntity;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.game.GameConstants;

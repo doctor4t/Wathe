@@ -6,6 +6,7 @@ import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.command.*;
 import dev.doctor4t.wathe.command.argument.GameModeArgumentType;
 import dev.doctor4t.wathe.command.argument.MapEffectArgumentType;
+import dev.doctor4t.wathe.command.argument.RoleArgumentType;
 import dev.doctor4t.wathe.command.argument.TimeOfDayArgumentType;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.index.*;
@@ -59,6 +60,7 @@ public class Wathe implements ModInitializer {
         ArgumentTypeRegistry.registerArgumentType(id("timeofday"), TimeOfDayArgumentType.class, ConstantArgumentSerializer.of(TimeOfDayArgumentType::timeofday));
         ArgumentTypeRegistry.registerArgumentType(id("gamemode"), GameModeArgumentType.class, ConstantArgumentSerializer.of(GameModeArgumentType::gameMode));
         ArgumentTypeRegistry.registerArgumentType(id("mapeffect"), MapEffectArgumentType.class, ConstantArgumentSerializer.of(MapEffectArgumentType::mapEffect));
+        ArgumentTypeRegistry.registerArgumentType(id("role"), RoleArgumentType.class, ConstantArgumentSerializer.of(RoleArgumentType::role));
 
         // Register commands
         CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
@@ -73,6 +75,10 @@ public class Wathe implements ModInitializer {
             SetTimerCommand.register(dispatcher);
             SetMoneyCommand.register(dispatcher);
             LockToSupportersCommand.register(dispatcher);
+            SetRoleCommand.register(dispatcher);
+            SetSpecialRoleCountCommand.register(dispatcher);
+            SetConfigCommand.register(dispatcher);
+            BlackoutCommand.register(dispatcher);
         }));
 
         // server lock to supporters

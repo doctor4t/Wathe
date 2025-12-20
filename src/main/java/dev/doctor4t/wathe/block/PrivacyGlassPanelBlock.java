@@ -1,5 +1,7 @@
 package dev.doctor4t.wathe.block;
 
+import dev.doctor4t.wathe.cca.WorldBlackoutComponent;
+import dev.doctor4t.wathe.util.BlackoutBlockFunctions;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,12 +13,14 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
-public class PrivacyGlassPanelBlock extends GlassPanelBlock implements PrivacyBlock {
+public class PrivacyGlassPanelBlock extends GlassPanelBlock implements PrivacyBlock, BlackoutBlock {
 
     public PrivacyGlassPanelBlock(Settings settings) {
         super(settings);
         this.setDefaultState(super.getDefaultState()
+                .with(ACTIVE, true)
                 .with(OPAQUE, false)
                 .with(INTERACTION_COOLDOWN, false));
     }
@@ -39,7 +43,27 @@ public class PrivacyGlassPanelBlock extends GlassPanelBlock implements PrivacyBl
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(OPAQUE, INTERACTION_COOLDOWN);
+        builder.add(OPAQUE, INTERACTION_COOLDOWN, ACTIVE);
         super.appendProperties(builder);
+    }
+
+    @Override
+    public int getDuration(Random random) {
+        return BlackoutBlockFunctions.PrivacyGlasses.getDuration(random);
+    }
+
+    @Override
+    public void init(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
+        BlackoutBlockFunctions.PrivacyGlasses.init(world, detail);
+    }
+
+    @Override
+    public void end(@NotNull World world, WorldBlackoutComponent.BlackoutDetails detail) {
+        BlackoutBlockFunctions.PrivacyGlasses.end(world, detail);
+    }
+
+    @Override
+    public void tick(World world, WorldBlackoutComponent.BlackoutDetails detail) {
+        BlackoutBlockFunctions.PrivacyGlasses.tick(world, detail);
     }
 }

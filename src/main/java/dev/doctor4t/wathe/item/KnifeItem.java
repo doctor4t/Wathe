@@ -16,7 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.EntityHitResult;
@@ -50,7 +49,7 @@ public class KnifeItem extends Item implements ItemWithSkin {
 
     @Override
     public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
-        if (clickType == ClickType.RIGHT && otherStack.isEmpty())  {
+        if (clickType == ClickType.RIGHT && otherStack.isEmpty()) {
             if (Wathe.isSupporter(player)) {
                 Skin currentSkin = Skin.fromString(WatheCosmetics.getSkin(stack));
                 WatheCosmetics.setSkin(player, stack, Skin.getNext(currentSkin).getName());

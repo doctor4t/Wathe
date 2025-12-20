@@ -2,6 +2,7 @@ package dev.doctor4t.wathe.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import dev.doctor4t.wathe.cca.PlayerPoisonComponent;
 import dev.doctor4t.wathe.cca.PlayerPsychoComponent;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -16,6 +17,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntityRenderer.class)
 public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>, X extends Entity> extends EntityRenderer<T> {
@@ -24,7 +27,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
     }
 
     @WrapOperation(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/feature/FeatureRenderer;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/entity/Entity;FFFFFF)V"))
-    public void wathe$noFeaturesOnPsycho(
+    public void tmm$noFeaturesOnPsycho(
             FeatureRenderer<T, M> instance, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, X t,
             float limbAngle,
             float limbDistance,
@@ -37,6 +40,17 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
         boolean isItemRenderer = instance instanceof HeldItemFeatureRenderer<?, ?>;
         if (!isPsycho || isItemRenderer) {
             original.call(instance, matrixStack, vertexConsumerProvider, i, t, limbAngle, limbDistance, tickDelta, animationProgress, headYaw, headPitch);
+        }
+    }
+
+    @Inject(method = "isShaking", at = @At("HEAD"), cancellable = true)
+    public void tmm$shakeWhenPoisoned(T entity, CallbackInfoReturnable<Boolean> cir) {
+        if (entity instanceof PlayerEntity player) {
+            try {
+                int poisonTicks = PlayerPoisonComponent.KEY.get(player).poisonTicks;
+                if (poisonTicks > 0 && poisonTicks < 400) cir.setReturnValue(true);
+            } catch (Exception e) {
+            }
         }
     }
 }

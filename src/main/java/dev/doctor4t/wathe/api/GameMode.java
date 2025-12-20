@@ -1,12 +1,9 @@
 package dev.doctor4t.wathe.api;
 
 import dev.doctor4t.wathe.cca.GameWorldComponent;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -16,9 +13,9 @@ public abstract class GameMode {
     public final int minPlayerCount;
 
     /**
-     * @param identifier the game mode identifier
+     * @param identifier       the game mode identifier
      * @param defaultStartTime the default time at which the timer will be set at the start of the game mode, in minutes
-     * @param minPlayerCount the minimum amount of players required to start the game mode
+     * @param minPlayerCount   the minimum amount of players required to start the game mode
      */
     public GameMode(Identifier identifier, int defaultStartTime, int minPlayerCount) {
         this.identifier = identifier;
@@ -26,9 +23,11 @@ public abstract class GameMode {
         this.minPlayerCount = minPlayerCount;
     }
 
-    public void tickCommonGameLoop() {}
+    public void tickCommonGameLoop() {
+    }
 
-    public void tickClientGameLoop() {}
+    public void tickClientGameLoop() {
+    }
 
     public abstract void tickServerGameLoop(ServerWorld serverWorld, GameWorldComponent gameWorldComponent);
 

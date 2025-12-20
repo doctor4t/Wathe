@@ -12,6 +12,8 @@ import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
+import java.util.ArrayList;
+
 public class MapVariablesWorldComponent implements AutoSyncedComponent {
     public static final ComponentKey<MapVariablesWorldComponent> KEY = ComponentRegistry.getOrCreate(Wathe.id("mapvariables"), MapVariablesWorldComponent.class);
     private final World world;
@@ -108,6 +110,28 @@ public class MapVariablesWorldComponent implements AutoSyncedComponent {
         this.snowflakeCollider = snowflakeCollider;
         this.sync();
     }
+  
+    private int maxRoomKey = 7;
+    private float ambientBrightness = 1f;
+    public ArrayList<PlayerMoodComponent.Task> offTasks = new ArrayList<>();
+
+    public int getMaxRoomKey() {
+        return maxRoomKey <= 0 ? 7 : maxRoomKey;
+    }
+
+    public void setMaxRoomKey(int maxRoomKey) {
+        this.maxRoomKey = maxRoomKey;
+        this.sync();
+    }
+
+    public float getAmbientBrightness() {
+        return ambientBrightness;
+    }
+
+    public void setAmbientBrightness(float ambientBrightness) {
+        this.ambientBrightness = ambientBrightness;
+        this.sync();
+    }
 
     @Override
     public void readFromNbt(@NotNull NbtCompound tag, RegistryWrapper.@NotNull WrapperLookup registryLookup) {
@@ -120,6 +144,17 @@ public class MapVariablesWorldComponent implements AutoSyncedComponent {
         this.resetPasteOffset = getVec3iFromNbt(tag, "resetPasteOffset");
         if (tag.contains("snowflakeColliderMinX")) // make sure the map had this feature before setting it, otherwise the collider will be (0,0,0), (0,0,0)
             this.snowflakeCollider = getBoxFromNbt(tag, "snowflakeCollider");
+        if (tag.contains("maxRoomKey"))
+            maxRoomKey = tag.getInt("maxRoomKey");
+        if (tag.contains("ambientBrightness"))
+            ambientBrightness = tag.getFloat("ambientBrightness");
+        if (tag.contains("offTasks")) {
+            int[] taskOrdinals = tag.getIntArray("offTasks");
+            for (int ord : taskOrdinals) {
+                if (ord < PlayerMoodComponent.Task.values().length)
+                    offTasks.add(PlayerMoodComponent.Task.values()[ord]);
+            }
+        }
     }
 
     @Override
@@ -132,24 +167,18 @@ public class MapVariablesWorldComponent implements AutoSyncedComponent {
         writeBoxToNbt(tag, this.resetTemplateArea, "resetTemplateArea");
         writeVec3iToNbt(tag, this.resetPasteOffset, "resetPasteOffset");
         writeBoxToNbt(tag, this.snowflakeCollider, "snowflakeCollider");
+        tag.putInt("maxRoomKey", maxRoomKey);
+        tag.putFloat("ambientBrightness", ambientBrightness);
+        tag.putIntArray("offTasks", offTasks.stream().map(Enum::ordinal).toList());
     }
 
-    public static class PosWithOrientation {
-        public final Vec3d pos;
-        public final float yaw;
-        public final float pitch;
-
-        public PosWithOrientation(Vec3d pos, float yaw, float pitch) {
-            this.pos = pos;
-            this.yaw = yaw;
-            this.pitch = pitch;
-        }
+    public record PosWithOrientation(Vec3d pos, float yaw, float pitch) {
 
         PosWithOrientation(double x, double y, double z, float yaw, float pitch) {
-            this(new Vec3d(x, y, z), yaw, pitch);
-        }
+                this(new Vec3d(x, y, z), yaw, pitch);
+            }
 
-    }
+        }
 
     public static Vec3d getVec3dFromNbt(NbtCompound tag, String name) {
         return new Vec3d(tag.getDouble(name + "X"), tag.getDouble(name + "Y"), tag.getDouble(name + "Z"));
