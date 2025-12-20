@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "wathe:block/pristine_gold_pillar_top",
+    "side": "wathe:block/pristine_gold_pillar"
+  }
+}

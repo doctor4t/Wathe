@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "trainmurdermystery:block/black_hull_sheets",
-    "side": "trainmurdermystery:block/black_hull_sheets",
-    "top": "trainmurdermystery:block/black_hull_sheets"
-  }
-}

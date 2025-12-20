@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column_horizontal",
-  "textures": {
-    "end": "trainmurdermystery:block/gold_pillar_top",
-    "side": "trainmurdermystery:block/gold_pillar"
-  }
-}

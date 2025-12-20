@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "wathe:block/stainless_steel_pillar_top",
+    "side": "wathe:block/stainless_steel_pillar"
+  }
+}

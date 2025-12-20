@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "wathe:block/bubinga_bookshelf"
+      },
+      {
+        "model": "wathe:block/bubinga_bookshelf_alt"
+      }
+    ]
+  }
+}

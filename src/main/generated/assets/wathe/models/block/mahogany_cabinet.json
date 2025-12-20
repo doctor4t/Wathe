@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "wathe:block/mahogany_cabinet_front",
+    "side": "wathe:block/mahogany_cabinet_side",
+    "top": "wathe:block/mahogany_cabinet_side"
+  }
+}

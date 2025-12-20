@@ -1,0 +1,6 @@
+{
+  "parent": "wathe:block/template_trimmed_bed_foot",
+  "textures": {
+    "texture": "wathe:block/red_trimmed_bed"
+  }
+}

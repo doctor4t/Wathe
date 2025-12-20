@@ -1,0 +1,6 @@
+{
+  "parent": "wathe:block/template_wall_lamp_floor",
+  "textures": {
+    "texture": "wathe:block/wall_lamp_unlit"
+  }
+}

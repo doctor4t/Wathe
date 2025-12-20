@@ -1,7 +1,0 @@
-{
-  "parent": "trainmurdermystery:block/template_branch_front",
-  "textures": {
-    "side": "minecraft:block/stripped_jungle_log",
-    "top": "trainmurdermystery:block/stripped_jungle_branch_top"
-  }
-}

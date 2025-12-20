@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "wathe:block/metal_sheet_slab"
+    },
+    "type=double": {
+      "model": "wathe:block/metal_sheet"
+    },
+    "type=top": {
+      "model": "wathe:block/metal_sheet_slab_top"
+    }
+  }
+}

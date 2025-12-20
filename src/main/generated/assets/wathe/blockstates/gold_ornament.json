@@ -1,0 +1,395 @@
+{
+  "variants": {
+    "facing=down,shape=all": {
+      "model": "wathe:block/gold_ornament_all",
+      "x": 90
+    },
+    "facing=down,shape=bottom": {
+      "model": "wathe:block/gold_ornament_bottom",
+      "x": 90
+    },
+    "facing=down,shape=center": {
+      "model": "wathe:block/gold_ornament_center",
+      "x": 90
+    },
+    "facing=down,shape=left": {
+      "model": "wathe:block/gold_ornament_left",
+      "x": 90
+    },
+    "facing=down,shape=left_bottom": {
+      "model": "wathe:block/gold_ornament_left_bottom",
+      "x": 90
+    },
+    "facing=down,shape=left_right": {
+      "model": "wathe:block/gold_ornament_left_right",
+      "x": 90
+    },
+    "facing=down,shape=left_right_bottom": {
+      "model": "wathe:block/gold_ornament_left_right_bottom",
+      "x": 90
+    },
+    "facing=down,shape=left_right_center": {
+      "model": "wathe:block/gold_ornament_left_right_center",
+      "x": 90
+    },
+    "facing=down,shape=left_right_top": {
+      "model": "wathe:block/gold_ornament_left_right_top",
+      "x": 90
+    },
+    "facing=down,shape=left_top": {
+      "model": "wathe:block/gold_ornament_left_top",
+      "x": 90
+    },
+    "facing=down,shape=left_top_bottom": {
+      "model": "wathe:block/gold_ornament_left_top_bottom",
+      "x": 90
+    },
+    "facing=down,shape=right": {
+      "model": "wathe:block/gold_ornament_right",
+      "x": 90
+    },
+    "facing=down,shape=right_bottom": {
+      "model": "wathe:block/gold_ornament_right_bottom",
+      "x": 90
+    },
+    "facing=down,shape=right_top": {
+      "model": "wathe:block/gold_ornament_right_top",
+      "x": 90
+    },
+    "facing=down,shape=right_top_bottom": {
+      "model": "wathe:block/gold_ornament_right_top_bottom",
+      "x": 90
+    },
+    "facing=down,shape=top": {
+      "model": "wathe:block/gold_ornament_top",
+      "x": 90
+    },
+    "facing=down,shape=top_bottom": {
+      "model": "wathe:block/gold_ornament_top_bottom",
+      "x": 90
+    },
+    "facing=east,shape=all": {
+      "model": "wathe:block/gold_ornament_all",
+      "y": 90
+    },
+    "facing=east,shape=bottom": {
+      "model": "wathe:block/gold_ornament_bottom",
+      "y": 90
+    },
+    "facing=east,shape=center": {
+      "model": "wathe:block/gold_ornament_center",
+      "y": 90
+    },
+    "facing=east,shape=left": {
+      "model": "wathe:block/gold_ornament_left",
+      "y": 90
+    },
+    "facing=east,shape=left_bottom": {
+      "model": "wathe:block/gold_ornament_left_bottom",
+      "y": 90
+    },
+    "facing=east,shape=left_right": {
+      "model": "wathe:block/gold_ornament_left_right",
+      "y": 90
+    },
+    "facing=east,shape=left_right_bottom": {
+      "model": "wathe:block/gold_ornament_left_right_bottom",
+      "y": 90
+    },
+    "facing=east,shape=left_right_center": {
+      "model": "wathe:block/gold_ornament_left_right_center",
+      "y": 90
+    },
+    "facing=east,shape=left_right_top": {
+      "model": "wathe:block/gold_ornament_left_right_top",
+      "y": 90
+    },
+    "facing=east,shape=left_top": {
+      "model": "wathe:block/gold_ornament_left_top",
+      "y": 90
+    },
+    "facing=east,shape=left_top_bottom": {
+      "model": "wathe:block/gold_ornament_left_top_bottom",
+      "y": 90
+    },
+    "facing=east,shape=right": {
+      "model": "wathe:block/gold_ornament_right",
+      "y": 90
+    },
+    "facing=east,shape=right_bottom": {
+      "model": "wathe:block/gold_ornament_right_bottom",
+      "y": 90
+    },
+    "facing=east,shape=right_top": {
+      "model": "wathe:block/gold_ornament_right_top",
+      "y": 90
+    },
+    "facing=east,shape=right_top_bottom": {
+      "model": "wathe:block/gold_ornament_right_top_bottom",
+      "y": 90
+    },
+    "facing=east,shape=top": {
+      "model": "wathe:block/gold_ornament_top",
+      "y": 90
+    },
+    "facing=east,shape=top_bottom": {
+      "model": "wathe:block/gold_ornament_top_bottom",
+      "y": 90
+    },
+    "facing=north,shape=all": {
+      "model": "wathe:block/gold_ornament_all"
+    },
+    "facing=north,shape=bottom": {
+      "model": "wathe:block/gold_ornament_bottom"
+    },
+    "facing=north,shape=center": {
+      "model": "wathe:block/gold_ornament_center"
+    },
+    "facing=north,shape=left": {
+      "model": "wathe:block/gold_ornament_left"
+    },
+    "facing=north,shape=left_bottom": {
+      "model": "wathe:block/gold_ornament_left_bottom"
+    },
+    "facing=north,shape=left_right": {
+      "model": "wathe:block/gold_ornament_left_right"
+    },
+    "facing=north,shape=left_right_bottom": {
+      "model": "wathe:block/gold_ornament_left_right_bottom"
+    },
+    "facing=north,shape=left_right_center": {
+      "model": "wathe:block/gold_ornament_left_right_center"
+    },
+    "facing=north,shape=left_right_top": {
+      "model": "wathe:block/gold_ornament_left_right_top"
+    },
+    "facing=north,shape=left_top": {
+      "model": "wathe:block/gold_ornament_left_top"
+    },
+    "facing=north,shape=left_top_bottom": {
+      "model": "wathe:block/gold_ornament_left_top_bottom"
+    },
+    "facing=north,shape=right": {
+      "model": "wathe:block/gold_ornament_right"
+    },
+    "facing=north,shape=right_bottom": {
+      "model": "wathe:block/gold_ornament_right_bottom"
+    },
+    "facing=north,shape=right_top": {
+      "model": "wathe:block/gold_ornament_right_top"
+    },
+    "facing=north,shape=right_top_bottom": {
+      "model": "wathe:block/gold_ornament_right_top_bottom"
+    },
+    "facing=north,shape=top": {
+      "model": "wathe:block/gold_ornament_top"
+    },
+    "facing=north,shape=top_bottom": {
+      "model": "wathe:block/gold_ornament_top_bottom"
+    },
+    "facing=south,shape=all": {
+      "model": "wathe:block/gold_ornament_all",
+      "y": 180
+    },
+    "facing=south,shape=bottom": {
+      "model": "wathe:block/gold_ornament_bottom",
+      "y": 180
+    },
+    "facing=south,shape=center": {
+      "model": "wathe:block/gold_ornament_center",
+      "y": 180
+    },
+    "facing=south,shape=left": {
+      "model": "wathe:block/gold_ornament_left",
+      "y": 180
+    },
+    "facing=south,shape=left_bottom": {
+      "model": "wathe:block/gold_ornament_left_bottom",
+      "y": 180
+    },
+    "facing=south,shape=left_right": {
+      "model": "wathe:block/gold_ornament_left_right",
+      "y": 180
+    },
+    "facing=south,shape=left_right_bottom": {
+      "model": "wathe:block/gold_ornament_left_right_bottom",
+      "y": 180
+    },
+    "facing=south,shape=left_right_center": {
+      "model": "wathe:block/gold_ornament_left_right_center",
+      "y": 180
+    },
+    "facing=south,shape=left_right_top": {
+      "model": "wathe:block/gold_ornament_left_right_top",
+      "y": 180
+    },
+    "facing=south,shape=left_top": {
+      "model": "wathe:block/gold_ornament_left_top",
+      "y": 180
+    },
+    "facing=south,shape=left_top_bottom": {
+      "model": "wathe:block/gold_ornament_left_top_bottom",
+      "y": 180
+    },
+    "facing=south,shape=right": {
+      "model": "wathe:block/gold_ornament_right",
+      "y": 180
+    },
+    "facing=south,shape=right_bottom": {
+      "model": "wathe:block/gold_ornament_right_bottom",
+      "y": 180
+    },
+    "facing=south,shape=right_top": {
+      "model": "wathe:block/gold_ornament_right_top",
+      "y": 180
+    },
+    "facing=south,shape=right_top_bottom": {
+      "model": "wathe:block/gold_ornament_right_top_bottom",
+      "y": 180
+    },
+    "facing=south,shape=top": {
+      "model": "wathe:block/gold_ornament_top",
+      "y": 180
+    },
+    "facing=south,shape=top_bottom": {
+      "model": "wathe:block/gold_ornament_top_bottom",
+      "y": 180
+    },
+    "facing=up,shape=all": {
+      "model": "wathe:block/gold_ornament_all",
+      "x": 270
+    },
+    "facing=up,shape=bottom": {
+      "model": "wathe:block/gold_ornament_bottom",
+      "x": 270
+    },
+    "facing=up,shape=center": {
+      "model": "wathe:block/gold_ornament_center",
+      "x": 270
+    },
+    "facing=up,shape=left": {
+      "model": "wathe:block/gold_ornament_left",
+      "x": 270
+    },
+    "facing=up,shape=left_bottom": {
+      "model": "wathe:block/gold_ornament_left_bottom",
+      "x": 270
+    },
+    "facing=up,shape=left_right": {
+      "model": "wathe:block/gold_ornament_left_right",
+      "x": 270
+    },
+    "facing=up,shape=left_right_bottom": {
+      "model": "wathe:block/gold_ornament_left_right_bottom",
+      "x": 270
+    },
+    "facing=up,shape=left_right_center": {
+      "model": "wathe:block/gold_ornament_left_right_center",
+      "x": 270
+    },
+    "facing=up,shape=left_right_top": {
+      "model": "wathe:block/gold_ornament_left_right_top",
+      "x": 270
+    },
+    "facing=up,shape=left_top": {
+      "model": "wathe:block/gold_ornament_left_top",
+      "x": 270
+    },
+    "facing=up,shape=left_top_bottom": {
+      "model": "wathe:block/gold_ornament_left_top_bottom",
+      "x": 270
+    },
+    "facing=up,shape=right": {
+      "model": "wathe:block/gold_ornament_right",
+      "x": 270
+    },
+    "facing=up,shape=right_bottom": {
+      "model": "wathe:block/gold_ornament_right_bottom",
+      "x": 270
+    },
+    "facing=up,shape=right_top": {
+      "model": "wathe:block/gold_ornament_right_top",
+      "x": 270
+    },
+    "facing=up,shape=right_top_bottom": {
+      "model": "wathe:block/gold_ornament_right_top_bottom",
+      "x": 270
+    },
+    "facing=up,shape=top": {
+      "model": "wathe:block/gold_ornament_top",
+      "x": 270
+    },
+    "facing=up,shape=top_bottom": {
+      "model": "wathe:block/gold_ornament_top_bottom",
+      "x": 270
+    },
+    "facing=west,shape=all": {
+      "model": "wathe:block/gold_ornament_all",
+      "y": 270
+    },
+    "facing=west,shape=bottom": {
+      "model": "wathe:block/gold_ornament_bottom",
+      "y": 270
+    },
+    "facing=west,shape=center": {
+      "model": "wathe:block/gold_ornament_center",
+      "y": 270
+    },
+    "facing=west,shape=left": {
+      "model": "wathe:block/gold_ornament_left",
+      "y": 270
+    },
+    "facing=west,shape=left_bottom": {
+      "model": "wathe:block/gold_ornament_left_bottom",
+      "y": 270
+    },
+    "facing=west,shape=left_right": {
+      "model": "wathe:block/gold_ornament_left_right",
+      "y": 270
+    },
+    "facing=west,shape=left_right_bottom": {
+      "model": "wathe:block/gold_ornament_left_right_bottom",
+      "y": 270
+    },
+    "facing=west,shape=left_right_center": {
+      "model": "wathe:block/gold_ornament_left_right_center",
+      "y": 270
+    },
+    "facing=west,shape=left_right_top": {
+      "model": "wathe:block/gold_ornament_left_right_top",
+      "y": 270
+    },
+    "facing=west,shape=left_top": {
+      "model": "wathe:block/gold_ornament_left_top",
+      "y": 270
+    },
+    "facing=west,shape=left_top_bottom": {
+      "model": "wathe:block/gold_ornament_left_top_bottom",
+      "y": 270
+    },
+    "facing=west,shape=right": {
+      "model": "wathe:block/gold_ornament_right",
+      "y": 270
+    },
+    "facing=west,shape=right_bottom": {
+      "model": "wathe:block/gold_ornament_right_bottom",
+      "y": 270
+    },
+    "facing=west,shape=right_top": {
+      "model": "wathe:block/gold_ornament_right_top",
+      "y": 270
+    },
+    "facing=west,shape=right_top_bottom": {
+      "model": "wathe:block/gold_ornament_right_top_bottom",
+      "y": 270
+    },
+    "facing=west,shape=top": {
+      "model": "wathe:block/gold_ornament_top",
+      "y": 270
+    },
+    "facing=west,shape=top_bottom": {
+      "model": "wathe:block/gold_ornament_top_bottom",
+      "y": 270
+    }
+  }
+}
