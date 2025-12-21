@@ -23,7 +23,9 @@ public class TrimmedBedBlockEntityMixin {
     @Inject(method = "clientTick", at = @At("HEAD"))
     private static void tickOnClientSide(World world, BlockPos pos, BlockState state, BlockEntity t, CallbackInfo ci) {
         TrimmedBedBlockEntity entity = (TrimmedBedBlockEntity) t;
-        if (!WatheClient.isKiller() && !CanSeePoison.EVENT.invoker().visible(MinecraftClient.getInstance().player))
+        if (!WatheClient.isKiller() &&
+                !WatheClient.isPlayerSpectatingOrCreative() &&
+                !CanSeePoison.EVENT.invoker().visible(MinecraftClient.getInstance().player))
             return;
         if (!entity.hasScorpion()) return;
         if (world.getRandom().nextBetween(0, 20) < 17) return;

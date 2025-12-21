@@ -1,8 +1,8 @@
 package dev.doctor4t.wathe.mixin.client.self;
 
-import dev.doctor4t.wathe.api.event.CanSeePoison;
 import dev.doctor4t.wathe.block_entity.BeveragePlateBlockEntity;
 import dev.doctor4t.wathe.client.WatheClient;
+import dev.doctor4t.wathe.api.event.CanSeePoison;
 import dev.doctor4t.wathe.index.WatheParticles;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -29,7 +29,11 @@ public class BeveragePlateBlockEntityMixin {
         if (!(blockEntity instanceof BeveragePlateBlockEntity tray)) {
             return;
         }
-        if ((!WatheClient.isKiller() && !CanSeePoison.EVENT.invoker().visible(MinecraftClient.getInstance().player)) || tray.getPoisoner() == null) {
+        if (
+                (!WatheClient.isKiller() &&
+                        !WatheClient.isPlayerSpectatingOrCreative() &&
+                        !CanSeePoison.EVENT.invoker().visible(MinecraftClient.getInstance().player)
+                ) || tray.getPoisoner() == null) {
             return;
         }
         if (world.getRandom().nextBetween(0, 20) < 17) {
