@@ -9,6 +9,7 @@ import dev.doctor4t.wathe.command.argument.MapEffectArgumentType;
 import dev.doctor4t.wathe.command.argument.TimeOfDayArgumentType;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.index.*;
+import dev.doctor4t.wathe.networking.*;
 import dev.doctor4t.wathe.util.*;
 import dev.upcraft.datasync.api.DataSyncAPI;
 import dev.upcraft.datasync.api.util.Entitlements;
@@ -86,19 +87,19 @@ public class Wathe implements ModInitializer {
         });
 
         PayloadTypeRegistry.playS2C().register(ShootMuzzleS2CPayload.ID, ShootMuzzleS2CPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(PoisonUtils.PoisonOverlayPayload.ID, PoisonUtils.PoisonOverlayPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(GunDropPayload.ID, GunDropPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(TaskCompletePayload.ID, TaskCompletePayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(AnnounceWelcomePayload.ID, AnnounceWelcomePayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(AnnounceEndingPayload.ID, AnnounceEndingPayload.CODEC);
-        PayloadTypeRegistry.playC2S().register(KnifeStabPayload.ID, KnifeStabPayload.CODEC);
-        PayloadTypeRegistry.playC2S().register(GunShootPayload.ID, GunShootPayload.CODEC);
-        PayloadTypeRegistry.playC2S().register(StoreBuyPayload.ID, StoreBuyPayload.CODEC);
-        PayloadTypeRegistry.playC2S().register(NoteEditPayload.ID, NoteEditPayload.CODEC);
-        ServerPlayNetworking.registerGlobalReceiver(KnifeStabPayload.ID, new KnifeStabPayload.Receiver());
-        ServerPlayNetworking.registerGlobalReceiver(GunShootPayload.ID, new GunShootPayload.Receiver());
-        ServerPlayNetworking.registerGlobalReceiver(StoreBuyPayload.ID, new StoreBuyPayload.Receiver());
-        ServerPlayNetworking.registerGlobalReceiver(NoteEditPayload.ID, new NoteEditPayload.Receiver());
+        PayloadTypeRegistry.playS2C().register(PoisonOverlayS2CPayload.ID, PoisonOverlayS2CPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(GunDropS2CPayload.ID, GunDropS2CPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(TaskCompleteS2CPayload.ID, TaskCompleteS2CPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(AnnounceWelcomeS2CPayload.ID, AnnounceWelcomeS2CPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(AnnounceEndingS2CPayload.ID, AnnounceEndingS2CPayload.CODEC);
+        PayloadTypeRegistry.playC2S().register(KnifeStabC2SPayload.ID, KnifeStabC2SPayload.CODEC);
+        PayloadTypeRegistry.playC2S().register(GunShootC2SPayload.ID, GunShootC2SPayload.CODEC);
+        PayloadTypeRegistry.playC2S().register(StoreBuyC2SPayload.ID, StoreBuyC2SPayload.CODEC);
+        PayloadTypeRegistry.playC2S().register(NoteEditC2SPayload.ID, NoteEditC2SPayload.CODEC);
+        ServerPlayNetworking.registerGlobalReceiver(KnifeStabC2SPayload.ID, new KnifeStabC2SPayload.Receiver());
+        ServerPlayNetworking.registerGlobalReceiver(GunShootC2SPayload.ID, new GunShootC2SPayload.Receiver());
+        ServerPlayNetworking.registerGlobalReceiver(StoreBuyC2SPayload.ID, new StoreBuyC2SPayload.Receiver());
+        ServerPlayNetworking.registerGlobalReceiver(NoteEditC2SPayload.ID, new NoteEditC2SPayload.Receiver());
 
         Scheduler.init();
     }

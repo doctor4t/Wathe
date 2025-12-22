@@ -16,7 +16,7 @@ import dev.doctor4t.wathe.index.WatheDataComponentTypes;
 import dev.doctor4t.wathe.index.WatheEntities;
 import dev.doctor4t.wathe.index.WatheItems;
 import dev.doctor4t.wathe.index.WatheSounds;
-import dev.doctor4t.wathe.util.AnnounceEndingPayload;
+import dev.doctor4t.wathe.networking.AnnounceEndingS2CPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -221,7 +221,7 @@ public class GameFunctions {
     }
 
     public static void resetPlayer(ServerPlayerEntity player) {
-        ServerPlayNetworking.send(player, new AnnounceEndingPayload());
+        ServerPlayNetworking.send(player, AnnounceEndingS2CPayload.INSTANCE);
         player.dismountVehicle();
         player.getInventory().clear();
         PlayerMoodComponent.KEY.get(player).reset();

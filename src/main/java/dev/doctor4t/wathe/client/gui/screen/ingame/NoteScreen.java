@@ -2,7 +2,7 @@ package dev.doctor4t.wathe.client.gui.screen.ingame;
 
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.cca.PlayerNoteComponent;
-import dev.doctor4t.wathe.util.NoteEditPayload;
+import dev.doctor4t.wathe.networking.NoteEditC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -91,7 +91,7 @@ public class NoteScreen extends Screen {
 
     @Override
     public void removed() {
-        ClientPlayNetworking.send(new NoteEditPayload(this.text[0], this.text[1], this.text[2], this.text[3]));
+        ClientPlayNetworking.send(new NoteEditC2SPayload(this.text[0], this.text[1], this.text[2], this.text[3]));
     }
 
     @Override

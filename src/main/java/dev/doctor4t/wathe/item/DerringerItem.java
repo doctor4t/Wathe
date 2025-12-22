@@ -7,7 +7,7 @@ import dev.doctor4t.wathe.client.render.WatheRenderLayers;
 import dev.doctor4t.wathe.client.util.WatheItemTooltips;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.WatheDataComponentTypes;
-import dev.doctor4t.wathe.util.GunShootPayload;
+import dev.doctor4t.wathe.networking.GunShootC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,9 +38,9 @@ public class DerringerItem extends RevolverItem {
             HitResult collision = getGunTarget(user);
             if (collision instanceof EntityHitResult entityHitResult) {
                 Entity target = entityHitResult.getEntity();
-                ClientPlayNetworking.send(new GunShootPayload(target.getId()));
+                ClientPlayNetworking.send(new GunShootC2SPayload(target.getId()));
             } else {
-                ClientPlayNetworking.send(new GunShootPayload(-1));
+                ClientPlayNetworking.send(new GunShootC2SPayload(-1));
             }
             if (!used) {
                 user.setPitch(user.getPitch() - 4);
