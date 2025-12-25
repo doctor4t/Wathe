@@ -1,5 +1,7 @@
 package dev.doctor4t.wathe.client.particle;
 
+import dev.doctor4t.wathe.WatheConfig;
+import dev.doctor4t.wathe.cca.MapVariablesWorldComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -43,6 +45,8 @@ public class SnowflakeParticle extends SpriteBillboardParticle {
         this.scale = .1f + world.random.nextFloat() * .1f;
         this.alpha = 0f;
 
+        if (WatheConfig.snowOptLevel == WatheConfig.SnowModeConfig.BOX_COLLIDER) collidesWithWorld = false;
+
         this.setSprite(spriteProvider.getSprite(world.random));
     }
 
@@ -55,8 +59,8 @@ public class SnowflakeParticle extends SpriteBillboardParticle {
         this.alpha += 0.01f;
 
         float v = .2f;
-        this.velocityZ = Math.sin(this.zRand + this.age / 2f + MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true)) * v;
-        this.velocityY = -.1f + Math.sin(this.yRand + this.age / 2f + MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true)) * v;
+        this.velocityZ = MathHelper.sin(this.zRand + this.age / 2f + MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true)) * v;
+        this.velocityY = -.1f + MathHelper.sin(this.yRand + this.age / 2f + MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true)) * v;
 
         this.prevAngleX = angleX;
         this.prevAngleY = angleY;
@@ -66,7 +70,8 @@ public class SnowflakeParticle extends SpriteBillboardParticle {
         this.angleY += angleRandY;
         this.angleZ += angleRandZ;
 
-        if (this.onGround || this.velocityX == 0) {
+        if ((WatheConfig.snowOptLevel == WatheConfig.SnowModeConfig.BOX_COLLIDER && MapVariablesWorldComponent.KEY.get(this.world).getSnowflakeCollider().contains(x, y, z)) ||
+                (this.onGround || this.velocityX == 0)) {
             this.markDead();
         }
     }

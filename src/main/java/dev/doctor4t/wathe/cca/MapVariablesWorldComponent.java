@@ -35,6 +35,8 @@ public class MapVariablesWorldComponent implements AutoSyncedComponent {
     Box resetTemplateArea = new Box(-57, 64, -531, 177, 74, -541);
     Vec3i resetPasteOffset = new Vec3i(0, 55, 0);
 
+    Box snowflakeCollider = new Box(-41.5, 126.0, -538.5, 169.5, 120, -532.5);
+
     public PosWithOrientation getSpawnPos() {
         return spawnPos;
     }
@@ -98,6 +100,15 @@ public class MapVariablesWorldComponent implements AutoSyncedComponent {
         this.sync();
     }
 
+    public Box getSnowflakeCollider() {
+        return snowflakeCollider;
+    }
+
+    public void setSnowflakeCollider(Box snowflakeCollider) {
+        this.snowflakeCollider = snowflakeCollider;
+        this.sync();
+    }
+
     @Override
     public void readFromNbt(@NotNull NbtCompound tag, RegistryWrapper.@NotNull WrapperLookup registryLookup) {
         this.spawnPos = getPosWithOrientationFromNbt(tag, "spawnPos");
@@ -107,6 +118,8 @@ public class MapVariablesWorldComponent implements AutoSyncedComponent {
         this.playArea = getBoxFromNbt(tag, "playArea");
         this.resetTemplateArea = getBoxFromNbt(tag, "resetTemplateArea");
         this.resetPasteOffset = getVec3iFromNbt(tag, "resetPasteOffset");
+        if (tag.contains("snowflakeColliderMinX")) // make sure the map had this feature before setting it, otherwise the collider will be (0,0,0), (0,0,0)
+            this.snowflakeCollider = getBoxFromNbt(tag, "snowflakeCollider");
     }
 
     @Override
@@ -118,6 +131,7 @@ public class MapVariablesWorldComponent implements AutoSyncedComponent {
         writeBoxToNbt(tag, this.playArea, "playArea");
         writeBoxToNbt(tag, this.resetTemplateArea, "resetTemplateArea");
         writeVec3iToNbt(tag, this.resetPasteOffset, "resetPasteOffset");
+        writeBoxToNbt(tag, this.snowflakeCollider, "snowflakeCollider");
     }
 
     public static class PosWithOrientation {
