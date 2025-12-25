@@ -1,6 +1,8 @@
-package dev.doctor4t.wathe.util;
+package dev.doctor4t.wathe.client.util;
 
 import dev.doctor4t.wathe.client.particle.HandParticle;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -11,6 +13,7 @@ import org.joml.Vector3f;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Environment(EnvType.CLIENT)
 public class HandParticleManager {
     private final CopyOnWriteArrayList<HandParticle> particles = new CopyOnWriteArrayList<>();
     public static Vector3f vector;

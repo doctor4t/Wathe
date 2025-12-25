@@ -1,7 +1,7 @@
 package dev.doctor4t.wathe.mixin.compat.sodium;
 
-import dev.doctor4t.wathe.compat.IrisHelper;
-import dev.doctor4t.wathe.util.ShaderEditor;
+import dev.doctor4t.wathe.client.compat.IrisHelper;
+import dev.doctor4t.wathe.client.util.ShaderEditor;
 import net.caffeinemc.mods.sodium.client.gl.shader.ShaderLoader;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;

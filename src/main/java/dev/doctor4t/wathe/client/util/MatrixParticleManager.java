@@ -1,9 +1,12 @@
-package dev.doctor4t.wathe.util;
+package dev.doctor4t.wathe.client.util;
 
 import dev.doctor4t.wathe.client.WatheClient;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 
+@Environment(EnvType.CLIENT)
 public interface MatrixParticleManager {
     static Vec3d getMuzzlePosForPlayer(PlayerEntity playerEntity) {
         Vec3d pos = WatheClient.particleMap.getOrDefault(playerEntity, null);

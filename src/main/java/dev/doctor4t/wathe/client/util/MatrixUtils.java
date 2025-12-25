@@ -1,5 +1,7 @@
-package dev.doctor4t.wathe.util;
+package dev.doctor4t.wathe.client.util;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.util.math.MatrixStack;
@@ -7,6 +9,7 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 
+@Environment(EnvType.CLIENT)
 public interface MatrixUtils {
     static Vec3d matrixToVec(MatrixStack matrixStack) {
         matrixStack.translate(0f, 0.075f, -0.25f); //this is needed purely for this use, remove if going to be reused, i was too lazy to figure out where to put the actual translate - Cup

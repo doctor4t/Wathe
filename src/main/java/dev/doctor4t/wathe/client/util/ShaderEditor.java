@@ -1,9 +1,14 @@
-package dev.doctor4t.wathe.util;
+package dev.doctor4t.wathe.client.util;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("ClassCanBeRecord")
+@Environment(EnvType.CLIENT)
 public class ShaderEditor {
     private final List<String> lines;
 

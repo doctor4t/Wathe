@@ -20,6 +20,7 @@ import dev.doctor4t.wathe.client.render.block_entity.WheelBlockEntityRenderer;
 import dev.doctor4t.wathe.client.render.entity.FirecrackerEntityRenderer;
 import dev.doctor4t.wathe.client.render.entity.HornBlockEntityRenderer;
 import dev.doctor4t.wathe.client.render.entity.NoteEntityRenderer;
+import dev.doctor4t.wathe.client.util.HandParticleManager;
 import dev.doctor4t.wathe.client.util.WatheItemTooltips;
 import dev.doctor4t.wathe.entity.FirecrackerEntity;
 import dev.doctor4t.wathe.entity.NoteEntity;
