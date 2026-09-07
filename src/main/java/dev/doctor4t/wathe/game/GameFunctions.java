@@ -161,6 +161,7 @@ public class GameFunctions {
             PlayerShopComponent.KEY.get(serverPlayerEntity).reset();
             PlayerPoisonComponent.KEY.get(serverPlayerEntity).reset();
             PlayerPsychoComponent.KEY.get(serverPlayerEntity).reset();
+            PlayerVariablesComponent.KEY.get(serverPlayerEntity).reset();
             PlayerNoteComponent.KEY.get(serverPlayerEntity).reset();
             PlayerShopComponent.KEY.get(serverPlayerEntity).reset();
             TrainVoicePlugin.resetPlayer(serverPlayerEntity.getUuid());
@@ -228,6 +229,7 @@ public class GameFunctions {
         PlayerShopComponent.KEY.get(player).reset();
         PlayerPoisonComponent.KEY.get(player).reset();
         PlayerPsychoComponent.KEY.get(player).reset();
+        PlayerVariablesComponent.KEY.get(player).reset();
         PlayerNoteComponent.KEY.get(player).reset();
         TrainVoicePlugin.resetPlayer(player.getUuid());
 

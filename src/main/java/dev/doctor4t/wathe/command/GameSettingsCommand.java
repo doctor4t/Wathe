@@ -51,10 +51,12 @@ public class GameSettingsCommand {
                                                 .executes(context -> setAutoStart(context.getSource(), IntegerArgumentType.getInteger(context, "seconds")))
                                         )
                                 )
-                                .then(CommandManager.literal("backfire")
-                                        .then(CommandManager.argument("chance", FloatArgumentType.floatArg(0f, 1f))
-                                                .executes(context -> setBackfire(context.getSource(), FloatArgumentType.getFloat(context, "chance")))
-                                        )
+                                .then(CommandManager.literal("backfireChancePerInnocentKill")
+                                        .then(CommandManager.argument("chancePerKill", FloatArgumentType.floatArg(0, 1))
+                                                .executes(context -> {
+                                                    GameWorldComponent.KEY.get(context.getSource().getWorld()).setBackfireChancePerInnocentKill(FloatArgumentType.getFloat(context, "chancePerKill"));
+                                                    return 1;
+                                                }))
                                 )
                                 .then(CommandManager.literal("roleDividend")
                                         .then(CommandManager.literal("killer")
@@ -84,12 +86,6 @@ public class GameSettingsCommand {
     private static int setAutoStart(ServerCommandSource source, int seconds) {
         return Wathe.executeSupporterCommand(source,
                 () -> AutoStartComponent.KEY.get(source.getWorld()).setStartTime(GameConstants.getInTicks(0, seconds))
-        );
-    }
-
-    private static int setBackfire(ServerCommandSource source, float chance) {
-        return Wathe.executeSupporterCommand(source,
-                () -> GameWorldComponent.KEY.get(source.getWorld()).setBackfireChance(chance)
         );
     }
 

@@ -3,6 +3,7 @@ package dev.doctor4t.wathe.util;
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.cca.PlayerMoodComponent;
+import dev.doctor4t.wathe.cca.PlayerVariablesComponent;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.WatheDataComponentTypes;
@@ -64,10 +65,19 @@ public record GunShootPayload(int target) implements CustomPayload {
 
                 if (game.isInnocent(target) && !player.isCreative() && mainHandStack.isOf(revolver)) {
                     // backfire: if you kill an innocent you have a chance of shooting yourself instead
-                    if (game.isInnocent(player) && player.getRandom().nextFloat() <= game.getBackfireChance()) {
-                        backfire = true;
-                        GameFunctions.killPlayer(player, true, player, GameConstants.DeathReasons.GUN);
-                    } else {
+                    PlayerVariablesComponent playerVariablesComponent = PlayerVariablesComponent.KEY.get(player);
+                    if (game.isInnocent(player)) {
+                        System.out.println(playerVariablesComponent.getInnocentKills());
+                        System.out.println(playerVariablesComponent.getInnocentKills() * game.getBackfireChancePerInnocentKill());
+
+                        if (player.getRandom().nextFloat() <= playerVariablesComponent.getInnocentKills() * game.getBackfireChancePerInnocentKill()) {
+                            backfire = true;
+                            GameFunctions.killPlayer(player, true, player, GameConstants.DeathReasons.GUN);
+                        }
+
+                        playerVariablesComponent.incrementInnocentKills();
+
+                        // drop gun and lower mood
                         Scheduler.schedule(() -> {
                             if (!context.player().getInventory().contains((s) -> s.isIn(WatheItemTags.GUNS))) return;
                             player.getInventory().remove((s) -> s.isOf(revolver), 1, player.getInventory());
@@ -79,6 +89,8 @@ public record GunShootPayload(int target) implements CustomPayload {
                             ServerPlayNetworking.send(player, new GunDropPayload());
                             PlayerMoodComponent.KEY.get(player).setMood(0);
                         }, 4);
+                    } else {
+                        playerVariablesComponent.setInnocentKills(0);
                     }
                 }
 

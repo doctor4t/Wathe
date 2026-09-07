@@ -1,4 +1,13 @@
 ------------------------------------------------------
+Wathe 1.3.3 - 1.21.1
+------------------------------------------------------
+- Made backfire into an incremental mechanic
+  - Each innocent kill now increases an invisible counter
+  - That invisible counter determines the chance you have to shoot yourself instead of your target the next time you shoot an innocent
+  - Dfault is 0.2 (20%) per innocent kill
+  - E.g.: First innocent kill won't cause anything, second innocent kill has a 20% chance to kill you, third 40%, etc...
+
+------------------------------------------------------
 Wathe 1.3.2 - 1.21.1
 ------------------------------------------------------
 - Fixed the horn not starting the murder mystery game mode at night how intended
