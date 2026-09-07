@@ -131,6 +131,7 @@ public class WatheLangGen extends FabricLanguageProvider {
         builder.add("game.tip.cohort", "Killer Cohort");
         builder.add("game.start_error.not_enough_players", "Game cannot start: %s players minimum are required.");
         builder.add("game.start_error.game_running", "Game cannot start: a game is already running. Please try again from the lobby.");
+        builder.add("game.backfire", "Backfire! You killed too many innocents and couldn't take it anymore.");
 
         builder.add("wathe.gui.reset", "Clear");
 

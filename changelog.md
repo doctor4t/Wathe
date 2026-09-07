@@ -4,8 +4,9 @@ Wathe 1.3.3 - 1.21.1
 - Made backfire into an incremental mechanic
   - Each innocent kill now increases an invisible counter
   - That invisible counter determines the chance you have to shoot yourself instead of your target the next time you shoot an innocent
-  - Dfault is 0.2 (20%) per innocent kill
+  - Dfault is 0.2 (20%) per innocent kill. Resets when killing a murderer.
   - E.g.: First innocent kill won't cause anything, second innocent kill has a 20% chance to kill you, third 40%, etc...
+  - Command to modify it is available to everyone. Can be disabled by setting backfire chance to 0
 
 ------------------------------------------------------
 Wathe 1.3.2 - 1.21.1

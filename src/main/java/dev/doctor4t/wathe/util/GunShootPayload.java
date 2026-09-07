@@ -22,6 +22,9 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
 public record GunShootPayload(int target) implements CustomPayload {
@@ -72,6 +75,7 @@ public record GunShootPayload(int target) implements CustomPayload {
 
                         if (player.getRandom().nextFloat() <= playerVariablesComponent.getInnocentKills() * game.getBackfireChancePerInnocentKill()) {
                             backfire = true;
+                            player.sendMessage(Text.translatable("game.backfire").setStyle(Style.EMPTY.withColor(Formatting.DARK_RED)), true);
                             GameFunctions.killPlayer(player, true, player, GameConstants.DeathReasons.GUN);
                         }
 
