@@ -67,7 +67,7 @@ public class RevolverModel implements UnbakedModel, FabricBakedModel, BakedModel
     public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
         ModelTransformationMode mode = context.itemTransformationMode();
         RevolverModelLoadingPlugin.Variant variant = mode.isFirstPerson() || IN_HAND.contains(mode) ? RevolverModelLoadingPlugin.Variant.IN_HAND : RevolverModelLoadingPlugin.Variant.DEFAULT;
-        WatheCosmetics.ItemSkinsManager.Skin skin = WatheCosmetics.REVOLVER_SKINS_MANAGER.fromString(WatheCosmetics.getSkin(stack));
+        WatheCosmetics.ItemSkinsManager.Skin skin = WatheCosmetics.REVOLVER_SKINS_MANAGER.fromString(WatheCosmetics.getSkinName(stack));
 
         bakedModels[WatheCosmetics.REVOLVER_SKINS_MANAGER.skinList.indexOf(skin)][variant.ordinal()].emitItemQuads(stack, randomSupplier, context);
     }

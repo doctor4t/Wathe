@@ -67,7 +67,7 @@ public class KnifeModel implements UnbakedModel, FabricBakedModel, BakedModel {
     public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
         ModelTransformationMode mode = context.itemTransformationMode();
         KnifeModelLoadingPlugin.Variant variant = mode.isFirstPerson() || IN_HAND.contains(mode) ? KnifeModelLoadingPlugin.Variant.IN_HAND : KnifeModelLoadingPlugin.Variant.DEFAULT;
-        WatheCosmetics.ItemSkinsManager.Skin skin = WatheCosmetics.KNIFE_SKINS_MANAGER.fromString(WatheCosmetics.getSkin(stack));
+        WatheCosmetics.ItemSkinsManager.Skin skin = WatheCosmetics.KNIFE_SKINS_MANAGER.fromString(WatheCosmetics.getSkinName(stack));
 
         bakedModels[WatheCosmetics.KNIFE_SKINS_MANAGER.skinList.indexOf(skin)][variant.ordinal()].emitItemQuads(stack, randomSupplier, context);
     }

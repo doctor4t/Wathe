@@ -1,6 +1,7 @@
 package dev.doctor4t.wathe.cca;
 
 import dev.doctor4t.wathe.Wathe;
+import dev.doctor4t.wathe.game.GameConstants;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
@@ -45,7 +46,10 @@ public class GameTimeComponent implements AutoSyncedComponent, CommonTickingComp
     }
 
     public void addTime(int time) {
-        this.setTime(this.time + time);
+        int maxTimer = GameConstants.getInTicks(5, 0);
+        if (this.time <= maxTimer) {
+            this.setTime(Math.min(this.time + time, maxTimer));
+        }
     }
 
     public void setResetTime(int time) {

@@ -19,6 +19,8 @@ Wathe 1.4 - 1.21.1
     - Can also manually be started with /wathe:start wathe:secret_murder
 - Pistol firing is now done through the attack input instead of the use input
   - No more accidental firing when interacting with the environment with a pistol in hand!
+- Time extensions from kills can now no longer extend the time past 5 minutes
+  - Getting a kill while the timer is above 5 minutes will not reduce it but will not grant extra time
 - Added revolver skins for supporters (Broomhandle, Blundabust, Western, Bayonet)
 - Fixed murderers not being properly highlighted in spectator
 

@@ -5,6 +5,7 @@ import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.client.particle.HandParticle;
 import dev.doctor4t.wathe.client.render.WatheRenderLayers;
 import dev.doctor4t.wathe.game.GameFunctions;
+import dev.doctor4t.wathe.index.WatheCosmetics;
 import dev.doctor4t.wathe.index.WatheDataComponentTypes;
 import dev.doctor4t.wathe.network.GunShootPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -47,7 +48,7 @@ public abstract class PistolItem extends Item implements AttackUseItem {
             }
             if (!used) {
                 player.setPitch(player.getPitch() - 4);
-                spawnHandParticle();
+                spawnHandParticle(stack);
             }
         }
     }
@@ -57,7 +58,7 @@ public abstract class PistolItem extends Item implements AttackUseItem {
 
     }
 
-    public static void spawnHandParticle() {
+    public void spawnHandParticle(ItemStack stack) {
         HandParticle handParticle = new HandParticle()
                 .setTexture(Wathe.id("textures/particle/gunshot.png"))
                 .setPos(0.1f, 0.275f, -0.25f)

@@ -53,7 +53,7 @@ public class WatheItemTooltips {
             tooltipList.addAll(TextUtils.getTooltipForItem(item, Style.EMPTY.withColor(REGULAR_TOOLTIP_COLOR)));
 
             if (item instanceof SkinnedItem itemWithSkin) {
-                WatheCosmetics.ItemSkinsManager.Skin skin = itemWithSkin.getSkinManager().fromString(WatheCosmetics.getSkin(itemStack));
+                WatheCosmetics.ItemSkinsManager.Skin skin = WatheCosmetics.getSkin(itemWithSkin.getSkinManager(), itemStack);
                 if (skin != null) {
                     tooltipList.add(Text.translatable("tip.skin").styled(style -> style.withColor(0xFF404040))
                             .append(Text.literal(TextUtils.formatValueString(skin.tooltipName)).styled(style -> style.withColor(skin.getColor())))

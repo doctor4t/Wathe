@@ -67,21 +67,10 @@ public record GunShootPayload(int target) implements CustomPayload {
 
                 boolean backfire = false;
 
-                if (game.isInnocent(target) && !player.isCreative() && mainHandStack.isOf(revolver)) {
-                    // backfire: if you kill an innocent you have a chance of shooting yourself instead
+                if (!player.isCreative() && mainHandStack.isOf(revolver)) {
                     PlayerVariablesComponent playerVariablesComponent = PlayerVariablesComponent.KEY.get(player);
-                    if (game.isInnocent(player)) {
-                        System.out.println(playerVariablesComponent.getInnocentKills());
-                        System.out.println(playerVariablesComponent.getInnocentKills() * game.getBackfireChancePerInnocentKill());
 
-                        if (player.getRandom().nextFloat() <= playerVariablesComponent.getInnocentKills() * game.getBackfireChancePerInnocentKill()) {
-                            backfire = true;
-                            player.sendMessage(Text.translatable("game.backfire").setStyle(Style.EMPTY.withColor(Formatting.DARK_RED)), true);
-                            GameFunctions.killPlayer(player, true, player, GameConstants.DeathReasons.GUN);
-                        }
-
-                        playerVariablesComponent.incrementInnocentKills();
-
+                    if (game.isInnocent(target)) {
                         // drop gun and lower mood
                         Scheduler.schedule(() -> {
                             if (!context.player().getInventory().contains((s) -> s.isIn(WatheItemTags.GUNS))) return;
@@ -94,6 +83,17 @@ public record GunShootPayload(int target) implements CustomPayload {
                             ServerPlayNetworking.send(player, new GunDropPayload());
                             PlayerMoodComponent.KEY.get(player).setMood(0);
                         }, 4);
+
+                        // backfire: if you kill an innocent and are not a killer you have a chance of shooting yourself instead
+                        if (game.isInnocent(player)) {
+                            if (player.getRandom().nextFloat() <= playerVariablesComponent.getInnocentKills() * game.getBackfireChancePerInnocentKill()) {
+                                backfire = true;
+                                player.sendMessage(Text.translatable("game.backfire").setStyle(Style.EMPTY.withColor(Formatting.DARK_RED)), true);
+                                GameFunctions.killPlayer(player, true, player, GameConstants.DeathReasons.GUN);
+                            }
+
+                            playerVariablesComponent.incrementInnocentKills();
+                        }
                     } else {
                         playerVariablesComponent.setInnocentKills(0);
                     }

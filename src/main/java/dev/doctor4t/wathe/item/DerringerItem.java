@@ -39,12 +39,12 @@ public class DerringerItem extends RevolverItem implements AttackUseItem {
             }
             if (!used) {
                 player.setPitch(player.getPitch() - 4);
-                spawnHandParticle();
+                this.spawnHandParticle();
             }
         }
     }
 
-    public static void spawnHandParticle() {
+    public void spawnHandParticle() {
         HandParticle handParticle = new HandParticle()
                 .setTexture(Wathe.id("textures/particle/gunshot.png"))
                 .setPos(0.1f, 0.2f, -0.2f)

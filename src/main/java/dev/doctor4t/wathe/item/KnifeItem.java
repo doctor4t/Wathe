@@ -78,7 +78,7 @@ public class KnifeItem extends Item implements SkinnedItem {
     public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
         if (clickType == ClickType.RIGHT && otherStack.isEmpty()) {
             if (Wathe.isSupporter(player)) {
-                WatheCosmetics.ItemSkinsManager.Skin currentSkin = this.getSkinManager().fromString(WatheCosmetics.getSkin(stack));
+                WatheCosmetics.ItemSkinsManager.Skin currentSkin = WatheCosmetics.getSkin(this.getSkinManager(), stack);
                 WatheCosmetics.setSkin(player, stack, this.getSkinManager().getNext(currentSkin).getName());
             }
 

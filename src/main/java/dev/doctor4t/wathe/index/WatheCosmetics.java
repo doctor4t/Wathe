@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -20,18 +21,19 @@ public interface WatheCosmetics {
     ItemSkinsManager REVOLVER_SKINS_MANAGER = new ItemSkinsManager();
 
     static void initialize() {
-        KNIFE_SKINS_MANAGER.registerItemSkin("default", 0xFF404040, "Kitchen Knife");
-        KNIFE_SKINS_MANAGER.registerItemSkin("ceremonial", 0xFFD98C28, "Ceremonial Dagger");
-        KNIFE_SKINS_MANAGER.registerItemSkin("pick", 0xFF8D4A51, "Ice Pick");
+        KNIFE_SKINS_MANAGER.registerKnifeSkin("default", 0xFF404040, "Kitchen Knife");
+        KNIFE_SKINS_MANAGER.registerKnifeSkin("ceremonial", 0xFFD98C28, "Ceremonial Dagger");
+        KNIFE_SKINS_MANAGER.registerKnifeSkin("pick", 0xFF8D4A51, "Ice Pick");
 
-        REVOLVER_SKINS_MANAGER.registerItemSkin("default", 0xFF404040, "Revolver");
-        REVOLVER_SKINS_MANAGER.registerItemSkin("broomhandle", 0xFF6E4B47, "Broomhandle");
-        REVOLVER_SKINS_MANAGER.registerItemSkin("blundabust", 0xFF6E3B2A, "Blundabust");
-        REVOLVER_SKINS_MANAGER.registerItemSkin("western", 0xFF8E8770, "Western");
-        REVOLVER_SKINS_MANAGER.registerItemSkin("bayonet", 0xFF811A2B, "Bayonet");
+        REVOLVER_SKINS_MANAGER.registerRevolverSkin("default", 0xFF404040, "Revolver", null);
+        REVOLVER_SKINS_MANAGER.registerRevolverSkin("duelist", 0xFFEDA400, "The Duelist", new Vec3d(0.1f, 0.175f, -0.35f));
+        REVOLVER_SKINS_MANAGER.registerRevolverSkin("broomhandle", 0xFF6E4B47, "Broomhandle", null);
+        REVOLVER_SKINS_MANAGER.registerRevolverSkin("blundabust", 0xFF6E3B2A, "Blundabust", new Vec3d(0.1f, 0.21f, -0.35f));
+        REVOLVER_SKINS_MANAGER.registerRevolverSkin("western", 0xFF8E8770, "Western", null);
+        REVOLVER_SKINS_MANAGER.registerRevolverSkin("bayonet", 0xFF811A2B, "Bayonet", null);
     }
 
-    static String getSkin(ItemStack itemStack) {
+    static String getSkinName(ItemStack itemStack) {
         UUID owner = UUID.fromString(itemStack.getOrDefault(WatheDataComponentTypes.OWNER, "98eaa37f-7712-4809-b709-504d3be0b6ef")); // random uuid
         String itemName = itemStack.getItem().getName().getString().toLowerCase(Locale.ROOT);
         Optional<WeaponSkinsSupporterData> optional = WEAPON_SKINS_DATA.get(owner);
@@ -49,6 +51,10 @@ public interface WatheCosmetics {
         }
 
         return "default";
+    }
+
+    static ItemSkinsManager.Skin getSkin(ItemSkinsManager skinsManager, ItemStack itemStack) {
+        return skinsManager.fromString(getSkinName(itemStack));
     }
 
     static void setSkin(PlayerEntity player, ItemStack itemStack, String skinName) {
@@ -84,10 +90,16 @@ public interface WatheCosmetics {
             this.skinList = new ArrayList<>();
         }
 
-        public final Skin registerItemSkin(String name, int color, @Nullable String tooltipName) {
-            Skin revolverSkin = new Skin(name, color, tooltipName);
-            this.skinList.add(revolverSkin);
-            return revolverSkin;
+        public final Skin registerKnifeSkin(String name, int color, @Nullable String tooltipName) {
+            Skin skin = new Skin(name, color, tooltipName, null);
+            this.skinList.add(skin);
+            return skin;
+        }
+
+        public final Skin registerRevolverSkin(String name, int color, @Nullable String tooltipName, Vec3d flashOffset) {
+            Skin skin = new Skin(name, color, tooltipName, flashOffset);
+            this.skinList.add(skin);
+            return skin;
         }
 
         public Skin fromString(String name) {
@@ -104,12 +116,14 @@ public interface WatheCosmetics {
             public final int color;
             public final @Nullable String tooltipName;
             public final Random random;
+            public final @Nullable Vec3d flashOffset;
 
-            Skin(String name, int color, @Nullable String tooltipName) {
+            Skin(String name, int color, @Nullable String tooltipName, @Nullable Vec3d flashOffset) {
                 this.name = name;
                 this.color = color;
                 this.tooltipName = tooltipName;
                 this.random = new Random();
+                this.flashOffset = flashOffset;
             }
 
             public String getName() {
