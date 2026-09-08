@@ -5,6 +5,7 @@ import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.client.particle.HandParticle;
 import dev.doctor4t.wathe.client.render.WatheRenderLayers;
 import dev.doctor4t.wathe.index.WatheCosmetics;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.ItemStack;
@@ -37,6 +38,7 @@ public class RevolverItem extends PistolItem implements SkinnedItem {
                 .setVelocity(0f, 0f, 0f)
                 .setLight(15, 15)
                 .setAlpha(1f, 0.1f)
+                .setYRot(MinecraftClient.getInstance().player.getRandom().nextFloat() * 360f)
                 .setRenderLayer(WatheRenderLayers::additive);
         WatheClient.handParticleManager.spawn(handParticle);
     }

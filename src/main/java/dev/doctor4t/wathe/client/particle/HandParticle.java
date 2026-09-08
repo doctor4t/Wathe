@@ -9,6 +9,7 @@ import java.util.function.Function;
 public class HandParticle {
     public float x, y, z;
     public float vx, vy, vz;
+    public float yRot;
     public float age;
     public float maxAge;
     public float size;
@@ -69,6 +70,11 @@ public class HandParticle {
         this.vx = vx;
         this.vy = vy;
         this.vz = vz;
+        return this;
+    }
+
+    public HandParticle setYRot(float yRot) {
+        this.yRot = yRot;
         return this;
     }
 

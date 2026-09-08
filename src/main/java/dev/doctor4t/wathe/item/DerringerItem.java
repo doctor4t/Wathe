@@ -8,6 +8,7 @@ import dev.doctor4t.wathe.client.util.WatheItemTooltips;
 import dev.doctor4t.wathe.index.WatheDataComponentTypes;
 import dev.doctor4t.wathe.network.GunShootPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -53,6 +54,7 @@ public class DerringerItem extends RevolverItem implements AttackUseItem {
                 .setVelocity(0f, 0f, 0f)
                 .setLight(15, 15)
                 .setAlpha(1f, 0.1f)
+                .setYRot(MinecraftClient.getInstance().player.getRandom().nextFloat() * 360f)
                 .setRenderLayer(WatheRenderLayers::additive);
         WatheClient.handParticleManager.spawn(handParticle);
     }

@@ -1,5 +1,6 @@
 package dev.doctor4t.wathe.client.particle;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.ParticleEffect;
@@ -20,6 +21,9 @@ public class FlashParticle extends SpriteBillboardParticle {
         this.green = 1f;
         this.blue = 1f;
         this.alpha = 1f;
+
+        this.angle = world.getRandom().nextFloat() * 360f;
+        this.prevAngle = this.angle;
     }
 
     @Override

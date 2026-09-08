@@ -1,11 +1,13 @@
 package dev.doctor4t.wathe.util;
 
 import dev.doctor4t.wathe.client.particle.HandParticle;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -34,10 +36,11 @@ public class HandParticleManager {
         MatrixStack.Entry entry = matrices.peek();
         Matrix4f model = entry.getPositionMatrix();
 
-        Vector3f right = new Vector3f(1, 0, 0);
-        Vector3f up = new Vector3f(0, 1, 0);
-
         for (HandParticle p : particles) {
+            float yRot = p.yRot;
+            Vector3f right = new Vector3f(MathHelper.sin(yRot), MathHelper.cos(yRot), 0);
+            Vector3f up = new Vector3f(MathHelper.sin(yRot + MathHelper.HALF_PI), MathHelper.cos(yRot + MathHelper.HALF_PI), 0);
+
             RenderLayer rl = p.renderLayerFactory.apply(p.texture);
             VertexConsumer consumer = vertexConsumers.getBuffer(rl);
 

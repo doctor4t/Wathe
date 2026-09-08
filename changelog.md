@@ -22,6 +22,7 @@ Wathe 1.4 - 1.21.1
 - Time extensions from kills can now no longer extend the time past 5 minutes
   - Getting a kill while the timer is above 5 minutes will not reduce it but will not grant extra time
 - Added revolver skins for supporters (Broomhandle, Blundabust, Western, Bayonet)
+- Added random rotations to the gunshot flash
 - Fixed murderers not being properly highlighted in spectator
 
 ------------------------------------------------------
