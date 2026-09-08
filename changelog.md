@@ -1,5 +1,5 @@
 ------------------------------------------------------
-Wathe 1.3.3 - 1.21.1
+Wathe 1.4 - 1.21.1
 ------------------------------------------------------
 - Made backfire into an incremental mechanic
   - Each innocent kill now increases an invisible counter
