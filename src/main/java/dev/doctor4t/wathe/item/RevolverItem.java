@@ -53,7 +53,7 @@ public class RevolverItem extends Item implements ItemWithSkin {
     public static void spawnHandParticle() {
         HandParticle handParticle = new HandParticle()
                 .setTexture(Wathe.id("textures/particle/gunshot.png"))
-                .setPos(0.1f, 0.275f, -0.2f)
+                .setPos(0.1f, 0.275f, -0.25f)
                 .setMaxAge(3)
                 .setSize(0.5f)
                 .setVelocity(0f, 0f, 0f)

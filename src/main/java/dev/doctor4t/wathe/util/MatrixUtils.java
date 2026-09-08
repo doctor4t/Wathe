@@ -9,7 +9,7 @@ import org.joml.Vector4f;
 
 public interface MatrixUtils {
     static Vec3d matrixToVec(MatrixStack matrixStack) {
-        matrixStack.translate(0f, 0.075f, -0.25f); //this is needed purely for this use, remove if going to be reused, i was too lazy to figure out where to put the actual translate - Cup
+        matrixStack.translate(0f, 0.075f, -0.4f); //this is needed purely for this use, remove if going to be reused, i was too lazy to figure out where to put the actual translate - Cup
         Matrix4f matrix = matrixStack.peek().getPositionMatrix();
         Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
 
