@@ -148,6 +148,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
 
         return ret;
     }
+
     public List<UUID> getAllWithRole(Role role) {
         List<UUID> ret = new ArrayList<>();
         roles.forEach((uuid, playerRole) -> {
@@ -170,6 +171,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     public boolean canUseKillerFeatures(@NotNull PlayerEntity player) {
         return getRole(player) != null && getRole(player).canUseKiller();
     }
+
     public boolean isInnocent(@NotNull PlayerEntity player) {
         return getRole(player) != null && getRole(player).isInnocent();
     }

@@ -54,6 +54,7 @@ public class Wathe implements ModInitializer {
         WatheItems.initialize();
         WatheBlockEntities.initialize();
         WatheParticles.initialize();
+        WatheCosmetics.initialize();
 
         // Register command argument types
         ArgumentTypeRegistry.registerArgumentType(id("timeofday"), TimeOfDayArgumentType.class, ConstantArgumentSerializer.of(TimeOfDayArgumentType::timeofday));

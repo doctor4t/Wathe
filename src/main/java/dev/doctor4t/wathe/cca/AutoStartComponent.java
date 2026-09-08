@@ -2,8 +2,6 @@ package dev.doctor4t.wathe.cca;
 
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.api.GameMode;
-import dev.doctor4t.wathe.api.WatheGameModes;
-import dev.doctor4t.wathe.api.WatheMapEffects;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
 import net.minecraft.nbt.NbtCompound;

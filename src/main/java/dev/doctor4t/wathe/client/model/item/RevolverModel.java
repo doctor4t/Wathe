@@ -23,15 +23,15 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class KnifeModel implements UnbakedModel, FabricBakedModel, BakedModel {
+public class RevolverModel implements UnbakedModel, FabricBakedModel, BakedModel {
 
     /**
      * indexed by skin, then variant!
      */
-    private final BakedModel[][] bakedModels = new BakedModel[WatheCosmetics.KNIFE_SKINS_MANAGER.skinList.size()][KnifeModelLoadingPlugin.Variant.values().length];
+    private final BakedModel[][] bakedModels = new BakedModel[WatheCosmetics.REVOLVER_SKINS_MANAGER.skinList.size()][RevolverModelLoadingPlugin.Variant.values().length];
     private final UnbakedModel defaultUnbakedModel;
 
-    public KnifeModel(UnbakedModel defaultUnbakedModel) {
+    public RevolverModel(UnbakedModel defaultUnbakedModel) {
         this.defaultUnbakedModel = defaultUnbakedModel;
     }
 
@@ -47,9 +47,9 @@ public class KnifeModel implements UnbakedModel, FabricBakedModel, BakedModel {
 
     @Override
     public @Nullable BakedModel bake(Baker baker, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings settings) {
-        for (WatheCosmetics.ItemSkinsManager.Skin skin : WatheCosmetics.KNIFE_SKINS_MANAGER.skinList) {
-            for (KnifeModelLoadingPlugin.Variant variant : KnifeModelLoadingPlugin.Variant.values()) {
-                bakedModels[WatheCosmetics.KNIFE_SKINS_MANAGER.skinList.indexOf(skin)][variant.ordinal()] = baker.bake(KnifeModelLoadingPlugin.getModelLocation(skin, variant), settings);
+        for (WatheCosmetics.ItemSkinsManager.Skin skin : WatheCosmetics.REVOLVER_SKINS_MANAGER.skinList) {
+            for (RevolverModelLoadingPlugin.Variant variant : RevolverModelLoadingPlugin.Variant.values()) {
+                bakedModels[WatheCosmetics.REVOLVER_SKINS_MANAGER.skinList.indexOf(skin)][variant.ordinal()] = baker.bake(RevolverModelLoadingPlugin.getModelLocation(skin, variant), settings);
             }
         }
 
@@ -66,10 +66,10 @@ public class KnifeModel implements UnbakedModel, FabricBakedModel, BakedModel {
     @Override
     public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
         ModelTransformationMode mode = context.itemTransformationMode();
-        KnifeModelLoadingPlugin.Variant variant = mode.isFirstPerson() || IN_HAND.contains(mode) ? KnifeModelLoadingPlugin.Variant.IN_HAND : KnifeModelLoadingPlugin.Variant.DEFAULT;
-        WatheCosmetics.ItemSkinsManager.Skin skin = WatheCosmetics.KNIFE_SKINS_MANAGER.fromString(WatheCosmetics.getSkin(stack));
+        RevolverModelLoadingPlugin.Variant variant = mode.isFirstPerson() || IN_HAND.contains(mode) ? RevolverModelLoadingPlugin.Variant.IN_HAND : RevolverModelLoadingPlugin.Variant.DEFAULT;
+        WatheCosmetics.ItemSkinsManager.Skin skin = WatheCosmetics.REVOLVER_SKINS_MANAGER.fromString(WatheCosmetics.getSkin(stack));
 
-        bakedModels[WatheCosmetics.KNIFE_SKINS_MANAGER.skinList.indexOf(skin)][variant.ordinal()].emitItemQuads(stack, randomSupplier, context);
+        bakedModels[WatheCosmetics.REVOLVER_SKINS_MANAGER.skinList.indexOf(skin)][variant.ordinal()].emitItemQuads(stack, randomSupplier, context);
     }
 
     @Override
@@ -113,6 +113,6 @@ public class KnifeModel implements UnbakedModel, FabricBakedModel, BakedModel {
     }
 
     private BakedModel getDefaultModel() {
-        return bakedModels[0][KnifeModelLoadingPlugin.Variant.DEFAULT.ordinal()];
+        return bakedModels[0][RevolverModelLoadingPlugin.Variant.DEFAULT.ordinal()];
     }
 }

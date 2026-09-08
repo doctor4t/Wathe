@@ -31,7 +31,7 @@ public class TrainDoorBlock extends SmallDoorBlock {
                 return ActionResult.PASS;
             }
 
-            if (player.isCreative() || TrainWorldComponent.KEY.get(world).getSpeed() == 0  || AllowPlayerOpenLockedDoor.EVENT.invoker().allowOpen(player)) {
+            if (player.isCreative() || TrainWorldComponent.KEY.get(world).getSpeed() == 0 || AllowPlayerOpenLockedDoor.EVENT.invoker().allowOpen(player)) {
                 return open(state, world, entity, lowerPos);
             } else {
                 boolean hasLockpick = player.getMainHandStack().isOf(WatheItems.LOCKPICK);

@@ -1,7 +1,9 @@
 package dev.doctor4t.wathe.client.util;
 
 import dev.doctor4t.ratatouille.util.TextUtils;
+import dev.doctor4t.wathe.index.WatheCosmetics;
 import dev.doctor4t.wathe.index.WatheItems;
+import dev.doctor4t.wathe.item.ItemWithSkin;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.ItemCooldownManager;
@@ -49,6 +51,15 @@ public class WatheItemTooltips {
     private static void addTooltipForItem(Item item, @NotNull ItemStack itemStack, List<Text> tooltipList) {
         if (itemStack.isOf(item)) {
             tooltipList.addAll(TextUtils.getTooltipForItem(item, Style.EMPTY.withColor(REGULAR_TOOLTIP_COLOR)));
+
+            if (item instanceof ItemWithSkin itemWithSkin) {
+                WatheCosmetics.ItemSkinsManager.Skin skin = itemWithSkin.getSkinManager().fromString(WatheCosmetics.getSkin(itemStack));
+                if (skin != null) {
+                    tooltipList.add(Text.translatable("tip.skin").styled(style -> style.withColor(0xFF404040))
+                            .append(Text.literal(TextUtils.formatValueString(skin.tooltipName)).styled(style -> style.withColor(skin.getColor())))
+                            .append(Text.translatable("tip.change_skin").styled(style -> style.withColor(0xFF404040))));
+                }
+            }
         }
     }
 

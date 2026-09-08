@@ -6,8 +6,8 @@ import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.block.*;
 import dev.doctor4t.wathe.block.property.CouchArms;
 import dev.doctor4t.wathe.index.WatheBlocks;
+import dev.doctor4t.wathe.index.WatheCosmetics;
 import dev.doctor4t.wathe.index.WatheItems;
-import dev.doctor4t.wathe.item.KnifeItem;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.*;
@@ -362,6 +362,7 @@ public class WatheModelGen extends FabricModelProvider {
         return new Model(Optional.of(Wathe.id("item/" + parent)), Optional.empty(), requiredTextureKeys);
     }
 
+    public static final Model PISTOL_TEMPLATE = model("item/template_pistol", "_in_hand", TextureKey.LAYER0);
     public static final Model KNIFE_TEMPLATE = model("item/template_knife", "_in_hand", TextureKey.LAYER0);
 
     private static Model model(String parent, @Nullable String variant, TextureKey... keys) {
@@ -380,9 +381,14 @@ public class WatheModelGen extends FabricModelProvider {
         generator.register(WatheItems.GRENADE, SMALL_ITEM);
         generator.register(WatheItems.THROWN_GRENADE, SMALL_ITEM);
         generator.register(WatheItems.FIRECRACKER, SMALL_ITEM);
+        registerTemplateWeapon(PISTOL_TEMPLATE, null, WatheItems.DERRINGER, generator);
 
-        for (KnifeItem.Skin value : KnifeItem.Skin.values()) {
-            registerTemplateWeapon(KNIFE_TEMPLATE, value == KnifeItem.Skin.DEFAULT ? null : value.getName(), WatheItems.KNIFE, generator);
+        for (WatheCosmetics.ItemSkinsManager.Skin value : WatheCosmetics.REVOLVER_SKINS_MANAGER.skinList) {
+            registerTemplateWeapon(PISTOL_TEMPLATE, value.getName().equalsIgnoreCase("default") ? null : value.getName(), WatheItems.REVOLVER, generator);
+        }
+
+        for (WatheCosmetics.ItemSkinsManager.Skin value : WatheCosmetics.KNIFE_SKINS_MANAGER.skinList) {
+            registerTemplateWeapon(KNIFE_TEMPLATE, value.getName().equalsIgnoreCase("default") ? null : value.getName(), WatheItems.KNIFE, generator);
         }
     }
 
@@ -418,7 +424,7 @@ public class WatheModelGen extends FabricModelProvider {
     private void registerTemplateWeaponInventory(Model templateModel, @Nullable String name, Identifier itemModelId, Identifier inventoryTexture, ItemModelGenerator generator) {
         Identifier inventoryModelName = (name == null ? getItemSubId(itemModelId, "") : getItemSubId(itemModelId, "_" + name));
 
-        KNIFE_TEMPLATE.upload(inventoryModelName, TextureMap.layer0(inventoryTexture), generator.writer); // this is actually the inventory model
+        templateModel.upload(inventoryModelName, TextureMap.layer0(inventoryTexture), generator.writer); // this is actually the inventory model
     }
 
     public static Identifier getItemId(Identifier itemId) {

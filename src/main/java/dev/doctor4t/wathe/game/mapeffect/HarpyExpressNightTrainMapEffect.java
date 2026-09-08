@@ -1,6 +1,6 @@
 package dev.doctor4t.wathe.game.mapeffect;
 
-import dev.doctor4t.wathe.cca.*;
+import dev.doctor4t.wathe.cca.TrainWorldComponent;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;

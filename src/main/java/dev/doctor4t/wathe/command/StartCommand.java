@@ -45,7 +45,7 @@ public class StartCommand {
         }
         if (gameMode == WatheGameModes.LOOSE_ENDS || gameMode == WatheGameModes.DISCOVERY || mapEffect == WatheMapEffects.HARPY_EXPRESS_SUNDOWN || mapEffect == WatheMapEffects.HARPY_EXPRESS_DAY) {
             return Wathe.executeSupporterCommand(source, () -> GameFunctions.startGame(source.getWorld(), gameMode, mapEffect, GameConstants.getInTicks(minutes >= 0 ? minutes : gameMode.defaultStartTime, 0)));
-        } else  {
+        } else {
             GameFunctions.startGame(source.getWorld(), gameMode, mapEffect, GameConstants.getInTicks(minutes >= 0 ? minutes : gameMode.defaultStartTime, 0));
             return 1;
         }

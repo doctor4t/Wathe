@@ -1,16 +1,13 @@
 {
     "parent": "item/generated",
-    "textures": {
-        "layer0": "wathe:item/derringer"
-    },
     "display": {
         "thirdperson_righthand": {
-            "rotation": [ 0, -90, 55 ],
+            "rotation": [ 0, -90, 45 ],
             "translation": [ 0, 0.6, -0.6 ],
             "scale": [ 0.5, 0.5, 0.5 ]
         },
         "thirdperson_lefthand": {
-            "rotation": [ 0, 90, -55 ],
+            "rotation": [ 0, 90, -45 ],
             "translation": [ 0, 0.6, -0.6 ],
             "scale": [ 0.5, 0.5, 0.5 ]
         },

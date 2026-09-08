@@ -30,7 +30,7 @@ public class MurderGameMode extends GameMode {
         // select roles
         ScoreboardRoleSelectorComponent roleSelector = ScoreboardRoleSelectorComponent.KEY.get(world.getScoreboard());
         int total = roleSelector.assignKillers(world, gameComponent, players, (int) Math.floor((double) players.size() / gameComponent.getKillerDividend()));
-        roleSelector.assignVigilantes(world, gameComponent, players,  (int) Math.floor((double) players.size() / gameComponent.getVigilanteDividend()));
+        roleSelector.assignVigilantes(world, gameComponent, players, (int) Math.floor((double) players.size() / gameComponent.getVigilanteDividend()));
         return total;
     }
 

@@ -6,47 +6,40 @@ import dev.doctor4t.wathe.cca.GameRoundEndComponent;
 import dev.doctor4t.wathe.cca.GameTimeComponent;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.client.gui.RoleAnnouncementTexts;
-import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
-import dev.doctor4t.wathe.index.WatheItems;
 import dev.doctor4t.wathe.util.AnnounceWelcomePayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LooseEndsGameMode extends GameMode {
-    public LooseEndsGameMode(Identifier identifier) {
-        super(identifier, 60, 2);
+public class SecretMurderGameMode extends GameMode {
+    public SecretMurderGameMode(Identifier identifier) {
+        super(identifier, 10, 6);
+    }
+
+    private static int assignRolesAndGetKillerCount(@NotNull ServerWorld world, @NotNull List<ServerPlayerEntity> players, GameWorldComponent gameComponent) {
+        // civilian base role, replaced for selected killers and vigilantes
+        for (ServerPlayerEntity player : players) {
+            gameComponent.addRole(player, WatheRoles.SECRET_KILLER);
+        }
+
+        return (int) Math.floor((double) players.size() / gameComponent.getKillerDividend());
     }
 
     @Override
     public void initializeGame(ServerWorld serverWorld, GameWorldComponent gameWorldComponent, List<ServerPlayerEntity> players) {
+        int killerCount = assignRolesAndGetKillerCount(serverWorld, players, gameWorldComponent);
+
         for (ServerPlayerEntity player : players) {
-            player.getInventory().clear();
-
-            ItemStack derringer = new ItemStack(WatheItems.DERRINGER);
-            ItemStack knife = new ItemStack(WatheItems.KNIFE);
-
-            int cooldown = GameConstants.getInTicks(1, 0);
-            ItemCooldownManager itemCooldownManager = player.getItemCooldownManager();
-            itemCooldownManager.set(WatheItems.DERRINGER, cooldown);
-            itemCooldownManager.set(WatheItems.KNIFE, cooldown);
-
-            player.giveItemStack(new ItemStack(WatheItems.CROWBAR));
-            player.giveItemStack(derringer);
-            player.giveItemStack(knife);
-
-            gameWorldComponent.addRole(player, WatheRoles.LOOSE_END);
-
-            ServerPlayNetworking.send(player, new AnnounceWelcomePayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(RoleAnnouncementTexts.LOOSE_END), -1, -1));
+            ServerPlayNetworking.send(player, new AnnounceWelcomePayload(RoleAnnouncementTexts.ROLE_ANNOUNCEMENT_TEXTS.indexOf(RoleAnnouncementTexts.KILLER), killerCount, players.size() - killerCount));
         }
     }
+
 
     @Override
     public void tickServerGameLoop(ServerWorld serverWorld, GameWorldComponent gameWorldComponent) {

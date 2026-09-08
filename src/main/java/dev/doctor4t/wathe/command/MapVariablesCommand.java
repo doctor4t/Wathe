@@ -169,7 +169,7 @@ public class MapVariablesCommand {
         }
     }
 
-    private static void setGameModeAndMapEffect(ServerCommandSource source,GameMode gameMode, MapEffect mapEffect, GameWorldComponent gameWorldComponent) {
+    private static void setGameModeAndMapEffect(ServerCommandSource source, GameMode gameMode, MapEffect mapEffect, GameWorldComponent gameWorldComponent) {
         gameWorldComponent.setGameMode(gameMode);
         gameWorldComponent.setMapEffect(mapEffect);
         mapEffect.initializeMapEffects(source.getWorld(), source.getWorld().getPlayers());

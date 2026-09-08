@@ -26,7 +26,6 @@ public class ForceRoleCommand {
         return Wathe.executeSupporterCommand(source,
                 () -> {
                     ScoreboardRoleSelectorComponent component = ScoreboardRoleSelectorComponent.KEY.get(source.getServer().getScoreboard());
-                    component.forcedKillers.clear();
                     for (ServerPlayerEntity player : players) component.forcedKillers.add(player.getUuid());
                 }
         );
@@ -36,7 +35,6 @@ public class ForceRoleCommand {
         return Wathe.executeSupporterCommand(source,
                 () -> {
                     ScoreboardRoleSelectorComponent component = ScoreboardRoleSelectorComponent.KEY.get(source.getServer().getScoreboard());
-                    component.forcedVigilantes.clear();
                     for (ServerPlayerEntity player : players) component.forcedVigilantes.add(player.getUuid());
                 }
         );

@@ -6,6 +6,7 @@ import dev.doctor4t.ratatouille.client.util.ambience.AmbienceUtil;
 import dev.doctor4t.ratatouille.client.util.ambience.BackgroundAmbience;
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.WatheConfig;
+import dev.doctor4t.wathe.api.WatheRoles;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.cca.PlayerMoodComponent;
 import dev.doctor4t.wathe.cca.TrainWorldComponent;
@@ -14,6 +15,7 @@ import dev.doctor4t.wathe.client.gui.StoreRenderer;
 import dev.doctor4t.wathe.client.gui.TimeRenderer;
 import dev.doctor4t.wathe.client.model.WatheModelLayers;
 import dev.doctor4t.wathe.client.model.item.KnifeModelLoadingPlugin;
+import dev.doctor4t.wathe.client.model.item.RevolverModelLoadingPlugin;
 import dev.doctor4t.wathe.client.render.block_entity.PlateBlockEntityRenderer;
 import dev.doctor4t.wathe.client.render.block_entity.SmallDoorBlockEntityRenderer;
 import dev.doctor4t.wathe.client.render.block_entity.WheelBlockEntityRenderer;
@@ -105,6 +107,7 @@ public class WatheClient implements ClientModInitializer {
 
         // Custom Baked Models
         ModelLoadingPlugin.register(new KnifeModelLoadingPlugin());
+        ModelLoadingPlugin.register(new RevolverModelLoadingPlugin());
 
         // Block render layers
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
@@ -229,7 +232,6 @@ public class WatheClient implements ClientModInitializer {
         OptionLocker.overrideSoundCategoryVolume("player", 1.0);
         OptionLocker.overrideSoundCategoryVolume("ambient", 1.0);
         OptionLocker.overrideSoundCategoryVolume("voice", 1.0);
-
 
         // Item tooltips
         WatheItemTooltips.addTooltips();
@@ -364,6 +366,9 @@ public class WatheClient implements ClientModInitializer {
             return 0xDB9D00;
         if (target instanceof PlayerEntity player) {
             if (GameFunctions.isPlayerSpectatingOrCreative(player)) return -1;
+            if (WatheClient.gameComponent.isRole(player, WatheRoles.SECRET_KILLER)) {
+                return 0x4EDD35;
+            }
             if (gameComponent.isInnocent(player)) {
                 float mood = PlayerMoodComponent.KEY.get(target).getMood();
                 if (mood < GameConstants.DEPRESSIVE_MOOD_THRESHOLD) {
