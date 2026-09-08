@@ -22,6 +22,7 @@ public interface WatheCosmetics {
 
     static void initialize() {
         KNIFE_SKINS_MANAGER.registerKnifeSkin("default", 0xFF404040, "Kitchen Knife");
+        KNIFE_SKINS_MANAGER.registerKnifeSkin("feather", 0xFFEDA400, "The Harpy's Feather");
         KNIFE_SKINS_MANAGER.registerKnifeSkin("ceremonial", 0xFFD98C28, "Ceremonial Dagger");
         KNIFE_SKINS_MANAGER.registerKnifeSkin("pick", 0xFF8D4A51, "Ice Pick");
 
