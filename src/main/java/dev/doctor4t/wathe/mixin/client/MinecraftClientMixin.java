@@ -9,11 +9,6 @@ import dev.doctor4t.wathe.cca.PlayerPsychoComponent;
 import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.index.WatheItems;
 import dev.doctor4t.wathe.index.tag.WatheItemTags;
-import dev.doctor4t.wathe.item.AttackUseItem;
-import dev.doctor4t.wathe.network.AttackUsePayload;
-import dev.doctor4t.wathe.network.GunShootPayload;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.HeldItemRenderer;
@@ -25,8 +20,6 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {

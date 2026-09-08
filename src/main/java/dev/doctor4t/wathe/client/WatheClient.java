@@ -31,12 +31,12 @@ import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.*;
 import dev.doctor4t.wathe.item.AttackUseItem;
 import dev.doctor4t.wathe.network.*;
-import dev.doctor4t.wathe.util.*;
+import dev.doctor4t.wathe.util.HandParticleManager;
+import dev.doctor4t.wathe.util.PoisonUtils;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientWorldEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -49,7 +49,6 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.option.CloudRenderMode;
-import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -305,7 +304,7 @@ public class WatheClient implements ClientModInitializer {
                 if (SECRET_MURDER_FAKE_COHORTS.isEmpty()) {
                     List<AbstractClientPlayerEntity> playerList = new ArrayList<>(clientWorld.getPlayers().stream().filter(player -> GameFunctions.isPlayerAliveAndSurvival(player) && !player.getUuid().equals(MinecraftClient.getInstance().player.getUuid())).toList());
                     int killerCohortCount = (int) Math.floor((double) playerList.size() / gameComponent.getKillerDividend());
-                    for (int i = 0; i < killerCohortCount-1; i++) {
+                    for (int i = 0; i < killerCohortCount - 1; i++) {
                         int randomIndex = clientWorld.random.nextInt(playerList.size());
                         SECRET_MURDER_FAKE_COHORTS.add(playerList.get(randomIndex).getUuid());
                         playerList.remove(randomIndex);

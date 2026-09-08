@@ -5,7 +5,9 @@ import dev.doctor4t.wathe.api.WatheRoles;
 import dev.doctor4t.wathe.cca.GameRoundEndComponent;
 import dev.doctor4t.wathe.cca.GameTimeComponent;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
+import dev.doctor4t.wathe.cca.PlayerShopComponent;
 import dev.doctor4t.wathe.client.gui.RoleAnnouncementTexts;
+import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.network.AnnounceWelcomePayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -26,6 +28,7 @@ public class SecretMurderGameMode extends GameMode {
         // civilian base role, replaced for selected killers and vigilantes
         for (ServerPlayerEntity player : players) {
             gameComponent.addRole(player, WatheRoles.SECRET_KILLER);
+            PlayerShopComponent.KEY.get(player).setBalance(GameConstants.MONEY_START);
         }
 
         return (int) Math.floor((double) players.size() / gameComponent.getKillerDividend());

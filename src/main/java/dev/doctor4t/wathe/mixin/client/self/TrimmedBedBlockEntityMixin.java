@@ -1,7 +1,9 @@
 package dev.doctor4t.wathe.mixin.client.self;
 
+import dev.doctor4t.wathe.api.WatheGameModes;
 import dev.doctor4t.wathe.api.event.CanSeePoison;
 import dev.doctor4t.wathe.block_entity.TrimmedBedBlockEntity;
+import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.index.WatheParticles;
 import net.fabricmc.api.EnvType;
@@ -27,6 +29,8 @@ public class TrimmedBedBlockEntityMixin {
             return;
         if (!entity.hasScorpion()) return;
         if (world.getRandom().nextBetween(0, 20) < 17) return;
+        if (GameWorldComponent.KEY.get(world).getGameMode() == WatheGameModes.SECRET_MURDER && entity.getPoisoner() != null && !entity.getPoisoner().equals(MinecraftClient.getInstance().player.getUuid()))
+            return;
 
         world.addParticle(
                 WatheParticles.POISON,

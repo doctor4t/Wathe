@@ -5,23 +5,16 @@ import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.client.particle.HandParticle;
 import dev.doctor4t.wathe.client.render.WatheRenderLayers;
 import dev.doctor4t.wathe.client.util.WatheItemTooltips;
-import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.WatheDataComponentTypes;
 import dev.doctor4t.wathe.network.GunShootPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -31,7 +24,7 @@ public class DerringerItem extends RevolverItem implements AttackUseItem {
     }
 
     @Override
-    public void triggerAttackUseClient(ClientPlayerEntity player) {
+    public void triggerAttackUseClient(PlayerEntity player) {
         ItemStack stack = player.getMainHandStack();
 
         if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
