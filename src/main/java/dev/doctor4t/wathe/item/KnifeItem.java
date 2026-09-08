@@ -20,7 +20,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-public class KnifeItem extends Item implements ItemWithSkin {
+public class KnifeItem extends Item implements SkinnedItem {
 
     /**
      * the registry ID of the knife item

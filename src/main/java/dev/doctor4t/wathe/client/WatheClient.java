@@ -6,6 +6,7 @@ import dev.doctor4t.ratatouille.client.util.ambience.AmbienceUtil;
 import dev.doctor4t.ratatouille.client.util.ambience.BackgroundAmbience;
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.WatheConfig;
+import dev.doctor4t.wathe.api.WatheGameModes;
 import dev.doctor4t.wathe.api.WatheRoles;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.cca.PlayerMoodComponent;
@@ -35,6 +36,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientWorldEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -76,6 +78,8 @@ public class WatheClient implements ClientModInitializer {
     public static GameWorldComponent gameComponent;
     public static TrainWorldComponent trainComponent;
     public static PlayerMoodComponent moodComponent;
+
+    public static final List<UUID> SECRET_MURDER_FAKE_COHORTS = new ArrayList<>();
 
     public static final Map<UUID, PlayerListEntry> PLAYER_ENTRIES_CACHE = Maps.newHashMap();
 
@@ -293,6 +297,24 @@ public class WatheClient implements ClientModInitializer {
             WatheClient.handParticleManager.tick();
             RoundTextRenderer.tick();
         });
+        ClientTickEvents.END_WORLD_TICK.register(clientWorld -> {
+
+            // populate the fake killer cohort list for secret murder
+            GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(clientWorld);
+            if (gameWorldComponent.getGameMode() == WatheGameModes.SECRET_MURDER && gameWorldComponent.isRunning()) {
+                if (SECRET_MURDER_FAKE_COHORTS.isEmpty()) {
+                    List<AbstractClientPlayerEntity> playerList = new ArrayList<>(clientWorld.getPlayers().stream().filter(player -> GameFunctions.isPlayerAliveAndSurvival(player) && !player.getUuid().equals(MinecraftClient.getInstance().player.getUuid())).toList());
+                    int killerCohortCount = (int) Math.floor((double) playerList.size() / gameComponent.getKillerDividend());
+                    for (int i = 0; i < killerCohortCount-1; i++) {
+                        int randomIndex = clientWorld.random.nextInt(playerList.size());
+                        SECRET_MURDER_FAKE_COHORTS.add(playerList.get(randomIndex).getUuid());
+                        playerList.remove(randomIndex);
+                    }
+                }
+            } else if (!SECRET_MURDER_FAKE_COHORTS.isEmpty()) {
+                SECRET_MURDER_FAKE_COHORTS.clear();
+            }
+        });
 
         ClientPlayNetworking.registerGlobalReceiver(ShootMuzzleS2CPayload.ID, new ShootMuzzleS2CPayload.Receiver());
         ClientPlayNetworking.registerGlobalReceiver(PoisonUtils.PoisonOverlayPayload.ID, new PoisonUtils.PoisonOverlayPayload.Receiver());
@@ -382,7 +404,11 @@ public class WatheClient implements ClientModInitializer {
         if (target instanceof PlayerEntity player) {
             if (GameFunctions.isPlayerSpectatingOrCreative(player)) return -1;
             if (WatheClient.gameComponent.isRole(player, WatheRoles.SECRET_KILLER)) {
-                return 0x4EDD35;
+                if (WatheClient.SECRET_MURDER_FAKE_COHORTS.contains(target.getUuid())) {
+                    return 0xDD0000;
+                } else {
+                    return 0x4EDD35;
+                }
             }
             if (gameComponent.isInnocent(player)) {
                 float mood = PlayerMoodComponent.KEY.get(target).getMood();

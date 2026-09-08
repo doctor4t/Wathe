@@ -9,9 +9,12 @@ import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
+import java.util.ArrayList;
+
 public class PlayerVariablesComponent implements AutoSyncedComponent {
     public static final ComponentKey<PlayerVariablesComponent> KEY = ComponentRegistry.getOrCreate(Wathe.id("playervariables"), PlayerVariablesComponent.class);
     private final PlayerEntity player;
+
     public int innocentKills = 0;
 
     public PlayerVariablesComponent(PlayerEntity player) {

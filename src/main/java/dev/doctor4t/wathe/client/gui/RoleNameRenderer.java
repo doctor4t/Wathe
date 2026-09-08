@@ -1,7 +1,9 @@
 package dev.doctor4t.wathe.client.gui;
 
+import dev.doctor4t.wathe.api.WatheGameModes;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.cca.PlayerPsychoComponent;
+import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.entity.NoteEntity;
 import dev.doctor4t.wathe.game.GameFunctions;
 import net.minecraft.client.font.TextRenderer;
@@ -20,6 +22,7 @@ import net.minecraft.world.LightType;
 import org.jetbrains.annotations.NotNull;
 
 public class RoleNameRenderer {
+    private static PlayerEntity target;
     private static TrainRole targetRole = TrainRole.BYSTANDER;
     private static float nametagAlpha = 0f;
     private static float noteAlpha = 0f;
@@ -27,19 +30,20 @@ public class RoleNameRenderer {
     private static final Text[] note = new Text[]{Text.empty(), Text.empty(), Text.empty(), Text.empty()};
 
     public static void renderHud(TextRenderer renderer, @NotNull ClientPlayerEntity player, DrawContext context, RenderTickCounter tickCounter) {
-        GameWorldComponent component = GameWorldComponent.KEY.get(player.getWorld());
+        GameWorldComponent gameWorldComponent = GameWorldComponent.KEY.get(player.getWorld());
         if (player.getWorld().getLightLevel(LightType.BLOCK, BlockPos.ofFloored(player.getEyePos())) < 3 && player.getWorld().getLightLevel(LightType.SKY, BlockPos.ofFloored(player.getEyePos())) < 10)
             return;
         float range = GameFunctions.isPlayerSpectatingOrCreative(player) ? 8f : 2f;
-        if (ProjectileUtil.getCollision(player, entity -> entity instanceof PlayerEntity, range) instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof PlayerEntity target) {
+        if (ProjectileUtil.getCollision(player, entity -> entity instanceof PlayerEntity, range) instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof PlayerEntity targetPlayer) {
             nametagAlpha = MathHelper.lerp(tickCounter.getTickDelta(true) / 4, nametagAlpha, 1f);
-            nametag = target.getDisplayName();
-            if (component.canUseKillerFeatures(target)) {
+            target = targetPlayer;
+            nametag = targetPlayer.getDisplayName();
+            if (gameWorldComponent.canUseKillerFeatures(targetPlayer)) {
                 targetRole = TrainRole.KILLER;
             } else {
                 targetRole = TrainRole.BYSTANDER;
             }
-            boolean shouldObfuscate = PlayerPsychoComponent.KEY.get(target).getPsychoTicks() > 0;
+            boolean shouldObfuscate = PlayerPsychoComponent.KEY.get(targetPlayer).getPsychoTicks() > 0;
             nametag = shouldObfuscate ? Text.literal("urscrewed" + "X".repeat(player.getRandom().nextInt(8))).styled(style -> style.withFormatting(Formatting.OBFUSCATED, Formatting.DARK_RED)) : nametag;
         } else {
             nametagAlpha = MathHelper.lerp(tickCounter.getTickDelta(true) / 4, nametagAlpha, 0f);
@@ -50,14 +54,14 @@ public class RoleNameRenderer {
             context.getMatrices().scale(0.6f, 0.6f, 1f);
             int nameWidth = renderer.getWidth(nametag);
             context.drawTextWithShadow(renderer, nametag, -nameWidth / 2, 16, MathHelper.packRgb(1f, 1f, 1f) | ((int) (nametagAlpha * 255) << 24));
-            if (component.isRunning()) {
+            if (gameWorldComponent.isRunning()) {
                 TrainRole playerRole = TrainRole.BYSTANDER;
-                if (component.canUseKillerFeatures(player)) playerRole = TrainRole.KILLER;
-                if (playerRole == TrainRole.KILLER && targetRole == TrainRole.KILLER) {
-                    context.getMatrices().translate(0, 20 + renderer.fontHeight, 0);
-                    MutableText roleText = Text.translatable("game.tip.cohort");
-                    int roleWidth = renderer.getWidth(roleText);
-                    context.drawTextWithShadow(renderer, roleText, -roleWidth / 2, 0, MathHelper.packRgb(1f, 0f, 0f) | ((int) (nametagAlpha * 255) << 24));
+                if (gameWorldComponent.canUseKillerFeatures(player)) playerRole = TrainRole.KILLER;
+                if (gameWorldComponent.getGameMode() == WatheGameModes.MURDER && playerRole == TrainRole.KILLER && targetRole == TrainRole.KILLER) {
+                    displayCohortOverlay(renderer, context);
+                }
+                if (gameWorldComponent.getGameMode() == WatheGameModes.SECRET_MURDER && WatheClient.SECRET_MURDER_FAKE_COHORTS.contains(target.getUuid())) {
+                    displayCohortOverlay(renderer, context);
                 }
             }
             context.getMatrices().pop();
@@ -83,6 +87,13 @@ public class RoleNameRenderer {
             }
             context.getMatrices().pop();
         }
+    }
+
+    private static void displayCohortOverlay(TextRenderer renderer, DrawContext context) {
+        context.getMatrices().translate(0, 20 + renderer.fontHeight, 0);
+        MutableText roleText = Text.translatable("game.tip.cohort");
+        int roleWidth = renderer.getWidth(roleText);
+        context.drawTextWithShadow(renderer, roleText, -roleWidth / 2, 0, MathHelper.packRgb(1f, 0f, 0f) | ((int) (nametagAlpha * 255) << 24));
     }
 
     private enum TrainRole {
