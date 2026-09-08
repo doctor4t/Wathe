@@ -6,7 +6,7 @@ import dev.doctor4t.wathe.cca.*;
 import dev.doctor4t.wathe.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
-import dev.doctor4t.wathe.util.AnnounceWelcomePayload;
+import dev.doctor4t.wathe.network.AnnounceWelcomePayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;

@@ -1,4 +1,4 @@
-package dev.doctor4t.wathe.util;
+package dev.doctor4t.wathe.network;
 
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
@@ -10,6 +10,7 @@ import dev.doctor4t.wathe.index.WatheDataComponentTypes;
 import dev.doctor4t.wathe.index.WatheItems;
 import dev.doctor4t.wathe.index.WatheSounds;
 import dev.doctor4t.wathe.index.tag.WatheItemTags;
+import dev.doctor4t.wathe.util.Scheduler;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.ItemEntity;

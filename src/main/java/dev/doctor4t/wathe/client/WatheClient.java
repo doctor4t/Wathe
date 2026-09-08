@@ -28,6 +28,8 @@ import dev.doctor4t.wathe.entity.NoteEntity;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.*;
+import dev.doctor4t.wathe.item.AttackUseItem;
+import dev.doctor4t.wathe.network.*;
 import dev.doctor4t.wathe.util.*;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.api.ClientModInitializer;
@@ -37,6 +39,7 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -44,6 +47,7 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.option.CloudRenderMode;
+import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -215,6 +219,17 @@ public class WatheClient implements ClientModInitializer {
             gameComponent = GameWorldComponent.KEY.get(clientWorld);
             trainComponent = TrainWorldComponent.KEY.get(clientWorld);
             moodComponent = PlayerMoodComponent.KEY.get(MinecraftClient.getInstance().player);
+        });
+
+        ClientPreAttackCallback.EVENT.register((client, player, clickCount) -> {
+            if (player.getMainHandStack().getItem() instanceof AttackUseItem attackUseItem) {
+                attackUseItem.triggerAttackUseClient(player);
+                ClientPlayNetworking.send(new AttackUsePayload());
+                client.options.attackKey.setPressed(false);
+
+                return true;
+            }
+            return false;
         });
 
         // Lock options

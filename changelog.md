@@ -7,6 +7,9 @@ Wathe 1.3.3 - 1.21.1
   - Dfault is 0.2 (20%) per innocent kill. Resets when killing a murderer.
   - E.g.: First innocent kill won't cause anything, second innocent kill has a 20% chance to kill you, third 40%, etc...
   - Command to modify it is available to everyone. Can be disabled by setting backfire chance to 0
+- Pistol firing is now done through the attack input instead of the use input
+  - No more accidental firing when interacting with the environment with a pistol in hand!
+- Added revolver skins for supporters (Broomhandle, Blundabust, Western, Bayonet)
 - Fixed murderers not being properly highlighted in spectator
 
 ------------------------------------------------------

@@ -8,7 +8,7 @@ import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.WatheDataComponentTypes;
 import dev.doctor4t.wathe.index.tag.WatheItemTags;
 import dev.doctor4t.wathe.item.ItemWithSkin;
-import dev.doctor4t.wathe.util.TaskCompletePayload;
+import dev.doctor4t.wathe.network.TaskCompletePayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

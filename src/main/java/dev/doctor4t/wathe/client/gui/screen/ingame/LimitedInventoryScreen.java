@@ -5,7 +5,7 @@ import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.client.gui.StoreRenderer;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.util.ShopEntry;
-import dev.doctor4t.wathe.util.StoreBuyPayload;
+import dev.doctor4t.wathe.network.StoreBuyPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;

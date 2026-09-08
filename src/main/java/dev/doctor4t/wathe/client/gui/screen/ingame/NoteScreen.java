@@ -2,7 +2,7 @@ package dev.doctor4t.wathe.client.gui.screen.ingame;
 
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.cca.PlayerNoteComponent;
-import dev.doctor4t.wathe.util.NoteEditPayload;
+import dev.doctor4t.wathe.network.NoteEditPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
