@@ -94,4 +94,5 @@ public class AutoStartComponent implements AutoSyncedComponent, CommonTickingCom
         this.startTime = tag.getInt("startTime");
         this.time = tag.getInt("time");
     }
+
 }

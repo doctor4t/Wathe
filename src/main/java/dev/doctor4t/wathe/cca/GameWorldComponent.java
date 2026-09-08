@@ -64,6 +64,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
     private UUID looseEndWinner;
 
     private float backfireChancePerInnocentKill = 0.2f;
+    private float secretMurderRoundChance = .1f;
 
     private int killerDividend = 5;
     private int vigilanteDividend = 5;
@@ -242,6 +243,15 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         this.sync();
     }
 
+    public float getSecretMurderRoundChance() {
+        return secretMurderRoundChance;
+    }
+
+    public void setSecretMurderRoundChance(float secretMurderRoundChance) {
+        this.secretMurderRoundChance = secretMurderRoundChance;
+        this.sync();
+    }
+
     public int getKillerDividend() {
         return killerDividend;
     }
@@ -273,6 +283,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         this.psychosActive = nbtCompound.getInt("PsychosActive");
 
         this.backfireChancePerInnocentKill = nbtCompound.getFloat("BackfireChancePerInnocentKill");
+        this.secretMurderRoundChance = nbtCompound.getFloat("SecretMurderRoundChance");
 
         this.killerDividend = nbtCompound.getInt("KillerDividend");
         this.vigilanteDividend = nbtCompound.getInt("VigilanteDividend");
@@ -309,6 +320,7 @@ public class GameWorldComponent implements AutoSyncedComponent, ServerTickingCom
         nbtCompound.putInt("PsychosActive", psychosActive);
 
         nbtCompound.putFloat("BackfireChancePerInnocentKill", backfireChancePerInnocentKill);
+        nbtCompound.putFloat("SecretMurderRoundChance", secretMurderRoundChance);
 
         nbtCompound.putInt("KillerDividend", killerDividend);
         nbtCompound.putInt("VigilanteDividend", vigilanteDividend);

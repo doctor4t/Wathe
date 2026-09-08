@@ -7,6 +7,16 @@ Wathe 1.3.3 - 1.21.1
   - Dfault is 0.2 (20%) per innocent kill. Resets when killing a murderer.
   - E.g.: First innocent kill won't cause anything, second innocent kill has a 20% chance to kill you, third 40%, etc...
   - Command to modify it is available to everyone. Can be disabled by setting backfire chance to 0
+    - /wathe:gameSettings set backfireChancePerInnocentKill <chancePerKill>
+    - <chancePerKill> being a percentage from 0 to 1 (e.g. 0.2 is 20%, 0.78 is 78%, 0.01 is 1% etc...)
+- Added a secret "murder round"
+  - This round is a special gamemode where everyone is a murderer, but no one knows about it!
+  - Goal of this round is to be the last murderer standing
+  - This secret round has a 10% chance of happening when starting a regular murder game
+    - Supporters have access to a command to change that chance
+      - /wathe:gameSettings set secretMurderRoundChance <chance>
+      - <chance> being a percentage from 0 to 1
+    - Can also manually be started with /wathe:start wathe:secret_murder
 - Pistol firing is now done through the attack input instead of the use input
   - No more accidental firing when interacting with the environment with a pistol in hand!
 - Added revolver skins for supporters (Broomhandle, Blundabust, Western, Bayonet)

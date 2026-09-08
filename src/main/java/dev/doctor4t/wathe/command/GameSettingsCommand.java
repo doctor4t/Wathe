@@ -58,6 +58,11 @@ public class GameSettingsCommand {
                                                     return 1;
                                                 }))
                                 )
+                                .then(CommandManager.literal("secretMurderRoundChance")
+                                        .then(CommandManager.argument("chance", FloatArgumentType.floatArg(0, 1))
+                                                .executes(context -> setSecretMurderRoundChance(context.getSource(), FloatArgumentType.getFloat(context, "chance")))
+                                        )
+                                )
                                 .then(CommandManager.literal("roleDividend")
                                         .then(CommandManager.literal("killer")
                                                 .then(CommandManager.argument("dividend", IntegerArgumentType.integer(3))
@@ -81,6 +86,12 @@ public class GameSettingsCommand {
     private static int sendHelp(ServerCommandSource source) {
         source.sendMessage(Text.translatable("wathe.game_settings.help"));
         return 1;
+    }
+
+    private static int setSecretMurderRoundChance(ServerCommandSource source, float percentage) {
+        return Wathe.executeSupporterCommand(source,
+                () -> GameWorldComponent.KEY.get(source.getWorld()).setSecretMurderRoundChance(percentage)
+        );
     }
 
     private static int setAutoStart(ServerCommandSource source, int seconds) {

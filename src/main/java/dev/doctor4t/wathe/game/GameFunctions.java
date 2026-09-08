@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.api.GameMode;
 import dev.doctor4t.wathe.api.MapEffect;
+import dev.doctor4t.wathe.api.WatheGameModes;
 import dev.doctor4t.wathe.api.event.AllowPlayerDeath;
 import dev.doctor4t.wathe.api.event.GameEvents;
 import dev.doctor4t.wathe.api.event.ShouldDropOnDeath;
@@ -88,6 +89,11 @@ public class GameFunctions {
 
     public static void startGame(ServerWorld world, GameMode gameMode, MapEffect mapEffect, int time) {
         GameWorldComponent game = GameWorldComponent.KEY.get(world);
+
+        if (gameMode == WatheGameModes.MURDER && world.random.nextFloat() <= game.getSecretMurderRoundChance()) {
+            gameMode = WatheGameModes.SECRET_MURDER;
+        }
+
         MapVariablesWorldComponent areas = MapVariablesWorldComponent.KEY.get(world);
         int playerCount = Math.toIntExact(world.getPlayers().stream().filter(serverPlayerEntity -> (areas.getReadyArea().contains(serverPlayerEntity.getPos()))).count());
         game.setGameMode(gameMode);
