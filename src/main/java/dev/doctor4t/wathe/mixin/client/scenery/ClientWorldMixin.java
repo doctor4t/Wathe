@@ -1,5 +1,6 @@
 package dev.doctor4t.wathe.mixin.client.scenery;
 
+import dev.doctor4t.wathe.WatheConfig;
 import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.index.WatheBlocks;
 import dev.doctor4t.wathe.index.WatheParticles;
@@ -60,7 +61,7 @@ public abstract class ClientWorldMixin extends World {
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void wathe$addSnowflakes(BooleanSupplier shouldKeepTicking, CallbackInfo ci) {
-        if (WatheClient.isTrainMoving() && WatheClient.getTrainComponent().isSnowing()) {
+        if (WatheClient.isTrainMoving() && WatheClient.getTrainComponent().isSnowing() && WatheConfig.snowOptLevel != WatheConfig.SnowModeConfig.TURN_OFF) {
             ClientPlayerEntity player = client.player;
             Random random = player.getRandom();
             for (int i = 0; i < 200; i++) {

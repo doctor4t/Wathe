@@ -142,6 +142,20 @@ public class MapVariablesCommand {
                                                 )
                                         )
                                 )
+                                .then(CommandManager.literal("snowflakeCollider")
+                                        .then(CommandManager.argument("from", Vec3ArgumentType.vec3())
+                                                .then(CommandManager.argument("to", Vec3ArgumentType.vec3())
+                                                        .executes(
+                                                                context -> setBox(
+                                                                        context.getSource(), "snowflakeCollider",
+                                                                        Vec3ArgumentType.getPosArgument(context, "from"),
+                                                                        Vec3ArgumentType.getPosArgument(context, "to"),
+                                                                        box -> getMapVarsComponent(context).setSnowflakeCollider(box)
+                                                                )
+                                                        )
+                                                )
+                                        )
+                                )
                         )
         );
     }
