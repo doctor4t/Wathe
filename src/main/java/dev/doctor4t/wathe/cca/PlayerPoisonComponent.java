@@ -10,6 +10,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -27,6 +28,7 @@ public class PlayerPoisonComponent implements AutoSyncedComponent, ServerTicking
     private int poisonPulseCooldown = 0;
     public float pulseProgress = 0f;
     public boolean pulsing = false;
+    @Nullable
     public UUID poisoner;
 
     public PlayerPoisonComponent(PlayerEntity player) {
@@ -94,7 +96,7 @@ public class PlayerPoisonComponent implements AutoSyncedComponent, ServerTicking
         }
     }
 
-    public void setPoisonTicks(int ticks, UUID poisoner) {
+    public void setPoisonTicks(int ticks, @Nullable UUID poisoner) {
         this.poisoner = poisoner;
         this.poisonTicks = ticks;
         if (this.initialPoisonTicks == 0) this.initialPoisonTicks = ticks;
@@ -102,14 +104,14 @@ public class PlayerPoisonComponent implements AutoSyncedComponent, ServerTicking
     }
 
     @Override
-    public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+    public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.@NotNull WrapperLookup registryLookup) {
         if (this.poisoner != null) tag.putUuid("poisoner", this.poisoner);
         tag.putInt("poisonTicks", this.poisonTicks);
         tag.putInt("initialPoisonTicks", this.initialPoisonTicks);
     }
 
     @Override
-    public void readFromNbt(@NotNull NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+    public void readFromNbt(@NotNull NbtCompound tag, RegistryWrapper.@NotNull WrapperLookup registryLookup) {
         this.poisoner = tag.contains("poisoner") ? tag.getUuid("poisoner") : null;
         this.poisonTicks = tag.contains("poisonTicks") ? tag.getInt("poisonTicks") : -1;
         this.initialPoisonTicks = tag.contains("initialPoisonTicks") ? tag.getInt("initialPoisonTicks") : 0;
