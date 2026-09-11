@@ -12,15 +12,16 @@ public class ShopEntry {
     private final int price;
     private final Type type;
 
-    public enum Type {
-        WEAPON("gui/shop_slot_weapon"),
-        POISON("gui/shop_slot_poison"),
-        TOOL("gui/shop_slot_tool");
+    @SuppressWarnings("ClassCanBeRecord")
+    public static class Type {
+        public static final Type WEAPON = new Type(Wathe.id("gui/shop_slot_weapon"));
+        public static final Type POISON = new Type(Wathe.id("gui/shop_slot_poison"));
+        public static final Type TOOL = new Type(Wathe.id("gui/shop_slot_tool"));
 
-        final Identifier texture;
+        protected final Identifier texture;
 
-        Type(String texture) {
-            this.texture = Wathe.id(texture);
+        public Type(Identifier texture) {
+            this.texture = texture;
         }
 
         public Identifier getTexture() {

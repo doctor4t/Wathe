@@ -2,7 +2,8 @@ package dev.doctor4t.wathe.api;
 
 import net.minecraft.util.Identifier;
 
-public final class Role {
+@SuppressWarnings("ClassCanBeRecord")
+public class Role {
     private final Identifier identifier;
     private final int color;
     private final boolean isInnocent;

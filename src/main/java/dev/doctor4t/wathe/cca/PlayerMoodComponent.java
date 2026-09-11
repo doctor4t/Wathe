@@ -2,6 +2,8 @@ package dev.doctor4t.wathe.cca;
 
 import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.api.Role;
+import dev.doctor4t.wathe.api.task.TaskType;
+import dev.doctor4t.wathe.api.task.TrainTask;
 import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
@@ -16,11 +18,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,14 +36,15 @@ import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static dev.doctor4t.wathe.Wathe.isSkyVisibleAdjacent;
 
 public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
     public static final ComponentKey<PlayerMoodComponent> KEY = ComponentRegistry.getOrCreate(Wathe.id("mood"), PlayerMoodComponent.class);
     private final PlayerEntity player;
-    public final Map<Task, TrainTask> tasks = new HashMap<>();
-    public final Map<Task, Integer> timesGotten = new HashMap<>();
+    public final Map<TaskType, TrainTask> tasks = new HashMap<>();
+    public final Map<TaskType, Integer> timesGotten = new HashMap<>();
     private int nextTaskTimer = 0;
     private float mood = 1f;
     private final HashMap<UUID, ItemStack> psychosisItems = new HashMap<>();
@@ -128,7 +133,7 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
             this.nextTaskTimer = Math.max(this.nextTaskTimer, 2);
             shouldSync = true;
         }
-        ArrayList<Task> removals = new ArrayList<>();
+        ArrayList<TaskType> removals = new ArrayList<>();
         for (TrainTask task : this.tasks.values()) {
             task.tick(this.player);
             if (task.isFulfilled(this.player)) {
@@ -139,30 +144,25 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
                 shouldSync = true;
             }
         }
-        for (Task task : removals) this.tasks.remove(task);
+        for (TaskType task : removals) this.tasks.remove(task);
         if (shouldSync) this.sync();
     }
 
     private @Nullable TrainTask generateTask() {
         if (!this.tasks.isEmpty()) return null;
-        HashMap<Task, Float> map = new HashMap<>();
+        HashMap<TaskType, Float> map = new HashMap<>();
         float total = 0f;
-        for (Task task : Task.values()) {
+        for (TaskType task : TaskType.TYPES.values()) {
             if (this.tasks.containsKey(task)) continue;
             float weight = 1f / this.timesGotten.getOrDefault(task, 1);
             map.put(task, weight);
             total += weight;
         }
         float random = this.player.getRandom().nextFloat() * total;
-        for (Map.Entry<Task, Float> entry : map.entrySet()) {
+        for (Map.Entry<TaskType, Float> entry : map.entrySet()) {
             random -= entry.getValue();
             if (random <= 0) {
-                return switch (entry.getKey()) {
-                    case SLEEP -> new SleepTask(GameConstants.SLEEP_TASK_DURATION);
-                    case OUTSIDE -> new OutsideTask(GameConstants.OUTSIDE_TASK_DURATION);
-                    case EAT -> new EatTask();
-                    case DRINK -> new DrinkTask();
-                };
+                return entry.getKey().createTask();
             }
         }
         return null;
@@ -189,11 +189,11 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
     }
 
     public void eatFood() {
-        if (this.tasks.get(Task.EAT) instanceof EatTask eatTask) eatTask.fulfilled = true;
+        if (this.tasks.get(TaskTypeImpl.EAT) instanceof EatTask eatTask) eatTask.fulfilled = true;
     }
 
     public void drinkCocktail() {
-        if (this.tasks.get(Task.DRINK) instanceof DrinkTask drinkTask) drinkTask.fulfilled = true;
+        if (this.tasks.get(TaskTypeImpl.DRINK) instanceof DrinkTask drinkTask) drinkTask.fulfilled = true;
     }
 
     public boolean isLowerThanMid() {
@@ -212,7 +212,15 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
     public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.@NotNull WrapperLookup registryLookup) {
         tag.putFloat("mood", this.mood);
         NbtList tasks = new NbtList();
-        for (TrainTask task : this.tasks.values()) tasks.add(task.toNbt());
+        for (TrainTask task : this.tasks.values()) {
+            NbtCompound nbt = new NbtCompound();
+            nbt.put("id", Identifier.CODEC
+                    .encodeStart(registryLookup.getOps(NbtOps.INSTANCE), task.getType().getId())
+                    .getOrThrow()
+            );
+            task.writeCustomDataToNbt(nbt);
+            tasks.add(nbt);
+        }
         tag.put("tasks", tasks);
     }
 
@@ -222,26 +230,67 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         this.tasks.clear();
         if (tag.contains("tasks", NbtElement.LIST_TYPE)) {
             for (NbtElement element : tag.getList("tasks", NbtElement.COMPOUND_TYPE)) {
-                if (element instanceof NbtCompound compound && compound.contains("type")) {
-                    int type = compound.getInt("type");
-                    if (type < 0 || type >= Task.values().length) continue;
-                    Task typeEnum = Task.values()[type];
-                    this.tasks.put(typeEnum, typeEnum.setFunction.apply(compound));
+                if (element instanceof NbtCompound compound && compound.contains("id")) {
+                    Identifier.CODEC.parse(registryLookup.getOps(NbtOps.INSTANCE), compound.get("id"))
+                            .resultOrPartial(error -> Wathe.LOGGER.error("Tried to load an invalid TaskType: '{}'", error))
+                            .ifPresent(id -> {
+                                TaskType type = TaskType.TYPES.get(id);
+                                if (type == null) {
+                                    return;
+                                }
+                                this.tasks.put(type, type.getFromNbt(compound));
+                            });
                 }
             }
         }
     }
 
-    public enum Task {
-        SLEEP(nbt -> new SleepTask(nbt.getInt("timer"))),
-        OUTSIDE(nbt -> new OutsideTask(nbt.getInt("timer"))),
-        EAT(nbt -> new EatTask()),
-        DRINK(nbt -> new DrinkTask());
+    @SuppressWarnings("ClassCanBeRecord")
+    public static class TaskTypeImpl implements TaskType {
+        public static final TaskType SLEEP = TaskType.register(
+                Wathe.id("sleep"),
+                () -> new SleepTask(GameConstants.SLEEP_TASK_DURATION),
+                nbt -> new SleepTask(nbt.getInt("timer"))
+        );
+        public static final TaskType OUTSIDE = TaskType.register(
+                Wathe.id("outside"),
+                () -> new OutsideTask(GameConstants.OUTSIDE_TASK_DURATION),
+                nbt -> new OutsideTask(nbt.getInt("timer"))
+        );
+        public static final TaskType EAT = TaskType.register(
+                Wathe.id("EAT"),
+                EatTask::new,
+                nbt -> new EatTask()
+        );
+        public static final TaskType DRINK = TaskType.register(
+                Wathe.id("drink"),
+                DrinkTask::new,
+                nbt -> new DrinkTask()
+        );
 
-        public final @NotNull Function<NbtCompound, TrainTask> setFunction;
+        protected final Identifier id;
+        protected final @NotNull Supplier<TrainTask> creator;
+        protected final @NotNull Function<NbtCompound, TrainTask> fromNbt;
 
-        Task(@NotNull Function<NbtCompound, TrainTask> function) {
-            this.setFunction = function;
+        public TaskTypeImpl(Identifier id, @NotNull Supplier<TrainTask> creator, @NotNull Function<NbtCompound, TrainTask> fromNbt) {
+            this.id = id;
+            this.creator = creator;
+            this.fromNbt = fromNbt;
+        }
+
+        @Override
+        public Identifier getId() {
+            return this.id;
+        }
+
+        @Override
+        public TrainTask createTask() {
+            return this.creator.get();
+        }
+
+        @Override
+        public TrainTask getFromNbt(NbtCompound nbt) {
+            return this.fromNbt.apply(nbt);
         }
     }
 
@@ -263,21 +312,13 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         }
 
         @Override
-        public String getName() {
-            return "sleep";
+        public TaskType getType() {
+            return TaskTypeImpl.SLEEP;
         }
 
         @Override
-        public Task getType() {
-            return Task.SLEEP;
-        }
-
-        @Override
-        public NbtCompound toNbt() {
-            NbtCompound nbt = new NbtCompound();
-            nbt.putInt("type", Task.SLEEP.ordinal());
+        public void writeCustomDataToNbt(NbtCompound nbt) {
             nbt.putInt("timer", this.timer);
-            return nbt;
         }
     }
 
@@ -299,21 +340,13 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         }
 
         @Override
-        public String getName() {
-            return "outside";
+        public TaskType getType() {
+            return TaskTypeImpl.OUTSIDE;
         }
 
         @Override
-        public Task getType() {
-            return Task.OUTSIDE;
-        }
-
-        @Override
-        public NbtCompound toNbt() {
-            NbtCompound nbt = new NbtCompound();
-            nbt.putInt("type", Task.OUTSIDE.ordinal());
+        public void writeCustomDataToNbt(NbtCompound nbt) {
             nbt.putInt("timer", this.timer);
-            return nbt;
         }
     }
 
@@ -326,20 +359,8 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         }
 
         @Override
-        public String getName() {
-            return "eat";
-        }
-
-        @Override
-        public Task getType() {
-            return Task.EAT;
-        }
-
-        @Override
-        public NbtCompound toNbt() {
-            NbtCompound nbt = new NbtCompound();
-            nbt.putInt("type", Task.EAT.ordinal());
-            return nbt;
+        public TaskType getType() {
+            return TaskTypeImpl.EAT;
         }
     }
 
@@ -352,33 +373,8 @@ public class PlayerMoodComponent implements AutoSyncedComponent, ServerTickingCo
         }
 
         @Override
-        public String getName() {
-            return "drink";
+        public TaskType getType() {
+            return TaskTypeImpl.DRINK;
         }
-
-        @Override
-        public Task getType() {
-            return Task.DRINK;
-        }
-
-        @Override
-        public NbtCompound toNbt() {
-            NbtCompound nbt = new NbtCompound();
-            nbt.putInt("type", Task.DRINK.ordinal());
-            return nbt;
-        }
-    }
-
-    public interface TrainTask {
-        default void tick(@NotNull PlayerEntity player) {
-        }
-
-        boolean isFulfilled(PlayerEntity player);
-
-        String getName();
-
-        Task getType();
-
-        NbtCompound toNbt();
     }
 }
