@@ -18,6 +18,7 @@ import net.minecraft.server.ServerConfigHandler;
 import net.minecraft.util.Arm;
 import net.minecraft.world.World;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class PlayerBodyEntity extends LivingEntity {
 
     @Override
     public Iterable<ItemStack> getArmorItems() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
