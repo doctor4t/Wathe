@@ -89,7 +89,7 @@ public abstract class DefaultChunkRendererMixin {
 
     @ModifyExpressionValue(method = "fillCommandBuffer", remap = false,
             at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/data/SectionRenderDataUnsafe;getSliceMask(J)I"))
-    private static int wathe$cullAndOffset(int original, @Local(argsOnly = true, name = "renderRegion") RenderRegion region, @Local(argsOnly = true, name = "camera") CameraTransform camera,
+    private static int wathe$cullAndOffset(int original, @Local(argsOnly = true) RenderRegion region, @Local(argsOnly = true) CameraTransform camera,
                                            @Local(name = "sectionIndex") int sectionIndex) {
         int offsetX = region.getOriginX() + LocalSectionIndex.unpackX(sectionIndex) * 16;
         int offsetY = region.getOriginY() + LocalSectionIndex.unpackY(sectionIndex) * 16;
@@ -105,7 +105,7 @@ public abstract class DefaultChunkRendererMixin {
 
     @WrapOperation(method = "fillCommandBuffer", remap = false,
             at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/DefaultChunkRenderer;getVisibleFaces(IIIIII)I"))
-    private static int wathe$faces(int originX, int originY, int originZ, int chunkX, int chunkY, int chunkZ, Operation<Integer> original, @Local(argsOnly = true, name = "camera") CameraTransform camera) {
+    private static int wathe$faces(int originX, int originY, int originZ, int chunkX, int chunkY, int chunkZ, Operation<Integer> original, @Local(argsOnly = true) CameraTransform camera) {
         if (!WatheClient.isTrainMoving()) return original.call(originX, originY, originZ, chunkX, chunkY, chunkZ);
         wathe$compute(chunkX << 4, chunkY << 4, chunkZ << 4, camera);
         return original.call(originX - Math.round(worldDeltaX), originY - Math.round(worldDeltaY), originZ - Math.round(worldDeltaZ), chunkX, chunkY, chunkZ);
