@@ -349,6 +349,9 @@
   "wathe.map_variables.help": "    gameModeAndMapEffect: The default game mode and map effect the map will use (with auto-start or when using the train horn).\n    spawnPos: The spawn position and orientation players will be reset to once the game ends.\n    spectatorSpawnPos: The spawn position and orientation players will be set to when set as spectators at the start of a game.\n    readyArea: The lobby area which players need to be in to be selected for a game.\n    playAreaOffset: The offset players will be teleported by from the ready area into the play area.\n    playArea: The play area outside which players will be eliminated.\n    resetTemplateArea: The template that will be copied over the play area in order to reset the map.\n    resetPasteOffset: The offset at which the template should be pasted.\n",
   "wathe.map_variables.set": "Map variable %s successfully set to %s",
   "wathe.midnightconfig.disableScreenShake": "Disable Screen Shake",
+  "wathe.midnightconfig.noSnow": "No Snow",
+  "wathe.midnightconfig.sodiumDisableGraphDirtying": "[SODIUM] Only dirty chunk graph on section change",
+  "wathe.midnightconfig.sodiumDisableGraphDirtying.tooltip": "Only dirty the chunk graph whenever the camera crosses over a chunk boundary. This significantly increases performance, but may have some unintended render effects, though none have been found.",
   "wathe.midnightconfig.title": "The Last Voyage of the Harpy Express - Config",
   "wathe.midnightconfig.ultraPerfMode": "Ultra Performance Mode",
   "wathe.midnightconfig.ultraPerfMode.tooltip": "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2."

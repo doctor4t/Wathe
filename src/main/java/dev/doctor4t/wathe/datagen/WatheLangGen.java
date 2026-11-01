@@ -161,6 +161,9 @@ public class WatheLangGen extends FabricLanguageProvider {
         builder.add("wathe.midnightconfig.ultraPerfMode", "Ultra Performance Mode");
         builder.add("wathe.midnightconfig.ultraPerfMode.tooltip", "Disables scenery for a worse visual experience but maximum performance. Lowers render distance to 2.");
         builder.add("wathe.midnightconfig.disableScreenShake", "Disable Screen Shake");
+        builder.add("wathe.midnightconfig.sodiumDisableGraphDirtying", "[SODIUM] Only dirty chunk graph on section change");
+        builder.add("wathe.midnightconfig.sodiumDisableGraphDirtying.tooltip", "Only dirty the chunk graph whenever the camera crosses over a chunk boundary. This significantly increases performance, but may have some unintended render effects, though none have been found. If you're using iris, have a shader enabled and see nothing / chunk errors, disable this.");
+        builder.add("wathe.midnightconfig.noSnow", "No Snow");
 
         builder.add("wathe.argument.game_mode.invalid", "Game mode could not be found");
         builder.add("wathe.argument.map_effect.invalid", "Map effect could not be found");

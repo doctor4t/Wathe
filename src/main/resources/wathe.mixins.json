@@ -49,6 +49,7 @@
     "client.scenery.BackgroundRendererMixin",
     "client.scenery.CameraMixin",
     "client.scenery.ClientWorldMixin",
+    "client.scenery.GameRendererMixin",
     "client.scenery.SceneryWorldRendererMixin",
     "client.scenery.WorldRendererMixin",
     "client.self.BeveragePlateBlockEntityMixin",
@@ -59,9 +60,11 @@
     "compat.sodium.DefaultChunkRendererMixin",
     "compat.sodium.DefaultShaderInterfaceMixin",
     "compat.sodium.OcclusionCullerMixin",
+    "compat.sodium.RenderRegionAccessor",
     "compat.sodium.RenderSectionManagerMixin",
     "compat.sodium.ShaderLoaderMixin",
     "compat.sodium.SodiumShaderMixin",
-    "compat.sodium.SodiumTransformerMixin"
+    "compat.sodium.SodiumTransformerMixin",
+    "compat.sodium.SodiumWorldRendererMixin"
   ]
 }

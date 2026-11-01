@@ -17,7 +17,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
 public class StartCommand {
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
+    public static void  register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(
                 CommandManager.literal("wathe:start")
                         .requires(source -> source.hasPermissionLevel(2))
