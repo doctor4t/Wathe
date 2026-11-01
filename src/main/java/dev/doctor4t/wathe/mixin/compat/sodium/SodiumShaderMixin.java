@@ -30,10 +30,7 @@ public class SodiumShaderMixin implements SodiumShaderInterface {
 
     @Override
     public void wathe$set(GlMutableBuffer buffer) {
-        if (uniformOffsets == null) {
-            return;
-        }
-
+        if (uniformOffsets == null) return;
         uniformOffsets.bindBuffer(buffer);
     }
 }

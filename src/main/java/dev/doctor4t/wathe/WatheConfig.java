@@ -6,10 +6,11 @@ import eu.midnightdust.lib.config.MidnightConfig;
 import net.minecraft.client.MinecraftClient;
 
 public class WatheConfig extends MidnightConfig {
-    @Entry
-    public static boolean ultraPerfMode = false;
-    @Entry
-    public static boolean disableScreenShake = false;
+    @Entry public static boolean ultraPerfMode = false;
+    @Entry public static boolean disableScreenShake = false;
+
+    @Entry public static boolean sodiumDisableGraphDirtying = true;
+    @Entry public static boolean noSnow = false;
 
     @Override
     public void writeChanges(String modid) {
